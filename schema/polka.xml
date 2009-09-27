@@ -1,0 +1,81 @@
+<polka>
+  <person>
+    <name updated_at="20090901T120034Z">Hans Wurst</name>
+    <birthday>19011224</birthday>
+    <emails>
+      <email updated_at="20090901T120034Z">hw@example.com</email>
+      <email updated_at="20090901T120034Z" comment="1">hw@example.org</email>
+    </emails>
+    <phones>
+      <phone comment="2">
+        <phone_type>Mobile</phone_type>
+        <phone_number>123/3848484</phone_number>
+      </phone>
+      <phone>
+        <phone_number>+492348237373</phone_number>
+      </phone>
+    </phones>
+    <groups>
+      <group updated_at="20090901T120034Z">Friends</group>
+      <group updated_at="20090901T120034Z">Dinner Party on Sep 23</group>
+    </groups>
+    <notes>
+      <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        Sent him invitation to dinner party.
+      </note>
+      <note id="2" reply_to="1">
+        Can't come.
+      </note>
+    </notes>
+    <picture picture_type="local">736384</picture>
+    <urls>
+      <url url_type="twitter">http://twitter.com/hanswurst</url>
+      <url url_type="blog">http://blogger.com/hanswurst</url>
+    </urls>
+    <extended_attributes>
+      <attribute type="string">
+        <key>Favorite Food</key>
+        <value>Spagetti</value>
+      </attribute>
+      <attribute type="date">
+        <key>Wedding Day</key>
+        <value>19310112</value>
+      </attribute>
+    </extended_attributes>
+    <comments>
+      <comment id="1">Don't use it anymore.</comment>
+      <comment id="2">Always switched off.</comment>
+    </comments>
+  </person>
+  <person>
+    <name updated_at="20090901T120034Z">Klara Klossbruehe</name>
+    <email updated_at="20090901T120034Z">kk@example.com</email>
+    <groups>
+      <group updated_at="20090901T120034Z">Dinner Party on Sep 23</group>
+    </groups>
+    <picture picture_type="gravatar">kk@example.com</picture>
+  </person>
+  <person>
+    <name updated_at="20090901T120034Z">Alfred E. Neumann</name>
+    <address>Hauptstrasse 3\n12345Hintertupfingen</address>
+    <phones>
+      <phone>
+        <phone_number>+492348237373</phone_number>
+      </phone>
+    </phones>
+    <groups>
+      <group updated_at="20090901T120034Z">Friends</group>
+    </groups>
+  </person>
+  <group>
+    <name>Dinner Party on Sep 23</name>
+    <notes>
+      <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        Sent him invitation to dinner party.
+      </note>
+      <note id="2" reply_to="1">
+        Can't come.
+      </note>
+    </notes>
+  </group>
+</polka>
