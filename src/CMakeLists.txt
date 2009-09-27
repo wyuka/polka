@@ -1,5 +1,5 @@
 set(polka_SRCS
-   polka.cpp
+   mainwindow.cpp
    main.cpp
    polkaview.cpp
  )

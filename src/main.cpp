@@ -1,4 +1,5 @@
-#include "polka.h"
+#include "mainwindow.h"
+
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
@@ -21,12 +22,12 @@ int main(int argc, char **argv)
     KCmdLineArgs::addCmdLineOptions(options);
     KApplication app;
 
-    Polka *widget = new Polka;
+    MainWindow *widget = new MainWindow;
 
     // see if we are starting with session management
     if (app.isSessionRestored())
     {
-        RESTORE(Polka);
+        RESTORE(MainWindow);
     }
     else
     {
@@ -34,7 +35,7 @@ int main(int argc, char **argv)
         KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
         if (args->count() == 0)
         {
-            //polka *widget = new polka;
+            //MainWindow *widget = new MainWindow;
             widget->show();
         }
         else
@@ -42,7 +43,7 @@ int main(int argc, char **argv)
             int i = 0;
             for (; i < args->count(); i++)
             {
-                //polka *widget = new polka;
+                //MainWindow *widget = new MainWindow;
                 widget->show();
             }
         }

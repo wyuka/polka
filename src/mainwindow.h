@@ -1,10 +1,8 @@
 /*
- * polka.h
- *
  * Copyright (C) 2008 Cornelius Schumacher <schumacher@kde.org>
  */
-#ifndef POLKA_H
-#define POLKA_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 
 #include <kxmlguiwindow.h>
@@ -24,28 +22,21 @@ class KUrl;
  * @author Cornelius Schumacher <schumacher@kde.org>
  * @version 0.1
  */
-class Polka : public KXmlGuiWindow
+class MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
-public:
-    /**
-     * Default Constructor
-     */
-    Polka();
+  public:
+    MainWindow();
+    virtual ~MainWindow();
 
-    /**
-     * Default Destructor
-     */
-    virtual ~Polka();
-
-private slots:
+  private slots:
     void fileNew();
     void optionsPreferences();
 
-private:
+  private:
     void setupActions();
 
-private:
+  private:
     Ui::prefs_base ui_prefs_base ;
     PolkaView *m_view;
 
@@ -54,4 +45,4 @@ private:
     KToggleAction *m_statusbarAction;
 };
 
-#endif // _POLKA_H_
+#endif

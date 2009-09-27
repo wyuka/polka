@@ -1,9 +1,7 @@
 /*
- * polka.cpp
- *
  * Copyright (C) 2008 Cornelius Schumacher <schumacher@kde.org>
  */
-#include "polka.h"
+#include "mainwindow.h"
 #include "polkaview.h"
 #include "settings.h"
 
@@ -20,7 +18,7 @@
 
 #include <KDE/KLocale>
 
-Polka::Polka()
+MainWindow::MainWindow()
     : KXmlGuiWindow(),
       m_view(new PolkaView(this)),
       m_printer(0)
@@ -45,11 +43,11 @@ Polka::Polka()
     setupGUI();
 }
 
-Polka::~Polka()
+MainWindow::~MainWindow()
 {
 }
 
-void Polka::setupActions()
+void MainWindow::setupActions()
 {
     KStandardAction::openNew(this, SLOT(fileNew()), actionCollection());
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
@@ -62,17 +60,17 @@ void Polka::setupActions()
     connect(custom, SIGNAL(triggered(bool)), m_view, SLOT(switchColors()));
 }
 
-void Polka::fileNew()
+void MainWindow::fileNew()
 {
     // this slot is called whenever the File->New menu is selected,
     // the New shortcut is pressed (usually CTRL+N) or the New toolbar
     // button is clicked
 
     // create a new window
-    (new Polka)->show();
+    (new MainWindow)->show();
 }
 
-void Polka::optionsPreferences()
+void MainWindow::optionsPreferences()
 {
     // The preference dialog is derived from prefs_base.ui
     //
@@ -91,4 +89,4 @@ void Polka::optionsPreferences()
     dialog->show();
 }
 
-#include "polka.moc"
+#include "mainwindow.moc"
