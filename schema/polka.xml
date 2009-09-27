@@ -1,5 +1,10 @@
 <polka>
-  <person>
+  <identity is_group="true">
+    <id>633hedehe</id>
+    <name>Friends</name>
+  </identity>
+  <identity>
+    <id>7zrgrehth75</id>
     <name updated_at="20090901T120034Z">Hans Wurst</name>
     <birthday>19011224</birthday>
     <emails>
@@ -15,10 +20,12 @@
         <phone_number>+492348237373</phone_number>
       </phone>
     </phones>
-    <groups>
-      <group updated_at="20090901T120034Z">Friends</group>
-      <group updated_at="20090901T120034Z">Dinner Party on Sep 23</group>
-    </groups>
+    <relations>
+      <relation updated_at="20090901T120034Z"
+        relation_type="is_member_of_group" target="fkjfrf6rhfrf6f5ewzf"/>
+      <relation relation_type="is_member_of_group" target="633hedehe"/>
+      <relation relation_type="is_married_to" target="77fzuwehf6t"/>
+    </relations>
     <notes>
       <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
         Sent him invitation to dinner party.
@@ -46,16 +53,19 @@
       <comment id="1">Don't use it anymore.</comment>
       <comment id="2">Always switched off.</comment>
     </comments>
-  </person>
-  <person>
+  </identity>
+  <identity>
+    <id>77fzuwehf6t</id>
     <name updated_at="20090901T120034Z">Klara Klossbruehe</name>
     <email updated_at="20090901T120034Z">kk@example.com</email>
-    <groups>
-      <group updated_at="20090901T120034Z">Dinner Party on Sep 23</group>
-    </groups>
+    <relations>
+      <relation relation_type="is_married_to" target="77fzuwehf6t"/>
+      <relation updated_at="20090901T120034Z"
+        relation_type="is_member_of_group" target="fkjfrf6rhfrf6f5ewzf"/>
+    </relations>
     <picture picture_type="gravatar">kk@example.com</picture>
-  </person>
-  <person>
+  </identity>
+  <identity>
     <name updated_at="20090901T120034Z">Alfred E. Neumann</name>
     <address>Hauptstrasse 3\n12345Hintertupfingen</address>
     <phones>
@@ -63,19 +73,17 @@
         <phone_number>+492348237373</phone_number>
       </phone>
     </phones>
-    <groups>
-      <group updated_at="20090901T120034Z">Friends</group>
-    </groups>
-  </person>
-  <group>
+    <relations>
+      <relation relation_type="is_member_of_group" target="633hedehe"/>
+    </relations>
+  </identity>
+  <identity is_group="true">
+    <id>fkjfrf6rhfrf6f5ewzf</id>
     <name>Dinner Party on Sep 23</name>
     <notes>
       <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
-        Sent him invitation to dinner party.
-      </note>
-      <note id="2" reply_to="1">
-        Can't come.
+        Everybody was invited.
       </note>
     </notes>
-  </group>
+  </identity>
 </polka>
