@@ -1,8 +1,4 @@
 <polka>
-  <identity is_group="true">
-    <id>633hedehe</id>
-    <name>Friends</name>
-  </identity>
   <identity>
     <id>7zrgrehth75</id>
     <name updated_at="20090901T120034Z">Hans Wurst</name>
@@ -77,6 +73,10 @@
     <relations>
       <relation relation_type="is_member_of_group" target="633hedehe"/>
     </relations>
+  </identity>
+  <identity is_group="true">
+    <id>633hedehe</id>
+    <name>Friends</name>
   </identity>
   <identity is_group="true">
     <id>fkjfrf6rhfrf6f5ewzf</id>

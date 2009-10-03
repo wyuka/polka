@@ -21,9 +21,320 @@
 #ifndef POLKA_H
 #define POLKA_H
 
-#include <QString>
 #include <QDomElement>
 #include <QList>
+#include <QString>
+#include <QDate>
+
+class Comment
+{
+  public:
+    typedef QList<Comment> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    void setText( const QString &v );
+    QString text() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Comment parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    QString mText;
+};
+
+class Comments
+{
+  public:
+    void addComment( const Comment &v );
+    void setCommentList( const Comment::List &v );
+    Comment::List commentList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Comments parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Comment::List mCommentList;
+};
+
+class Attribute
+{
+  public:
+    typedef QList<Attribute> List;
+
+  public:
+    void setType( const QString &v );
+    QString type() const;
+    void setKey( const QString &v );
+    QString key() const;
+    void setValue( const QString &v );
+    QString value() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Attribute parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mType;
+    QString mKey;
+    QString mValue;
+};
+
+class ExtendedAttributes
+{
+  public:
+    void addAttribute( const Attribute &v );
+    void setAttributeList( const Attribute::List &v );
+    Attribute::List attributeList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static ExtendedAttributes parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Attribute::List mAttributeList;
+};
+
+class Url
+{
+  public:
+    typedef QList<Url> List;
+
+  public:
+    void setUrlType( const QString &v );
+    QString urlType() const;
+    void setText( const QString &v );
+    QString text() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Url parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mUrlType;
+    QString mText;
+};
+
+class Urls
+{
+  public:
+    void addUrl( const Url &v );
+    void setUrlList( const Url::List &v );
+    Url::List urlList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Urls parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Url::List mUrlList;
+};
+
+class Note
+{
+  public:
+    typedef QList<Note> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    void setCreatedAt( const QString &v );
+    QString createdAt() const;
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
+    void setText( const QString &v );
+    QString text() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Note parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    QString mCreatedAt;
+    QString mUpdatedAt;
+    QString mText;
+};
+
+class Notes
+{
+  public:
+    void addNote( const Note &v );
+    void setNoteList( const Note::List &v );
+    Note::List noteList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Notes parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Note::List mNoteList;
+};
+
+class Relation
+{
+  public:
+    typedef QList<Relation> List;
+
+  public:
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
+    void setRelationType( const QString &v );
+    QString relationType() const;
+    void setTarget( const QString &v );
+    QString target() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Relation parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mUpdatedAt;
+    QString mRelationType;
+    QString mTarget;
+};
+
+class Relations
+{
+  public:
+    void addRelation( const Relation &v );
+    void setRelationList( const Relation::List &v );
+    Relation::List relationList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Relations parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Relation::List mRelationList;
+};
+
+class Phone
+{
+  public:
+    typedef QList<Phone> List;
+
+  public:
+    void setComment( const QString &v );
+    QString comment() const;
+    void setPhoneType( const QString &v );
+    QString phoneType() const;
+    void setPhoneNumber( const QString &v );
+    QString phoneNumber() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Phone parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mComment;
+    QString mPhoneType;
+    QString mPhoneNumber;
+};
+
+class Phones
+{
+  public:
+    void addPhone( const Phone &v );
+    void setPhoneList( const Phone::List &v );
+    Phone::List phoneList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Phones parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Phone::List mPhoneList;
+};
+
+class Email
+{
+  public:
+    typedef QList<Email> List;
+
+  public:
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
+    void setText( const QString &v );
+    QString text() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Email parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mUpdatedAt;
+    QString mText;
+};
+
+class Emails
+{
+  public:
+    void addEmail( const Email &v );
+    void setEmailList( const Email::List &v );
+    Email::List emailList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Emails parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Email::List mEmailList;
+};
+
+class Name
+{
+  public:
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
+    void setText( const QString &v );
+    QString text() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Name parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mUpdatedAt;
+    QString mText;
+};
+
+class Picture
+{
+  public:
+    void setPictureType( const QString &v );
+    QString pictureType() const;
+    void setText( const QString &v );
+    QString text() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Picture parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mPictureType;
+    QString mText;
+};
 
 class Identity
 {
@@ -31,12 +342,30 @@ class Identity
     typedef QList<Identity> List;
 
   public:
-    void setIsGroup( const QString &v );
-    QString isGroup() const;
     void setId( const QString &v );
     QString id() const;
-    void setName( const QString &v );
-    QString name() const;
+    void setName( const Name &v );
+    Name name() const;
+    void setBirthname( const QString &v );
+    QString birthname() const;
+    void setBirthday( const QDate &v );
+    QDate birthday() const;
+    void setEmails( const Emails &v );
+    Emails emails() const;
+    void setPhones( const Phones &v );
+    Phones phones() const;
+    void setRelations( const Relations &v );
+    Relations relations() const;
+    void setNotes( const Notes &v );
+    Notes notes() const;
+    void setPicture( const Picture &v );
+    Picture picture() const;
+    void setUrls( const Urls &v );
+    Urls urls() const;
+    void setExtendedAttributes( const ExtendedAttributes &v );
+    ExtendedAttributes extendedAttributes() const;
+    void setComments( const Comments &v );
+    Comments comments() const;
     /**
       Parse XML object from DOM element.
      */
@@ -44,9 +373,18 @@ class Identity
     QString writeElement();
 
   private:
-    QString mIsGroup;
     QString mId;
-    QString mName;
+    Name mName;
+    QString mBirthname;
+    QDate mBirthday;
+    Emails mEmails;
+    Phones mPhones;
+    Relations mRelations;
+    Notes mNotes;
+    Picture mPicture;
+    Urls mUrls;
+    ExtendedAttributes mExtendedAttributes;
+    Comments mComments;
 };
 
 class Polka
