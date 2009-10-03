@@ -21,7 +21,7 @@
 MainWindow::MainWindow()
     : KXmlGuiWindow(),
       m_view(new PolkaView(this)),
-      m_printer(0)
+      m_printer(0), m_closing( false )
 {
     // accept dnd
     setAcceptDrops(true);
@@ -41,6 +41,8 @@ MainWindow::MainWindow()
     // mainwindow to automatically save settings if changed: window size,
     // toolbar position, icon size, etc.
     setupGUI();
+
+  connect( m_view, SIGNAL( dataWritten() ), SLOT( slotDataWritten() ) );
 }
 
 MainWindow::~MainWindow()
@@ -53,11 +55,6 @@ void MainWindow::setupActions()
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
 
     KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
-
-    // custom menu and menu item - the slot is in the class PolkaView
-    KAction *custom = new KAction(KIcon("colorize"), i18n("Swi&tch Colors"), this);
-    actionCollection()->addAction( QLatin1String("switch_action"), custom );
-    connect(custom, SIGNAL(triggered(bool)), m_view, SLOT(switchColors()));
 }
 
 void MainWindow::fileNew()
@@ -87,6 +84,20 @@ void MainWindow::optionsPreferences()
     connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
     dialog->setAttribute( Qt::WA_DeleteOnClose );
     dialog->show();
+}
+
+bool MainWindow::queryClose()
+{
+  qDebug() << "queryClose";
+  m_closing = true;
+  m_view->writeData();
+  return false;
+}
+
+void MainWindow::slotDataWritten()
+{
+  qDebug() << "DATA WRITTEN";
+  if ( m_closing ) deleteLater();
 }
 
 #include "mainwindow.moc"

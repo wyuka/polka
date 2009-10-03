@@ -31,7 +31,7 @@ class Identity
     typedef QList<Identity> List;
 
   public:
-    void setIs_group( const QString &v );
+    void setIsGroup( const QString &v );
     QString isGroup() const;
     void setId( const QString &v );
     QString id() const;
@@ -44,7 +44,7 @@ class Identity
     QString writeElement();
 
   private:
-    QString mIs_group;
+    QString mIsGroup;
     QString mId;
     QString mName;
 };

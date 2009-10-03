@@ -8,10 +8,9 @@
 
 #include <QtGui/QWidget>
 
-#include "ui_polkaview_base.h"
-
 class QPainter;
 class KUrl;
+class PolkaModel;
 
 /**
  * This is the main view class for Polka.  Most of the non-menu,
@@ -23,24 +22,19 @@ class KUrl;
  * @version 0.1
  */
 
-class PolkaView : public QWidget, public Ui::polkaview_base
+class PolkaView : public QWidget
 {
     Q_OBJECT
-public:
-    /**
-     * Default constructor
-     */
+  public:
     PolkaView(QWidget *parent);
-
-    /**
-     * Destructor
-     */
     virtual ~PolkaView();
 
-private:
-    Ui::polkaview_base ui_polkaview_base;
+    void readData();
+    void writeData();
 
-signals:
+  signals:
+    void dataWritten();
+  
     /**
      * Use this signal to change the content of the statusbar
      */
@@ -51,9 +45,8 @@ signals:
      */
     void signalChangeCaption(const QString& text);
 
-private slots:
-    void switchColors();
-    void settingsChanged();
+  private:
+    PolkaModel *m_model;
 };
 
-#endif // PolkaVIEW_H
+#endif

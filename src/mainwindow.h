@@ -29,6 +29,12 @@ class MainWindow : public KXmlGuiWindow
     MainWindow();
     virtual ~MainWindow();
 
+  protected:
+    bool queryClose();
+
+  protected slots:
+    void slotDataWritten();
+
   private slots:
     void fileNew();
     void optionsPreferences();
@@ -43,6 +49,8 @@ class MainWindow : public KXmlGuiWindow
     QPrinter   *m_printer;
     KToggleAction *m_toolbarAction;
     KToggleAction *m_statusbarAction;
+
+    bool m_closing;
 };
 
 #endif

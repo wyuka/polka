@@ -2,6 +2,10 @@ set(polka_SRCS
    mainwindow.cpp
    main.cpp
    polkaview.cpp
+   polkamodel.cpp
+   gitdir.cpp
+   polka.cpp
+   gitcommand.cpp
  )
 
 kde4_add_ui_files(polka_SRCS polkaview_base.ui prefs_base.ui)

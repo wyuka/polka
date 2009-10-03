@@ -36,14 +36,14 @@ QString indent( int n = 0 )
   return space.fill( ' ', i );
 }
 
-void Identity::setIs_group( const QString &v )
+void Identity::setIsGroup( const QString &v )
 {
-  mIs_group = v;
+  mIsGroup = v;
 }
 
 QString Identity::isGroup() const
 {
-  return mIs_group;
+  return mIsGroup;
 }
 
 void Identity::setId( const QString &v )
@@ -69,7 +69,7 @@ QString Identity::name() const
 Identity Identity::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "identity" ) {
-    qCritical() << "Expected 'identity', got '" <<element.tagName() << "'.";
+    qCritical() << "Expected 'identity', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
     return Identity();
   }
@@ -96,7 +96,7 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
 QString Identity::writeElement()
 {
   QString xml;
-  xml += indent() + "<identity is_group=\"" + is_group() + "\">\n";
+  xml += indent() + "<identity is_group=\"" + isGroup() + "\">\n";
   indent( 2 );
   xml += indent() + "<id>" + id() + "</id>\n";
   xml += indent() + "<name>" + name() + "</name>\n";
@@ -124,7 +124,7 @@ Identity::List Polka::identityList() const
 Polka Polka::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "polka" ) {
-    qCritical() << "Expected 'polka', got '" <<element.tagName() << "'.";
+    qCritical() << "Expected 'polka', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
     return Polka();
   }
