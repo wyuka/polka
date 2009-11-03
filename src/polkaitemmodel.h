@@ -16,42 +16,25 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef POLKAMODEL_H
-#define POLKAMODEL_H
+#ifndef POLKAITEMMODEL_H
+#define POLKAITEMMODEL_H
 
 #include "polka.h"
-#include "polkaitemmodel.h"
 
-#include <QObject>
+#include <QAbstractListModel>
 
-class GitDir;
-
-class PolkaModel : public QObject
+class PolkaItemModel : public QAbstractListModel
 {
-    Q_OBJECT
   public:
-    PolkaModel( QObject *parent = 0 );
-    ~PolkaModel();
+    PolkaItemModel( const Polka &, QObject *parent = 0 );
 
-    void readData();
-    void writeData();
-
-    PolkaItemModel *itemModel() const;
-
-  signals:
-    void dataWritten();
-
-  protected slots:
-    void slotCommandExecuted( int id );
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                         int role = Qt::DisplayRole) const;
 
   private:
-    GitDir *m_gitDir;
-
     Polka m_polka;
-    
-    PolkaItemModel *m_itemModel;
-    
-    int m_commitCommand;
 };
 
 #endif

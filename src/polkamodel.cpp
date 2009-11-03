@@ -25,7 +25,7 @@
 #include <QDebug>
 
 PolkaModel::PolkaModel( QObject *parent )
-  : QObject( parent ), m_commitCommand( 0 )
+  : QObject( parent ), m_itemModel( 0 ), m_commitCommand( 0 )
 {
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
   m_gitDir->addFile( "std.polka" );
@@ -39,10 +39,18 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
+PolkaItemModel *PolkaModel::itemModel() const
+{
+  return m_itemModel;
+}
+
 void PolkaModel::readData()
 {
   bool ok;
   m_polka = Polka::parseFile( m_gitDir->filePath( "std.polka" ), &ok );
+
+  delete m_itemModel;
+  m_itemModel = new PolkaItemModel( m_polka, this );
 }
 
 void PolkaModel::writeData()

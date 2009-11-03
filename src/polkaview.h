@@ -6,7 +6,7 @@
 #ifndef POLKAVIEW_H
 #define POLKAVIEW_H
 
-#include <QtGui/QWidget>
+#include <QtGui>
 
 class QPainter;
 class KUrl;
@@ -47,6 +47,8 @@ class PolkaView : public QWidget
 
   private:
     PolkaModel *m_model;
+
+    QListView *m_flatView;
 };
 
 #endif
