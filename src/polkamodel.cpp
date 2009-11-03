@@ -48,7 +48,7 @@ void PolkaModel::readData()
 void PolkaModel::writeData()
 {
   if ( m_commitCommand > 0 ) {
-    qDebug() << "ERROR" << "Committ command still running";
+    qDebug() << "ERROR" << "Commit command still running";
     return;
   }
   
