@@ -38,6 +38,8 @@ class PolkaModel : public QObject
 
     PolkaItemModel *itemModel() const;
 
+    void insert( const Identity & );
+
   signals:
     void dataWritten();
 

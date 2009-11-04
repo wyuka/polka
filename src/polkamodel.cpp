@@ -71,3 +71,9 @@ void PolkaModel::slotCommandExecuted( int id )
     emit dataWritten();
   }
 }
+
+void PolkaModel::insert( const Identity &identity )
+{
+  m_polka.addIdentity( identity );
+  m_itemModel->updateData();
+}

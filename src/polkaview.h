@@ -32,6 +32,9 @@ class PolkaView : public QWidget
     void readData();
     void writeData();
 
+  public slots:
+    void newPerson();
+
   signals:
     void dataWritten();
   

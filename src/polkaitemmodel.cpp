@@ -19,7 +19,7 @@
 
 #include "polkaitemmodel.h"
 
-PolkaItemModel::PolkaItemModel( const Polka &polka, QObject *parent )
+PolkaItemModel::PolkaItemModel( Polka &polka, QObject *parent )
   : QAbstractListModel( parent ), m_polka( polka )
 {
 }
@@ -55,4 +55,9 @@ QVariant PolkaItemModel::headerData(int section, Qt::Orientation orientation,
     return QString("Column %1").arg(section);
   else
     return QString("Row %1").arg(section);
+}
+
+void PolkaItemModel::updateData()
+{
+  reset();
 }
