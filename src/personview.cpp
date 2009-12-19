@@ -26,8 +26,8 @@ PersonView::PersonView( QWidget *parent )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
   
-  m_label = new QLabel( "Hallo" );
-  topLayout->addWidget( m_label );
+  m_webView = new QWebView;
+  topLayout->addWidget( m_webView );
 
   QPushButton *button = new QPushButton( i18n("Close") );
   topLayout->addWidget( button );
@@ -36,5 +36,8 @@ PersonView::PersonView( QWidget *parent )
 
 void PersonView::showIdentity( const Identity &identity )
 {
-  m_label->setText( identity.name().text() );
+  QString html = "<h1>Name</h1>";
+  html += identity.name().text();
+
+  m_webView->setHtml( html );
 }

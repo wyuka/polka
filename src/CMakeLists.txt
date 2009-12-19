@@ -16,7 +16,7 @@ kde4_add_kcfg_files(polka_SRCS settings.kcfgc )
 
 kde4_add_executable(polka ${polka_SRCS})
 
-target_link_libraries(polka ${KDE4_KDEUI_LIBS} )
+target_link_libraries(polka ${KDE4_KDEUI_LIBS} ${QT_QTWEBKIT_LIBRARY})
 
 install(TARGETS polka ${INSTALL_TARGETS_DEFAULT_ARGS} )
 

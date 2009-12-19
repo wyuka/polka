@@ -22,6 +22,7 @@
 #include "polka.h"
 
 #include <QtGui>
+#include <QWebView>
 
 class PersonView : public QWidget
 {
@@ -31,7 +32,7 @@ class PersonView : public QWidget
     void showIdentity( const Identity & );
   
   private:
-    QLabel *m_label;
+    QWebView *m_webView;
 };
 
 #endif
