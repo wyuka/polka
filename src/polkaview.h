@@ -48,6 +48,9 @@ class PolkaView : public QWidget
      */
     void signalChangeCaption(const QString& text);
 
+  protected slots:
+    void slotItemClicked( const QModelIndex &index );
+
   private:
     PolkaModel *m_model;
 

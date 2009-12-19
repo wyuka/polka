@@ -7,6 +7,7 @@
 #include "polkaview.h"
 
 #include "polkamodel.h"
+#include "personview.h"
 
 #include <klocale.h>
 #include <kinputdialog.h>
@@ -31,6 +32,8 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_flatView = new QListView;
   topLayout->addWidget( m_flatView );
+  connect( m_flatView, SIGNAL( clicked( const QModelIndex & ) ),
+    SLOT( slotItemClicked( const QModelIndex & ) ) );
 
   readData();
 }
@@ -63,6 +66,15 @@ void PolkaView::newPerson()
     
     m_model->insert( identity );
   }
+}
+
+void PolkaView::slotItemClicked( const QModelIndex &index )
+{
+  Identity identity = m_model->itemModel()->identity( index );
+
+  PersonView *view = new PersonView;
+  view->showIdentity( identity );
+  view->show();
 }
 
 #include "polkaview.moc"

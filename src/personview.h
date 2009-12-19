@@ -16,29 +16,22 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef POLKAITEMMODEL_H
-#define POLKAITEMMODEL_H
+#ifndef PERSONVIEW_H
+#define PERSONVIEW_H
 
 #include "polka.h"
 
-#include <QAbstractListModel>
+#include <QtGui>
 
-class PolkaItemModel : public QAbstractListModel
+class PersonView : public QWidget
 {
   public:
-    PolkaItemModel( Polka &, QObject *parent = 0 );
+    PersonView( QWidget *parent = 0 );
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                         int role = Qt::DisplayRole) const;
-
-    void updateData();
-
-    Identity identity( const QModelIndex &index );
-
+    void showIdentity( const Identity & );
+  
   private:
-    Polka &m_polka;
+    QLabel *m_label;
 };
 
 #endif

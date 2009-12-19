@@ -16,29 +16,25 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef POLKAITEMMODEL_H
-#define POLKAITEMMODEL_H
 
-#include "polka.h"
+#include "personview.h"
 
-#include <QAbstractListModel>
+#include <klocale.h>
 
-class PolkaItemModel : public QAbstractListModel
+PersonView::PersonView( QWidget *parent )
+  : QWidget( parent )
 {
-  public:
-    PolkaItemModel( Polka &, QObject *parent = 0 );
+  QBoxLayout *topLayout = new QVBoxLayout( this );
+  
+  m_label = new QLabel( "Hallo" );
+  topLayout->addWidget( m_label );
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                         int role = Qt::DisplayRole) const;
+  QPushButton *button = new QPushButton( i18n("Close") );
+  topLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+}
 
-    void updateData();
-
-    Identity identity( const QModelIndex &index );
-
-  private:
-    Polka &m_polka;
-};
-
-#endif
+void PersonView::showIdentity( const Identity &identity )
+{
+  m_label->setText( identity.name().text() );
+}

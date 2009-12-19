@@ -61,3 +61,8 @@ void PolkaItemModel::updateData()
 {
   reset();
 }
+
+Identity PolkaItemModel::identity( const QModelIndex &index )
+{
+  return m_polka.identityList().at(index.row());
+}
