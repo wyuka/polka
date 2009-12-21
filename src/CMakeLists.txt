@@ -8,6 +8,7 @@ set(polka_SRCS
    gitcommand.cpp
    polkaitemmodel.cpp
    personview.cpp
+   htmlcreator.cpp
 )
 
 kde4_add_ui_files(polka_SRCS polkaview_base.ui prefs_base.ui)

@@ -18,6 +18,7 @@
 */
 
 #include "personview.h"
+#include "htmlcreator.h"
 
 #include <klocale.h>
 
@@ -36,8 +37,17 @@ PersonView::PersonView( QWidget *parent )
 
 void PersonView::showIdentity( const Identity &identity )
 {
-  QString html = "<h1>Name</h1>";
-  html += identity.name().text();
+  HtmlDoc doc;
+  doc.element("h1").text("Name");
+  doc.element("p").text("hallo");
+  HtmlElement &div = doc.element("div");
+  foreach( Email email, identity.emails().emailList() ) {
+    HtmlElement &a = div.element("div").element("a");
+    a.attribute("href","mailto:" + email.text());
+    a.text(email.text());
+  }
 
-  m_webView->setHtml( html );
+  qDebug() << doc.html();
+
+  m_webView->setHtml( doc.html() );
 }
