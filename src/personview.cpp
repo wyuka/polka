@@ -42,10 +42,11 @@ PersonView::PersonView( QWidget *parent )
 
 void PersonView::showIdentity( const Identity &identity )
 {
-  KUrl u("http://a1.twimg.com/profile_images/55666600/longyearbyen_bigger.jpg");
-
-  connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
-    SLOT( setImage( const QPixmap & ) ) );
+  if ( !identity.pictures().pictureList().isEmpty() ) {
+    KUrl u( identity.pictures().pictureList().first().url() );
+    connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
+      SLOT( setImage( const QPixmap & ) ) );
+  }
 
   HtmlDoc doc;
   doc.element("h1").text("Name");
