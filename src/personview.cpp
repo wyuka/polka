@@ -18,8 +18,10 @@
 */
 
 #include "personview.h"
+
 #include "htmlcreator.h"
 #include "imageloader.h"
+#include "pictureselector.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -35,6 +37,9 @@ PersonView::PersonView( QWidget *parent )
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
 
+  m_pictureSelector = new PictureSelector;
+  topLayout->addWidget( m_pictureSelector );
+
   QPushButton *button = new QPushButton( i18n("Close") );
   topLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
@@ -42,8 +47,12 @@ PersonView::PersonView( QWidget *parent )
 
 void PersonView::showIdentity( const Identity &identity )
 {
-  if ( !identity.pictures().pictureList().isEmpty() ) {
-    KUrl u( identity.pictures().pictureList().first().url() );
+  Picture::List pictures = identity.pictures().pictureList();
+
+  if ( !pictures.isEmpty() ) {
+    m_pictureSelector->setPictures( pictures );
+
+    KUrl u( pictures.first().url() );
     connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
       SLOT( setImage( const QPixmap & ) ) );
   }

@@ -16,31 +16,30 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef PERSONVIEW_H
-#define PERSONVIEW_H
+#ifndef PICTURESELECTORBUTTON_H
+#define PICTURESELECTORBUTTON_H
 
 #include "polka.h"
 
 #include <QtGui>
-#include <QWebView>
 
-class PictureSelector;
-
-class PersonView : public QWidget
+class PictureSelectorButton : public QWidget
 {
     Q_OBJECT
   public:
-    PersonView( QWidget *parent = 0 );
+    PictureSelectorButton( QWidget *parent = 0 );
 
-    void showIdentity( const Identity & );
-  
+    void setPicture( const Picture & );
+
+    Picture picture() const;
+
   protected slots:
-    void setImage( const QPixmap & );
-  
+    void setPixmap( const QPixmap & );
+
   private:
-    QLabel *m_titleLabel;
-    QWebView *m_webView;
-    PictureSelector *m_pictureSelector;
+    Picture m_picture;
+  
+    QLabel *m_label;
 };
 
 #endif

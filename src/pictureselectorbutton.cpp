@@ -16,31 +16,33 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef PERSONVIEW_H
-#define PERSONVIEW_H
 
-#include "polka.h"
+#include "pictureselectorbutton.h"
 
-#include <QtGui>
-#include <QWebView>
+#include "imageloader.h"
 
-class PictureSelector;
-
-class PersonView : public QWidget
+PictureSelectorButton::PictureSelectorButton( QWidget *parent )
+  : QWidget( parent )
 {
-    Q_OBJECT
-  public:
-    PersonView( QWidget *parent = 0 );
+  QBoxLayout *topLayout = new QHBoxLayout( this );
 
-    void showIdentity( const Identity & );
-  
-  protected slots:
-    void setImage( const QPixmap & );
-  
-  private:
-    QLabel *m_titleLabel;
-    QWebView *m_webView;
-    PictureSelector *m_pictureSelector;
-};
+  m_label = new QLabel;
+  topLayout->addWidget( m_label );
+}
 
-#endif
+void PictureSelectorButton::setPicture( const Picture &picture )
+{
+  m_picture = picture;
+  connect( ImageLoader::load( m_picture.url() ),
+    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
+}
+
+Picture PictureSelectorButton::picture() const
+{
+  return m_picture;
+}
+
+void PictureSelectorButton::setPixmap( const QPixmap &pixmap )
+{
+  m_label->setPixmap( pixmap );
+}
