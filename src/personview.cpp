@@ -19,13 +19,18 @@
 
 #include "personview.h"
 #include "htmlcreator.h"
+#include "imageloader.h"
 
 #include <klocale.h>
+#include <KUrl>
 
 PersonView::PersonView( QWidget *parent )
   : QWidget( parent )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
+
+  m_titleLabel = new QLabel;
+  topLayout->addWidget( m_titleLabel );
   
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
@@ -37,6 +42,11 @@ PersonView::PersonView( QWidget *parent )
 
 void PersonView::showIdentity( const Identity &identity )
 {
+  KUrl u("http://a1.twimg.com/profile_images/55666600/longyearbyen_bigger.jpg");
+
+  connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
+    SLOT( setImage( const QPixmap & ) ) );
+
   HtmlDoc doc;
   doc.element("h1").text("Name");
   doc.element("p").text("hallo");
@@ -50,4 +60,9 @@ void PersonView::showIdentity( const Identity &identity )
   qDebug() << doc.html();
 
   m_webView->setHtml( doc.html() );
+}
+
+void PersonView::setImage( const QPixmap &pixmap )
+{
+  m_titleLabel->setPixmap( pixmap );
 }

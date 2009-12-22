@@ -26,12 +26,17 @@
 
 class PersonView : public QWidget
 {
+    Q_OBJECT
   public:
     PersonView( QWidget *parent = 0 );
 
     void showIdentity( const Identity & );
   
+  protected slots:
+    void setImage( const QPixmap & );
+  
   private:
+    QLabel *m_titleLabel;
     QWebView *m_webView;
 };
 
