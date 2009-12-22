@@ -1,4 +1,4 @@
-<polka>
+<polka schemaVersion="1">
   <identity>
     <id>7zrgrehth75</id>
     <name updated_at="20090901T120034Z">Hans Wurst</name>
@@ -8,6 +8,16 @@
       <email updated_at="20090901T120034Z">hw@example.com</email>
       <email updated_at="20090901T120034Z" comment="1">hw@example.org</email>
     </emails>
+    <pictures>
+      <picture updated_at="20090901T120023Z" picture_type="local">
+        <id>z77z4ufhjf</id>
+        <url>http://somewhere.example.com</url>
+      </picture>
+      <picture updated_at="20090901T120023Z" picture_type="gravatar">
+        <id>z77z4usfsdhjf</id>
+        <url>http://somewhere.example.com/djdjd</url>
+      </picture>
+    </pictures>
     <phones>
       <phone comment="2">
         <phone_type>Mobile</phone_type>
@@ -31,11 +41,16 @@
         Can't come.
       </note>
     </notes>
-    <picture picture_type="local">736384</picture>
-    <urls>
-      <url url_type="twitter">http://twitter.com/hanswurst</url>
-      <url url_type="blog">http://blogger.com/hanswurst</url>
-    </urls>
+    <profiles>
+      <profile>
+        <profile_type>xing</profile_type>
+        <url>http://xing.de/hw</url>
+      </profile>
+      <profile>
+        <profile_type>twitter</profile_type>
+        <url>http://twitter.com/hw</url>
+      </profile>
+    </profiles>
     <extended_attributes>
       <attribute type="string">
         <key>Favorite Food</key>

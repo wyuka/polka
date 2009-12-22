@@ -265,85 +265,44 @@ QString ExtendedAttributes::writeElement()
 }
 
 
-void Url::setUrlType( const QString &v )
+void Profile::setProfileType( const QString &v )
 {
-  mUrlType = v;
+  mProfileType = v;
 }
 
-QString Url::urlType() const
+QString Profile::profileType() const
 {
-  return mUrlType;
+  return mProfileType;
 }
 
-void Url::setText( const QString &v )
+void Profile::setUrl( const QString &v )
 {
-  mText = v;
+  mUrl = v;
 }
 
-QString Url::text() const
+QString Profile::url() const
 {
-  return mText;
+  return mUrl;
 }
 
-Url Url::parseElement( const QDomElement &element, bool *ok )
+Profile Profile::parseElement( const QDomElement &element, bool *ok )
 {
-  if ( element.tagName() != "url" ) {
-    qCritical() << "Expected 'url', got '" << element.tagName() << "'.";
+  if ( element.tagName() != "profile" ) {
+    qCritical() << "Expected 'profile', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
-    return Url();
+    return Profile();
   }
 
-  Url result = Url();
-
-  result.setText( element.text() );
-  result.setUrlType( element.attribute( "url_type" ) );
-
-  if ( ok ) *ok = true;
-  return result;
-}
-
-QString Url::writeElement()
-{
-  QString xml;
-  if ( !text().isEmpty() ) {
-    xml += indent() + "<url url_type=\"" + urlType() + "\">" + text() + "</url>\n";
-  }
-  return xml;
-}
-
-
-void Urls::addUrl( const Url &v )
-{
-  mUrlList.append( v );
-}
-
-void Urls::setUrlList( const Url::List &v )
-{
-  mUrlList = v;
-}
-
-Url::List Urls::urlList() const
-{
-  return mUrlList;
-}
-
-Urls Urls::parseElement( const QDomElement &element, bool *ok )
-{
-  if ( element.tagName() != "urls" ) {
-    qCritical() << "Expected 'urls', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return Urls();
-  }
-
-  Urls result = Urls();
+  Profile result = Profile();
 
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "url" ) {
-      bool ok;
-      Url o = Url::parseElement( e, &ok );
-      if ( ok ) result.addUrl( o );
+    if ( e.tagName() == "profile_type" ) {
+      result.setProfileType( e.text() );
+    }
+    else if ( e.tagName() == "url" ) {
+      result.setUrl( e.text() );
     }
   }
 
@@ -352,16 +311,73 @@ Urls Urls::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Urls::writeElement()
+QString Profile::writeElement()
 {
   QString xml;
-  xml += indent() + "<urls>\n";
+  xml += indent() + "<profile>\n";
   indent( 2 );
-  foreach( Url e, urlList() ) {
+  if ( !profileType().isEmpty() ) {
+    xml += indent() + "<profile_type>" + profileType() + "</profile_type>\n";
+  }
+  if ( !url().isEmpty() ) {
+    xml += indent() + "<url>" + url() + "</url>\n";
+  }
+  indent( -2 );
+  xml += indent() + "</profile>\n";
+  return xml;
+}
+
+
+void Profiles::addProfile( const Profile &v )
+{
+  mProfileList.append( v );
+}
+
+void Profiles::setProfileList( const Profile::List &v )
+{
+  mProfileList = v;
+}
+
+Profile::List Profiles::profileList() const
+{
+  return mProfileList;
+}
+
+Profiles Profiles::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "profiles" ) {
+    qCritical() << "Expected 'profiles', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Profiles();
+  }
+
+  Profiles result = Profiles();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "profile" ) {
+      bool ok;
+      Profile o = Profile::parseElement( e, &ok );
+      if ( ok ) result.addProfile( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Profiles::writeElement()
+{
+  QString xml;
+  xml += indent() + "<profiles>\n";
+  indent( 2 );
+  foreach( Profile e, profileList() ) {
     xml += e.writeElement();
   }
   indent( -2 );
-  xml += indent() + "</urls>\n";
+  xml += indent() + "</profiles>\n";
   return xml;
 }
 
@@ -727,6 +743,145 @@ QString Phones::writeElement()
 }
 
 
+void Picture::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Picture::updatedAt() const
+{
+  return mUpdatedAt;
+}
+
+void Picture::setPictureType( const QString &v )
+{
+  mPictureType = v;
+}
+
+QString Picture::pictureType() const
+{
+  return mPictureType;
+}
+
+void Picture::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString Picture::id() const
+{
+  return mId;
+}
+
+void Picture::setUrl( const QString &v )
+{
+  mUrl = v;
+}
+
+QString Picture::url() const
+{
+  return mUrl;
+}
+
+Picture Picture::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "picture" ) {
+    qCritical() << "Expected 'picture', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Picture();
+  }
+
+  Picture result = Picture();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "url" ) {
+      result.setUrl( e.text() );
+    }
+  }
+
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setPictureType( element.attribute( "picture_type" ) );
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Picture::writeElement()
+{
+  QString xml;
+  xml += indent() + "<picture updated_at=\"" + updatedAt() + "\" picture_type=\"" + pictureType() + "\">\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  if ( !url().isEmpty() ) {
+    xml += indent() + "<url>" + url() + "</url>\n";
+  }
+  indent( -2 );
+  xml += indent() + "</picture>\n";
+  return xml;
+}
+
+
+void Pictures::addPicture( const Picture &v )
+{
+  mPictureList.append( v );
+}
+
+void Pictures::setPictureList( const Picture::List &v )
+{
+  mPictureList = v;
+}
+
+Picture::List Pictures::pictureList() const
+{
+  return mPictureList;
+}
+
+Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "pictures" ) {
+    qCritical() << "Expected 'pictures', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Pictures();
+  }
+
+  Pictures result = Pictures();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "picture" ) {
+      bool ok;
+      Picture o = Picture::parseElement( e, &ok );
+      if ( ok ) result.addPicture( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Pictures::writeElement()
+{
+  QString xml;
+  xml += indent() + "<pictures>\n";
+  indent( 2 );
+  foreach( Picture e, pictureList() ) {
+    xml += e.writeElement();
+  }
+  indent( -2 );
+  xml += indent() + "</pictures>\n";
+  return xml;
+}
+
+
 void Email::setUpdatedAt( const QString &v )
 {
   mUpdatedAt = v;
@@ -875,53 +1030,6 @@ QString Name::writeElement()
 }
 
 
-void Picture::setPictureType( const QString &v )
-{
-  mPictureType = v;
-}
-
-QString Picture::pictureType() const
-{
-  return mPictureType;
-}
-
-void Picture::setText( const QString &v )
-{
-  mText = v;
-}
-
-QString Picture::text() const
-{
-  return mText;
-}
-
-Picture Picture::parseElement( const QDomElement &element, bool *ok )
-{
-  if ( element.tagName() != "picture" ) {
-    qCritical() << "Expected 'picture', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return Picture();
-  }
-
-  Picture result = Picture();
-
-  result.setText( element.text() );
-  result.setPictureType( element.attribute( "picture_type" ) );
-
-  if ( ok ) *ok = true;
-  return result;
-}
-
-QString Picture::writeElement()
-{
-  QString xml;
-  if ( !text().isEmpty() ) {
-    xml += indent() + "<picture picture_type=\"" + pictureType() + "\">" + text() + "</picture>\n";
-  }
-  return xml;
-}
-
-
 void Identity::setId( const QString &v )
 {
   mId = v;
@@ -972,6 +1080,16 @@ Emails Identity::emails() const
   return mEmails;
 }
 
+void Identity::setPictures( const Pictures &v )
+{
+  mPictures = v;
+}
+
+Pictures Identity::pictures() const
+{
+  return mPictures;
+}
+
 void Identity::setPhones( const Phones &v )
 {
   mPhones = v;
@@ -1002,24 +1120,14 @@ Notes Identity::notes() const
   return mNotes;
 }
 
-void Identity::setPicture( const Picture &v )
+void Identity::setProfiles( const Profiles &v )
 {
-  mPicture = v;
+  mProfiles = v;
 }
 
-Picture Identity::picture() const
+Profiles Identity::profiles() const
 {
-  return mPicture;
-}
-
-void Identity::setUrls( const Urls &v )
-{
-  mUrls = v;
-}
-
-Urls Identity::urls() const
-{
-  return mUrls;
+  return mProfiles;
 }
 
 void Identity::setExtendedAttributes( const ExtendedAttributes &v )
@@ -1074,6 +1182,11 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Emails o = Emails::parseElement( e, &ok );
       if ( ok ) result.setEmails( o );
     }
+    else if ( e.tagName() == "pictures" ) {
+      bool ok;
+      Pictures o = Pictures::parseElement( e, &ok );
+      if ( ok ) result.setPictures( o );
+    }
     else if ( e.tagName() == "phones" ) {
       bool ok;
       Phones o = Phones::parseElement( e, &ok );
@@ -1089,15 +1202,10 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Notes o = Notes::parseElement( e, &ok );
       if ( ok ) result.setNotes( o );
     }
-    else if ( e.tagName() == "picture" ) {
+    else if ( e.tagName() == "profiles" ) {
       bool ok;
-      Picture o = Picture::parseElement( e, &ok );
-      if ( ok ) result.setPicture( o );
-    }
-    else if ( e.tagName() == "urls" ) {
-      bool ok;
-      Urls o = Urls::parseElement( e, &ok );
-      if ( ok ) result.setUrls( o );
+      Profiles o = Profiles::parseElement( e, &ok );
+      if ( ok ) result.setProfiles( o );
     }
     else if ( e.tagName() == "extended_attributes" ) {
       bool ok;
@@ -1130,11 +1238,11 @@ QString Identity::writeElement()
   }
   xml += indent() + "<birthday>" + birthday().toString( Qt::ISODate ) + "</birthday>\n";
   xml += emails().writeElement();
+  xml += pictures().writeElement();
   xml += phones().writeElement();
   xml += relations().writeElement();
   xml += notes().writeElement();
-  xml += picture().writeElement();
-  xml += urls().writeElement();
+  xml += profiles().writeElement();
   xml += extendedAttributes().writeElement();
   xml += comments().writeElement();
   indent( -2 );
@@ -1142,6 +1250,16 @@ QString Identity::writeElement()
   return xml;
 }
 
+
+void Polka::setSchemaVersion( const QString &v )
+{
+  mSchemaVersion = v;
+}
+
+QString Polka::schemaVersion() const
+{
+  return mSchemaVersion;
+}
 
 void Polka::addIdentity( const Identity &v )
 {
@@ -1178,6 +1296,7 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setSchemaVersion( element.attribute( "schemaVersion" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -1186,7 +1305,7 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
 QString Polka::writeElement()
 {
   QString xml;
-  xml += indent() + "<polka>\n";
+  xml += indent() + "<polka schemaVersion=\"" + schemaVersion() + "\">\n";
   indent( 2 );
   foreach( Identity e, identityList() ) {
     xml += e.writeElement();

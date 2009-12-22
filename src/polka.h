@@ -103,41 +103,41 @@ class ExtendedAttributes
     Attribute::List mAttributeList;
 };
 
-class Url
+class Profile
 {
   public:
-    typedef QList<Url> List;
+    typedef QList<Profile> List;
 
   public:
-    void setUrlType( const QString &v );
-    QString urlType() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setProfileType( const QString &v );
+    QString profileType() const;
+    void setUrl( const QString &v );
+    QString url() const;
     /**
       Parse XML object from DOM element.
      */
-    static Url parseElement( const QDomElement &element, bool *ok );
+    static Profile parseElement( const QDomElement &element, bool *ok );
     QString writeElement();
 
   private:
-    QString mUrlType;
-    QString mText;
+    QString mProfileType;
+    QString mUrl;
 };
 
-class Urls
+class Profiles
 {
   public:
-    void addUrl( const Url &v );
-    void setUrlList( const Url::List &v );
-    Url::List urlList() const;
+    void addProfile( const Profile &v );
+    void setProfileList( const Profile::List &v );
+    Profile::List profileList() const;
     /**
       Parse XML object from DOM element.
      */
-    static Urls parseElement( const QDomElement &element, bool *ok );
+    static Profiles parseElement( const QDomElement &element, bool *ok );
     QString writeElement();
 
   private:
-    Url::List mUrlList;
+    Profile::List mProfileList;
 };
 
 class Note
@@ -263,6 +263,49 @@ class Phones
     Phone::List mPhoneList;
 };
 
+class Picture
+{
+  public:
+    typedef QList<Picture> List;
+
+  public:
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
+    void setPictureType( const QString &v );
+    QString pictureType() const;
+    void setId( const QString &v );
+    QString id() const;
+    void setUrl( const QString &v );
+    QString url() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Picture parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mUpdatedAt;
+    QString mPictureType;
+    QString mId;
+    QString mUrl;
+};
+
+class Pictures
+{
+  public:
+    void addPicture( const Picture &v );
+    void setPictureList( const Picture::List &v );
+    Picture::List pictureList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Pictures parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Picture::List mPictureList;
+};
+
 class Email
 {
   public:
@@ -318,24 +361,6 @@ class Name
     QString mText;
 };
 
-class Picture
-{
-  public:
-    void setPictureType( const QString &v );
-    QString pictureType() const;
-    void setText( const QString &v );
-    QString text() const;
-    /**
-      Parse XML object from DOM element.
-     */
-    static Picture parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
-
-  private:
-    QString mPictureType;
-    QString mText;
-};
-
 class Identity
 {
   public:
@@ -352,16 +377,16 @@ class Identity
     QDate birthday() const;
     void setEmails( const Emails &v );
     Emails emails() const;
+    void setPictures( const Pictures &v );
+    Pictures pictures() const;
     void setPhones( const Phones &v );
     Phones phones() const;
     void setRelations( const Relations &v );
     Relations relations() const;
     void setNotes( const Notes &v );
     Notes notes() const;
-    void setPicture( const Picture &v );
-    Picture picture() const;
-    void setUrls( const Urls &v );
-    Urls urls() const;
+    void setProfiles( const Profiles &v );
+    Profiles profiles() const;
     void setExtendedAttributes( const ExtendedAttributes &v );
     ExtendedAttributes extendedAttributes() const;
     void setComments( const Comments &v );
@@ -378,11 +403,11 @@ class Identity
     QString mBirthname;
     QDate mBirthday;
     Emails mEmails;
+    Pictures mPictures;
     Phones mPhones;
     Relations mRelations;
     Notes mNotes;
-    Picture mPicture;
-    Urls mUrls;
+    Profiles mProfiles;
     ExtendedAttributes mExtendedAttributes;
     Comments mComments;
 };
@@ -390,6 +415,8 @@ class Identity
 class Polka
 {
   public:
+    void setSchemaVersion( const QString &v );
+    QString schemaVersion() const;
     void addIdentity( const Identity &v );
     void setIdentityList( const Identity::List &v );
     Identity::List identityList() const;
@@ -402,6 +429,7 @@ class Polka
     bool writeFile( const QString &filename );
 
   private:
+    QString mSchemaVersion;
     Identity::List mIdentityList;
 };
 
