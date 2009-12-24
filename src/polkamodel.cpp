@@ -87,6 +87,8 @@ bool PolkaModel::hasPicture( const Identity &identity ) const
 {
   if ( m_pictures.contains( identity.id() ) ) return true;
 
+  if ( identity.pictures().pictureList().isEmpty() ) return false;
+
   return false;
 }
 
