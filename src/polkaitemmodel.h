@@ -22,6 +22,7 @@
 #include "polka.h"
 
 #include <QAbstractListModel>
+#include <QPixmap>
 
 class PolkaItemModel : public QAbstractListModel
 {
@@ -39,6 +40,7 @@ class PolkaItemModel : public QAbstractListModel
 
   private:
     Polka &m_polka;
+    QPixmap m_defaultPicture;
 };
 
 #endif

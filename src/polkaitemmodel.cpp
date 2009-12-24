@@ -19,9 +19,13 @@
 
 #include "polkaitemmodel.h"
 
+#include <KStandardDirs>
+
 PolkaItemModel::PolkaItemModel( Polka &polka, QObject *parent )
   : QAbstractListModel( parent ), m_polka( polka )
 {
+  QString picPath = KStandardDirs::locate( "appdata", "polka_person.png" );
+  m_defaultPicture = QPixmap( picPath );
 }
 
 int PolkaItemModel::rowCount(const QModelIndex &parent) const
@@ -41,6 +45,8 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
 
   if (role == Qt::DisplayRole)
     return m_polka.identityList().at(index.row()).name().text();
+  else if ( role == Qt::DecorationRole )
+    return m_defaultPicture;
   else
     return QVariant();
 }
