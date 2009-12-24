@@ -19,10 +19,12 @@
 
 #include "polkaitemmodel.h"
 
+#include "polkamodel.h"
+
 #include <KStandardDirs>
 
-PolkaItemModel::PolkaItemModel( Polka &polka, QObject *parent )
-  : QAbstractListModel( parent ), m_polka( polka )
+PolkaItemModel::PolkaItemModel( PolkaModel *polkaModel )
+  : QAbstractListModel( polkaModel ), m_model( polkaModel )
 {
   QString picPath = KStandardDirs::locate( "appdata", "polka_person.png" );
   m_defaultPicture = QPixmap( picPath );
@@ -32,7 +34,7 @@ int PolkaItemModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED( parent );
 
-  return m_polka.identityList().count();
+  return m_model->polka().identityList().count();
 }
 
 QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
@@ -40,14 +42,20 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   if (!index.isValid())
     return QVariant();
 
-  if (index.row() >= m_polka.identityList().size())
+  if (index.row() >= m_model->polka().identityList().size())
     return QVariant();
 
+  Identity identity = m_model->polka().identityList().at( index.row() );
+
   if (role == Qt::DisplayRole)
-    return m_polka.identityList().at(index.row()).name().text();
-  else if ( role == Qt::DecorationRole )
-    return m_defaultPicture;
-  else
+    return identity.name().text();
+  else if ( role == Qt::DecorationRole ) {
+    if ( m_model->hasPicture( identity ) ) {
+      return m_model->picture( identity );
+    } else {
+      return m_defaultPicture;
+    }
+  } else
     return QVariant();
 }
 
@@ -70,5 +78,5 @@ void PolkaItemModel::updateData()
 
 Identity PolkaItemModel::identity( const QModelIndex &index )
 {
-  return m_polka.identityList().at(index.row());
+  return m_model->polka().identityList().at(index.row());
 }

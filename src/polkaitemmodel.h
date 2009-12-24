@@ -24,10 +24,12 @@
 #include <QAbstractListModel>
 #include <QPixmap>
 
+class PolkaModel;
+
 class PolkaItemModel : public QAbstractListModel
 {
   public:
-    PolkaItemModel( Polka &, QObject *parent = 0 );
+    PolkaItemModel( PolkaModel * );
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -39,7 +41,7 @@ class PolkaItemModel : public QAbstractListModel
     Identity identity( const QModelIndex &index );
 
   private:
-    Polka &m_polka;
+    PolkaModel *m_model;
     QPixmap m_defaultPicture;
 };
 

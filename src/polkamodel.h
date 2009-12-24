@@ -36,9 +36,14 @@ class PolkaModel : public QObject
     void readData();
     void writeData();
 
+    Polka &polka();
+
     PolkaItemModel *itemModel() const;
 
     void insert( const Identity & );
+
+    bool hasPicture( const Identity & ) const;
+    QPixmap picture( const Identity & ) const;
 
   signals:
     void dataWritten();
@@ -54,6 +59,8 @@ class PolkaModel : public QObject
     PolkaItemModel *m_itemModel;
     
     int m_commitCommand;
+
+    QMap<QString,QPixmap> m_pictures;
 };
 
 #endif

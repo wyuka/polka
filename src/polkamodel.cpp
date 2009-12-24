@@ -39,6 +39,11 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
+Polka &PolkaModel::polka()
+{
+  return m_polka;
+}
+
 PolkaItemModel *PolkaModel::itemModel() const
 {
   return m_itemModel;
@@ -50,7 +55,7 @@ void PolkaModel::readData()
   m_polka = Polka::parseFile( m_gitDir->filePath( "std.polka" ), &ok );
 
   delete m_itemModel;
-  m_itemModel = new PolkaItemModel( m_polka, this );
+  m_itemModel = new PolkaItemModel( this );
 }
 
 void PolkaModel::writeData()
@@ -76,4 +81,20 @@ void PolkaModel::insert( const Identity &identity )
 {
   m_polka.addIdentity( identity );
   m_itemModel->updateData();
+}
+
+bool PolkaModel::hasPicture( const Identity &identity ) const
+{
+  if ( m_pictures.contains( identity.id() ) ) return true;
+
+  return false;
+}
+
+QPixmap PolkaModel::picture( const Identity &identity ) const
+{
+  if ( m_pictures.contains( identity.id() ) ) {
+    return m_pictures.value( identity.id() );
+  }
+  
+  return QPixmap();
 }
