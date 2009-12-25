@@ -1,13 +1,13 @@
 /*
  * polkaview.cpp
  *
- * Copyright (C) 2008 Cornelius Schumacher <schumacher@kde.org>
+ * Copyright (C) 2009 Cornelius Schumacher <schumacher@kde.org>
  */
 
 #include "polkaview.h"
 
 #include "polkamodel.h"
-#include "personview.h"
+#include "identitylistview.h"
 
 #include <klocale.h>
 #include <kinputdialog.h>
@@ -30,10 +30,8 @@ PolkaView::PolkaView(QWidget *parent)
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( newPerson() ) );
 
-  m_flatView = new QListView;
-  topLayout->addWidget( m_flatView );
-  connect( m_flatView, SIGNAL( clicked( const QModelIndex & ) ),
-    SLOT( slotItemClicked( const QModelIndex & ) ) );
+  m_groupView = new IdentityListView;
+  topLayout->addWidget( m_groupView );
 
   readData();
 }
@@ -45,7 +43,7 @@ PolkaView::~PolkaView()
 void PolkaView::readData()
 {
   m_model->readData();
-  m_flatView->setModel( m_model->itemModel() );
+  m_groupView->setItemModel( m_model->itemModel() );
 }
 
 void PolkaView::writeData()
@@ -66,15 +64,6 @@ void PolkaView::newPerson()
     
     m_model->insert( identity );
   }
-}
-
-void PolkaView::slotItemClicked( const QModelIndex &index )
-{
-  Identity identity = m_model->itemModel()->identity( index );
-
-  PersonView *view = new PersonView;
-  view->showIdentity( identity );
-  view->show();
 }
 
 #include "polkaview.moc"

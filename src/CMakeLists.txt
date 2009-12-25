@@ -1,18 +1,19 @@
 set(polka_SRCS
-   mainwindow.cpp
-   main.cpp
-   polkaview.cpp
-   polkamodel.cpp
-   gitdir.cpp
-   polka.cpp
-   gitcommand.cpp
-   polkaitemmodel.cpp
-   personview.cpp
-   htmlcreator.cpp
-   imageloader.cpp
-   pictureselector.cpp
-   pictureselectorbutton.cpp
-   localpicture.cpp
+  identitylistview.cpp
+  mainwindow.cpp
+  main.cpp
+  polkaview.cpp
+  polkamodel.cpp
+  gitdir.cpp
+  polka.cpp
+  gitcommand.cpp
+  polkaitemmodel.cpp
+  personview.cpp
+  htmlcreator.cpp
+  imageloader.cpp
+  pictureselector.cpp
+  pictureselectorbutton.cpp
+  localpicture.cpp
 )
 
 kde4_add_ui_files(polka_SRCS polkaview_base.ui prefs_base.ui)

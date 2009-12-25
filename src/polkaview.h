@@ -11,6 +11,7 @@
 class QPainter;
 class KUrl;
 class PolkaModel;
+class IdentityListView;
 
 /**
  * This is the main view class for Polka.  Most of the non-menu,
@@ -48,13 +49,10 @@ class PolkaView : public QWidget
      */
     void signalChangeCaption(const QString& text);
 
-  protected slots:
-    void slotItemClicked( const QModelIndex &index );
-
   private:
     PolkaModel *m_model;
 
-    QListView *m_flatView;
+    IdentityListView *m_groupView;
 };
 
 #endif
