@@ -63,7 +63,10 @@ void PersonView::showIdentity( const Identity &identity )
   }
 
   HtmlDoc doc;
-  doc.element("h1").text(identity.name().text());
+  doc.element("h1").text(identity.displayName());
+  if ( !identity.name().text().isEmpty() ) {
+    doc.element("p").text(identity.name().text());
+  }
   HtmlElement &div = doc.element("div");
   foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &a = div.element("div").element("a");

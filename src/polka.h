@@ -402,6 +402,8 @@ class Identity
     QString id() const;
     void setGroups( const Groups &v );
     Groups groups() const;
+    void setDisplayName( const QString &v );
+    QString displayName() const;
     void setName( const Name &v );
     Name name() const;
     void setBirthname( const QString &v );
@@ -433,6 +435,7 @@ class Identity
   private:
     QString mId;
     Groups mGroups;
+    QString mDisplayName;
     Name mName;
     QString mBirthname;
     QDate mBirthday;

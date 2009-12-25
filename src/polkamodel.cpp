@@ -60,10 +60,14 @@ PolkaItemModel *PolkaModel::groupItemModel() const
   return m_groupItemModel;
 }
 
-void PolkaModel::readData()
+bool PolkaModel::readData()
 {
-  bool ok;
-  m_polka = Polka::parseFile( m_gitDir->filePath( "std.polka" ), &ok );
+  m_polka = Polka::parseFile( m_gitDir->filePath( "std.polka" ),
+    &m_dataIsValid );
+
+  if ( !m_dataIsValid ) {
+    return false;
+  }
 
   foreach( Identity identity, m_polka.identityList() ) {
     if ( identity.groups().groupList().isEmpty() ) {
@@ -83,10 +87,17 @@ void PolkaModel::readData()
 
   delete m_groupItemModel;
   m_groupItemModel = new PolkaItemModel( this );
+
+  return true;
 }
 
 void PolkaModel::writeData()
 {
+  if ( !m_dataIsValid) {
+    emit dataWritten();
+    return;
+  }
+
   if ( m_commitCommand > 0 ) {
     qDebug() << "ERROR" << "Commit command still running";
     return;

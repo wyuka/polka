@@ -10,8 +10,9 @@
 #include "identitylistview.h"
 #include "grouplistview.h"
 
-#include <klocale.h>
-#include <kinputdialog.h>
+#include <KMessageBox>
+#include <KLocale>
+#include <KInputDialog>
 
 PolkaView::PolkaView(QWidget *parent)
   : QWidget( parent )
@@ -63,7 +64,11 @@ PolkaView::~PolkaView()
 
 void PolkaView::readData()
 {
-  m_model->readData();
+  if ( !m_model->readData() ) {
+    KMessageBox::error( this, i18n("Error reading data file") );
+    return;
+  }
+
   m_groupView->setItemModel( m_model->itemModel() );
   m_groupListView->setItemModel( m_model->groupItemModel() );
 }
@@ -80,9 +85,7 @@ void PolkaView::newPerson()
     i18n("Enter name of person to add"), QString(), &ok );
   if ( ok ) {
     Identity identity;
-    Name n;
-    n.setText( name );
-    identity.setName( n );
+    identity.setDisplayName( name );
     
     m_model->insert( identity );
   }

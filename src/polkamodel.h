@@ -34,7 +34,7 @@ class PolkaModel : public QObject
     PolkaModel( QObject *parent = 0 );
     ~PolkaModel();
 
-    void readData();
+    bool readData();
     void writeData();
 
     Identity::List &identityList( const QString &id );
@@ -56,6 +56,7 @@ class PolkaModel : public QObject
     GitDir *m_gitDir;
 
     Polka m_polka;
+    bool m_dataIsValid;
 
     Identity::List m_groups;
     QMap<QString,Identity::List> m_groupMap;
