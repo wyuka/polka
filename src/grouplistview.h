@@ -19,6 +19,8 @@
 #ifndef GROUPLISTVIEW_H
 #define GROUPLISTVIEW_H
 
+#include "polka.h"
+
 #include <QtGui>
 
 class PolkaItemModel;
@@ -32,10 +34,10 @@ class GroupListView : public QWidget
     void setItemModel( PolkaItemModel * );
 
   signals:
-    void showGroup( const QString &id );
+    void groupClicked( const Identity & );
 
   protected slots:
-    void slotButtonClicked();
+    void slotItemClicked( const QModelIndex &index );
 
   private:
     PolkaItemModel *m_itemModel;

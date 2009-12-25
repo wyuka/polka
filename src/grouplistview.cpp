@@ -24,16 +24,14 @@
 #include <KLocale>
 
 GroupListView::GroupListView( QWidget *parent )
-  : QWidget( parent )
+  : QWidget( parent ), m_itemModel( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
   
-  QPushButton *button = new QPushButton( i18n("Show Group") );
-  topLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( slotButtonClicked() ) );
-
   m_flatView = new QListView;
   topLayout->addWidget( m_flatView );
+  connect( m_flatView, SIGNAL( clicked( const QModelIndex & ) ),
+    SLOT( slotItemClicked( const QModelIndex & ) ) );
 }
 
 void GroupListView::setItemModel( PolkaItemModel *itemModel )
@@ -43,7 +41,9 @@ void GroupListView::setItemModel( PolkaItemModel *itemModel )
   m_flatView->setModel( m_itemModel );
 }
 
-void GroupListView::slotButtonClicked()
+void GroupListView::slotItemClicked( const QModelIndex &index )
 {
-  emit showGroup( "foobar" );
+  Identity identity = m_itemModel->identity( index );
+
+  emit groupClicked( identity );
 }

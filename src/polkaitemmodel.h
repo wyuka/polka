@@ -28,7 +28,7 @@ class PolkaModel;
 class PolkaItemModel : public QAbstractListModel
 {
   public:
-    PolkaItemModel( PolkaModel * );
+    PolkaItemModel( PolkaModel *, const QString &groupId = QString() );
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -41,6 +41,7 @@ class PolkaItemModel : public QAbstractListModel
 
   private:
     PolkaModel *m_model;
+    QString m_groupId;
 };
 
 #endif

@@ -1,10 +1,12 @@
 /*
  * polkaview.h
  *
- * Copyright (C) 2007 Cornelius Schumacher <schumacher@kde.org>
+ * Copyright (C) 2009 Cornelius Schumacher <schumacher@kde.org>
  */
 #ifndef POLKAVIEW_H
 #define POLKAVIEW_H
+
+#include "polka.h"
 
 #include <QtGui>
 
@@ -37,7 +39,7 @@ class PolkaView : public QWidget
   public slots:
     void newPerson();
     void showGroupList();
-    void showGroupView();
+    void showGroupView( const Identity & );
 
   signals:
     void dataWritten();

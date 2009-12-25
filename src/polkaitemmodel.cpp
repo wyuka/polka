@@ -21,8 +21,9 @@
 
 #include "polkamodel.h"
 
-PolkaItemModel::PolkaItemModel( PolkaModel *polkaModel )
-  : QAbstractListModel( polkaModel ), m_model( polkaModel )
+PolkaItemModel::PolkaItemModel( PolkaModel *polkaModel, const QString &groupId )
+  : QAbstractListModel( polkaModel ), m_model( polkaModel ),
+    m_groupId( groupId )
 {
 }
 
@@ -30,7 +31,7 @@ int PolkaItemModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED( parent );
 
-  return m_model->polka().identityList().count();
+  return m_model->identityList( m_groupId ).count();
 }
 
 QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
@@ -38,10 +39,10 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   if (!index.isValid())
     return QVariant();
 
-  if (index.row() >= m_model->polka().identityList().size())
+  if (index.row() >= m_model->identityList( m_groupId ).size())
     return QVariant();
 
-  Identity identity = m_model->polka().identityList().at( index.row() );
+  Identity identity = m_model->identityList( m_groupId ).at( index.row() );
 
   if (role == Qt::DisplayRole)
     return identity.name().text();
@@ -70,5 +71,5 @@ void PolkaItemModel::updateData()
 
 Identity PolkaItemModel::identity( const QModelIndex &index )
 {
-  return m_model->polka().identityList().at(index.row());
+  return m_model->identityList( m_groupId ).at( index.row() );
 }

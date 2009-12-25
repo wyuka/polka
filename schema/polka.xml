@@ -1,6 +1,10 @@
 <polka schemaVersion="1">
   <identity>
     <id>7zrgrehth75</id>
+    <groups>
+      <group><id>fkjfrf6rhfrf6f5ewzf</id></group>
+      <group><id>633hedehe</id></group>
+    </groups>
     <name updated_at="20090901T120034Z">Hans Wurst</name>
     <birthname>Hans Kaese</birthname>
     <birthday>19011224</birthday>
@@ -28,10 +32,8 @@
       </phone>
     </phones>
     <relations>
-      <relation updated_at="20090901T120034Z"
-        relation_type="is_member_of_group" target="fkjfrf6rhfrf6f5ewzf"/>
-      <relation relation_type="is_member_of_group" target="633hedehe"/>
       <relation relation_type="is_married_to" target="77fzuwehf6t"/>
+      <relation relation_type="reports_to" target="77fzuwehf6t"/>
     </relations>
     <notes>
       <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">

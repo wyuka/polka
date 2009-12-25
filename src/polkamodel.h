@@ -37,10 +37,10 @@ class PolkaModel : public QObject
     void readData();
     void writeData();
 
-    Polka &polka();
+    Identity::List &identityList( const QString &id );
 
     PolkaItemModel *groupItemModel() const;
-    PolkaItemModel *itemModel() const;
+    PolkaItemModel *itemModel( const QString &id = QString() );
 
     void insert( const Identity & );
 
@@ -56,8 +56,11 @@ class PolkaModel : public QObject
     GitDir *m_gitDir;
 
     Polka m_polka;
-    
-    PolkaItemModel *m_itemModel;
+
+    Identity::List m_groups;
+    QMap<QString,Identity::List> m_groupMap;
+
+    QMap<QString,PolkaItemModel *> m_itemModels;
     PolkaItemModel *m_groupItemModel;
     
     int m_commitCommand;

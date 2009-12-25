@@ -25,7 +25,7 @@
 #include <QDebug>
 
 PolkaModel::PolkaModel( QObject *parent )
-  : QObject( parent ), m_itemModel( 0 ), m_groupItemModel( 0 ),
+  : QObject( parent ), m_groupItemModel( 0 ),
     m_commitCommand( 0 )
 {
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
@@ -40,14 +40,19 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
-Polka &PolkaModel::polka()
+Identity::List &PolkaModel::identityList( const QString &id )
 {
-  return m_polka;
+  if ( id.isEmpty() || !m_groupMap.contains( id ) ) return m_groups;
+  else return m_groupMap[ id ];
 }
 
-PolkaItemModel *PolkaModel::itemModel() const
+PolkaItemModel *PolkaModel::itemModel( const QString &id )
 {
-  return m_itemModel;
+  if ( !m_itemModels.contains( id ) ) {
+    PolkaItemModel *itemModel = new PolkaItemModel( this, id );
+    m_itemModels.insert( id, itemModel );
+  } 
+  return m_itemModels.value( id );
 }
 
 PolkaItemModel *PolkaModel::groupItemModel() const
@@ -60,8 +65,21 @@ void PolkaModel::readData()
   bool ok;
   m_polka = Polka::parseFile( m_gitDir->filePath( "std.polka" ), &ok );
 
-  delete m_itemModel;
-  m_itemModel = new PolkaItemModel( this );
+  foreach( Identity identity, m_polka.identityList() ) {
+    if ( identity.groups().groupList().isEmpty() ) {
+      m_groups.append( identity );
+    } else {
+      foreach( Group group, identity.groups().groupList() ) {
+        if ( m_groupMap.contains( group.id() ) ) {
+          m_groupMap[ group.id() ].append( identity );
+        } else {
+          Identity::List identityList;
+          identityList.append( identity );
+          m_groupMap.insert( group.id(), identityList );
+        }
+      }
+    }
+  }
 
   delete m_groupItemModel;
   m_groupItemModel = new PolkaItemModel( this );
@@ -89,7 +107,14 @@ void PolkaModel::slotCommandExecuted( int id )
 void PolkaModel::insert( const Identity &identity )
 {
   m_polka.addIdentity( identity );
-  m_itemModel->updateData();
+  if ( identity.groups().groupList().isEmpty() ) {
+    m_groupItemModel->updateData();
+  } else {
+    foreach( Group group, identity.groups().groupList() ) {
+      m_groupMap[ group.id() ].append( identity );
+      m_itemModels[ group.id() ]->updateData();
+    }
+  }
 }
 
 QPixmap PolkaModel::picture( const Identity &identity ) const

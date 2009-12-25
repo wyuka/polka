@@ -46,8 +46,8 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_groupListView = new GroupListView;
   m_viewLayout->addWidget( m_groupListView );
-  connect( m_groupListView, SIGNAL( showGroup( const QString & ) ),
-    SLOT( showGroupView() ) );
+  connect( m_groupListView, SIGNAL( groupClicked( const Identity & ) ),
+    SLOT( showGroupView( const Identity & ) ) );
 
   m_groupView = new IdentityListView;
   m_viewLayout->addWidget( m_groupView );
@@ -95,12 +95,13 @@ void PolkaView::showGroupList()
   m_groupNameLabel->setText( QString() );
 }
 
-void PolkaView::showGroupView()
+void PolkaView::showGroupView( const Identity &group )
 {
+  m_groupView->setItemModel( m_model->itemModel( group.id() ) );
+  m_groupNameLabel->setText( "<b>" + group.name().text() + "</b>" );
+
   m_viewLayout->setCurrentWidget( m_groupView );
   m_backButton->setEnabled( true );
-  // FIXME: Set real name of group
-  m_groupNameLabel->setText( "<b>Friends</b>" );
 }
 
 #include "polkaview.moc"

@@ -189,8 +189,6 @@ class Relation
     typedef QList<Relation> List;
 
   public:
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
     void setRelationType( const QString &v );
     QString relationType() const;
     void setTarget( const QString &v );
@@ -202,7 +200,6 @@ class Relation
     QString writeElement();
 
   private:
-    QString mUpdatedAt;
     QString mRelationType;
     QString mTarget;
 };
@@ -343,6 +340,40 @@ class Emails
     Email::List mEmailList;
 };
 
+class Group
+{
+  public:
+    typedef QList<Group> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Group parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+};
+
+class Groups
+{
+  public:
+    void addGroup( const Group &v );
+    void setGroupList( const Group::List &v );
+    Group::List groupList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Groups parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Group::List mGroupList;
+};
+
 class Name
 {
   public:
@@ -369,6 +400,8 @@ class Identity
   public:
     void setId( const QString &v );
     QString id() const;
+    void setGroups( const Groups &v );
+    Groups groups() const;
     void setName( const Name &v );
     Name name() const;
     void setBirthname( const QString &v );
@@ -399,6 +432,7 @@ class Identity
 
   private:
     QString mId;
+    Groups mGroups;
     Name mName;
     QString mBirthname;
     QDate mBirthday;

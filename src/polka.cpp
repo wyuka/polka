@@ -505,16 +505,6 @@ QString Notes::writeElement()
 }
 
 
-void Relation::setUpdatedAt( const QString &v )
-{
-  mUpdatedAt = v;
-}
-
-QString Relation::updatedAt() const
-{
-  return mUpdatedAt;
-}
-
 void Relation::setRelationType( const QString &v )
 {
   mRelationType = v;
@@ -545,7 +535,6 @@ Relation Relation::parseElement( const QDomElement &element, bool *ok )
 
   Relation result = Relation();
 
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
   result.setRelationType( element.attribute( "relation_type" ) );
   result.setTarget( element.attribute( "target" ) );
 
@@ -556,7 +545,7 @@ Relation Relation::parseElement( const QDomElement &element, bool *ok )
 QString Relation::writeElement()
 {
   QString xml;
-  xml += indent() + "<relation updated_at=\"" + updatedAt() + "\" relation_type=\"" + relationType() + "\" target=\"" + target() + "\"/>\n";
+  xml += indent() + "<relation relation_type=\"" + relationType() + "\" target=\"" + target() + "\"/>\n";
   return xml;
 }
 
@@ -983,6 +972,107 @@ QString Emails::writeElement()
 }
 
 
+void Group::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString Group::id() const
+{
+  return mId;
+}
+
+Group Group::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "group" ) {
+    qCritical() << "Expected 'group', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Group();
+  }
+
+  Group result = Group();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Group::writeElement()
+{
+  QString xml;
+  xml += indent() + "<group>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  indent( -2 );
+  xml += indent() + "</group>\n";
+  return xml;
+}
+
+
+void Groups::addGroup( const Group &v )
+{
+  mGroupList.append( v );
+}
+
+void Groups::setGroupList( const Group::List &v )
+{
+  mGroupList = v;
+}
+
+Group::List Groups::groupList() const
+{
+  return mGroupList;
+}
+
+Groups Groups::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "groups" ) {
+    qCritical() << "Expected 'groups', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Groups();
+  }
+
+  Groups result = Groups();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "group" ) {
+      bool ok;
+      Group o = Group::parseElement( e, &ok );
+      if ( ok ) result.addGroup( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Groups::writeElement()
+{
+  QString xml;
+  xml += indent() + "<groups>\n";
+  indent( 2 );
+  foreach( Group e, groupList() ) {
+    xml += e.writeElement();
+  }
+  indent( -2 );
+  xml += indent() + "</groups>\n";
+  return xml;
+}
+
+
 void Name::setUpdatedAt( const QString &v )
 {
   mUpdatedAt = v;
@@ -1038,6 +1128,16 @@ void Identity::setId( const QString &v )
 QString Identity::id() const
 {
   return mId;
+}
+
+void Identity::setGroups( const Groups &v )
+{
+  mGroups = v;
+}
+
+Groups Identity::groups() const
+{
+  return mGroups;
 }
 
 void Identity::setName( const Name &v )
@@ -1166,6 +1266,11 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
     if ( e.tagName() == "id" ) {
       result.setId( e.text() );
     }
+    else if ( e.tagName() == "groups" ) {
+      bool ok;
+      Groups o = Groups::parseElement( e, &ok );
+      if ( ok ) result.setGroups( o );
+    }
     else if ( e.tagName() == "name" ) {
       bool ok;
       Name o = Name::parseElement( e, &ok );
@@ -1232,6 +1337,7 @@ QString Identity::writeElement()
   if ( !id().isEmpty() ) {
     xml += indent() + "<id>" + id() + "</id>\n";
   }
+  xml += groups().writeElement();
   xml += name().writeElement();
   if ( !birthname().isEmpty() ) {
     xml += indent() + "<birthname>" + birthname() + "</birthname>\n";
