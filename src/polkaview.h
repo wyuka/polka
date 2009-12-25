@@ -12,6 +12,7 @@ class QPainter;
 class KUrl;
 class PolkaModel;
 class IdentityListView;
+class GroupListView;
 
 /**
  * This is the main view class for Polka.  Most of the non-menu,
@@ -35,6 +36,8 @@ class PolkaView : public QWidget
 
   public slots:
     void newPerson();
+    void showGroupList();
+    void showGroupView();
 
   signals:
     void dataWritten();
@@ -52,6 +55,10 @@ class PolkaView : public QWidget
   private:
     PolkaModel *m_model;
 
+    QPushButton *m_backButton;
+    QLabel *m_groupNameLabel;
+    QStackedLayout *m_viewLayout;
+    GroupListView *m_groupListView;
     IdentityListView *m_groupView;
 };
 

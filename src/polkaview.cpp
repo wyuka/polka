@@ -8,6 +8,7 @@
 
 #include "polkamodel.h"
 #include "identitylistview.h"
+#include "grouplistview.h"
 
 #include <klocale.h>
 #include <kinputdialog.h>
@@ -24,14 +25,34 @@ PolkaView::PolkaView(QWidget *parent)
   QBoxLayout *buttonLayout = new QHBoxLayout;
   topLayout->addLayout( buttonLayout );
 
+  // FIXME: Use proper icon
+  m_backButton = new QPushButton( "<" );
+  buttonLayout->addWidget( m_backButton );
+  connect( m_backButton, SIGNAL( clicked() ), SLOT( showGroupList() ) );
+
+  buttonLayout->addStretch( 1 );
+
+  m_groupNameLabel = new QLabel;
+  buttonLayout->addWidget( m_groupNameLabel );
+
   buttonLayout->addStretch( 1 );
 
   QPushButton *button = new QPushButton( i18n("New Person") );
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( newPerson() ) );
 
+  m_viewLayout = new QStackedLayout;
+  topLayout->addLayout( m_viewLayout );
+
+  m_groupListView = new GroupListView;
+  m_viewLayout->addWidget( m_groupListView );
+  connect( m_groupListView, SIGNAL( showGroup( const QString & ) ),
+    SLOT( showGroupView() ) );
+
   m_groupView = new IdentityListView;
-  topLayout->addWidget( m_groupView );
+  m_viewLayout->addWidget( m_groupView );
+
+  showGroupList();
 
   readData();
 }
@@ -64,6 +85,21 @@ void PolkaView::newPerson()
     
     m_model->insert( identity );
   }
+}
+
+void PolkaView::showGroupList()
+{
+  m_viewLayout->setCurrentWidget( m_groupListView );
+  m_backButton->setEnabled( false );
+  m_groupNameLabel->setText( QString() );
+}
+
+void PolkaView::showGroupView()
+{
+  m_viewLayout->setCurrentWidget( m_groupView );
+  m_backButton->setEnabled( true );
+  // FIXME: Set real name of group
+  m_groupNameLabel->setText( "<b>Friends</b>" );
 }
 
 #include "polkaview.moc"

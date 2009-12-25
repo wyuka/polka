@@ -46,6 +46,7 @@
 * rest api libraries (attica, etc.)
 * web kit for showing details
 * Qt declarative UIs?
+* internal optimistic locking scheme with central storage class?
 
 = framework fixes
 
