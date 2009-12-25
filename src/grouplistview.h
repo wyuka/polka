@@ -21,17 +21,26 @@
 
 #include <QtGui>
 
+class PolkaItemModel;
+
 class GroupListView : public QWidget
 {
     Q_OBJECT
   public:
     GroupListView( QWidget *parent = 0 );
 
-  protected slots:
-    void slotButtonClicked();
+    void setItemModel( PolkaItemModel * );
 
   signals:
     void showGroup( const QString &id );
+
+  protected slots:
+    void slotButtonClicked();
+
+  private:
+    PolkaItemModel *m_itemModel;
+
+    QListView *m_flatView;
 };
 
 #endif

@@ -19,6 +19,8 @@
 
 #include "grouplistview.h"
 
+#include "polkaitemmodel.h"
+
 #include <KLocale>
 
 GroupListView::GroupListView( QWidget *parent )
@@ -29,6 +31,16 @@ GroupListView::GroupListView( QWidget *parent )
   QPushButton *button = new QPushButton( i18n("Show Group") );
   topLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( slotButtonClicked() ) );
+
+  m_flatView = new QListView;
+  topLayout->addWidget( m_flatView );
+}
+
+void GroupListView::setItemModel( PolkaItemModel *itemModel )
+{
+  m_itemModel = itemModel;
+
+  m_flatView->setModel( m_itemModel );
 }
 
 void GroupListView::slotButtonClicked()

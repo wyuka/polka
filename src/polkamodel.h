@@ -39,6 +39,7 @@ class PolkaModel : public QObject
 
     Polka &polka();
 
+    PolkaItemModel *groupItemModel() const;
     PolkaItemModel *itemModel() const;
 
     void insert( const Identity & );
@@ -57,6 +58,7 @@ class PolkaModel : public QObject
     Polka m_polka;
     
     PolkaItemModel *m_itemModel;
+    PolkaItemModel *m_groupItemModel;
     
     int m_commitCommand;
 

@@ -65,6 +65,7 @@ void PolkaView::readData()
 {
   m_model->readData();
   m_groupView->setItemModel( m_model->itemModel() );
+  m_groupListView->setItemModel( m_model->groupItemModel() );
 }
 
 void PolkaView::writeData()
