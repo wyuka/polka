@@ -16,52 +16,42 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef POLKAMODEL_H
-#define POLKAMODEL_H
+#ifndef LOCALPICTURE_H
+#define LOCALPICTURE_H
 
 #include "polka.h"
-#include "polkaitemmodel.h"
-#include "localpicture.h"
+#include "gitdir.h"
 
-#include <QObject>
+#include <QPixmap>
 
-class GitDir;
-
-class PolkaModel : public QObject
+class LocalPicture : public QObject
 {
     Q_OBJECT
   public:
-    PolkaModel( QObject *parent = 0 );
-    ~PolkaModel();
+    LocalPicture( GitDir * );
 
-    void readData();
-    void writeData();
+    void setPicture( const Picture & );
 
-    Polka &polka();
+    QPixmap pixmap();
 
-    PolkaItemModel *itemModel() const;
-
-    void insert( const Identity & );
-
-    QPixmap picture( const Identity & ) const;
+  public slots:
+    void setPixmap( const QPixmap &pixmap );
 
   signals:
-    void dataWritten();
+    void pixmapChanged( const QPixmap & );
 
-  protected slots:
-    void slotCommandExecuted( int id );
+  protected:
+    QString fullFilePath() const;
+    QString localFilePath() const;
+
+    bool fileExists() const;
 
   private:
+    Picture m_picture;
     GitDir *m_gitDir;
 
-    Polka m_polka;
-    
-    PolkaItemModel *m_itemModel;
-    
-    int m_commitCommand;
-
-    QMap<QString,QPixmap> m_pictures;
-    mutable QMap<QString,LocalPicture *> m_localPictures;
+    QPixmap m_pixmap;
+    QPixmap m_defaultPixmap;
 };
 
 #endif

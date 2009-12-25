@@ -46,3 +46,7 @@
 * rest api libraries (attica, etc.)
 * web kit for showing details
 * Qt declarative UIs?
+
+= framework fixes
+
+* eliminate pictures() from identity().pictures().pictureList()

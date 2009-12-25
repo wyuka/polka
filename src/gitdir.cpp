@@ -72,6 +72,12 @@ void GitDir::addFile( const QString &fileName )
 {
   QString filePath = GitDir::filePath( fileName );
   if ( !QFile::exists( filePath ) ) {
+    QFileInfo fi( filePath );
+    QDir dir( fi.absoluteDir() );
+    if ( !dir.exists() ) {
+      dir.mkpath( dir.path() );
+    } 
+       
     QFile file( filePath );
     if ( !file.open( QIODevice::WriteOnly ) ) {
       qDebug() << "Unable to open file.";

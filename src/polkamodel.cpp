@@ -83,20 +83,21 @@ void PolkaModel::insert( const Identity &identity )
   m_itemModel->updateData();
 }
 
-bool PolkaModel::hasPicture( const Identity &identity ) const
-{
-  if ( m_pictures.contains( identity.id() ) ) return true;
-
-  if ( identity.pictures().pictureList().isEmpty() ) return false;
-
-  return false;
-}
-
 QPixmap PolkaModel::picture( const Identity &identity ) const
 {
-  if ( m_pictures.contains( identity.id() ) ) {
-    return m_pictures.value( identity.id() );
+  if ( m_localPictures.contains( identity.id() ) ) {
+    return m_localPictures.value( identity.id() )->pixmap();
   }
-  
-  return QPixmap();
+
+  LocalPicture *localPicture = new LocalPicture( m_gitDir );
+
+  Picture::List pictures = identity.pictures().pictureList();
+
+  if ( !pictures.isEmpty() ) {
+    localPicture->setPicture( pictures.first() );
+  }
+
+  m_localPictures.insert( identity.id(), localPicture );
+
+  return localPicture->pixmap();
 }
