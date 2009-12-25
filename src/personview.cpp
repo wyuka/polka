@@ -37,8 +37,13 @@ PersonView::PersonView( QWidget *parent )
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
 
+  QHBoxLayout *pictureSelectorLayout = new QHBoxLayout;
+  topLayout->addLayout( pictureSelectorLayout );
+
   m_pictureSelector = new PictureSelector;
-  topLayout->addWidget( m_pictureSelector );
+  pictureSelectorLayout->addWidget( m_pictureSelector );
+
+  pictureSelectorLayout->addStretch( 1 );
 
   QPushButton *button = new QPushButton( i18n("Close") );
   topLayout->addWidget( button );
