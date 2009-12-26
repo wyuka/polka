@@ -151,7 +151,6 @@ void PolkaModel::insert( Identity identity )
     m_groupItemModel->updateData();
   } else {
     foreach( Group group, identity.groups().groupList() ) {
-      m_groupMap[ group.id() ].append( identity );
       m_itemModels[ group.id() ]->updateData();
     }
   }

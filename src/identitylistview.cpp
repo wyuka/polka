@@ -19,13 +19,14 @@
 
 #include "identitylistview.h"
 
+#include "polkamodel.h"
 #include "polkaitemmodel.h"
 #include "personview.h"
 
 #include <KLocale>
 
-IdentityListView::IdentityListView( QWidget *parent )
-  : QWidget( parent ), m_itemModel( 0 )
+IdentityListView::IdentityListView( PolkaModel *model, QWidget *parent )
+  : QWidget( parent ), m_model( model ), m_itemModel( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -52,6 +53,19 @@ IdentityListView::IdentityListView( QWidget *parent )
   topLayout->addWidget( m_flatView );
   connect( m_flatView, SIGNAL( clicked( const QModelIndex & ) ),
     SLOT( slotItemClicked( const QModelIndex & ) ) );
+}
+
+void IdentityListView::setGroup( const Identity &group )
+{
+  m_group = group;
+
+  setItemModel( m_model->itemModel( group.id() ) );
+  setGroupName( group.displayName() );
+}
+
+Identity IdentityListView::group() const
+{
+  return m_group;
 }
 
 void IdentityListView::setItemModel( PolkaItemModel *itemModel )

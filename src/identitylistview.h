@@ -19,15 +19,21 @@
 #ifndef IDENTITYLISTVIEW_H
 #define IDENTITYLISTVIEW_H
 
+#include "polka.h"
+
 #include <QtGui>
 
 class PolkaItemModel;
+class PolkaModel;
 
 class IdentityListView : public QWidget
 {
     Q_OBJECT
   public:
-    IdentityListView( QWidget *parent = 0 );
+    IdentityListView( PolkaModel *, QWidget *parent = 0 );
+
+    void setGroup( const Identity & );
+    Identity group() const;
 
     void setItemModel( PolkaItemModel * );
 
@@ -41,7 +47,10 @@ class IdentityListView : public QWidget
     void slotItemClicked( const QModelIndex &index );
 
   private:
+    PolkaModel *m_model;
     PolkaItemModel *m_itemModel;
+
+    Identity m_group;
 
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  
