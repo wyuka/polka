@@ -21,6 +21,8 @@
 
 #include "gitdir.h"
 
+#include <KRandom>
+
 #include <QDir>
 #include <QDebug>
 
@@ -82,6 +84,10 @@ bool PolkaModel::readData()
           m_groupMap.insert( group.id(), identityList );
         }
       }
+    }
+    
+    if ( identity.id().isEmpty() ) {
+      identity.setId( KRandom::randomString( 10 ) );
     }
   }
 

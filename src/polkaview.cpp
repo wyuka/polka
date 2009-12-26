@@ -56,6 +56,8 @@ PolkaView::PolkaView(QWidget *parent)
   showGroupList();
 
   readData();
+
+  KMessageBox::information( this, "FIXME: creation of ids on load" );
 }
 
 PolkaView::~PolkaView()
