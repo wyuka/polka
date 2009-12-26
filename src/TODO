@@ -1,8 +1,8 @@
 * eliminate pictures() from identity().pictures().pictureList()
-* make new button context aware (group, person)
-* make sure ids are generated when creating new identity
 * create missing ids, when reading file?
 * graphical group and identity view
 * merge group list view and identity list view ?
 * remember selected view
 * sync git with remote repo
+* create group
+* create person

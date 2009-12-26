@@ -27,6 +27,15 @@ GroupListView::GroupListView( QWidget *parent )
   : QWidget( parent ), m_itemModel( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
+
+  QBoxLayout *buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+  
+  buttonLayout->addStretch( 1 );
+
+  QPushButton *button = new QPushButton( i18n("New Group") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SIGNAL( newGroup() ) );
   
   m_flatView = new QListView;
   topLayout->addWidget( m_flatView );

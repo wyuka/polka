@@ -57,8 +57,6 @@ class PolkaView : public QWidget
   private:
     PolkaModel *m_model;
 
-    QPushButton *m_backButton;
-    QLabel *m_groupNameLabel;
     QStackedLayout *m_viewLayout;
     GroupListView *m_groupListView;
     IdentityListView *m_groupView;

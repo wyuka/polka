@@ -31,12 +31,20 @@ class IdentityListView : public QWidget
 
     void setItemModel( PolkaItemModel * );
 
+    void setGroupName( const QString & );
+
+  signals:
+    void goBack();
+    void newPerson();
+
   protected slots:
     void slotItemClicked( const QModelIndex &index );
 
   private:
     PolkaItemModel *m_itemModel;
-  
+
+    QPushButton *m_backButton;
+    QLabel *m_groupNameLabel;  
     QListView *m_flatView;
 };
 

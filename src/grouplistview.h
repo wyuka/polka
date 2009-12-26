@@ -35,6 +35,7 @@ class GroupListView : public QWidget
 
   signals:
     void groupClicked( const Identity & );
+    void newGroup();
 
   protected slots:
     void slotItemClicked( const QModelIndex &index );

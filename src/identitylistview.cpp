@@ -22,10 +22,31 @@
 #include "polkaitemmodel.h"
 #include "personview.h"
 
+#include <KLocale>
+
 IdentityListView::IdentityListView( QWidget *parent )
   : QWidget( parent ), m_itemModel( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
+
+  QBoxLayout *buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+
+  // FIXME: Use proper icon
+  m_backButton = new QPushButton( "<" );
+  buttonLayout->addWidget( m_backButton );
+  connect( m_backButton, SIGNAL( clicked() ), SIGNAL( goBack() ) );
+
+  buttonLayout->addStretch( 1 );
+
+  m_groupNameLabel = new QLabel;
+  buttonLayout->addWidget( m_groupNameLabel );
+
+  buttonLayout->addStretch( 1 );
+
+  QPushButton *button = new QPushButton( i18n("New Person") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
   
   m_flatView = new QListView;
   topLayout->addWidget( m_flatView );
@@ -38,6 +59,11 @@ void IdentityListView::setItemModel( PolkaItemModel *itemModel )
   m_itemModel = itemModel;
 
   m_flatView->setModel( m_itemModel );
+}
+
+void IdentityListView::setGroupName( const QString &name )
+{
+  m_groupNameLabel->setText( "<b>" + name + "</b>" );
 }
 
 void IdentityListView::slotItemClicked( const QModelIndex &index )

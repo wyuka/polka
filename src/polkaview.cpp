@@ -19,28 +19,8 @@ PolkaView::PolkaView(QWidget *parent)
 {
   m_model = new PolkaModel( this );
   connect( m_model, SIGNAL( dataWritten() ), SIGNAL( dataWritten() ) );
-
   
   QBoxLayout *topLayout = new QVBoxLayout( this );
-
-  QBoxLayout *buttonLayout = new QHBoxLayout;
-  topLayout->addLayout( buttonLayout );
-
-  // FIXME: Use proper icon
-  m_backButton = new QPushButton( "<" );
-  buttonLayout->addWidget( m_backButton );
-  connect( m_backButton, SIGNAL( clicked() ), SLOT( showGroupList() ) );
-
-  buttonLayout->addStretch( 1 );
-
-  m_groupNameLabel = new QLabel;
-  buttonLayout->addWidget( m_groupNameLabel );
-
-  buttonLayout->addStretch( 1 );
-
-  QPushButton *button = new QPushButton( i18n("New Person") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( newPerson() ) );
 
   m_viewLayout = new QStackedLayout;
   topLayout->addLayout( m_viewLayout );
@@ -52,6 +32,8 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_groupView = new IdentityListView;
   m_viewLayout->addWidget( m_groupView );
+  connect( m_groupView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
+  connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
 
   showGroupList();
 
@@ -94,17 +76,14 @@ void PolkaView::newPerson()
 void PolkaView::showGroupList()
 {
   m_viewLayout->setCurrentWidget( m_groupListView );
-  m_backButton->setEnabled( false );
-  m_groupNameLabel->setText( QString() );
 }
 
 void PolkaView::showGroupView( const Identity &group )
 {
   m_groupView->setItemModel( m_model->itemModel( group.id() ) );
-  m_groupNameLabel->setText( "<b>" + group.name().text() + "</b>" );
+  m_groupView->setGroupName( group.displayName() );
 
   m_viewLayout->setCurrentWidget( m_groupView );
-  m_backButton->setEnabled( true );
 }
 
 #include "polkaview.moc"
