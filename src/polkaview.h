@@ -38,6 +38,8 @@ class PolkaView : public QWidget
 
   public slots:
     void newPerson();
+    void newGroup();
+
     void showGroupList();
     void showGroupView( const Identity & );
 

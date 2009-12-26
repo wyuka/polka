@@ -137,9 +137,16 @@ void PolkaModel::slotCommandExecuted( int id )
   }
 }
 
-void PolkaModel::insert( const Identity &identity )
+void PolkaModel::insert( Identity identity )
 {
-  m_polka.addIdentity( identity );
+  if ( identity.id().isEmpty() ) {
+    identity.setId( KRandom::randomString( 10 ) );
+  }
+
+  m_identities.append( identity );
+
+  setupGroups();
+
   if ( identity.groups().groupList().isEmpty() ) {
     m_groupItemModel->updateData();
   } else {

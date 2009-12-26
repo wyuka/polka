@@ -38,7 +38,7 @@ class PolkaModel : public QObject
     void writeData();
 
     // FIXME: create create,read,update,delete identity functions
-    void insert( const Identity & ); // create
+    void insert( Identity ); // create
 
     // FIXME: consisten API for querying lists of identities
     Identity::List &identityList( const QString &id );

@@ -29,6 +29,7 @@ PolkaView::PolkaView(QWidget *parent)
   m_viewLayout->addWidget( m_groupListView );
   connect( m_groupListView, SIGNAL( groupClicked( const Identity & ) ),
     SLOT( showGroupView( const Identity & ) ) );
+  connect( m_groupListView, SIGNAL( newGroup() ), SLOT( newGroup() ) );
 
   m_groupView = new IdentityListView;
   m_viewLayout->addWidget( m_groupView );
@@ -58,6 +59,19 @@ void PolkaView::readData()
 void PolkaView::writeData()
 {
   m_model->writeData();
+}
+
+void PolkaView::newGroup()
+{
+  bool ok;
+  QString name = KInputDialog::getText( i18n("New Group"),
+    i18n("Enter name of group to add"), QString(), &ok );
+  if ( ok ) {
+    Identity identity;
+    identity.setDisplayName( name );
+    
+    m_model->insert( identity );
+  }
 }
 
 void PolkaView::newPerson()
