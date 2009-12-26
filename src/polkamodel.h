@@ -39,7 +39,7 @@ class PolkaModel : public QObject
 
     Identity::List &identityList( const QString &id );
 
-    PolkaItemModel *groupItemModel() const;
+    PolkaItemModel *groupItemModel();
     PolkaItemModel *itemModel( const QString &id = QString() );
 
     void insert( const Identity & );
@@ -52,11 +52,16 @@ class PolkaModel : public QObject
   protected slots:
     void slotCommandExecuted( int id );
 
+  protected:
+    void setupGroups();
+
   private:
     GitDir *m_gitDir;
 
     Polka m_polka;
     bool m_dataIsValid;
+
+    Identity::List m_identities;
 
     Identity::List m_groups;
     QMap<QString,Identity::List> m_groupMap;

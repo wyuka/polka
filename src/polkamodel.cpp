@@ -57,8 +57,11 @@ PolkaItemModel *PolkaModel::itemModel( const QString &id )
   return m_itemModels.value( id );
 }
 
-PolkaItemModel *PolkaModel::groupItemModel() const
+PolkaItemModel *PolkaModel::groupItemModel()
 {
+  if ( !m_groupItemModel ) {
+    m_groupItemModel = new PolkaItemModel( this );
+  }
   return m_groupItemModel;
 }
 
@@ -71,7 +74,27 @@ bool PolkaModel::readData()
     return false;
   }
 
+  m_identities.clear();
+
   foreach( Identity identity, m_polka.identityList() ) {
+    if ( identity.id().isEmpty() ) {
+      identity.setId( KRandom::randomString( 10 ) );
+    }
+
+    m_identities.append( identity );
+  }
+
+  setupGroups();
+
+  return true;
+}
+
+void PolkaModel::setupGroups()
+{
+  m_groups.clear();
+  m_groupMap.clear();
+
+  foreach( Identity identity, m_identities ) {
     if ( identity.groups().groupList().isEmpty() ) {
       m_groups.append( identity );
     } else {
@@ -85,16 +108,7 @@ bool PolkaModel::readData()
         }
       }
     }
-    
-    if ( identity.id().isEmpty() ) {
-      identity.setId( KRandom::randomString( 10 ) );
-    }
   }
-
-  delete m_groupItemModel;
-  m_groupItemModel = new PolkaItemModel( this );
-
-  return true;
 }
 
 void PolkaModel::writeData()
@@ -108,6 +122,8 @@ void PolkaModel::writeData()
     qDebug() << "ERROR" << "Commit command still running";
     return;
   }
+
+  m_polka.setIdentityList( m_identities );
   
   m_polka.writeFile( m_gitDir->filePath( "std.polka" ) );
   m_commitCommand = m_gitDir->commitData();
