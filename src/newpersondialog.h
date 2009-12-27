@@ -30,6 +30,7 @@ class NewPersonDialog : public KDialog
 {
   public:
     NewPersonDialog( PolkaModel *, QWidget *parent = 0 );
+    ~NewPersonDialog();
 
     Identity identity();
 

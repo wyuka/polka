@@ -19,6 +19,8 @@
 
 #include "newpersondialog.h"
 
+#include <KConfig>
+
 NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   : KDialog( parent ), m_model( model )
 {
@@ -41,6 +43,14 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   m_matchList->setModel( m_model->allItemModel() );
 
   setMainWidget( topWidget );
+
+  restoreDialogSize( KGlobal::config()->group("newpersondialog") );
+}
+
+NewPersonDialog::~NewPersonDialog()
+{
+  KConfigGroup cg( KGlobal::config(), "newpersondialog" );
+  saveDialogSize( cg );
 }
 
 Identity NewPersonDialog::identity()
