@@ -27,7 +27,7 @@
 #include <QDebug>
 
 PolkaModel::PolkaModel( QObject *parent )
-  : QObject( parent ), m_groupItemModel( 0 ),
+  : QObject( parent ), m_allItemModel( 0 ), m_groupItemModel( 0 ),
     m_commitCommand( 0 )
 {
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
@@ -42,10 +42,24 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
+Identity::List &PolkaModel::identities()
+{
+  return m_identities;
+}
+
 Identity::List &PolkaModel::identityList( const QString &id )
 {
   if ( id.isEmpty() || !m_groupMap.contains( id ) ) return m_groups;
   else return m_groupMap[ id ];
+}
+
+PolkaItemModel *PolkaModel::allItemModel()
+{
+  if ( !m_allItemModel ) {
+    m_allItemModel = new PolkaItemModel( this );
+    m_allItemModel->setAll( true );
+  }
+  return m_allItemModel;
 }
 
 PolkaItemModel *PolkaModel::itemModel( const QString &id )

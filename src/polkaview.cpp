@@ -77,7 +77,7 @@ void PolkaView::newGroup()
 
 void PolkaView::newPerson()
 {
-  NewPersonDialog *dialog = new NewPersonDialog( this );
+  NewPersonDialog *dialog = new NewPersonDialog( m_model, this );
   if ( dialog->exec() == QDialog::Accepted ) {
     Identity identity = dialog->identity();
 

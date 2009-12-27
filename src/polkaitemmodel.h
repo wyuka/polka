@@ -30,6 +30,8 @@ class PolkaItemModel : public QAbstractListModel
   public:
     PolkaItemModel( PolkaModel *, const QString &groupId = QString() );
 
+    void setAll( bool );
+
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation,
@@ -42,6 +44,8 @@ class PolkaItemModel : public QAbstractListModel
   private:
     PolkaModel *m_model;
     QString m_groupId;
+    
+    bool m_all;
 };
 
 #endif

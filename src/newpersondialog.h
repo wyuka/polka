@@ -20,6 +20,7 @@
 #define NEWPERSONDIALOG_H
 
 #include "polka.h"
+#include "polkamodel.h"
 
 #include <KDialog>
 
@@ -28,11 +29,13 @@
 class NewPersonDialog : public KDialog
 {
   public:
-    NewPersonDialog( QWidget *parent = 0 );
+    NewPersonDialog( PolkaModel *, QWidget *parent = 0 );
 
     Identity identity();
 
   private:
+    PolkaModel *m_model;
+  
     QLineEdit *m_nameInput;
     QListView *m_matchList;
 };

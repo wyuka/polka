@@ -19,8 +19,8 @@
 
 #include "newpersondialog.h"
 
-NewPersonDialog::NewPersonDialog( QWidget *parent )
-  : KDialog( parent )
+NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
+  : KDialog( parent ), m_model( model )
 {
   setCaption( "New Person" );
   setButtons( KDialog::Ok | KDialog::Cancel );
@@ -38,6 +38,7 @@ NewPersonDialog::NewPersonDialog( QWidget *parent )
 
   m_matchList = new QListView;
   topLayout->addWidget( m_matchList );
+  m_matchList->setModel( m_model->allItemModel() );
 
   setMainWidget( topWidget );
 }
