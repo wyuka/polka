@@ -1,4 +1,5 @@
 set(polka_SRCS
+  newpersondialog.cpp
   grouplistview.cpp
   identitylistview.cpp
   mainwindow.cpp

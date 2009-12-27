@@ -9,6 +9,7 @@
 #include "polkamodel.h"
 #include "identitylistview.h"
 #include "grouplistview.h"
+#include "newpersondialog.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -76,13 +77,9 @@ void PolkaView::newGroup()
 
 void PolkaView::newPerson()
 {
-  bool ok;
-  QString name = KInputDialog::getText( i18n("New Person"),
-    i18n("Enter name of person to add"), QString(), &ok );
-  if ( ok ) {
-    Identity identity;
-
-    identity.setDisplayName( name );
+  NewPersonDialog *dialog = new NewPersonDialog( this );
+  if ( dialog->exec() == QDialog::Accepted ) {
+    Identity identity = dialog->identity();
 
     Groups groups;
     Group group;
@@ -92,6 +89,7 @@ void PolkaView::newPerson()
     
     m_model->insert( identity );
   }
+  return;
 }
 
 void PolkaView::showGroupList()

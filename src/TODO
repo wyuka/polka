@@ -4,3 +4,5 @@
 * merge group list view and identity list view ?
 * remember selected view
 * sync git with remote repo
+* disable ok button if no name is given in newpersondialog
+* Focus name entry when opening newpersondialog
