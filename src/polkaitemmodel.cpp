@@ -21,6 +21,8 @@
 
 #include "polkamodel.h"
 
+#include <QDebug>
+
 PolkaItemModel::PolkaItemModel( PolkaModel *polkaModel, const QString &groupId )
   : QAbstractListModel( polkaModel ), m_model( polkaModel ),
     m_groupId( groupId ), m_all( false )
@@ -62,12 +64,15 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
     identity = m_model->identityList( m_groupId ).at( index.row() );
   }
 
-  if (role == Qt::DisplayRole)
+  if (role == Qt::DisplayRole) {
     return identity.displayName();
-  else if ( role == Qt::DecorationRole ) {
+  } else if ( role == Qt::UserRole ) {
+    return identity.id();
+  } else if ( role == Qt::DecorationRole ) {
     return m_model->picture( identity );
-  } else
+  } else {
     return QVariant();
+  }
 }
 
 QVariant PolkaItemModel::headerData(int section, Qt::Orientation orientation,

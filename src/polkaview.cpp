@@ -91,7 +91,7 @@ void PolkaView::newPerson()
   if ( dialog->exec() == QDialog::Accepted ) {
     Identity identity = dialog->identity();
 
-    Groups groups;
+    Groups groups = identity.groups();
     Group group;
     group.setId( m_groupView->group().id() );
     groups.addGroup( group );

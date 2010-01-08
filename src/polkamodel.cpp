@@ -42,12 +42,12 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
-Identity PolkaModel::identity( const QString &id )
+Identity &PolkaModel::identity( const QString &id )
 {
-  foreach( Identity identity, m_identities ) {
-    if ( identity.id() == id ) return identity;
+  for( int i = 0; i < m_identities.size(); ++i ) {
+    if ( m_identities[i].id() == id ) return m_identities[i]; 
   }
-  return Identity();
+  return m_invalidIdentity;
 }
 
 Identity::List &PolkaModel::identities()
@@ -166,9 +166,10 @@ void PolkaModel::insert( Identity identity )
 {
   if ( identity.id().isEmpty() ) {
     identity.setId( KRandom::randomString( 10 ) );
+    m_identities.append( identity );
+  } else {
+    this->identity( identity.id() ) = identity;
   }
-
-  m_identities.append( identity );
 
   setupGroups();
 
@@ -176,7 +177,7 @@ void PolkaModel::insert( Identity identity )
     m_groupItemModel->updateData();
   } else {
     foreach( Group group, identity.groups().groupList() ) {
-      m_itemModels[ group.id() ]->updateData();
+      itemModel( group.id() )->updateData();
     }
   }
 }

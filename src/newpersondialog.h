@@ -36,6 +36,7 @@ class NewPersonDialog : public KDialog
 
   private:
     PolkaModel *m_model;
+    QSortFilterProxyModel *m_proxyModel;
   
     QLineEdit *m_nameInput;
     QListView *m_matchList;

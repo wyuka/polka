@@ -20,6 +20,7 @@
 #include "newpersondialog.h"
 
 #include <KConfig>
+#include <KMessageBox>
 
 NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   : KDialog( parent ), m_model( model )
@@ -40,19 +41,23 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
 
   m_matchList = new QListView;
   topLayout->addWidget( m_matchList );
+  connect( m_matchList, SIGNAL( clicked( const QModelIndex & ) ),
+    SLOT( accept() ) );
 
-  QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
-  proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+  m_proxyModel = new QSortFilterProxyModel(this);
+  m_proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
 
-  proxyModel->setSourceModel( m_model->allItemModel() );
-  m_matchList->setModel( proxyModel );
+  m_proxyModel->setSourceModel( m_model->allItemModel() );
+  m_matchList->setModel( m_proxyModel );
 
   connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
-    proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
+    m_proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
 
   setMainWidget( topWidget );
 
   restoreDialogSize( KGlobal::config()->group("newpersondialog") );
+
+  m_nameInput->setFocus();
 }
 
 NewPersonDialog::~NewPersonDialog()
@@ -63,9 +68,18 @@ NewPersonDialog::~NewPersonDialog()
 
 Identity NewPersonDialog::identity()
 {
-  Identity identity;
-  
-  identity.setDisplayName( m_nameInput->text() );
+  QModelIndexList selectedIndexes =
+    m_matchList->selectionModel()->selectedIndexes();
 
-  return identity;
+  if ( selectedIndexes.isEmpty() ) {
+    Identity identity;  
+    identity.setDisplayName( m_nameInput->text() );
+    return identity;
+  } else {
+    if ( selectedIndexes.count() > 1 ) {
+      KMessageBox::information( 0, "More than one person selected" );
+    }
+    return m_model->identity( m_proxyModel->data( selectedIndexes.first(),
+      Qt::UserRole ).toString() );
+  }
 }

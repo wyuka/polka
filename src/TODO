@@ -1,7 +1,14 @@
-* eliminate pictures() from identity().pictures().pictureList()
+= Polka
+
 * create missing ids, when reading file?
 * graphical group and identity view
 * merge group list view and identity list view ?
 * sync git with remote repo
 * disable ok button if no name is given in newpersondialog
 * Focus name entry when opening newpersondialog
+
+= kxml_compiler
+
+* eliminate pictures() from identity().pictures().pictureList()
+* add a way to add custom functions to classes
+  (e.g. bool isEmpty() { m_id.isEmpty(); })
