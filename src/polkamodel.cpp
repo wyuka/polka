@@ -42,6 +42,14 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
+Identity PolkaModel::identity( const QString &id )
+{
+  foreach( Identity identity, m_identities ) {
+    if ( identity.id() == id ) return identity;
+  }
+  return Identity();
+}
+
 Identity::List &PolkaModel::identities()
 {
   return m_identities;

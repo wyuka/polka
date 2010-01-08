@@ -10,6 +10,7 @@
 #include "identitylistview.h"
 #include "grouplistview.h"
 #include "newpersondialog.h"
+#include "settings.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -48,6 +49,8 @@ PolkaView::~PolkaView()
 
 void PolkaView::readData()
 {
+  Settings::self()->readConfig();
+
   if ( !m_model->readData() ) {
     KMessageBox::error( this, i18n("Error reading data file") );
     return;
@@ -55,6 +58,13 @@ void PolkaView::readData()
 
   m_groupView->setItemModel( m_model->itemModel() );
   m_groupListView->setItemModel( m_model->groupItemModel() );
+
+  if ( Settings::shownGroup().isEmpty() ) {
+    showGroupList();
+  } else {
+    Identity group = m_model->identity( Settings::shownGroup() );
+    showGroupView( group );
+  }
 }
 
 void PolkaView::writeData()
@@ -95,6 +105,8 @@ void PolkaView::newPerson()
 void PolkaView::showGroupList()
 {
   m_viewLayout->setCurrentWidget( m_groupListView );
+
+  Settings::setShownGroup( QString() );
 }
 
 void PolkaView::showGroupView( const Identity &group )
@@ -102,6 +114,8 @@ void PolkaView::showGroupView( const Identity &group )
   m_groupView->setGroup( group );
 
   m_viewLayout->setCurrentWidget( m_groupView );
+
+  Settings::setShownGroup( group.id() );
 }
 
 #include "polkaview.moc"

@@ -18,4 +18,9 @@
 	    <default>2</default>
     </entry>
   </group>
+  <group name="State">
+    <entry name="ShownGroup" type="String">
+      <label>Id of currently shown group</label>
+    </entry>
+  </group>
 </kcfg>
