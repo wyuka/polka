@@ -23,12 +23,13 @@
 #include "imageloader.h"
 #include "pictureselector.h"
 #include "regiongrabber.h"
+#include "polkamodel.h"
 
 #include <klocale.h>
 #include <KUrl>
 
-PersonView::PersonView( QWidget *parent )
-  : QWidget( parent )
+PersonView::PersonView( PolkaModel *model, QWidget *parent )
+  : QWidget( parent ), m_model( model )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -57,6 +58,8 @@ PersonView::PersonView( QWidget *parent )
 
 void PersonView::showIdentity( const Identity &identity )
 {
+  m_identity = identity;
+
   Picture::List pictures = identity.pictures().pictureList();
 
   if ( !pictures.isEmpty() ) {
@@ -102,4 +105,6 @@ void PersonView::slotRegionGrabbed( const QPixmap &pixmap )
   m_regionGrabber = 0;
 
   setImage( pixmap );
+
+  m_model->importPicture( pixmap, m_identity );
 }

@@ -26,12 +26,13 @@
 
 class PictureSelector;
 class RegionGrabber;
+class PolkaModel;
 
 class PersonView : public QWidget
 {
     Q_OBJECT
   public:
-    PersonView( QWidget *parent = 0 );
+    PersonView( PolkaModel *, QWidget *parent = 0 );
 
     void showIdentity( const Identity & );
   
@@ -42,6 +43,9 @@ class PersonView : public QWidget
     void slotRegionGrabbed( const QPixmap & );
   
   private:
+    PolkaModel *m_model;
+    Identity m_identity;
+  
     QLabel *m_titleLabel;
     QWebView *m_webView;
     PictureSelector *m_pictureSelector;

@@ -200,3 +200,23 @@ QPixmap PolkaModel::picture( const Identity &identity ) const
 
   return localPicture->pixmap();
 }
+
+void PolkaModel::importPicture( const QPixmap &pixmap,
+  const Identity &target )
+{
+  Identity &identity = this->identity( target.id() );
+  
+  Pictures pictures = identity.pictures();
+  Picture::List pictureList = pictures.pictureList();
+  
+  Picture picture;
+  picture.setId( KRandom::randomString( 10 ) );
+
+  LocalPicture *localPicture = new LocalPicture( m_gitDir );
+  localPicture->setPicture( picture );
+  localPicture->setPixmap( pixmap );  
+  
+  pictureList.prepend( picture );
+  pictures.setPictureList( pictureList );
+  identity.setPictures( pictures );
+}

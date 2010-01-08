@@ -52,6 +52,8 @@ class PolkaModel : public QObject
 
     QPixmap picture( const Identity & ) const;
 
+    void importPicture( const QPixmap &, const Identity & );
+
   signals:
     void dataWritten();
 

@@ -84,7 +84,7 @@ void IdentityListView::slotItemClicked( const QModelIndex &index )
 {
   Identity identity = m_itemModel->identity( index );
 
-  PersonView *view = new PersonView;
+  PersonView *view = new PersonView( m_model );
   view->showIdentity( identity );
   view->show();
 }
