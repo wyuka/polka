@@ -5,6 +5,7 @@
 * merge group list view and identity list view ?
 * sync git with remote repo
 * disable ok button if no name is given in newpersondialog
+* Group specific display names
 
 = kxml_compiler
 
