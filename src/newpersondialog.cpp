@@ -40,7 +40,15 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
 
   m_matchList = new QListView;
   topLayout->addWidget( m_matchList );
-  m_matchList->setModel( m_model->allItemModel() );
+
+  QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+  proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+
+  proxyModel->setSourceModel( m_model->allItemModel() );
+  m_matchList->setModel( proxyModel );
+
+  connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
+    proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
 
   setMainWidget( topWidget );
 
