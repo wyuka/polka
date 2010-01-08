@@ -6,6 +6,7 @@
 * sync git with remote repo
 * disable ok button if no name is given in newpersondialog
 * Group specific display names
+* Drop images e.g. from web pages to add new pictures to person
 
 = kxml_compiler
 
