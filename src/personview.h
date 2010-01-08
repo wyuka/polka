@@ -25,6 +25,7 @@
 #include <QWebView>
 
 class PictureSelector;
+class RegionGrabber;
 
 class PersonView : public QWidget
 {
@@ -36,11 +37,16 @@ class PersonView : public QWidget
   
   protected slots:
     void setImage( const QPixmap & );
+
+    void grabPicture();
+    void slotRegionGrabbed( const QPixmap & );
   
   private:
     QLabel *m_titleLabel;
     QWebView *m_webView;
     PictureSelector *m_pictureSelector;
+
+    RegionGrabber *m_regionGrabber;
 };
 
 #endif

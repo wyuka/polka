@@ -22,6 +22,7 @@
 #include "htmlcreator.h"
 #include "imageloader.h"
 #include "pictureselector.h"
+#include "regiongrabber.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -45,7 +46,11 @@ PersonView::PersonView( QWidget *parent )
 
   pictureSelectorLayout->addStretch( 1 );
 
-  QPushButton *button = new QPushButton( i18n("Close") );
+  QPushButton *button = new QPushButton( i18n("Grab Picture") );
+  pictureSelectorLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
+
+  button = new QPushButton( i18n("Close") );
   topLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
 }
@@ -82,4 +87,19 @@ void PersonView::showIdentity( const Identity &identity )
 void PersonView::setImage( const QPixmap &pixmap )
 {
   m_titleLabel->setPixmap( pixmap );
+}
+
+void PersonView::grabPicture()
+{
+  m_regionGrabber = new RegionGrabber();
+  connect( m_regionGrabber, SIGNAL( regionGrabbed( const QPixmap & ) ),
+    SLOT( slotRegionGrabbed( const QPixmap & ) ) );
+}
+
+void PersonView::slotRegionGrabbed( const QPixmap &pixmap )
+{
+  delete m_regionGrabber;
+  m_regionGrabber = 0;
+
+  setImage( pixmap );
 }
