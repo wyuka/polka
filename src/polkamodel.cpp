@@ -49,8 +49,11 @@ Identity::List &PolkaModel::identities()
 
 Identity::List &PolkaModel::identityList( const QString &id )
 {
-  if ( id.isEmpty() || !m_groupMap.contains( id ) ) return m_groups;
-  else return m_groupMap[ id ];
+  if ( id.isEmpty() ) return m_groups;
+  if ( !m_groupMap.contains( id ) ) {
+    m_groupMap.insert( id, Identity::List() );
+  }
+  return m_groupMap[ id ];
 }
 
 PolkaItemModel *PolkaModel::allItemModel()
