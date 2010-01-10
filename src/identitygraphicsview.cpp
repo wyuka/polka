@@ -22,6 +22,7 @@
 #include "polkamodel.h"
 #include "polkaitemmodel.h"
 #include "personview.h"
+#include "identityitem.h"
 
 #include <KLocale>
 
@@ -72,7 +73,6 @@ void IdentityGraphicsView::createItems()
   Identity::List identities = m_model->identityList( m_group.id() );
 
   int columns = sqrt( identities.size() );
-  int itemSize = 110;
   int spacing = 150;
 
   int x = 0;
@@ -84,15 +84,10 @@ void IdentityGraphicsView::createItems()
     int posX = x * spacing + ( y % 2 ) * spacing / 2;
     int posY = y * spacing;
 
-    item = m_scene->addEllipse( -itemSize/2, -itemSize/2,
-      itemSize, itemSize );
+    item = new IdentityItem( m_model, identity );
     item->setPos( posX, posY );
-  
-    QPixmap pixmap = m_model->picture( identity );
-  
-    item = m_scene->addPixmap( m_model->picture( identity ) );
-    item->setPos( posX - pixmap.width() / 2 , posY - pixmap.height() / 2 );
-    
+    m_scene->addItem( item );
+
     x++;
     
     if ( x >= ( columns + ( y + 1 ) % 2 ) ) {
