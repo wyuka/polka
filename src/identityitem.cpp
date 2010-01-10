@@ -37,4 +37,35 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
 
   QGraphicsItem *item = new QGraphicsPixmapItem( pixmap, this );  
   item->setPos( -pixmap.width() / 2, -pixmap.height() / 2 );
+
+  QGraphicsTextItem *textItem = new QGraphicsTextItem( identity.displayName() );
+
+  int textWidth = textItem->boundingRect().width();
+  int textHeight = textItem->boundingRect().height();
+
+  m_nameItem = new QGraphicsRectItem( this );
+  m_nameItem->setRect( 0, 0, textWidth, textHeight );
+  m_nameItem->setBrush( QColor( 200,200,200 ) );
+  m_nameItem->setZValue( 10 );
+
+  textItem->setParentItem( m_nameItem );
+
+  m_nameItem->setPos( - textWidth / 2, 30 );
+  m_nameItem->hide();
+
+  setAcceptHoverEvents( true );
+}
+
+void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
+{
+  Q_UNUSED( event );
+
+  m_nameItem->show();
+}
+
+void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
+{
+  Q_UNUSED( event );
+
+  m_nameItem->hide();
 }
