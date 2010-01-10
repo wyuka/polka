@@ -54,6 +54,8 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   m_nameItem->hide();
 
   setAcceptHoverEvents( true );
+
+  setFlags( ItemIsMovable );
 }
 
 void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
