@@ -29,6 +29,10 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
   setBrush( QColor( "red" ) );
 
+  QPen pen;
+  pen.setBrush( Qt::NoBrush );
+  setPen( pen );
+
   QPixmap pixmap = m_model->picture( identity );
 
   QGraphicsItem *item = new QGraphicsPixmapItem( pixmap, this );  
