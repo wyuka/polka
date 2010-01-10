@@ -180,6 +180,8 @@ void PolkaModel::insert( Identity identity )
       itemModel( group.id() )->updateData();
     }
   }
+
+  emit identityInserted( identity );
 }
 
 QPixmap PolkaModel::picture( const Identity &identity ) const

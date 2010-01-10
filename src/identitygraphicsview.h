@@ -41,7 +41,7 @@ class IdentityGraphicsView : public QWidget
     void goBack();
     void newPerson();
 
-  protected:
+  protected slots:
     void createItems();
 
   private:

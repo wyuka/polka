@@ -57,6 +57,8 @@ class PolkaModel : public QObject
   signals:
     void dataWritten();
 
+    void identityInserted( const Identity & );
+
   protected slots:
     void slotCommandExecuted( int id );
 

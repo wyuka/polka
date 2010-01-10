@@ -55,6 +55,9 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   QGraphicsView *view = new QGraphicsView( m_scene );
   topLayout->addWidget( view );
   view->show();
+
+  connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
+    SLOT( createItems() ) );
 }
 
 void IdentityGraphicsView::setGroup( const Identity &group )

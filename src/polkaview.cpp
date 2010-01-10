@@ -124,7 +124,7 @@ void PolkaView::newPerson()
 
     Groups groups = identity.groups();
     Group group;
-    group.setId( m_groupView->group().id() );
+    group.setId( m_group.id() );
     groups.addGroup( group );
     identity.setGroups( groups );
     

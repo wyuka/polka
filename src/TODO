@@ -1,6 +1,5 @@
 = Polka
 
-* Make add person work in fancy view
 * Make click on person in fancy view open detailed view
 * create missing ids, when reading file?
 * graphical group view
