@@ -41,6 +41,9 @@ class IdentityGraphicsView : public QWidget
     void goBack();
     void newPerson();
 
+  protected:
+    void createItems();
+
   private:
     PolkaModel *m_model;
 

@@ -50,7 +50,6 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
 
   m_scene = new QGraphicsScene;
-  m_scene->addText("Hello, Polka!");
 
   QGraphicsView *view = new QGraphicsView( m_scene );
   topLayout->addWidget( view );
@@ -62,6 +61,43 @@ void IdentityGraphicsView::setGroup( const Identity &group )
   m_group = group;
 
   setGroupName( group.displayName() );
+
+  createItems();
+}
+
+void IdentityGraphicsView::createItems()
+{
+  Identity::List identities = m_model->identityList( m_group.id() );
+
+  int columns = sqrt( identities.size() );
+  int itemSize = 110;
+  int spacing = 150;
+
+  int x = 0;
+  int y = 0;
+
+  QGraphicsItem *item;
+
+  foreach( Identity identity, identities ) {
+    int posX = x * spacing + ( y % 2 ) * spacing / 2;
+    int posY = y * spacing;
+
+    item = m_scene->addEllipse( -itemSize/2, -itemSize/2,
+      itemSize, itemSize );
+    item->setPos( posX, posY );
+  
+    QPixmap pixmap = m_model->picture( identity );
+  
+    item = m_scene->addPixmap( m_model->picture( identity ) );
+    item->setPos( posX - pixmap.width() / 2 , posY - pixmap.height() / 2 );
+    
+    x++;
+    
+    if ( x >= ( columns + ( y + 1 ) % 2 ) ) {
+      x = 0;
+      y++;
+    }
+  }
 }
 
 Identity IdentityGraphicsView::group() const
