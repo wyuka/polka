@@ -8,6 +8,7 @@
 * disable ok button if no name is given in newpersondialog
 * Group specific display names
 * Drop images e.g. from web pages to add new pictures to person
+* Delete people (from group, or completely if no group anymore)
 
 = kxml_compiler
 
