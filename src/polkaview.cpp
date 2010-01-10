@@ -51,6 +51,8 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
   m_viewLayout->addWidget( m_groupGraphicsView );
+  connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
+  connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
 
   readConfig();
 

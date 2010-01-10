@@ -67,6 +67,8 @@ void IdentityGraphicsView::setGroup( const Identity &group )
 
 void IdentityGraphicsView::createItems()
 {
+  m_scene->clear();
+
   Identity::List identities = m_model->identityList( m_group.id() );
 
   int columns = sqrt( identities.size() );
