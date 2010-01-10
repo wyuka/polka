@@ -98,7 +98,7 @@ void MainWindow::slotDataWritten()
 {
   qDebug() << "DATA WRITTEN";
   if ( m_closing ) deleteLater();
-  Settings::self()->writeConfig();
+  m_view->writeConfig();
 }
 
 #include "mainwindow.moc"

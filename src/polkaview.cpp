@@ -8,6 +8,7 @@
 
 #include "polkamodel.h"
 #include "identitylistview.h"
+#include "identitygraphicsview.h"
 #include "grouplistview.h"
 #include "newpersondialog.h"
 #include "settings.h"
@@ -24,6 +25,16 @@ PolkaView::PolkaView(QWidget *parent)
   
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
+  QBoxLayout *controlLayout = new QHBoxLayout;
+  topLayout->addLayout( controlLayout );
+
+  controlLayout->addStretch( 1 );
+
+  m_graphicsModeCheck = new QCheckBox( i18n("Use fancy view") );
+  controlLayout->addWidget( m_graphicsModeCheck );
+  connect( m_graphicsModeCheck, SIGNAL( stateChanged( int ) ),
+    SLOT( showView() ) );
+
   m_viewLayout = new QStackedLayout;
   topLayout->addLayout( m_viewLayout );
 
@@ -38,6 +49,11 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_groupView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
 
+  m_groupGraphicsView = new IdentityGraphicsView( m_model );
+  m_viewLayout->addWidget( m_groupGraphicsView );
+
+  readConfig();
+
   showGroupList();
 
   readData();
@@ -47,10 +63,23 @@ PolkaView::~PolkaView()
 {
 }
 
-void PolkaView::readData()
+void PolkaView::readConfig()
 {
   Settings::self()->readConfig();
 
+  m_graphicsModeCheck->setChecked( Settings::fancyMode() );
+}
+
+void PolkaView::writeConfig()
+{
+  Settings::setFancyMode( m_graphicsModeCheck->isChecked() );
+  Settings::setShownGroup( m_group.id() );
+
+  Settings::self()->writeConfig();
+}
+
+void PolkaView::readData()
+{
   if ( !m_model->readData() ) {
     KMessageBox::error( this, i18n("Error reading data file") );
     return;
@@ -104,18 +133,31 @@ void PolkaView::newPerson()
 
 void PolkaView::showGroupList()
 {
-  m_viewLayout->setCurrentWidget( m_groupListView );
+  m_group = Identity();
 
-  Settings::setShownGroup( QString() );
+  m_viewLayout->setCurrentWidget( m_groupListView );
 }
 
 void PolkaView::showGroupView( const Identity &group )
 {
-  m_groupView->setGroup( group );
+  m_group = group;
 
-  m_viewLayout->setCurrentWidget( m_groupView );
+  if ( m_graphicsModeCheck->isChecked() ) {
+    m_groupGraphicsView->setGroup( group );
+    m_viewLayout->setCurrentWidget( m_groupGraphicsView );
+  } else {
+    m_groupView->setGroup( group );
+    m_viewLayout->setCurrentWidget( m_groupView );
+  }
+}
 
-  Settings::setShownGroup( group.id() );
+void PolkaView::showView()
+{
+  if ( m_group.id().isEmpty() ) {
+    showGroupList();
+  } else {
+    showGroupView( m_group );
+  }
 }
 
 #include "polkaview.moc"

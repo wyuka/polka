@@ -15,6 +15,7 @@ class KUrl;
 class PolkaModel;
 class IdentityListView;
 class GroupListView;
+class IdentityGraphicsView;
 
 /**
  * This is the main view class for Polka.  Most of the non-menu,
@@ -33,6 +34,9 @@ class PolkaView : public QWidget
     PolkaView(QWidget *parent);
     virtual ~PolkaView();
 
+    void readConfig();
+    void writeConfig();
+
     void readData();
     void writeData();
 
@@ -41,6 +45,7 @@ class PolkaView : public QWidget
     void newGroup();
 
     void showGroupList();
+    void showView();
     void showGroupView( const Identity & );
 
   signals:
@@ -59,9 +64,13 @@ class PolkaView : public QWidget
   private:
     PolkaModel *m_model;
 
+    Identity m_group;
+
+    QCheckBox *m_graphicsModeCheck;
     QStackedLayout *m_viewLayout;
     GroupListView *m_groupListView;
     IdentityListView *m_groupView;
+    IdentityGraphicsView *m_groupGraphicsView;
 };
 
 #endif
