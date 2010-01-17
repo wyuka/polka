@@ -16,6 +16,7 @@
 * On first start ask, if to create a new data repo or use an existing (possibly
   remote) one
 * Only pull and push, if repo actually has a remote repo configured
+* More than one (remote) repo, to separate for example private and job data
 
 = kxml_compiler
 
