@@ -1,5 +1,7 @@
 = Polka
 
+* Add facher context menu for items
+* Delete people (from group, or completely if no group anymore)
 * Make click on person in fancy view open detailed view
 * create missing ids, when reading file?
 * graphical group view
@@ -8,8 +10,8 @@
 * disable ok button if no name is given in newpersondialog
 * Group specific display names
 * Drop images e.g. from web pages to add new pictures to person
-* Delete people (from group, or completely if no group anymore)
 * Remember moved state
+* Add button to arrange items in default configuration with smooth animation
 
 = kxml_compiler
 
