@@ -1,4 +1,5 @@
 set(polka_SRCS
+  gitremote.cpp
   identityitem.cpp
   identitygraphicsview.cpp
   newpersondialog.cpp

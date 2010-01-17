@@ -20,6 +20,7 @@
 #include "polkamodel.h"
 
 #include "gitdir.h"
+#include "gitremote.h"
 
 #include <KRandom>
 
@@ -33,6 +34,10 @@ PolkaModel::PolkaModel( QObject *parent )
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
   m_gitDir->addFile( "std.polka" );
 
+  m_gitRemote = new GitRemote( m_gitDir );
+  connect( m_gitRemote, SIGNAL( pulled() ), SLOT( readData() ) );
+  connect( m_gitRemote, SIGNAL( pushed() ), SLOT( slotPushed() ) );
+
   connect( m_gitDir, SIGNAL( commandExecuted( int ) ),
     SLOT( slotCommandExecuted( int ) ) );
 }
@@ -40,6 +45,11 @@ PolkaModel::PolkaModel( QObject *parent )
 PolkaModel::~PolkaModel()
 {
   delete m_gitDir;
+}
+
+GitRemote *PolkaModel::gitRemote() const
+{
+  return m_gitRemote;
 }
 
 Identity &PolkaModel::identity( const QString &id )
@@ -78,7 +88,7 @@ PolkaItemModel *PolkaModel::itemModel( const QString &id )
   if ( !m_itemModels.contains( id ) ) {
     PolkaItemModel *itemModel = new PolkaItemModel( this, id );
     m_itemModels.insert( id, itemModel );
-  } 
+  }
   return m_itemModels.value( id );
 }
 
@@ -158,8 +168,12 @@ void PolkaModel::slotCommandExecuted( int id )
 {
   if ( id == m_commitCommand ) {
     m_commitCommand = 0;
-    emit dataWritten();
   }
+}
+
+void PolkaModel::slotPushed()
+{
+  emit dataWritten();
 }
 
 void PolkaModel::insert( Identity identity )

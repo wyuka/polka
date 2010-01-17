@@ -26,6 +26,7 @@
 #include <QObject>
 
 class GitDir;
+class GitRemote;
 
 class PolkaModel : public QObject
 {
@@ -34,7 +35,8 @@ class PolkaModel : public QObject
     PolkaModel( QObject *parent = 0 );
     ~PolkaModel();
 
-    bool readData();
+    GitRemote *gitRemote() const;
+
     void writeData();
 
     // FIXME: create create,read,update,delete identity functions
@@ -54,6 +56,9 @@ class PolkaModel : public QObject
 
     void importPicture( const QPixmap &, const Identity & );
 
+  public slots:
+    bool readData();
+
   signals:
     void dataWritten();
 
@@ -61,13 +66,15 @@ class PolkaModel : public QObject
 
   protected slots:
     void slotCommandExecuted( int id );
+    void slotPushed();
 
   protected:
     void setupGroups();
 
   private:
     GitDir *m_gitDir;
-
+    GitRemote *m_gitRemote;
+  
     Polka m_polka;
     bool m_dataIsValid;
 

@@ -12,6 +12,7 @@
 #include "grouplistview.h"
 #include "newpersondialog.h"
 #include "settings.h"
+#include "gitremote.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -27,6 +28,11 @@ PolkaView::PolkaView(QWidget *parent)
 
   QBoxLayout *controlLayout = new QHBoxLayout;
   topLayout->addLayout( controlLayout );
+
+  QLabel *label = new QLabel;
+  controlLayout->addWidget( label );
+  connect( m_model->gitRemote(), SIGNAL( statusChanged( const QString & ) ),
+    label, SLOT( setText( const QString & ) ) );
 
   controlLayout->addStretch( 1 );
 
@@ -96,11 +102,15 @@ void PolkaView::readData()
     Identity group = m_model->identity( Settings::shownGroup() );
     showGroupView( group );
   }
+
+  m_model->gitRemote()->pull();
 }
 
 void PolkaView::writeData()
 {
   m_model->writeData();
+
+  m_model->gitRemote()->push();
 }
 
 void PolkaView::newGroup()

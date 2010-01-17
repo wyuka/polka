@@ -1455,7 +1455,7 @@ Polka Polka::parseFile( const QString &filename, bool *ok )
     return Polka();
   }
 
-  qDebug() << "CONTENT:" << doc.toString();
+//  qDebug() << "CONTENT:" << doc.toString();
 
   bool documentOk;
   Polka c = parseElement( doc.documentElement(), &documentOk );
