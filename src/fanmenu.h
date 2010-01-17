@@ -23,7 +23,7 @@
 
 class IdentityItem;
 
-class FanMenu : public QObject, public QGraphicsItemGroup
+class FanMenu : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
   public:

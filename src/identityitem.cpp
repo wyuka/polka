@@ -84,3 +84,8 @@ void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
   m_nameItem->hide();
   m_fanMenu->hide();
 }
+
+void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
+{
+  QGraphicsEllipseItem::mousePressEvent( event );
+}

@@ -36,6 +36,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
 
+    void mousePressEvent( QGraphicsSceneMouseEvent *event );
+
   private:
     PolkaModel *m_model;
     Identity m_identity;

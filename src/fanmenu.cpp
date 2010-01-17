@@ -34,7 +34,7 @@ QString FanMenu::Item::text() const
 
 
 FanMenu::FanMenu( IdentityItem *parent )
-  : QObject( parent ), QGraphicsItemGroup( parent )
+  : QObject( parent ), QGraphicsLineItem( parent )
 {
 }
 

@@ -77,3 +77,13 @@ void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
    
   textItem->setPos( textX, textY );
 }
+
+void FanMenuElement::mousePressEvent( QGraphicsSceneMouseEvent * )
+{
+  qDebug() << m_item->text() << "PRESSED";
+}
+
+void FanMenuElement::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
+{
+  QGraphicsPathItem::hoverEnterEvent( event );
+}
