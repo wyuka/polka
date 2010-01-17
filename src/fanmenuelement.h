@@ -16,38 +16,23 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef FANMENU_H
-#define FANMENU_H
+#ifndef FANMENUELEMENT_H
+#define FANMENUELEMENT_H
+
+#include "fanmenu.h"
 
 #include <QtGui>
 
-class IdentityItem;
-
-class FanMenu : public QObject, public QGraphicsItemGroup
+class FanMenuElement : public QGraphicsPathItem
 {
-    Q_OBJECT
   public:
-    class Item {
-      public:
-        Item( const QString &text );
-        
-        QString text() const;
-        
-      private:
-        QString m_text;
-    };
+    FanMenuElement( FanMenu * );
 
-    FanMenu( IdentityItem *parent );
-
-    void setupItems();
-
-    Item *addItem( const QString &text ); 
-
-  signals:
-    void itemSelected( Item * );
-
+    void setup( FanMenu::Item *, int startAngle, int endAngle );
+    
   private:
-    QList<Item *> m_items;
+    FanMenu *m_menu;
+    FanMenu::Item *m_item;
 };
 
 #endif
