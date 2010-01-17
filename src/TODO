@@ -6,12 +6,16 @@
 * create missing ids, when reading file?
 * graphical group view
 * merge group list view and identity list view ?
-* sync git with remote repo
 * disable ok button if no name is given in newpersondialog
 * Group specific display names
 * Drop images e.g. from web pages to add new pictures to person
 * Remember moved state
 * Add button to arrange items in default configuration with smooth animation
+* Check for response when pulling from remote and don't reread data, if nothing
+  has changed
+* On first start ask, if to create a new data repo or use an existing (possibly
+  remote) one
+* Only pull and push, if repo actually has a remote repo configured
 
 = kxml_compiler
 
