@@ -57,11 +57,13 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   m_nameItem->hide();
 
   m_fanMenu = new FanMenu( this );
+  connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
+    SLOT( slotItemSelected( FanMenu::Item * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
 
-  m_fanMenu->addItem( i18n("Remove") );
-  m_fanMenu->addItem( i18n("Show") );
+  m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
+  m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
   m_fanMenu->setupItems();
 
   setAcceptHoverEvents( true );
@@ -88,4 +90,13 @@ void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
 void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 {
   QGraphicsEllipseItem::mousePressEvent( event );
+}
+
+void IdentityItem::slotItemSelected( FanMenu::Item *item )
+{
+  if ( item == m_removeMenuItem ) {
+    qDebug() << "REMOVE" << m_identity.displayName();
+  } else if ( item == m_showMenuItem ) {
+    qDebug() << "SHOW" << m_identity.displayName();
+  }
 }

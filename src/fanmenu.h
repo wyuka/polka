@@ -43,8 +43,10 @@ class FanMenu : public QObject, public QGraphicsLineItem
 
     Item *addItem( const QString &text ); 
 
+    void emitItemSelected( Item * );
+
   signals:
-    void itemSelected( Item * );
+    void itemSelected( FanMenu::Item * );
 
   private:
     QList<Item *> m_items;

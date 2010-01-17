@@ -20,11 +20,11 @@
 #define IDENTITYITEM_H
 
 #include "polka.h"
+#include "fanmenu.h"
 
 #include <QtGui>
 
 class PolkaModel;
-class FanMenu;
 
 class IdentityItem : public QObject, public QGraphicsEllipseItem
 {
@@ -38,12 +38,18 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
 
+  protected slots:
+    void slotItemSelected( FanMenu::Item * );
+
   private:
     PolkaModel *m_model;
     Identity m_identity;
 
     QGraphicsRectItem *m_nameItem;
     FanMenu *m_fanMenu;
+
+    FanMenu::Item *m_removeMenuItem;
+    FanMenu::Item *m_showMenuItem;
 };
 
 #endif

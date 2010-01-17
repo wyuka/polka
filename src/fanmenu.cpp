@@ -60,3 +60,8 @@ FanMenu::Item *FanMenu::addItem( const QString &text )
   m_items.append( item );
   return item;
 }
+
+void FanMenu::emitItemSelected( Item *item )
+{
+  emit itemSelected( item );
+}

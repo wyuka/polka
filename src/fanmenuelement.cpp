@@ -81,6 +81,7 @@ void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
 void FanMenuElement::mousePressEvent( QGraphicsSceneMouseEvent * )
 {
   qDebug() << m_item->text() << "PRESSED";
+  m_menu->emitItemSelected( m_item );
 }
 
 void FanMenuElement::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
