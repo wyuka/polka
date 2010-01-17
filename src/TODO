@@ -17,6 +17,7 @@
   remote) one
 * Only pull and push, if repo actually has a remote repo configured
 * More than one (remote) repo, to separate for example private and job data
+* Prevent saving while save is still in progress (especially with push)
 
 = kxml_compiler
 
