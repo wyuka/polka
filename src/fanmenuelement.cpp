@@ -23,6 +23,8 @@ FanMenuElement::FanMenuElement( FanMenu *menu )
   : QGraphicsPathItem( menu ), m_menu( menu ), m_item( 0 )
 {
   setBrush( QColor( 200,200,200 ) );
+
+  setAcceptHoverEvents( true );
 }
 
 void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
