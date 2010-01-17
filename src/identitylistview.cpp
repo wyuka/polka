@@ -21,7 +21,6 @@
 
 #include "polkamodel.h"
 #include "polkaitemmodel.h"
-#include "personview.h"
 
 #include <KLocale>
 
@@ -84,7 +83,5 @@ void IdentityListView::slotItemClicked( const QModelIndex &index )
 {
   Identity identity = m_itemModel->identity( index );
 
-  PersonView *view = new PersonView( m_model );
-  view->showIdentity( identity );
-  view->show();
+  emit showPerson( identity );
 }

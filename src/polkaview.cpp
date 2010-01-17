@@ -13,6 +13,7 @@
 #include "newpersondialog.h"
 #include "settings.h"
 #include "gitremote.h"
+#include "personview.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -59,11 +60,17 @@ PolkaView::PolkaView(QWidget *parent)
   m_viewLayout->addWidget( m_groupView );
   connect( m_groupView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
+  connect( m_groupView, SIGNAL( showPerson( const Identity & ) ),
+    SLOT( showPerson( const Identity & ) ) );
 
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
   m_viewLayout->addWidget( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
+  connect( m_groupGraphicsView, SIGNAL( showPerson( const Identity & ) ),
+    SLOT( showPerson( const Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( removePerson( const Identity & ) ),
+    SLOT( removePerson( const Identity & ) ) );
 
   readConfig();
 
@@ -185,6 +192,19 @@ void PolkaView::showView()
   } else {
     showGroupView( m_group );
   }
+}
+
+void PolkaView::showPerson( const Identity &identity )
+{
+  PersonView *view = new PersonView( m_model );
+  view->showIdentity( identity );
+  view->show();
+}
+
+void PolkaView::removePerson( const Identity &identity )
+{
+  KMessageBox::information( this,
+    QString("Remove %1. To be implemented").arg( identity.displayName() ) );
 }
 
 #include "polkaview.moc"

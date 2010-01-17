@@ -40,6 +40,8 @@ class IdentityGraphicsView : public QWidget
   signals:
     void goBack();
     void newPerson();
+    void showPerson( const Identity & );
+    void removePerson( const Identity & );
 
   protected slots:
     void createItems();

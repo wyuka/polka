@@ -95,8 +95,8 @@ void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 void IdentityItem::slotItemSelected( FanMenu::Item *item )
 {
   if ( item == m_removeMenuItem ) {
-    qDebug() << "REMOVE" << m_identity.displayName();
+    emit removePerson( m_identity );
   } else if ( item == m_showMenuItem ) {
-    qDebug() << "SHOW" << m_identity.displayName();
+    emit showPerson( m_identity );
   }
 }

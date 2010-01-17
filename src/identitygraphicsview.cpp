@@ -82,13 +82,15 @@ void IdentityGraphicsView::createItems()
   int x = 0;
   int y = 0;
 
-  QGraphicsItem *item;
-
   foreach( Identity identity, identities ) {
     int posX = x * spacing + ( y % 2 ) * spacing / 2;
     int posY = y * spacing;
 
-    item = new IdentityItem( m_model, identity );
+    IdentityItem *item = new IdentityItem( m_model, identity );
+    connect( item, SIGNAL( showPerson( const Identity & ) ),
+      SIGNAL( showPerson( const Identity & ) ) );
+    connect( item, SIGNAL( removePerson( const Identity & ) ),
+      SIGNAL( removePerson( const Identity & ) ) );
     item->setPos( posX, posY );
     m_scene->addItem( item );
 
