@@ -24,7 +24,8 @@
 #include <KLocale>
 
 GitRemote::GitRemote( GitDir *dir )
-  : m_gitDir( dir ), m_pullCommand( -1 ), m_pushCommand( -1 )
+  : m_gitDir( dir ), m_pullCommand( -1 ), m_pushCommand( -1 ),
+    m_sshAdded( false )
 {
   connect( m_gitDir, SIGNAL( commandExecuted( int ) ),
     SLOT( slotCommandExecuted( int ) ) );
@@ -34,6 +35,8 @@ GitRemote::GitRemote( GitDir *dir )
 
 void GitRemote::pull()
 {
+  checkSshAdd();
+
   GitCommand cmd = GitCommand( "pull" );
   
   m_pullCommand = m_gitDir->executeCommand( cmd );
@@ -43,11 +46,21 @@ void GitRemote::pull()
 
 void GitRemote::push()
 {
+  checkSshAdd();
+
   GitCommand cmd = GitCommand( "push" );
   
   m_pushCommand = m_gitDir->executeCommand( cmd );
 
   setStatus( i18n("Pushing...") );
+}
+
+void GitRemote::checkSshAdd()
+{
+  if ( !m_sshAdded ) {
+    system( "ssh-add < /dev/null" );
+  }
+  m_sshAdded = true;
 }
 
 void GitRemote::slotCommandExecuted( int id )

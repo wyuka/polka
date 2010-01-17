@@ -43,6 +43,8 @@ class GitRemote : public QObject
   protected:
     void setStatus( const QString & );
 
+    void checkSshAdd();
+
   protected slots:
     void slotCommandExecuted( int );
 
@@ -51,6 +53,7 @@ class GitRemote : public QObject
     int m_pullCommand;
     int m_pushCommand;
     QString m_status;
+    bool m_sshAdded;
 };
 
 #endif
