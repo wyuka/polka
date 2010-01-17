@@ -17,6 +17,11 @@
 	    <label>size of a ball</label>
 	    <default>2</default>
     </entry>
+
+    <entry name="RemoteSyncingEnabled" type="Bool">
+      <label>Enable syncing with remote data repository</label>
+      <default>true</default>
+    </entry>
   </group>
   <group name="State">
     <entry name="ShownGroup" type="String">

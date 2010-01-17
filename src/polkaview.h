@@ -61,12 +61,16 @@ class PolkaView : public QWidget
      */
     void signalChangeCaption(const QString& text);
 
+  protected slots:
+    void slotSyncingCheckChanged();
+
   private:
     PolkaModel *m_model;
 
     Identity m_group;
 
     QCheckBox *m_graphicsModeCheck;
+    QCheckBox *m_syncingCheck;
     QStackedLayout *m_viewLayout;
     GroupListView *m_groupListView;
     IdentityListView *m_groupView;

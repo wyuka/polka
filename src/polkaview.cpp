@@ -29,6 +29,11 @@ PolkaView::PolkaView(QWidget *parent)
   QBoxLayout *controlLayout = new QHBoxLayout;
   topLayout->addLayout( controlLayout );
 
+  m_syncingCheck = new QCheckBox( i18n("Syncing enabled") );
+  controlLayout->addWidget( m_syncingCheck );
+  connect( m_syncingCheck, SIGNAL( stateChanged( int ) ),
+    SLOT( slotSyncingCheckChanged() ) );
+
   QLabel *label = new QLabel;
   controlLayout->addWidget( label );
   connect( m_model->gitRemote(), SIGNAL( statusChanged( const QString & ) ),
@@ -75,6 +80,7 @@ void PolkaView::readConfig()
 {
   Settings::self()->readConfig();
 
+  m_syncingCheck->setChecked( Settings::remoteSyncingEnabled() );
   m_graphicsModeCheck->setChecked( Settings::fancyMode() );
 }
 
@@ -84,6 +90,11 @@ void PolkaView::writeConfig()
   Settings::setShownGroup( m_group.id() );
 
   Settings::self()->writeConfig();
+}
+
+void PolkaView::slotSyncingCheckChanged()
+{
+  Settings::setRemoteSyncingEnabled( m_syncingCheck->isChecked() );
 }
 
 void PolkaView::readData()
@@ -103,14 +114,18 @@ void PolkaView::readData()
     showGroupView( group );
   }
 
-  m_model->gitRemote()->pull();
+  if ( Settings::remoteSyncingEnabled() ) {
+    m_model->gitRemote()->pull();
+  }
 }
 
 void PolkaView::writeData()
 {
   m_model->writeData();
 
-  m_model->gitRemote()->push();
+  if ( Settings::remoteSyncingEnabled() ) {
+    m_model->gitRemote()->push();
+  }
 }
 
 void PolkaView::newGroup()

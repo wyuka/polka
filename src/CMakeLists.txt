@@ -1,4 +1,5 @@
 set(polka_SRCS
+  fanmenu.cpp
   gitremote.cpp
   identityitem.cpp
   identitygraphicsview.cpp

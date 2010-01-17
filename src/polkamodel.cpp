@@ -21,6 +21,7 @@
 
 #include "gitdir.h"
 #include "gitremote.h"
+#include "settings.h"
 
 #include <KRandom>
 
@@ -168,6 +169,9 @@ void PolkaModel::slotCommandExecuted( int id )
 {
   if ( id == m_commitCommand ) {
     m_commitCommand = 0;
+    if ( !Settings::remoteSyncingEnabled() ) {
+      emit dataWritten();
+    }
   }
 }
 
