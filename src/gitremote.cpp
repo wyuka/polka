@@ -58,7 +58,9 @@ void GitRemote::push()
 void GitRemote::checkSshAdd()
 {
   if ( !m_sshAdded ) {
-    system( "ssh-add < /dev/null" );
+    if ( system( "ssh-add -l" ) != 0 ) {
+      system( "ssh-add < /dev/null" );
+    }
   }
   m_sshAdded = true;
 }
