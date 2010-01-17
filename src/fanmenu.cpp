@@ -19,19 +19,41 @@
 
 #include "fanmenu.h"
 
-FanMenu::FanMenu( QGraphicsItem *parent )
-  : QGraphicsItemGroup( parent )
+#include "identityitem.h"
+
+FanMenu::Item::Item( const QString &text )
+  : m_text( text )
 {
-  setupElements();
 }
 
-void FanMenu::setupElements()
+FanMenu::FanMenu( IdentityItem *parent )
+  : QObject( parent ), QGraphicsItemGroup( parent )
 {
-  setupElement( -5, 85 );
-  setupElement( 95, 185);
 }
 
-void FanMenu::setupElement( int startAngle, int endAngle )
+void FanMenu::setupItems()
+{
+  int startAngle = -5;
+  int endAngle = 185;
+  int spacing = 10;
+  int count = m_items.count();
+ 
+  int width = ( ( endAngle - startAngle ) - ( count - 1 ) * spacing ) / count;
+
+  for( int i = 0; i < count; ++i ) {
+    int angle = startAngle + i * width + i * spacing;
+    setupItem( m_items[i], angle, angle + width );
+  }
+}
+
+FanMenu::Item *FanMenu::addItem( const QString &text )
+{
+  Item *item = new Item( text );
+  m_items.append( item );
+  return item;
+}
+
+void FanMenu::setupItem( Item *menuItem, int startAngle, int endAngle )
 {
   qreal blockHeight = 60;
   qreal blockRadius = 90;

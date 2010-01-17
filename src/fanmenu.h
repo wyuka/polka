@@ -21,16 +21,34 @@
 
 #include <QtGui>
 
-class FanMenu : public QGraphicsItemGroup
-{
-  public:
-    FanMenu( QGraphicsItem *parent );
+class IdentityItem;
 
-    void setupElements();
+class FanMenu : public QObject, public QGraphicsItemGroup
+{
+    Q_OBJECT
+  public:
+    class Item {
+      public:
+        Item( const QString &text );
+        
+      private:
+        QString m_text;
+    };
+
+    FanMenu( IdentityItem *parent );
+
+    void setupItems();
+
+    Item *addItem( const QString &text ); 
+
+  signals:
+    void itemSelected( Item * );
 
   protected:
-    void setupElement( int startAngle, int endAngle );
+    void setupItem( Item *, int startAngle, int endAngle );
 
+  private:
+    QList<Item *> m_items;
 };
 
 #endif

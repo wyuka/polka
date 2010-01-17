@@ -26,8 +26,9 @@
 class PolkaModel;
 class FanMenu;
 
-class IdentityItem : public QGraphicsEllipseItem
+class IdentityItem : public QObject, public QGraphicsEllipseItem
 {
+    Q_OBJECT
   public:
     IdentityItem( PolkaModel *, const Identity & );
 

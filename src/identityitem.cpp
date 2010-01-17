@@ -22,8 +22,10 @@
 #include "polkamodel.h"
 #include "fanmenu.h"
 
+#include <KLocale>
+
 IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
-  : m_model( model ), m_identity( identity )
+  : QObject( model ), m_model( model ), m_identity( identity )
 {
   int itemSize = 110;
 
@@ -57,6 +59,10 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   m_fanMenu = new FanMenu( this );
   m_fanMenu->setZValue( 20 );
 //  m_fanMenu->hide();
+
+  m_fanMenu->addItem( i18n("Remove") );
+  m_fanMenu->addItem( i18n("Show") );
+  m_fanMenu->setupItems();
 
   setAcceptHoverEvents( true );
 
