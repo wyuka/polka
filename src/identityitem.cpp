@@ -57,8 +57,8 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   m_nameItem->hide();
 
   m_fanMenu = new FanMenu( this );
-  m_fanMenu->setZValue( 20 );
-//  m_fanMenu->hide();
+  m_fanMenu->setZValue( 50 );
+  m_fanMenu->hide();
 
   m_fanMenu->addItem( i18n("Remove") );
   m_fanMenu->addItem( i18n("Show") );
@@ -82,4 +82,5 @@ void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
   Q_UNUSED( event );
 
   m_nameItem->hide();
+  m_fanMenu->hide();
 }

@@ -76,7 +76,7 @@ void IdentityGraphicsView::createItems()
   Identity::List identities = m_model->identityList( m_group.id() );
 
   int columns = sqrt( identities.size() );
-  int spacing = 150;
+  int spacing = 125;
 
   int x = 0;
   int y = 0;

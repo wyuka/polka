@@ -26,6 +26,12 @@ FanMenu::Item::Item( const QString &text )
 {
 }
 
+QString FanMenu::Item::text() const
+{
+  return m_text;
+}
+
+
 FanMenu::FanMenu( IdentityItem *parent )
   : QObject( parent ), QGraphicsItemGroup( parent )
 {
@@ -71,9 +77,6 @@ void FanMenu::setupItem( Item *menuItem, int startAngle, int endAngle )
     ( blockRadius - blockHeight ) * 2,
     ( blockRadius - blockHeight ) * 2 );
 
-//      painter.drawRect( outerBlockRect );
-//      painter.drawRect( innerBlockRect );
-
   QPainterPath blockPath;
 
   QPainterPath helperPath;
@@ -96,4 +99,16 @@ void FanMenu::setupItem( Item *menuItem, int startAngle, int endAngle )
   item->setBrush( QColor( 200,200,200 ) );
 
   item->setPath( blockPath );
+
+  QGraphicsTextItem *textItem = new QGraphicsTextItem( menuItem->text(), item );
+
+  QRectF boundingRect = item->boundingRect();
+
+  qreal textX = boundingRect.x() + boundingRect.width() / 2;
+  qreal textY = boundingRect.y() + boundingRect.height() / 2;
+
+  textX -= textItem->boundingRect().width() / 2;
+  textY -= textItem->boundingRect().height() / 2;
+   
+  textItem->setPos( textX, textY );
 }

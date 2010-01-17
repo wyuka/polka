@@ -31,6 +31,8 @@ class FanMenu : public QObject, public QGraphicsItemGroup
       public:
         Item( const QString &text );
         
+        QString text() const;
+        
       private:
         QString m_text;
     };
