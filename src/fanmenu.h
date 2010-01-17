@@ -16,31 +16,21 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef IDENTITYITEM_H
-#define IDENTITYITEM_H
-
-#include "polka.h"
+#ifndef FANMENU_H
+#define FANMENU_H
 
 #include <QtGui>
 
-class PolkaModel;
-class FanMenu;
-
-class IdentityItem : public QGraphicsEllipseItem
+class FanMenu : public QGraphicsItemGroup
 {
   public:
-    IdentityItem( PolkaModel *, const Identity & );
+    FanMenu( QGraphicsItem *parent );
+
+    void setupElements();
 
   protected:
-    void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
-    void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
+    void setupElement( int startAngle, int endAngle );
 
-  private:
-    PolkaModel *m_model;
-    Identity m_identity;
-
-    QGraphicsRectItem *m_nameItem;
-    FanMenu *m_fanMenu;
 };
 
 #endif

@@ -20,6 +20,7 @@
 #include "identityitem.h"
 
 #include "polkamodel.h"
+#include "fanmenu.h"
 
 IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   : m_model( model ), m_identity( identity )
@@ -53,6 +54,10 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   m_nameItem->setPos( - textWidth / 2, 30 );
   m_nameItem->hide();
 
+  m_fanMenu = new FanMenu( this );
+  m_fanMenu->setZValue( 20 );
+//  m_fanMenu->hide();
+
   setAcceptHoverEvents( true );
 
   setFlags( ItemIsMovable );
@@ -63,6 +68,7 @@ void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
   Q_UNUSED( event );
 
   m_nameItem->show();
+  m_fanMenu->show();
 }
 
 void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
