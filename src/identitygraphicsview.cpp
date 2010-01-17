@@ -53,6 +53,7 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   m_scene = new QGraphicsScene;
 
   QGraphicsView *view = new QGraphicsView( m_scene );
+  view->setRenderHint( QPainter::Antialiasing );
   topLayout->addWidget( view );
   view->show();
 
