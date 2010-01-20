@@ -202,6 +202,42 @@ void PolkaModel::insert( Identity identity )
   emit identityInserted( identity );
 }
 
+void PolkaModel::removePerson( const Identity &person, const Identity &group )
+{
+  Group::List groups = person.groups().groupList();
+  Group::List newGroups;
+  
+  foreach( Group g, groups ) {
+    if ( g.id() != group.id() ) {
+      newGroups.append( g );
+    }
+  }
+  
+  if ( newGroups.isEmpty() ) {
+    for( int i = 0; i < m_identities.count(); ++i ) {
+      if ( m_identities[i].id() == person.id() ) {
+        m_identities.removeAt( i );
+        break;
+      }
+    }
+    
+    setupGroups();
+    
+    emit identityRemoved( person ); 
+  } else {
+    Identity newPerson = person;
+  
+    Groups gg;
+    gg.setGroupList( newGroups );
+    newPerson.setGroups( gg );
+    this->identity( person.id() ) = newPerson;
+    
+    setupGroups();
+    
+    emit identityChanged( newPerson );
+  }
+}
+
 QPixmap PolkaModel::picture( const Identity &identity ) const
 {
   if ( m_localPictures.contains( identity.id() ) ) {

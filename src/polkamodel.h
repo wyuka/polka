@@ -48,6 +48,8 @@ class PolkaModel : public QObject
     Identity::List &identityList( const QString &id );
     Identity::List &identities();
 
+    void removePerson( const Identity &person, const Identity &group );
+
     PolkaItemModel *allItemModel();
     PolkaItemModel *groupItemModel();
     PolkaItemModel *itemModel( const QString &id = QString() );
@@ -63,6 +65,8 @@ class PolkaModel : public QObject
     void dataWritten();
 
     void identityInserted( const Identity & );
+    void identityChanged( const Identity & );
+    void identityRemoved( const Identity & );
 
   protected slots:
     void slotCommandExecuted( int id );

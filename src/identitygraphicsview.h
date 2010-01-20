@@ -41,10 +41,11 @@ class IdentityGraphicsView : public QWidget
     void goBack();
     void newPerson();
     void showPerson( const Identity & );
-    void removePerson( const Identity & );
+    void removePerson( const Identity &person, const Identity &group );
 
   protected slots:
     void createItems();
+    void slotRemovePerson( const Identity & );
 
   private:
     PolkaModel *m_model;

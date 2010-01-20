@@ -69,8 +69,9 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupGraphicsView, SIGNAL( showPerson( const Identity & ) ),
     SLOT( showPerson( const Identity & ) ) );
-  connect( m_groupGraphicsView, SIGNAL( removePerson( const Identity & ) ),
-    SLOT( removePerson( const Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( removePerson( const Identity &,
+    const Identity & ) ),
+    SLOT( removePerson( const Identity &, const Identity & ) ) );
 
   readConfig();
 
@@ -201,10 +202,9 @@ void PolkaView::showPerson( const Identity &identity )
   view->show();
 }
 
-void PolkaView::removePerson( const Identity &identity )
+void PolkaView::removePerson( const Identity &identity, const Identity &group )
 {
-  KMessageBox::information( this,
-    QString("Remove %1. To be implemented").arg( identity.displayName() ) );
+  m_model->removePerson( identity, group );
 }
 
 #include "polkaview.moc"

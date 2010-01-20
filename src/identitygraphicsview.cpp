@@ -59,6 +59,10 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 
   connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
     SLOT( createItems() ) );
+  connect( m_model, SIGNAL( identityChanged( const Identity & ) ),
+    SLOT( createItems() ) );
+  connect( m_model, SIGNAL( identityRemoved( const Identity & ) ),
+    SLOT( createItems() ) );
 }
 
 void IdentityGraphicsView::setGroup( const Identity &group )
@@ -90,7 +94,7 @@ void IdentityGraphicsView::createItems()
     connect( item, SIGNAL( showPerson( const Identity & ) ),
       SIGNAL( showPerson( const Identity & ) ) );
     connect( item, SIGNAL( removePerson( const Identity & ) ),
-      SIGNAL( removePerson( const Identity & ) ) );
+      SLOT( slotRemovePerson( const Identity & ) ) );
     item->setPos( posX, posY );
     m_scene->addItem( item );
 
@@ -111,4 +115,9 @@ Identity IdentityGraphicsView::group() const
 void IdentityGraphicsView::setGroupName( const QString &name )
 {
   m_groupNameLabel->setText( "<b>" + name + "</b>" );
+}
+
+void IdentityGraphicsView::slotRemovePerson( const Identity &identity )
+{
+  emit removePerson( identity, m_group );
 }

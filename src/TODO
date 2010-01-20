@@ -1,6 +1,5 @@
 = Polka
 
-* Delete people (from group, or completely if no group anymore)
 * create missing ids, when reading file?
 * graphical group view
 * merge group list view and identity list view ?
@@ -16,6 +15,7 @@
 * Only pull and push, if repo actually has a remote repo configured
 * More than one (remote) repo, to separate for example private and job data
 * Prevent saving while save is still in progress (especially with push)
+* Undo based on git (commit changes with message. Rollback from UI)
 
 = kxml_compiler
 
