@@ -16,6 +16,8 @@
 * More than one (remote) repo, to separate for example private and job data
 * Prevent saving while save is still in progress (especially with push)
 * Undo based on git (commit changes with message. Rollback from UI)
+* Scale pictures
+* Update view when picture was added
 
 = kxml_compiler
 
