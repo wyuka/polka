@@ -21,6 +21,7 @@
 
 #include <KConfig>
 #include <KMessageBox>
+#include <KPushButton>
 
 NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   : KDialog( parent ), m_model( model )
@@ -41,7 +42,7 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
 
   m_matchList = new QListView;
   topLayout->addWidget( m_matchList );
-  connect( m_matchList, SIGNAL( clicked( const QModelIndex & ) ),
+  connect( m_matchList, SIGNAL( activated( const QModelIndex & ) ),
     SLOT( accept() ) );
 
   m_proxyModel = new QSortFilterProxyModel(this);
@@ -52,12 +53,16 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
 
   connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
     m_proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
+  connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
+    SLOT( checkOkButton() ) );
 
   setMainWidget( topWidget );
 
   restoreDialogSize( KGlobal::config()->group("newpersondialog") );
 
   m_nameInput->setFocus();
+
+  checkOkButton();
 }
 
 NewPersonDialog::~NewPersonDialog()
@@ -82,4 +87,9 @@ Identity NewPersonDialog::identity()
     return m_model->identity( m_proxyModel->data( selectedIndexes.first(),
       Qt::UserRole ).toString() );
   }
+}
+
+void NewPersonDialog::checkOkButton()
+{
+  button( Ok )->setEnabled( !m_nameInput->text().isEmpty() );
 }

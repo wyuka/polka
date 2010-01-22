@@ -28,11 +28,15 @@
 
 class NewPersonDialog : public KDialog
 {
+    Q_OBJECT
   public:
     NewPersonDialog( PolkaModel *, QWidget *parent = 0 );
     ~NewPersonDialog();
 
     Identity identity();
+
+  protected slots:
+    void checkOkButton();
 
   private:
     PolkaModel *m_model;
