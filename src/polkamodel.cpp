@@ -299,4 +299,8 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   pictureList.prepend( picture );
   pictures.setPictureList( pictureList );
   identity.setPictures( pictures );
+
+  m_localPictures.insert( identity.id(), localPicture );
+
+  emit identityChanged( identity );
 }

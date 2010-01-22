@@ -91,6 +91,7 @@ QPixmap LocalPicture::scalePicture( const QPixmap &pixmap )
   if ( pixmap.width() <= size && pixmap.height() <= size ) {
     return pixmap;
   } else {
-    return pixmap.scaled( size, size, Qt::KeepAspectRatio );
+    return pixmap.scaled( size, size, Qt::KeepAspectRatio,
+      Qt::SmoothTransformation );
   }
 }

@@ -76,6 +76,8 @@ void IdentityGraphicsView::setGroup( const Identity &group )
 
 void IdentityGraphicsView::createItems()
 {
+  qDebug() << "CREATE ITEMS";
+
   m_scene->clear();
 
   Identity::List identities = m_model->identityList( m_group.id() );
