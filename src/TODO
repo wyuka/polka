@@ -2,12 +2,12 @@
 
 * Scale pictures
 * Update view when picture was added
-* graphical group view
-* merge group list view and identity list view ?
-* disable ok button if no name is given in newpersondialog
-* Drop images e.g. from web pages to add new pictures to person
+* Create real Polka pattern
 * Remember moved state
 * Add button to arrange items in default configuration with smooth animation
+
+* disable ok button if no name is given in newpersondialog
+* Drop images e.g. from web pages to add new pictures to person
 * Check for response when pulling from remote and don't reread data, if nothing
   has changed
 * On first start ask, if to create a new data repo or use an existing (possibly
@@ -15,6 +15,9 @@
 * Only pull and push, if repo actually has a remote repo configured
 * Prevent saving while save is still in progress (especially with push)
 * Undo based on git (commit changes with message. Rollback from UI)
+
+* merge group list view and identity list view ?
+* graphical group view
 * More than one (remote) repo, to separate for example private and job data
 * Group specific display names
 
