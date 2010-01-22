@@ -57,7 +57,7 @@ QPixmap LocalPicture::pixmap()
   if ( m_picture.id().isEmpty() ) return m_defaultPixmap;
 
   if ( fileExists() ) {
-    m_pixmap = QPixmap( fullFilePath() );
+    m_pixmap = scalePicture( QPixmap( fullFilePath() ) );
     return m_pixmap;
   }
   
@@ -69,7 +69,7 @@ QPixmap LocalPicture::pixmap()
 
 void LocalPicture::setPixmap( const QPixmap &pixmap )
 {
-  m_pixmap = pixmap;
+  m_pixmap = scalePicture( pixmap );
 
   if ( !fileExists() ) {
     m_gitDir->addFile( localFilePath() );
@@ -82,4 +82,15 @@ void LocalPicture::setPixmap( const QPixmap &pixmap )
 bool LocalPicture::fileExists() const
 {
   return QFile::exists( fullFilePath() );
+}
+
+QPixmap LocalPicture::scalePicture( const QPixmap &pixmap )
+{
+  int size = 70;
+
+  if ( pixmap.width() <= size && pixmap.height() <= size ) {
+    return pixmap;
+  } else {
+    return pixmap.scaled( size, size, Qt::KeepAspectRatio );
+  }
 }

@@ -46,6 +46,8 @@ class LocalPicture : public QObject
 
     bool fileExists() const;
 
+    QPixmap scalePicture( const QPixmap & );
+
   private:
     Picture m_picture;
     GitDir *m_gitDir;
