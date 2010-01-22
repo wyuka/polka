@@ -25,24 +25,24 @@
 
 PolkaItemModel::PolkaItemModel( PolkaModel *polkaModel, const QString &groupId )
   : QAbstractListModel( polkaModel ), m_model( polkaModel ),
-    m_groupId( groupId ), m_all( false )
+    m_groupId( groupId )
 {
 }
 
-void PolkaItemModel::setAll( bool value )
+PolkaItemModel::~PolkaItemModel()
 {
-  m_all = value;
+}
+
+PolkaModel *PolkaItemModel::model() const
+{
+  return m_model;
 }
 
 int PolkaItemModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED( parent );
 
-  if ( m_all ) {
-    return m_model->identities().count();
-  } else {
-    return m_model->identityList( m_groupId ).count();
-  }
+  return m_model->identityList( m_groupId ).count();
 }
 
 QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
@@ -50,19 +50,9 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   if (!index.isValid())
     return QVariant();
 
-  Identity identity;
+  if ( index.row() >= rowCount( QModelIndex() ) ) return QVariant();
 
-  if ( m_all ) {
-    if (index.row() >= m_model->identities().size())
-      return QVariant();
-      
-    identity = m_model->identities().at( index.row() );
-  } else {
-    if (index.row() >= m_model->identityList( m_groupId ).size())
-      return QVariant();
-
-    identity = m_model->identityList( m_groupId ).at( index.row() );
-  }
+  Identity identity = getIdentityData( index );
 
   if (role == Qt::DisplayRole) {
     return identity.displayName();
@@ -73,6 +63,11 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   } else {
     return QVariant();
   }
+}
+
+Identity PolkaItemModel::getIdentityData( const QModelIndex &index ) const
+{
+  return m_model->identityList( m_groupId ).at( index.row() );
 }
 
 QVariant PolkaItemModel::headerData(int section, Qt::Orientation orientation,
@@ -94,9 +89,5 @@ void PolkaItemModel::updateData()
 
 Identity PolkaItemModel::identity( const QModelIndex &index )
 {
-  if ( m_all ) {
-    return m_model->identities().at( index.row() );
-  } else {
-    return m_model->identityList( m_groupId ).at( index.row() );
-  }
+  return m_model->identityList( m_groupId ).at( index.row() );
 }

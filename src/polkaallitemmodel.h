@@ -16,38 +16,22 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef POLKAITEMMODEL_H
-#define POLKAITEMMODEL_H
+#ifndef POLKAALLITEMMODEL_H
+#define POLKAALLITEMMODEL_H
 
-#include "polka.h"
+#include "polkaitemmodel.h"
 
-#include <QAbstractListModel>
-
-class PolkaModel;
-
-class PolkaItemModel : public QAbstractListModel
+class PolkaAllItemModel : public PolkaItemModel
 {
   public:
-    PolkaItemModel( PolkaModel *, const QString &groupId = QString() );
-    virtual ~PolkaItemModel();
-
-    PolkaModel *model() const;
+    PolkaAllItemModel( PolkaModel * );
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation,
-                         int role = Qt::DisplayRole) const;
 
-    void updateData();
-
-    virtual Identity identity( const QModelIndex &index );
+    Identity identity( const QModelIndex &index );
 
   protected:
-    virtual Identity getIdentityData( const QModelIndex &index ) const;
-
-  private:
-    PolkaModel *m_model;
-    QString m_groupId;
+    Identity getIdentityData( const QModelIndex &index ) const;
 };
 
 #endif

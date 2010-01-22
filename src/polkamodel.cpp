@@ -22,6 +22,7 @@
 #include "gitdir.h"
 #include "gitremote.h"
 #include "settings.h"
+#include "polkaallitemmodel.h"
 
 #include <KRandom>
 
@@ -78,8 +79,7 @@ Identity::List &PolkaModel::identityList( const QString &id )
 PolkaItemModel *PolkaModel::allItemModel()
 {
   if ( !m_allItemModel ) {
-    m_allItemModel = new PolkaItemModel( this );
-    m_allItemModel->setAll( true );
+    m_allItemModel = new PolkaAllItemModel( this );
   }
   return m_allItemModel;
 }
