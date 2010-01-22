@@ -23,6 +23,7 @@
 #include "gitremote.h"
 #include "settings.h"
 #include "polkaallitemmodel.h"
+#include "polkapersonsitemmodel.h"
 
 #include <KRandom>
 
@@ -67,6 +68,21 @@ Identity::List &PolkaModel::identities()
   return m_identities;
 }
 
+Identity::List PolkaModel::persons()
+{
+  // FIXME: Cache it in model.
+
+  Identity::List persons;
+
+  foreach( Identity identity, m_identities ) {
+    if ( !identity.groups().groupList().isEmpty() ) {
+      persons.append( identity );
+    }
+  }
+
+  return persons;
+}
+
 Identity::List &PolkaModel::identityList( const QString &id )
 {
   if ( id.isEmpty() ) return m_groups;
@@ -82,6 +98,14 @@ PolkaItemModel *PolkaModel::allItemModel()
     m_allItemModel = new PolkaAllItemModel( this );
   }
   return m_allItemModel;
+}
+
+PolkaItemModel *PolkaModel::personsItemModel()
+{
+  if ( !m_personsItemModel ) {
+    m_personsItemModel = new PolkaPersonsItemModel( this );
+  }
+  return m_personsItemModel;
 }
 
 PolkaItemModel *PolkaModel::itemModel( const QString &id )

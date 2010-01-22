@@ -16,6 +16,7 @@ set(polka_SRCS
   gitcommand.cpp
   polkaitemmodel.cpp
   polkaallitemmodel.cpp
+  polkapersonsitemmodel.cpp
   personview.cpp
   htmlcreator.cpp
   imageloader.cpp

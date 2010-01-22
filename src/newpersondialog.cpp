@@ -48,7 +48,7 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   m_proxyModel = new QSortFilterProxyModel(this);
   m_proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
 
-  m_proxyModel->setSourceModel( m_model->allItemModel() );
+  m_proxyModel->setSourceModel( m_model->personsItemModel() );
   m_matchList->setModel( m_proxyModel );
 
   connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),

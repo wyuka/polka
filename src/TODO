@@ -6,8 +6,6 @@
 * Remember moved state
 * Add button to arrange items in default configuration with smooth animation
 
-* Don't show groups in "new person" dialog.
-
 * Drop images e.g. from web pages to add new pictures to person
 * Check for response when pulling from remote and don't reread data, if nothing
   has changed

@@ -47,10 +47,12 @@ class PolkaModel : public QObject
     // FIXME: consisten API for querying lists of identities
     Identity::List &identityList( const QString &id );
     Identity::List &identities();
+    Identity::List persons();
 
     void removePerson( const Identity &person, const Identity &group );
 
     PolkaItemModel *allItemModel();
+    PolkaItemModel *personsItemModel();
     PolkaItemModel *groupItemModel();
     PolkaItemModel *itemModel( const QString &id = QString() );
 
@@ -89,6 +91,7 @@ class PolkaModel : public QObject
     QMap<QString,Identity::List> m_groupMap;
 
     PolkaItemModel *m_allItemModel;
+    PolkaItemModel *m_personsItemModel;
     PolkaItemModel *m_groupItemModel;
     QMap<QString,PolkaItemModel *> m_itemModels;
     
