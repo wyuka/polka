@@ -1,9 +1,10 @@
 = Polka
 
+* Scale pictures
+* Update view when picture was added
 * graphical group view
 * merge group list view and identity list view ?
 * disable ok button if no name is given in newpersondialog
-* Group specific display names
 * Drop images e.g. from web pages to add new pictures to person
 * Remember moved state
 * Add button to arrange items in default configuration with smooth animation
@@ -12,11 +13,10 @@
 * On first start ask, if to create a new data repo or use an existing (possibly
   remote) one
 * Only pull and push, if repo actually has a remote repo configured
-* More than one (remote) repo, to separate for example private and job data
 * Prevent saving while save is still in progress (especially with push)
 * Undo based on git (commit changes with message. Rollback from UI)
-* Scale pictures
-* Update view when picture was added
+* More than one (remote) repo, to separate for example private and job data
+* Group specific display names
 
 = kxml_compiler
 
