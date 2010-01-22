@@ -30,7 +30,7 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   int itemSize = 110;
 
   setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
-  setBrush( QColor( "red" ) );
+  setBrush( Qt::white );
 
   QPen pen;
   pen.setBrush( Qt::NoBrush );

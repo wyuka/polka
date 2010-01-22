@@ -51,6 +51,8 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
 
   m_scene = new QGraphicsScene;
+//  m_scene->setBackgroundBrush( Qt::red );
+  m_scene->setBackgroundBrush( QColor( 70,70,100 ) );
 
   QGraphicsView *view = new QGraphicsView( m_scene );
   view->setRenderHint( QPainter::Antialiasing );
@@ -83,14 +85,14 @@ void IdentityGraphicsView::createItems()
   Identity::List identities = m_model->identityList( m_group.id() );
 
   int columns = sqrt( identities.size() );
-  int spacing = 125;
+  int spacing = 150;
 
   int x = 0;
   int y = 0;
 
   foreach( Identity identity, identities ) {
-    int posX = x * spacing + ( y % 2 ) * spacing / 2;
-    int posY = y * spacing;
+    qreal posX = x * spacing + ( y % 2 ) * spacing / 2;
+    qreal posY = y * spacing * 0.866; // sin(60 degree)
 
     IdentityItem *item = new IdentityItem( m_model, identity );
     connect( item, SIGNAL( showPerson( const Identity & ) ),
