@@ -34,6 +34,7 @@ class HtmlElement
     HtmlElement &element( const QString &name );
 
     void attribute( const QString &key, const QString &value );
+    void attribute( const QString &key, bool );
 
     void text( const QString &text );
 
