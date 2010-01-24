@@ -22,3 +22,4 @@
 * eliminate pictures() from identity().pictures().pictureList()
 * add a way to add custom functions to classes
   (e.g. bool isEmpty() { m_id.isEmpty(); })
+* Recognize bool attributes (position.moved)

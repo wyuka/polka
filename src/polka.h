@@ -340,6 +340,27 @@ class Emails
     Email::List mEmailList;
 };
 
+class Position
+{
+  public:
+    void setMoved( const QString &v );
+    QString moved() const;
+    void setX( int v );
+    int x() const;
+    void setY( int v );
+    int y() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Position parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mMoved;
+    int mX;
+    int mY;
+};
+
 class Group
 {
   public:
@@ -348,6 +369,8 @@ class Group
   public:
     void setId( const QString &v );
     QString id() const;
+    void setPosition( const Position &v );
+    Position position() const;
     /**
       Parse XML object from DOM element.
      */
@@ -356,6 +379,7 @@ class Group
 
   private:
     QString mId;
+    Position mPosition;
 };
 
 class Groups

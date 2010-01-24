@@ -972,6 +972,76 @@ QString Emails::writeElement()
 }
 
 
+void Position::setMoved( const QString &v )
+{
+  mMoved = v;
+}
+
+QString Position::moved() const
+{
+  return mMoved;
+}
+
+void Position::setX( int v )
+{
+  mX = v;
+}
+
+int Position::x() const
+{
+  return mX;
+}
+
+void Position::setY( int v )
+{
+  mY = v;
+}
+
+int Position::y() const
+{
+  return mY;
+}
+
+Position Position::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "position" ) {
+    qCritical() << "Expected 'position', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Position();
+  }
+
+  Position result = Position();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "x" ) {
+      result.setX( e.text().toInt() );
+    }
+    else if ( e.tagName() == "y" ) {
+      result.setY( e.text().toInt() );
+    }
+  }
+
+  result.setMoved( element.attribute( "moved" ) );
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Position::writeElement()
+{
+  QString xml;
+  xml += indent() + "<position moved=\"" + moved() + "\">\n";
+  indent( 2 );
+  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
+  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
+  indent( -2 );
+  xml += indent() + "</position>\n";
+  return xml;
+}
+
+
 void Group::setId( const QString &v )
 {
   mId = v;
@@ -980,6 +1050,16 @@ void Group::setId( const QString &v )
 QString Group::id() const
 {
   return mId;
+}
+
+void Group::setPosition( const Position &v )
+{
+  mPosition = v;
+}
+
+Position Group::position() const
+{
+  return mPosition;
 }
 
 Group Group::parseElement( const QDomElement &element, bool *ok )
@@ -998,6 +1078,11 @@ Group Group::parseElement( const QDomElement &element, bool *ok )
     if ( e.tagName() == "id" ) {
       result.setId( e.text() );
     }
+    else if ( e.tagName() == "position" ) {
+      bool ok;
+      Position o = Position::parseElement( e, &ok );
+      if ( ok ) result.setPosition( o );
+    }
   }
 
 
@@ -1013,6 +1098,7 @@ QString Group::writeElement()
   if ( !id().isEmpty() ) {
     xml += indent() + "<id>" + id() + "</id>\n";
   }
+  xml += position().writeElement();
   indent( -2 );
   xml += indent() + "</group>\n";
   return xml;
@@ -1455,7 +1541,7 @@ Polka Polka::parseFile( const QString &filename, bool *ok )
     return Polka();
   }
 
-//  qDebug() << "CONTENT:" << doc.toString();
+  qDebug() << "CONTENT:" << doc.toString();
 
   bool documentOk;
   Polka c = parseElement( doc.documentElement(), &documentOk );

@@ -2,7 +2,13 @@
   <identity>
     <id>7zrgrehth75</id>
     <groups>
-      <group><id>fkjfrf6rhfrf6f5ewzf</id></group>
+      <group>
+        <id>fkjfrf6rhfrf6f5ewzf</id>
+        <position moved="true">
+          <x>123</x>
+          <y>234</y>
+        </position>
+      </group>
       <group><id>633hedehe</id></group>
     </groups>
     <display_name>Hans</display_name>
