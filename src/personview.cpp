@@ -38,6 +38,9 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
+  m_webView->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
+  connect( m_webView->page(), SIGNAL( linkClicked( const QUrl & ) ),
+    SLOT( slotLinkClicked( const QUrl & ) ) );
 
   QHBoxLayout *pictureSelectorLayout = new QHBoxLayout;
   topLayout->addLayout( pictureSelectorLayout );
@@ -76,6 +79,7 @@ void PersonView::showIdentity( const Identity &identity )
     doc.element("p").text(identity.name().text());
   }
   HtmlElement &div = doc.element("div");
+//  div.attribute("contentEditable", true);
   foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &a = div.element("div").element("a");
     a.attribute("href","mailto:" + email.text());
@@ -107,4 +111,9 @@ void PersonView::slotRegionGrabbed( const QPixmap &pixmap )
   setImage( pixmap );
 
   m_model->importPicture( pixmap, m_identity );
+}
+
+void PersonView::slotLinkClicked( const QUrl &url )
+{
+  qDebug() << "CLICKED" << url;
 }

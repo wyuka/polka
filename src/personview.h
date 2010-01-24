@@ -41,6 +41,8 @@ class PersonView : public QWidget
 
     void grabPicture();
     void slotRegionGrabbed( const QPixmap & );
+
+    void slotLinkClicked( const QUrl & );
   
   private:
     PolkaModel *m_model;
