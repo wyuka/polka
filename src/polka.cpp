@@ -36,6 +36,151 @@ QString indent( int n = 0 )
   return space.fill( ' ', i );
 }
 
+void IdentityPosition::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString IdentityPosition::id() const
+{
+  return mId;
+}
+
+void IdentityPosition::setX( int v )
+{
+  mX = v;
+}
+
+int IdentityPosition::x() const
+{
+  return mX;
+}
+
+void IdentityPosition::setY( int v )
+{
+  mY = v;
+}
+
+int IdentityPosition::y() const
+{
+  return mY;
+}
+
+IdentityPosition IdentityPosition::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "identity_position" ) {
+    qCritical() << "Expected 'identity_position', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return IdentityPosition();
+  }
+
+  IdentityPosition result = IdentityPosition();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "x" ) {
+      result.setX( e.text().toInt() );
+    }
+    else if ( e.tagName() == "y" ) {
+      result.setY( e.text().toInt() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString IdentityPosition::writeElement()
+{
+  QString xml;
+  xml += indent() + "<identity_position>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
+  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
+  indent( -2 );
+  xml += indent() + "</identity_position>\n";
+  return xml;
+}
+
+
+void GroupView::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString GroupView::id() const
+{
+  return mId;
+}
+
+void GroupView::addIdentityPosition( const IdentityPosition &v )
+{
+  mIdentityPositionList.append( v );
+}
+
+void GroupView::setIdentityPositionList( const IdentityPosition::List &v )
+{
+  mIdentityPositionList = v;
+}
+
+IdentityPosition::List GroupView::identityPositionList() const
+{
+  return mIdentityPositionList;
+}
+
+GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "group_view" ) {
+    qCritical() << "Expected 'group_view', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return GroupView();
+  }
+
+  GroupView result = GroupView();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "identity_position" ) {
+      bool ok;
+      IdentityPosition o = IdentityPosition::parseElement( e, &ok );
+      if ( ok ) result.addIdentityPosition( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString GroupView::writeElement()
+{
+  QString xml;
+  xml += indent() + "<group_view>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  foreach( IdentityPosition e, identityPositionList() ) {
+    xml += e.writeElement();
+  }
+  indent( -2 );
+  xml += indent() + "</group_view>\n";
+  return xml;
+}
+
+
 void Comment::setId( const QString &v )
 {
   mId = v;
@@ -972,76 +1117,6 @@ QString Emails::writeElement()
 }
 
 
-void Position::setMoved( const QString &v )
-{
-  mMoved = v;
-}
-
-QString Position::moved() const
-{
-  return mMoved;
-}
-
-void Position::setX( int v )
-{
-  mX = v;
-}
-
-int Position::x() const
-{
-  return mX;
-}
-
-void Position::setY( int v )
-{
-  mY = v;
-}
-
-int Position::y() const
-{
-  return mY;
-}
-
-Position Position::parseElement( const QDomElement &element, bool *ok )
-{
-  if ( element.tagName() != "position" ) {
-    qCritical() << "Expected 'position', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return Position();
-  }
-
-  Position result = Position();
-
-  QDomNode n;
-  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
-    QDomElement e = n.toElement();
-    if ( e.tagName() == "x" ) {
-      result.setX( e.text().toInt() );
-    }
-    else if ( e.tagName() == "y" ) {
-      result.setY( e.text().toInt() );
-    }
-  }
-
-  result.setMoved( element.attribute( "moved" ) );
-
-  if ( ok ) *ok = true;
-  return result;
-}
-
-QString Position::writeElement()
-{
-  QString xml;
-  xml += indent() + "<position moved=\"" + moved() + "\">\n";
-  indent( 2 );
-  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
-  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
-  indent( -2 );
-  xml += indent() + "</position>\n";
-  return xml;
-}
-
-
 void Group::setId( const QString &v )
 {
   mId = v;
@@ -1050,16 +1125,6 @@ void Group::setId( const QString &v )
 QString Group::id() const
 {
   return mId;
-}
-
-void Group::setPosition( const Position &v )
-{
-  mPosition = v;
-}
-
-Position Group::position() const
-{
-  return mPosition;
 }
 
 Group Group::parseElement( const QDomElement &element, bool *ok )
@@ -1078,11 +1143,6 @@ Group Group::parseElement( const QDomElement &element, bool *ok )
     if ( e.tagName() == "id" ) {
       result.setId( e.text() );
     }
-    else if ( e.tagName() == "position" ) {
-      bool ok;
-      Position o = Position::parseElement( e, &ok );
-      if ( ok ) result.setPosition( o );
-    }
   }
 
 
@@ -1098,7 +1158,6 @@ QString Group::writeElement()
   if ( !id().isEmpty() ) {
     xml += indent() + "<id>" + id() + "</id>\n";
   }
-  xml += position().writeElement();
   indent( -2 );
   xml += indent() + "</group>\n";
   return xml;
@@ -1484,6 +1543,21 @@ Identity::List Polka::identityList() const
   return mIdentityList;
 }
 
+void Polka::addGroupView( const GroupView &v )
+{
+  mGroupViewList.append( v );
+}
+
+void Polka::setGroupViewList( const GroupView::List &v )
+{
+  mGroupViewList = v;
+}
+
+GroupView::List Polka::groupViewList() const
+{
+  return mGroupViewList;
+}
+
 Polka Polka::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "polka" ) {
@@ -1502,6 +1576,11 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
       Identity o = Identity::parseElement( e, &ok );
       if ( ok ) result.addIdentity( o );
     }
+    else if ( e.tagName() == "group_view" ) {
+      bool ok;
+      GroupView o = GroupView::parseElement( e, &ok );
+      if ( ok ) result.addGroupView( o );
+    }
   }
 
   result.setSchemaVersion( element.attribute( "schemaVersion" ) );
@@ -1516,6 +1595,9 @@ QString Polka::writeElement()
   xml += indent() + "<polka schemaVersion=\"" + schemaVersion() + "\">\n";
   indent( 2 );
   foreach( Identity e, identityList() ) {
+    xml += e.writeElement();
+  }
+  foreach( GroupView e, groupViewList() ) {
     xml += e.writeElement();
   }
   indent( -2 );

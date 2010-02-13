@@ -41,6 +41,9 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
 
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
+
+    QVariant itemChange( GraphicsItemChange change, const QVariant &value );
 
   protected slots:
     void slotItemSelected( FanMenu::Item * );
@@ -54,6 +57,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     FanMenu::Item *m_removeMenuItem;
     FanMenu::Item *m_showMenuItem;
+
+    QPointF m_movePos;
 };
 
 #endif

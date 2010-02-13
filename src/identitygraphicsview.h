@@ -47,6 +47,9 @@ class IdentityGraphicsView : public QWidget
     void createItems();
     void slotRemovePerson( const Identity & );
 
+  protected:
+    void savePositions();
+
   private:
     PolkaModel *m_model;
 
@@ -55,6 +58,7 @@ class IdentityGraphicsView : public QWidget
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  
     QGraphicsScene *m_scene;
+    bool m_moved;
 };
 
 #endif

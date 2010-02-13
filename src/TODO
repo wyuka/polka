@@ -17,9 +17,12 @@
 * More than one (remote) repo, to separate for example private and job data
 * Group specific display names
 
+* Migrate data between schema versions
+
 = kxml_compiler
 
 * eliminate pictures() from identity().pictures().pictureList()
 * add a way to add custom functions to classes
   (e.g. bool isEmpty() { m_id.isEmpty(); })
 * Recognize bool attributes (position.moved)
+* Instead of List create pluralized forms.

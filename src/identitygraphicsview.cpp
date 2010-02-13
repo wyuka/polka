@@ -27,7 +27,7 @@
 #include <KLocale>
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model )
+  : QWidget( parent ), m_model( model ), m_moved( false )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -69,6 +69,10 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 
 void IdentityGraphicsView::setGroup( const Identity &group )
 {
+  if ( m_moved ) {
+    savePositions();
+  }
+
   m_group = group;
 
   setGroupName( group.displayName() );
@@ -122,4 +126,9 @@ void IdentityGraphicsView::setGroupName( const QString &name )
 void IdentityGraphicsView::slotRemovePerson( const Identity &identity )
 {
   emit removePerson( identity, m_group );
+}
+
+void IdentityGraphicsView::savePositions()
+{
+  // FIXME: Save positions of all moved items via PolkaModel::saveViewPos()
 }

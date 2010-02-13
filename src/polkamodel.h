@@ -60,6 +60,10 @@ class PolkaModel : public QObject
 
     void importPicture( const QPixmap &, const Identity & );
 
+    void saveViewPos( const Identity &group,
+      const Identity &identity,
+      const QPointF &pos );
+
   public slots:
     bool readData();
 
@@ -86,6 +90,8 @@ class PolkaModel : public QObject
 
     Identity m_invalidIdentity;
     Identity::List m_identities;
+
+    GroupView::List m_views;
 
     Identity::List m_groups;
     QMap<QString,Identity::List> m_groupMap;

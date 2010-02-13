@@ -21,10 +21,56 @@
 #ifndef POLKA_H
 #define POLKA_H
 
+#include <QString>
 #include <QDomElement>
 #include <QList>
-#include <QString>
 #include <QDate>
+
+class IdentityPosition
+{
+  public:
+    typedef QList<IdentityPosition> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    void setX( int v );
+    int x() const;
+    void setY( int v );
+    int y() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static IdentityPosition parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    int mX;
+    int mY;
+};
+
+class GroupView
+{
+  public:
+    typedef QList<GroupView> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    void addIdentityPosition( const IdentityPosition &v );
+    void setIdentityPositionList( const IdentityPosition::List &v );
+    IdentityPosition::List identityPositionList() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static GroupView parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    IdentityPosition::List mIdentityPositionList;
+};
 
 class Comment
 {
@@ -340,27 +386,6 @@ class Emails
     Email::List mEmailList;
 };
 
-class Position
-{
-  public:
-    void setMoved( const QString &v );
-    QString moved() const;
-    void setX( int v );
-    int x() const;
-    void setY( int v );
-    int y() const;
-    /**
-      Parse XML object from DOM element.
-     */
-    static Position parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
-
-  private:
-    QString mMoved;
-    int mX;
-    int mY;
-};
-
 class Group
 {
   public:
@@ -369,8 +394,6 @@ class Group
   public:
     void setId( const QString &v );
     QString id() const;
-    void setPosition( const Position &v );
-    Position position() const;
     /**
       Parse XML object from DOM element.
      */
@@ -379,7 +402,6 @@ class Group
 
   private:
     QString mId;
-    Position mPosition;
 };
 
 class Groups
@@ -481,6 +503,9 @@ class Polka
     void addIdentity( const Identity &v );
     void setIdentityList( const Identity::List &v );
     Identity::List identityList() const;
+    void addGroupView( const GroupView &v );
+    void setGroupViewList( const GroupView::List &v );
+    GroupView::List groupViewList() const;
     /**
       Parse XML object from DOM element.
      */
@@ -492,6 +517,7 @@ class Polka
   private:
     QString mSchemaVersion;
     Identity::List mIdentityList;
+    GroupView::List mGroupViewList;
 };
 
 #endif

@@ -4,10 +4,6 @@
     <groups>
       <group>
         <id>fkjfrf6rhfrf6f5ewzf</id>
-        <position moved="true">
-          <x>123</x>
-          <y>234</y>
-        </position>
       </group>
       <group><id>633hedehe</id></group>
     </groups>
@@ -111,4 +107,20 @@
       </note>
     </notes>
   </identity>
+  <group_view>
+    <id>shsh</id>
+    <identity_position>
+      <id>dud</id>
+      <x>123</x>
+      <y>654</y>
+    </identity_position>
+    <identity_position>
+      <id>dud</id>
+      <x>123</x>
+      <y>654</y>
+    </identity_position>
+  </group_view>
+  <group_view>
+    <id>shshx</id>
+  </group_view>
 </polka>
