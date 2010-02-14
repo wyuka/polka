@@ -57,16 +57,17 @@ class GroupView
     typedef QList<GroupView> List;
 
   public:
-    enum Flags { None = 0, AutoCreate = 1 };
+    enum Flags { None, AutoCreate };
 
+  public:
     void setId( const QString &v );
     QString id() const;
+    bool isValid() const;
     void addIdentityPosition( const IdentityPosition &v );
     void setIdentityPositionList( const IdentityPosition::List &v );
     IdentityPosition::List identityPositionList() const;
     IdentityPosition findIdentityPosition( const QString &id, Flags flags = None );
     bool insert( const IdentityPosition &v );
-    bool isValid() const;
     /**
       Parse XML object from DOM element.
      */
@@ -324,6 +325,7 @@ class Picture
     QString pictureType() const;
     void setId( const QString &v );
     QString id() const;
+    bool isValid() const;
     void setUrl( const QString &v );
     QString url() const;
     /**
@@ -342,9 +344,14 @@ class Picture
 class Pictures
 {
   public:
+    enum Flags { None, AutoCreate };
+
+  public:
     void addPicture( const Picture &v );
     void setPictureList( const Picture::List &v );
     Picture::List pictureList() const;
+    Picture findPicture( const QString &id, Flags flags = None );
+    bool insert( const Picture &v );
     /**
       Parse XML object from DOM element.
      */
@@ -400,6 +407,7 @@ class Group
   public:
     void setId( const QString &v );
     QString id() const;
+    bool isValid() const;
     /**
       Parse XML object from DOM element.
      */
@@ -413,9 +421,14 @@ class Group
 class Groups
 {
   public:
+    enum Flags { None, AutoCreate };
+
+  public:
     void addGroup( const Group &v );
     void setGroupList( const Group::List &v );
     Group::List groupList() const;
+    Group findGroup( const QString &id, Flags flags = None );
+    bool insert( const Group &v );
     /**
       Parse XML object from DOM element.
      */
@@ -452,6 +465,7 @@ class Identity
   public:
     void setId( const QString &v );
     QString id() const;
+    bool isValid() const;
     void setGroups( const Groups &v );
     Groups groups() const;
     void setDisplayName( const QString &v );
@@ -504,13 +518,16 @@ class Identity
 class Polka
 {
   public:
-    enum Flags { None = 0, AutoCreate = 1 };
-  
+    enum Flags { None, AutoCreate };
+
+  public:
     void setSchemaVersion( const QString &v );
     QString schemaVersion() const;
     void addIdentity( const Identity &v );
     void setIdentityList( const Identity::List &v );
     Identity::List identityList() const;
+    Identity findIdentity( const QString &id, Flags flags = None );
+    bool insert( const Identity &v );
     void addGroupView( const GroupView &v );
     void setGroupViewList( const GroupView::List &v );
     GroupView::List groupViewList() const;

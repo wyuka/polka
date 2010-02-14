@@ -1,6 +1,5 @@
 = Polka
 
-* Extend kxml_compiler to create the right id functions.
 * Make use of id functions in polka.
 
 * Add button to arrange items in default configuration with smooth animation

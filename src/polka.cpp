@@ -944,6 +944,11 @@ QString Picture::id() const
   return mId;
 }
 
+bool Picture::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Picture::setUrl( const QString &v )
 {
   mUrl = v;
@@ -1012,6 +1017,33 @@ void Pictures::setPictureList( const Picture::List &v )
 Picture::List Pictures::pictureList() const
 {
   return mPictureList;
+}
+
+Picture Pictures::findPicture( const QString &id, Flags flags )
+{
+  foreach( Picture v, mPictureList ) {
+    if ( v.id() == id ) return v;
+  }
+  Picture v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Pictures::insert( const Picture &v )
+{
+  int i = 0;
+  for( ; i < mPictureList.size(); ++i ) {
+    if ( mPictureList[i].id() == v.id() ) {
+      mPictureList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mPictureList.size() ) {
+    addPicture( v );
+  }
+  return true;
 }
 
 Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
@@ -1164,6 +1196,11 @@ QString Group::id() const
   return mId;
 }
 
+bool Group::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 Group Group::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "group" ) {
@@ -1214,6 +1251,33 @@ void Groups::setGroupList( const Group::List &v )
 Group::List Groups::groupList() const
 {
   return mGroupList;
+}
+
+Group Groups::findGroup( const QString &id, Flags flags )
+{
+  foreach( Group v, mGroupList ) {
+    if ( v.id() == id ) return v;
+  }
+  Group v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Groups::insert( const Group &v )
+{
+  int i = 0;
+  for( ; i < mGroupList.size(); ++i ) {
+    if ( mGroupList[i].id() == v.id() ) {
+      mGroupList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mGroupList.size() ) {
+    addGroup( v );
+  }
+  return true;
 }
 
 Groups Groups::parseElement( const QDomElement &element, bool *ok )
@@ -1310,6 +1374,11 @@ void Identity::setId( const QString &v )
 QString Identity::id() const
 {
   return mId;
+}
+
+bool Identity::isValid() const
+{
+  return !mId.isEmpty();
 }
 
 void Identity::setGroups( const Groups &v )
@@ -1578,6 +1647,33 @@ void Polka::setIdentityList( const Identity::List &v )
 Identity::List Polka::identityList() const
 {
   return mIdentityList;
+}
+
+Identity Polka::findIdentity( const QString &id, Flags flags )
+{
+  foreach( Identity v, mIdentityList ) {
+    if ( v.id() == id ) return v;
+  }
+  Identity v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Polka::insert( const Identity &v )
+{
+  int i = 0;
+  for( ; i < mIdentityList.size(); ++i ) {
+    if ( mIdentityList[i].id() == v.id() ) {
+      mIdentityList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mIdentityList.size() ) {
+    addIdentity( v );
+  }
+  return true;
 }
 
 void Polka::addGroupView( const GroupView &v )
