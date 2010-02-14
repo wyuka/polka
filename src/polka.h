@@ -68,6 +68,7 @@ class GroupView
     IdentityPosition::List identityPositionList() const;
     IdentityPosition findIdentityPosition( const QString &id, Flags flags = None );
     bool insert( const IdentityPosition &v );
+    bool remove( const IdentityPosition &v );
     /**
       Parse XML object from DOM element.
      */
@@ -352,6 +353,7 @@ class Pictures
     Picture::List pictureList() const;
     Picture findPicture( const QString &id, Flags flags = None );
     bool insert( const Picture &v );
+    bool remove( const Picture &v );
     /**
       Parse XML object from DOM element.
      */
@@ -429,6 +431,7 @@ class Groups
     Group::List groupList() const;
     Group findGroup( const QString &id, Flags flags = None );
     bool insert( const Group &v );
+    bool remove( const Group &v );
     /**
       Parse XML object from DOM element.
      */
@@ -528,6 +531,7 @@ class Polka
     Identity::List identityList() const;
     Identity findIdentity( const QString &id, Flags flags = None );
     bool insert( const Identity &v );
+    bool remove( const Identity &v );
     void addGroupView( const GroupView &v );
     void setGroupViewList( const GroupView::List &v );
     GroupView::List groupViewList() const;

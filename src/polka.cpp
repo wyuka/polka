@@ -173,6 +173,18 @@ bool GroupView::insert( const IdentityPosition &v )
   return true;
 }
 
+bool GroupView::remove( const IdentityPosition &v )
+{
+  IdentityPosition::List::Iterator it;
+  for( it = mIdentityPositionList.begin(); it != mIdentityPositionList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mIdentityPositionList.end() ) {
+    mIdentityPositionList.erase( it );
+  }
+  return true;
+}
+
 GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "group_view" ) {
@@ -1046,6 +1058,18 @@ bool Pictures::insert( const Picture &v )
   return true;
 }
 
+bool Pictures::remove( const Picture &v )
+{
+  Picture::List::Iterator it;
+  for( it = mPictureList.begin(); it != mPictureList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mPictureList.end() ) {
+    mPictureList.erase( it );
+  }
+  return true;
+}
+
 Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "pictures" ) {
@@ -1276,6 +1300,18 @@ bool Groups::insert( const Group &v )
   }
   if ( i == mGroupList.size() ) {
     addGroup( v );
+  }
+  return true;
+}
+
+bool Groups::remove( const Group &v )
+{
+  Group::List::Iterator it;
+  for( it = mGroupList.begin(); it != mGroupList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mGroupList.end() ) {
+    mGroupList.erase( it );
   }
   return true;
 }
@@ -1672,6 +1708,18 @@ bool Polka::insert( const Identity &v )
   }
   if ( i == mIdentityList.size() ) {
     addIdentity( v );
+  }
+  return true;
+}
+
+bool Polka::remove( const Identity &v )
+{
+  Identity::List::Iterator it;
+  for( it = mIdentityList.begin(); it != mIdentityList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mIdentityList.end() ) {
+    mIdentityList.erase( it );
   }
   return true;
 }
