@@ -1,7 +1,20 @@
 = Polka
 
-* Remember moved state
+* Extend kxml_compiler to create the right id functions.
+* Make use of id functions in polka.
+
 * Add button to arrange items in default configuration with smooth animation
+
+* Edit details of person
+  * comment
+  * name
+  * emails
+  * phone numbers
+  * address
+  * urls
+* Save modification date of fields
+* Show modification date of fields
+* Edit comments for each field
 
 * Drop images e.g. from web pages to add new pictures to person
 * Check for response when pulling from remote and don't reread data, if nothing
