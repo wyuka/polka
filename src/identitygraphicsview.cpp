@@ -89,7 +89,7 @@ void IdentityGraphicsView::createItems()
 {
   m_scene->clear();
 
-  Identity::List identities = m_model->identityList( m_group.id() );
+  Identity::List identities = m_model->identitiesOfGroup( m_group );
 
   int columns = sqrt( identities.size() );
   int spacing = 150;
@@ -153,9 +153,7 @@ void IdentityGraphicsView::savePosition( const Identity &identity,
 
 void IdentityGraphicsView::resetLayout()
 {
-  GroupView view = m_model->groupView( m_group );
-
-  m_model->polka().remove( view );
+  m_model->clearViewPositions( m_group );
 
   createItems();
 }
