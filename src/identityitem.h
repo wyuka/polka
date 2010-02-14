@@ -36,6 +36,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void showPerson( const Identity & );
     void removePerson( const Identity & );
 
+    void itemMoved( const Identity &, const QPointF & );
+
   protected:
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );

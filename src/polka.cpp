@@ -136,6 +136,31 @@ IdentityPosition::List GroupView::identityPositionList() const
   return mIdentityPositionList;
 }
 
+IdentityPosition GroupView::findIdentityPosition( const QString &id )
+{
+  foreach( IdentityPosition v, mIdentityPositionList ) {
+    if ( v.id() == id ) return v;
+  }
+  IdentityPosition v;
+  v.setId( id );
+  return v;
+}
+
+bool GroupView::insert( const IdentityPosition &v )
+{
+  int i = 0;
+  for( ; i < mIdentityPositionList.size(); ++i ) {
+    if ( mIdentityPositionList[i].id() == v.id() ) {
+      mIdentityPositionList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mIdentityPositionList.size() ) {
+    addIdentityPosition( v );
+  }
+  return true;
+}
+
 GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "group_view" ) {
@@ -1556,6 +1581,31 @@ void Polka::setGroupViewList( const GroupView::List &v )
 GroupView::List Polka::groupViewList() const
 {
   return mGroupViewList;
+}
+
+GroupView Polka::findGroupView( const QString &id )
+{
+  foreach( GroupView v, mGroupViewList ) {
+    if ( v.id() == id ) return v;
+  }
+  GroupView v;
+  v.setId( id );
+  return v;
+}
+
+bool Polka::insert( const GroupView &v )
+{
+  int i = 0;
+  for( ; i < mGroupViewList.size(); ++i ) {
+    if ( mGroupViewList[i].id() == v.id() ) {
+      mGroupViewList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mGroupViewList.size() ) {
+    addGroupView( v );
+  }
+  return true;
 }
 
 Polka Polka::parseElement( const QDomElement &element, bool *ok )

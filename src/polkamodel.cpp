@@ -144,8 +144,6 @@ bool PolkaModel::readData()
     m_identities.append( identity );
   }
 
-  m_views = m_polka.groupViewList();
-
   setupGroups();
 
   return true;
@@ -307,30 +305,14 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   emit identityChanged( identity );
 }
 
-void PolkaModel::saveViewPos( const Identity &group,
+void PolkaModel::saveViewPosition( const Identity &group,
   const Identity &identity,
   const QPointF &pos )
 {
-  foreach( GroupView v, m_views ) {
-    if ( group.id() == v.id() ) {
-      foreach( IdentityPosition p, v.identityPositionList() ) {
-        if ( p.id() == identity.id() ) {
-          p.setX( pos.x() );
-          p.setY( pos.y() );
-          // FIXME: write back
-        }
-      }
-    }
-  }
-
-/*  
-  It should be like this:
-
   GroupView v = m_polka.findGroupView( group.id() );
   IdentityPosition p = v.findIdentityPosition( identity.id() );
   p.setX( pos.x() );
   p.setY( pos.y() );
   v.insert( p );
   m_polka.insert( v );
-*/
 }

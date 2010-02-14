@@ -27,7 +27,7 @@
 #include <KLocale>
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model ), m_moved( false )
+  : QWidget( parent ), m_model( model )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -69,10 +69,6 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 
 void IdentityGraphicsView::setGroup( const Identity &group )
 {
-  if ( m_moved ) {
-    savePositions();
-  }
-
   m_group = group;
 
   setGroupName( group.displayName() );
@@ -97,10 +93,15 @@ void IdentityGraphicsView::createItems()
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
     IdentityItem *item = new IdentityItem( m_model, identity );
+
     connect( item, SIGNAL( showPerson( const Identity & ) ),
       SIGNAL( showPerson( const Identity & ) ) );
     connect( item, SIGNAL( removePerson( const Identity & ) ),
       SLOT( slotRemovePerson( const Identity & ) ) );
+
+    connect( item, SIGNAL( itemMoved( const Identity &, const QPointF & ) ),
+      SLOT( savePosition( const Identity &, const QPointF & ) ) );
+
     item->setPos( posX, posY );
     m_scene->addItem( item );
 
@@ -128,7 +129,8 @@ void IdentityGraphicsView::slotRemovePerson( const Identity &identity )
   emit removePerson( identity, m_group );
 }
 
-void IdentityGraphicsView::savePositions()
+void IdentityGraphicsView::savePosition( const Identity &identity,
+  const QPointF &pos )
 {
-  // FIXME: Save positions of all moved items via PolkaModel::saveViewPos()
+  m_model->saveViewPosition( m_group, identity, pos );
 }

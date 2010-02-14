@@ -97,7 +97,7 @@ void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 {
   if ( pos() != m_movePos ) {
-    qDebug() << "MOVED" << pos();
+    emit itemMoved( m_identity, pos() );
   }
 
   QGraphicsEllipseItem::mouseReleaseEvent( event );

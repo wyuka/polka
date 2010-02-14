@@ -61,6 +61,8 @@ class GroupView
     void addIdentityPosition( const IdentityPosition &v );
     void setIdentityPositionList( const IdentityPosition::List &v );
     IdentityPosition::List identityPositionList() const;
+    IdentityPosition findIdentityPosition( const QString &id );
+    bool insert( const IdentityPosition &v );
     /**
       Parse XML object from DOM element.
      */
@@ -506,6 +508,8 @@ class Polka
     void addGroupView( const GroupView &v );
     void setGroupViewList( const GroupView::List &v );
     GroupView::List groupViewList() const;
+    GroupView findGroupView( const QString &id );
+    bool insert( const GroupView &v );
     /**
       Parse XML object from DOM element.
      */
