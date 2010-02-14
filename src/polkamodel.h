@@ -44,6 +44,13 @@ class PolkaModel : public QObject
 
     Identity &identity( const QString &id );
 
+    // TODO: Not sure, if it's a good idea to expose the data class as reference
+    /**
+      Get access to Polka. Don't store the reference as it might be destroyed
+      at some time.
+    */
+    Polka &polka();
+
     // Maybe replace by direct access to Polka?
     // FIXME: consisten API for querying lists of identities
     Identity::List &identityList( const QString &id );

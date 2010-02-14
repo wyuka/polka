@@ -50,6 +50,11 @@ PolkaModel::~PolkaModel()
   delete m_gitDir;
 }
 
+Polka &PolkaModel::polka()
+{
+  return m_polka;
+}
+
 GitRemote *PolkaModel::gitRemote() const
 {
   return m_gitRemote;

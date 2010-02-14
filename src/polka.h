@@ -533,6 +533,7 @@ class Polka
     GroupView::List groupViewList() const;
     GroupView findGroupView( const QString &id, Flags flags = None );
     bool insert( const GroupView &v );
+    bool remove( const GroupView &v );
     /**
       Parse XML object from DOM element.
      */

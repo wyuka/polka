@@ -59,6 +59,15 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   topLayout->addWidget( view );
   view->show();
 
+  buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+  
+  buttonLayout->addStretch( 1 );
+  
+  button = new QPushButton( i18n("Reset Layout") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( resetLayout() ) );
+
   connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
     SLOT( createItems() ) );
   connect( m_model, SIGNAL( identityChanged( const Identity & ) ),
@@ -140,4 +149,13 @@ void IdentityGraphicsView::savePosition( const Identity &identity,
   const QPointF &pos )
 {
   m_model->saveViewPosition( m_group, identity, pos );
+}
+
+void IdentityGraphicsView::resetLayout()
+{
+  GroupView view = m_model->groupView( m_group );
+
+  m_model->polka().remove( view );
+
+  createItems();
 }

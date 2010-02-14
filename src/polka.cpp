@@ -1718,6 +1718,18 @@ bool Polka::insert( const GroupView &v )
   return true;
 }
 
+bool Polka::remove( const GroupView &v )
+{
+  GroupView::List::Iterator it;
+  for( it = mGroupViewList.begin(); it != mGroupViewList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mGroupViewList.end() ) {
+    mGroupViewList.erase( it );
+  }
+  return true;
+}
+
 Polka Polka::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "polka" ) {
