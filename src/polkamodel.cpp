@@ -309,10 +309,16 @@ void PolkaModel::saveViewPosition( const Identity &group,
   const Identity &identity,
   const QPointF &pos )
 {
-  GroupView v = m_polka.findGroupView( group.id() );
-  IdentityPosition p = v.findIdentityPosition( identity.id() );
+  GroupView v = m_polka.findGroupView( group.id(), Polka::AutoCreate );
+  IdentityPosition p = v.findIdentityPosition( identity.id(),
+    GroupView::AutoCreate );
   p.setX( pos.x() );
   p.setY( pos.y() );
   v.insert( p );
   m_polka.insert( v );
+}
+
+GroupView PolkaModel::groupView( const Identity &group )
+{
+  return m_polka.findGroupView( group.id() );
 }

@@ -88,6 +88,8 @@ void IdentityGraphicsView::createItems()
   int x = 0;
   int y = 0;
 
+  GroupView view = m_model->groupView( m_group );
+
   foreach( Identity identity, identities ) {
     qreal posX = x * spacing + ( y % 2 ) * spacing / 2;
     qreal posY = y * spacing * 0.866; // sin(60 degree)
@@ -102,7 +104,12 @@ void IdentityGraphicsView::createItems()
     connect( item, SIGNAL( itemMoved( const Identity &, const QPointF & ) ),
       SLOT( savePosition( const Identity &, const QPointF & ) ) );
 
-    item->setPos( posX, posY );
+    IdentityPosition p = view.findIdentityPosition( identity.id() );
+    if ( p.isValid() ) {
+      item->setPos( p.x(), p.y() );
+    } else {
+      item->setPos( posX, posY );
+    }
     m_scene->addItem( item );
 
     x++;

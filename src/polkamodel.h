@@ -44,6 +44,7 @@ class PolkaModel : public QObject
 
     Identity &identity( const QString &id );
 
+    // Maybe replace by direct access to Polka?
     // FIXME: consisten API for querying lists of identities
     Identity::List &identityList( const QString &id );
     Identity::List &identities();
@@ -63,6 +64,8 @@ class PolkaModel : public QObject
     void saveViewPosition( const Identity &group,
       const Identity &identity,
       const QPointF &pos );
+
+    GroupView groupView( const Identity &group );
 
   public slots:
     bool readData();

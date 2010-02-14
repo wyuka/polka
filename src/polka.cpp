@@ -46,6 +46,11 @@ QString IdentityPosition::id() const
   return mId;
 }
 
+bool IdentityPosition::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void IdentityPosition::setX( int v )
 {
   mX = v;
@@ -121,6 +126,11 @@ QString GroupView::id() const
   return mId;
 }
 
+bool GroupView::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void GroupView::addIdentityPosition( const IdentityPosition &v )
 {
   mIdentityPositionList.append( v );
@@ -136,13 +146,15 @@ IdentityPosition::List GroupView::identityPositionList() const
   return mIdentityPositionList;
 }
 
-IdentityPosition GroupView::findIdentityPosition( const QString &id )
+IdentityPosition GroupView::findIdentityPosition( const QString &id, Flags flags )
 {
   foreach( IdentityPosition v, mIdentityPositionList ) {
     if ( v.id() == id ) return v;
   }
   IdentityPosition v;
-  v.setId( id );
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
   return v;
 }
 
@@ -1583,13 +1595,15 @@ GroupView::List Polka::groupViewList() const
   return mGroupViewList;
 }
 
-GroupView Polka::findGroupView( const QString &id )
+GroupView Polka::findGroupView( const QString &id, Flags flags )
 {
   foreach( GroupView v, mGroupViewList ) {
     if ( v.id() == id ) return v;
   }
   GroupView v;
-  v.setId( id );
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
   return v;
 }
 

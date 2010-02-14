@@ -34,6 +34,7 @@ class IdentityPosition
   public:
     void setId( const QString &v );
     QString id() const;
+    bool isValid() const;
     void setX( int v );
     int x() const;
     void setY( int v );
@@ -56,13 +57,16 @@ class GroupView
     typedef QList<GroupView> List;
 
   public:
+    enum Flags { None = 0, AutoCreate = 1 };
+
     void setId( const QString &v );
     QString id() const;
     void addIdentityPosition( const IdentityPosition &v );
     void setIdentityPositionList( const IdentityPosition::List &v );
     IdentityPosition::List identityPositionList() const;
-    IdentityPosition findIdentityPosition( const QString &id );
+    IdentityPosition findIdentityPosition( const QString &id, Flags flags = None );
     bool insert( const IdentityPosition &v );
+    bool isValid() const;
     /**
       Parse XML object from DOM element.
      */
@@ -500,6 +504,8 @@ class Identity
 class Polka
 {
   public:
+    enum Flags { None = 0, AutoCreate = 1 };
+  
     void setSchemaVersion( const QString &v );
     QString schemaVersion() const;
     void addIdentity( const Identity &v );
@@ -508,7 +514,7 @@ class Polka
     void addGroupView( const GroupView &v );
     void setGroupViewList( const GroupView::List &v );
     GroupView::List groupViewList() const;
-    GroupView findGroupView( const QString &id );
+    GroupView findGroupView( const QString &id, Flags flags = None );
     bool insert( const GroupView &v );
     /**
       Parse XML object from DOM element.
