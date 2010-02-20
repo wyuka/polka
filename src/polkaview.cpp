@@ -118,7 +118,7 @@ void PolkaView::readData()
   if ( Settings::shownGroup().isEmpty() ) {
     showGroupList();
   } else {
-    Identity group = m_model->identity( Settings::shownGroup() );
+    Identity group = m_model->findIdentity( Settings::shownGroup() );
     showGroupView( group );
   }
 

@@ -55,17 +55,14 @@ GitRemote *PolkaModel::gitRemote() const
   return m_gitRemote;
 }
 
-Identity &PolkaModel::identity( const QString &id )
+Identity PolkaModel::findIdentity( const QString &id )
 {
-  for( int i = 0; i < m_identities.size(); ++i ) {
-    if ( m_identities[i].id() == id ) return m_identities[i]; 
-  }
-  return m_invalidIdentity;
+  return m_polka.findIdentity( id );
 }
 
-Identity::List &PolkaModel::identities()
+Identity::List PolkaModel::allIdentities()
 {
-  return m_identities;
+  return m_polka.identityList();
 }
 
 Identity::List PolkaModel::persons()
@@ -74,7 +71,7 @@ Identity::List PolkaModel::persons()
 
   Identity::List persons;
 
-  foreach( Identity identity, m_identities ) {
+  foreach( Identity identity, m_polka.identityList() ) {
     if ( !identity.groups().groupList().isEmpty() ) {
       persons.append( identity );
     }
@@ -83,7 +80,12 @@ Identity::List PolkaModel::persons()
   return persons;
 }
 
-Identity::List &PolkaModel::identityList( const QString &id )
+Identity::List PolkaModel::identitiesOfGroup( const Identity &group )
+{
+  return identitiesOfGroup( group.id() );
+}
+
+Identity::List PolkaModel::identitiesOfGroup( const QString &id )
 {
   if ( id.isEmpty() ) return m_groups;
   if ( !m_groupMap.contains( id ) ) {
@@ -134,14 +136,11 @@ bool PolkaModel::readData()
     return false;
   }
 
-  m_identities.clear();
-
   foreach( Identity identity, m_polka.identityList() ) {
     if ( identity.id().isEmpty() ) {
       identity.setId( KRandom::randomString( 10 ) );
+      m_polka.insert( identity );
     }
-
-    m_identities.append( identity );
   }
 
   setupGroups();
@@ -154,7 +153,7 @@ void PolkaModel::setupGroups()
   m_groups.clear();
   m_groupMap.clear();
 
-  foreach( Identity identity, m_identities ) {
+  foreach( Identity identity, m_polka.identityList() ) {
     if ( identity.groups().groupList().isEmpty() ) {
       m_groups.append( identity );
     } else {
@@ -183,8 +182,6 @@ void PolkaModel::writeData()
     return;
   }
 
-  m_polka.setIdentityList( m_identities );
-  
   m_polka.writeFile( m_gitDir->filePath( "std.polka" ) );
   m_commitCommand = m_gitDir->commitData();
 }
@@ -208,10 +205,8 @@ void PolkaModel::insert( Identity identity )
 {
   if ( identity.id().isEmpty() ) {
     identity.setId( KRandom::randomString( 10 ) );
-    m_identities.append( identity );
-  } else {
-    this->identity( identity.id() ) = identity;
   }
+  m_polka.insert( identity );
 
   setupGroups();
 
@@ -238,23 +233,18 @@ void PolkaModel::removePerson( const Identity &person, const Identity &group )
   }
   
   if ( newGroups.isEmpty() ) {
-    for( int i = 0; i < m_identities.count(); ++i ) {
-      if ( m_identities[i].id() == person.id() ) {
-        m_identities.removeAt( i );
-        break;
-      }
-    }
+    m_polka.remove( person );
     
     setupGroups();
     
-    emit identityRemoved( person ); 
+    emit identityRemoved( person );
   } else {
     Identity newPerson = person;
   
     Groups gg;
     gg.setGroupList( newGroups );
     newPerson.setGroups( gg );
-    this->identity( person.id() ) = newPerson;
+    m_polka.insert( newPerson );
     
     setupGroups();
     
@@ -284,7 +274,7 @@ QPixmap PolkaModel::picture( const Identity &identity ) const
 void PolkaModel::importPicture( const QPixmap &pixmap,
   const Identity &target )
 {
-  Identity &identity = this->identity( target.id() );
+  Identity identity = findIdentity( target.id() );
   
   Pictures pictures = identity.pictures();
   Picture::List pictureList = pictures.pictureList();
@@ -299,8 +289,33 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   pictureList.prepend( picture );
   pictures.setPictureList( pictureList );
   identity.setPictures( pictures );
+  m_polka.insert( identity );
 
   m_localPictures.insert( identity.id(), localPicture );
 
   emit identityChanged( identity );
+}
+
+void PolkaModel::saveViewPosition( const Identity &group,
+  const Identity &identity,
+  const QPointF &pos )
+{
+  GroupView v = m_polka.findGroupView( group.id(), Polka::AutoCreate );
+  IdentityPosition p = v.findIdentityPosition( identity.id(),
+    GroupView::AutoCreate );
+  p.setX( pos.x() );
+  p.setY( pos.y() );
+  v.insert( p );
+  m_polka.insert( v );
+}
+
+void PolkaModel::clearViewPositions( const Identity &group )
+{
+  GroupView view = m_polka.findGroupView( group.id() );
+  m_polka.remove( view );
+}
+
+GroupView PolkaModel::groupView( const Identity &group )
+{
+  return m_polka.findGroupView( group.id() );
 }

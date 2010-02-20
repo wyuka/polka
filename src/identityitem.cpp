@@ -89,7 +89,18 @@ void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
 
 void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 {
+  m_movePos = pos();
+
   QGraphicsEllipseItem::mousePressEvent( event );
+}
+
+void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
+{
+  if ( pos() != m_movePos ) {
+    emit itemMoved( m_identity, pos() );
+  }
+
+  QGraphicsEllipseItem::mouseReleaseEvent( event );
 }
 
 void IdentityItem::slotItemSelected( FanMenu::Item *item )
@@ -99,4 +110,10 @@ void IdentityItem::slotItemSelected( FanMenu::Item *item )
   } else if ( item == m_showMenuItem ) {
     emit showPerson( m_identity );
   }
+}
+
+QVariant IdentityItem::itemChange( GraphicsItemChange change,
+  const QVariant &value )
+{
+  return QGraphicsEllipseItem::itemChange( change, value );
 }

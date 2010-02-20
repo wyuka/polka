@@ -40,14 +40,17 @@ class PolkaModel : public QObject
     void writeData();
 
     // FIXME: create create,read,update,delete identity functions
+    Identity findIdentity( const QString &id );
     void insert( Identity ); // create
 
-    Identity &identity( const QString &id );
-
-    // FIXME: consisten API for querying lists of identities
-    Identity::List &identityList( const QString &id );
-    Identity::List &identities();
+  public:
+    // FIXME: consistent API for querying lists of identities
     Identity::List persons();
+    Identity::List identitiesOfGroup( const Identity &group );
+    Identity::List identitiesOfGroup( const QString &id );
+
+    // FIXME: maybe replace by read-only polka access
+    Identity::List allIdentities();
 
     void removePerson( const Identity &person, const Identity &group );
 
@@ -60,12 +63,20 @@ class PolkaModel : public QObject
 
     void importPicture( const QPixmap &, const Identity & );
 
+    void saveViewPosition( const Identity &group,
+      const Identity &identity,
+      const QPointF &pos );
+    void clearViewPositions( const Identity &group );
+
+    GroupView groupView( const Identity &group );
+
   public slots:
     bool readData();
 
   signals:
     void dataWritten();
 
+    // FIXME: What's the difference between inserted and changed?
     void identityInserted( const Identity & );
     void identityChanged( const Identity & );
     void identityRemoved( const Identity & );
@@ -83,9 +94,6 @@ class PolkaModel : public QObject
   
     Polka m_polka;
     bool m_dataIsValid;
-
-    Identity m_invalidIdentity;
-    Identity::List m_identities;
 
     Identity::List m_groups;
     QMap<QString,Identity::List> m_groupMap;

@@ -59,6 +59,15 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   topLayout->addWidget( view );
   view->show();
 
+  buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+  
+  buttonLayout->addStretch( 1 );
+  
+  button = new QPushButton( i18n("Reset Layout") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( resetLayout() ) );
+
   connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
     SLOT( createItems() ) );
   connect( m_model, SIGNAL( identityChanged( const Identity & ) ),
@@ -78,11 +87,9 @@ void IdentityGraphicsView::setGroup( const Identity &group )
 
 void IdentityGraphicsView::createItems()
 {
-  qDebug() << "CREATE ITEMS";
-
   m_scene->clear();
 
-  Identity::List identities = m_model->identityList( m_group.id() );
+  Identity::List identities = m_model->identitiesOfGroup( m_group );
 
   int columns = sqrt( identities.size() );
   int spacing = 150;
@@ -90,16 +97,28 @@ void IdentityGraphicsView::createItems()
   int x = 0;
   int y = 0;
 
+  GroupView view = m_model->groupView( m_group );
+
   foreach( Identity identity, identities ) {
     qreal posX = x * spacing + ( y % 2 ) * spacing / 2;
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
     IdentityItem *item = new IdentityItem( m_model, identity );
+
     connect( item, SIGNAL( showPerson( const Identity & ) ),
       SIGNAL( showPerson( const Identity & ) ) );
     connect( item, SIGNAL( removePerson( const Identity & ) ),
       SLOT( slotRemovePerson( const Identity & ) ) );
-    item->setPos( posX, posY );
+
+    connect( item, SIGNAL( itemMoved( const Identity &, const QPointF & ) ),
+      SLOT( savePosition( const Identity &, const QPointF & ) ) );
+
+    IdentityPosition p = view.findIdentityPosition( identity.id() );
+    if ( p.isValid() ) {
+      item->setPos( p.x(), p.y() );
+    } else {
+      item->setPos( posX, posY );
+    }
     m_scene->addItem( item );
 
     x++;
@@ -124,4 +143,17 @@ void IdentityGraphicsView::setGroupName( const QString &name )
 void IdentityGraphicsView::slotRemovePerson( const Identity &identity )
 {
   emit removePerson( identity, m_group );
+}
+
+void IdentityGraphicsView::savePosition( const Identity &identity,
+  const QPointF &pos )
+{
+  m_model->saveViewPosition( m_group, identity, pos );
+}
+
+void IdentityGraphicsView::resetLayout()
+{
+  m_model->clearViewPositions( m_group );
+
+  createItems();
 }

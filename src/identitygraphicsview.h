@@ -44,8 +44,12 @@ class IdentityGraphicsView : public QWidget
     void removePerson( const Identity &person, const Identity &group );
 
   protected slots:
+    void resetLayout();
+  
     void createItems();
     void slotRemovePerson( const Identity & );
+
+    void savePosition( const Identity &, const QPointF & );
 
   private:
     PolkaModel *m_model;

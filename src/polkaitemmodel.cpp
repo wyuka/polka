@@ -42,7 +42,7 @@ int PolkaItemModel::rowCount(const QModelIndex &parent) const
 {
   Q_UNUSED( parent );
 
-  return m_model->identityList( m_groupId ).count();
+  return m_model->identitiesOfGroup( m_groupId ).count();
 }
 
 QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
@@ -67,7 +67,7 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
 
 Identity PolkaItemModel::getIdentityData( const QModelIndex &index ) const
 {
-  return m_model->identityList( m_groupId ).at( index.row() );
+  return m_model->identitiesOfGroup( m_groupId ).at( index.row() );
 }
 
 QVariant PolkaItemModel::headerData(int section, Qt::Orientation orientation,
@@ -89,5 +89,5 @@ void PolkaItemModel::updateData()
 
 Identity PolkaItemModel::identity( const QModelIndex &index )
 {
-  return m_model->identityList( m_groupId ).at( index.row() );
+  return m_model->identitiesOfGroup( m_groupId ).at( index.row() );
 }

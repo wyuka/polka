@@ -2,7 +2,9 @@
   <identity>
     <id>7zrgrehth75</id>
     <groups>
-      <group><id>fkjfrf6rhfrf6f5ewzf</id></group>
+      <group>
+        <id>fkjfrf6rhfrf6f5ewzf</id>
+      </group>
       <group><id>633hedehe</id></group>
     </groups>
     <display_name>Hans</display_name>
@@ -105,4 +107,20 @@
       </note>
     </notes>
   </identity>
+  <group_view>
+    <id>shsh</id>
+    <identity_position>
+      <id>dud</id>
+      <x>123</x>
+      <y>654</y>
+    </identity_position>
+    <identity_position>
+      <id>dud</id>
+      <x>123</x>
+      <y>654</y>
+    </identity_position>
+  </group_view>
+  <group_view>
+    <id>shshx</id>
+  </group_view>
 </polka>

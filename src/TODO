@@ -1,7 +1,21 @@
 = Polka
 
-* Remember moved state
+* Make use of id functions in polka.
+
 * Add button to arrange items in default configuration with smooth animation
+
+* Edit details of person
+  * comment
+  * name
+  * emails
+  * phone numbers
+  * address
+  * urls
+* Save modification date of fields
+* Show modification date of fields
+* Edit comments for each field
+
+* Make sure new items don't overlap with existing moved ones.
 
 * Drop images e.g. from web pages to add new pictures to person
 * Check for response when pulling from remote and don't reread data, if nothing
@@ -17,8 +31,12 @@
 * More than one (remote) repo, to separate for example private and job data
 * Group specific display names
 
+* Migrate data between schema versions
+
 = kxml_compiler
 
 * eliminate pictures() from identity().pictures().pictureList()
 * add a way to add custom functions to classes
   (e.g. bool isEmpty() { m_id.isEmpty(); })
+* Recognize bool attributes (position.moved)
+* Instead of List create pluralized forms.

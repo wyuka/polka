@@ -36,6 +36,200 @@ QString indent( int n = 0 )
   return space.fill( ' ', i );
 }
 
+void IdentityPosition::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString IdentityPosition::id() const
+{
+  return mId;
+}
+
+bool IdentityPosition::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void IdentityPosition::setX( int v )
+{
+  mX = v;
+}
+
+int IdentityPosition::x() const
+{
+  return mX;
+}
+
+void IdentityPosition::setY( int v )
+{
+  mY = v;
+}
+
+int IdentityPosition::y() const
+{
+  return mY;
+}
+
+IdentityPosition IdentityPosition::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "identity_position" ) {
+    qCritical() << "Expected 'identity_position', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return IdentityPosition();
+  }
+
+  IdentityPosition result = IdentityPosition();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "x" ) {
+      result.setX( e.text().toInt() );
+    }
+    else if ( e.tagName() == "y" ) {
+      result.setY( e.text().toInt() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString IdentityPosition::writeElement()
+{
+  QString xml;
+  xml += indent() + "<identity_position>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
+  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
+  indent( -2 );
+  xml += indent() + "</identity_position>\n";
+  return xml;
+}
+
+
+void GroupView::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString GroupView::id() const
+{
+  return mId;
+}
+
+bool GroupView::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void GroupView::addIdentityPosition( const IdentityPosition &v )
+{
+  mIdentityPositionList.append( v );
+}
+
+void GroupView::setIdentityPositionList( const IdentityPosition::List &v )
+{
+  mIdentityPositionList = v;
+}
+
+IdentityPosition::List GroupView::identityPositionList() const
+{
+  return mIdentityPositionList;
+}
+
+IdentityPosition GroupView::findIdentityPosition( const QString &id, Flags flags )
+{
+  foreach( IdentityPosition v, mIdentityPositionList ) {
+    if ( v.id() == id ) return v;
+  }
+  IdentityPosition v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool GroupView::insert( const IdentityPosition &v )
+{
+  int i = 0;
+  for( ; i < mIdentityPositionList.size(); ++i ) {
+    if ( mIdentityPositionList[i].id() == v.id() ) {
+      mIdentityPositionList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mIdentityPositionList.size() ) {
+    addIdentityPosition( v );
+  }
+  return true;
+}
+
+bool GroupView::remove( const IdentityPosition &v )
+{
+  IdentityPosition::List::Iterator it;
+  for( it = mIdentityPositionList.begin(); it != mIdentityPositionList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mIdentityPositionList.end() ) {
+    mIdentityPositionList.erase( it );
+  }
+  return true;
+}
+
+GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "group_view" ) {
+    qCritical() << "Expected 'group_view', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return GroupView();
+  }
+
+  GroupView result = GroupView();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "identity_position" ) {
+      bool ok;
+      IdentityPosition o = IdentityPosition::parseElement( e, &ok );
+      if ( ok ) result.addIdentityPosition( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString GroupView::writeElement()
+{
+  QString xml;
+  xml += indent() + "<group_view>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  foreach( IdentityPosition e, identityPositionList() ) {
+    xml += e.writeElement();
+  }
+  indent( -2 );
+  xml += indent() + "</group_view>\n";
+  return xml;
+}
+
+
 void Comment::setId( const QString &v )
 {
   mId = v;
@@ -762,6 +956,11 @@ QString Picture::id() const
   return mId;
 }
 
+bool Picture::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Picture::setUrl( const QString &v )
 {
   mUrl = v;
@@ -830,6 +1029,45 @@ void Pictures::setPictureList( const Picture::List &v )
 Picture::List Pictures::pictureList() const
 {
   return mPictureList;
+}
+
+Picture Pictures::findPicture( const QString &id, Flags flags )
+{
+  foreach( Picture v, mPictureList ) {
+    if ( v.id() == id ) return v;
+  }
+  Picture v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Pictures::insert( const Picture &v )
+{
+  int i = 0;
+  for( ; i < mPictureList.size(); ++i ) {
+    if ( mPictureList[i].id() == v.id() ) {
+      mPictureList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mPictureList.size() ) {
+    addPicture( v );
+  }
+  return true;
+}
+
+bool Pictures::remove( const Picture &v )
+{
+  Picture::List::Iterator it;
+  for( it = mPictureList.begin(); it != mPictureList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mPictureList.end() ) {
+    mPictureList.erase( it );
+  }
+  return true;
 }
 
 Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
@@ -982,6 +1220,11 @@ QString Group::id() const
   return mId;
 }
 
+bool Group::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 Group Group::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "group" ) {
@@ -1032,6 +1275,45 @@ void Groups::setGroupList( const Group::List &v )
 Group::List Groups::groupList() const
 {
   return mGroupList;
+}
+
+Group Groups::findGroup( const QString &id, Flags flags )
+{
+  foreach( Group v, mGroupList ) {
+    if ( v.id() == id ) return v;
+  }
+  Group v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Groups::insert( const Group &v )
+{
+  int i = 0;
+  for( ; i < mGroupList.size(); ++i ) {
+    if ( mGroupList[i].id() == v.id() ) {
+      mGroupList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mGroupList.size() ) {
+    addGroup( v );
+  }
+  return true;
+}
+
+bool Groups::remove( const Group &v )
+{
+  Group::List::Iterator it;
+  for( it = mGroupList.begin(); it != mGroupList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mGroupList.end() ) {
+    mGroupList.erase( it );
+  }
+  return true;
 }
 
 Groups Groups::parseElement( const QDomElement &element, bool *ok )
@@ -1128,6 +1410,11 @@ void Identity::setId( const QString &v )
 QString Identity::id() const
 {
   return mId;
+}
+
+bool Identity::isValid() const
+{
+  return !mId.isEmpty();
 }
 
 void Identity::setGroups( const Groups &v )
@@ -1398,6 +1685,99 @@ Identity::List Polka::identityList() const
   return mIdentityList;
 }
 
+Identity Polka::findIdentity( const QString &id, Flags flags )
+{
+  foreach( Identity v, mIdentityList ) {
+    if ( v.id() == id ) return v;
+  }
+  Identity v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Polka::insert( const Identity &v )
+{
+  int i = 0;
+  for( ; i < mIdentityList.size(); ++i ) {
+    if ( mIdentityList[i].id() == v.id() ) {
+      mIdentityList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mIdentityList.size() ) {
+    addIdentity( v );
+  }
+  return true;
+}
+
+bool Polka::remove( const Identity &v )
+{
+  Identity::List::Iterator it;
+  for( it = mIdentityList.begin(); it != mIdentityList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mIdentityList.end() ) {
+    mIdentityList.erase( it );
+  }
+  return true;
+}
+
+void Polka::addGroupView( const GroupView &v )
+{
+  mGroupViewList.append( v );
+}
+
+void Polka::setGroupViewList( const GroupView::List &v )
+{
+  mGroupViewList = v;
+}
+
+GroupView::List Polka::groupViewList() const
+{
+  return mGroupViewList;
+}
+
+GroupView Polka::findGroupView( const QString &id, Flags flags )
+{
+  foreach( GroupView v, mGroupViewList ) {
+    if ( v.id() == id ) return v;
+  }
+  GroupView v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Polka::insert( const GroupView &v )
+{
+  int i = 0;
+  for( ; i < mGroupViewList.size(); ++i ) {
+    if ( mGroupViewList[i].id() == v.id() ) {
+      mGroupViewList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mGroupViewList.size() ) {
+    addGroupView( v );
+  }
+  return true;
+}
+
+bool Polka::remove( const GroupView &v )
+{
+  GroupView::List::Iterator it;
+  for( it = mGroupViewList.begin(); it != mGroupViewList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mGroupViewList.end() ) {
+    mGroupViewList.erase( it );
+  }
+  return true;
+}
+
 Polka Polka::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "polka" ) {
@@ -1416,6 +1796,11 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
       Identity o = Identity::parseElement( e, &ok );
       if ( ok ) result.addIdentity( o );
     }
+    else if ( e.tagName() == "group_view" ) {
+      bool ok;
+      GroupView o = GroupView::parseElement( e, &ok );
+      if ( ok ) result.addGroupView( o );
+    }
   }
 
   result.setSchemaVersion( element.attribute( "schemaVersion" ) );
@@ -1430,6 +1815,9 @@ QString Polka::writeElement()
   xml += indent() + "<polka schemaVersion=\"" + schemaVersion() + "\">\n";
   indent( 2 );
   foreach( Identity e, identityList() ) {
+    xml += e.writeElement();
+  }
+  foreach( GroupView e, groupViewList() ) {
     xml += e.writeElement();
   }
   indent( -2 );
@@ -1455,7 +1843,7 @@ Polka Polka::parseFile( const QString &filename, bool *ok )
     return Polka();
   }
 
-//  qDebug() << "CONTENT:" << doc.toString();
+  qDebug() << "CONTENT:" << doc.toString();
 
   bool documentOk;
   Polka c = parseElement( doc.documentElement(), &documentOk );

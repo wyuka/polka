@@ -84,7 +84,7 @@ Identity NewPersonDialog::identity()
     if ( selectedIndexes.count() > 1 ) {
       KMessageBox::information( 0, "More than one person selected" );
     }
-    return m_model->identity( m_proxyModel->data( selectedIndexes.first(),
+    return m_model->findIdentity( m_proxyModel->data( selectedIndexes.first(),
       Qt::UserRole ).toString() );
   }
 }
