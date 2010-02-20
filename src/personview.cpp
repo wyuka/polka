@@ -81,6 +81,10 @@ void PersonView::showIdentity( const Identity &identity )
     a.attribute("href","mailto:" + email.text());
     a.text(email.text());
   }
+  doc.element("h2").text(i18n("Comments"));
+  foreach( Comment comment, identity.comments().commentList() ) {
+    doc.element("p").text( comment.text() );
+  }
 
   qDebug() << doc.html();
 
