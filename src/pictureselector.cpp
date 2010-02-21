@@ -22,13 +22,15 @@
 #include "pictureselectorbutton.h"
 
 PictureSelector::PictureSelector( QWidget *parent )
-  : QWidget( parent )
+  : QWidget( parent ), m_layout( 0 )
 {
-  m_layout = new QHBoxLayout( this );
 }
 
 void PictureSelector::setPictures( const Picture::List &pictures )
 {
+  delete m_layout;
+  m_layout = new QHBoxLayout( this );
+
   foreach( Picture picture, pictures ) {
     PictureSelectorButton *button = new PictureSelectorButton;
     m_layout->addWidget( button );
