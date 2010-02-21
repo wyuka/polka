@@ -1,0 +1,32 @@
+.editbar {
+  background-color: #80CCFF;
+
+  padding: 6px 6px;
+  border: 1px solid;
+
+  border-bottom-left-radius: 6px 6px;
+  border-bottom-right-radius: 6px 6px;
+  border-top-left-radius: 6px 6px;
+  border-top-right-radius: 6px 6px;
+
+  display: block;
+  
+  position: absolute;
+  bottom: 10px;
+}
+
+.editbar span {
+  margin-right: 10px;
+}
+
+.edit-link {
+  font-size: 60%;
+}
+
+.trigger span.edit-link {
+  display: none;
+}
+
+.trigger:hover span.edit-link {
+  display: block;
+}
