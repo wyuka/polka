@@ -19,6 +19,111 @@
 
 #include "htmlcreator.h"
 
+#include <QDebug>
+
+CssDeclaration::CssDeclaration( const QString &property, const QString &value )
+  : m_property( property ), m_value( value )
+{
+}
+
+QString CssDeclaration::property() const
+{
+  return m_property;
+}
+
+QString CssDeclaration::value() const
+{
+  return m_value;
+}
+
+
+CssRule::CssRule()
+{
+}
+
+CssRule::CssRule( const QString &selector )
+  : m_selector( selector )
+{
+}
+
+QString CssRule::selector() const
+{
+  return m_selector;
+}
+
+CssDeclaration::List CssRule::declarations() const
+{
+  return m_declarations;
+}
+
+void CssRule::addDeclaration( const CssDeclaration &declaration )
+{
+  m_declarations.append( declaration );
+}
+
+void CssRule::add( const QString &property, const QString &value )
+{
+  addDeclaration( CssDeclaration( property, value ) );
+}
+
+void CssRule::dump()
+{
+  qDebug() << "RULE FOR" << m_selector;
+  foreach( CssDeclaration d, m_declarations ) {
+    qDebug() << "  " << d.property() << d.value();
+  }
+}
+
+
+void CssSheet::addRule( const CssRule &rule )
+{
+  m_rules.insert( rule.selector(), rule );
+}
+
+void CssSheet::addRule( const QString &selector, const QString &property,
+  const QString &value )
+{
+  CssRule rule( selector );
+
+  CssDeclaration declaration( property, value );
+
+  if ( m_rules.contains( selector ) ) {
+    rule = m_rules[ selector ];
+  }
+
+  rule.addDeclaration( declaration );
+
+  addRule( rule );
+}
+
+CssRule &CssSheet::rule( const QString &selector )
+{
+  CssRule rule( selector );
+
+  if ( !m_rules.contains( selector ) ) {
+    addRule( rule );
+  }
+
+  return m_rules[ selector ];
+}
+
+QString CssSheet::render()
+{
+  QString text;
+
+  foreach( CssRule rule, m_rules ) {
+    text += rule.selector() + " {\n";
+    foreach( CssDeclaration declaration, rule.declarations() ) {
+      text += "  " + declaration.property() + ": " + declaration.value() +
+        ";\n";
+    }
+    text += "}\n";
+  }
+  
+  return text;
+}
+
+
 HtmlElement::HtmlElement()
 {
 }
@@ -71,7 +176,16 @@ QString HtmlDoc::html()
   xml.setAutoFormatting( true );
   xml.writeStartDocument();
 
+  xml.writeStartElement( "head" );
+  xml.writeStartElement( "style" );
+  xml.writeAttribute( "type", "text/css" );
+  
+  xml.writeComment( m_css.render() );
+  xml.writeEndElement();
+
+  xml.writeStartElement( "body" );
   writeElements( xml, childElements() );
+  xml.writeEndElement();
 
   xml.writeEndDocument();
   
@@ -95,4 +209,9 @@ void HtmlDoc::writeElements( QXmlStreamWriter &xml,
     }
     xml.writeEndElement();
   }
+}
+
+void HtmlDoc::setCss( const CssSheet &css )
+{
+  m_css = css;
 }

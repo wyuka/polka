@@ -78,6 +78,30 @@ void PersonView::showIdentity( const Identity &identity )
   }
 
   HtmlDoc doc;
+
+  CssSheet css;
+
+  CssRule &rule = css.rule( ".editbar" );
+
+  rule.add( "background-color", "#80CCFF" );
+  
+  QString radius = "6px 6px";
+  
+  rule.add( "padding", radius );
+
+  // FIXME: Make it work with more recent webkit version (seems to work in
+  // Chromium, but not in QWebKit 4.5.
+/*
+  rule.add( "border-bottom-left-radius", radius );
+  rule.add( "border-bottom-right-radius", radius );
+  rule.add( "border-top-left-radius", radius );
+  rule.add( "border-top-right-radius", radius );
+*/
+
+  rule.add( "-webkit-border-radius", "6px" );
+
+  doc.setCss( css );
+
   doc.element("h1").text(identity.displayName());
   if ( !identity.name().text().isEmpty() ) {
     doc.element("p").text(identity.name().text());

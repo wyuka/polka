@@ -24,6 +24,56 @@
 #include <QMap>
 #include <QXmlStreamWriter>
 
+class CssDeclaration
+{
+  public:
+    typedef QList<CssDeclaration> List;
+  
+    CssDeclaration( const QString &property, const QString &value );
+  
+    QString property() const;
+    QString value() const;
+  
+  private:
+    QString m_property;
+    QString m_value;
+};
+
+class CssRule
+{
+  public:
+    CssRule();
+    CssRule( const QString &selector );
+  
+    QString selector() const;
+
+    CssDeclaration::List declarations() const;
+    void addDeclaration( const CssDeclaration & );
+
+    void add( const QString &property, const QString &value );
+  
+    void dump();
+  
+  private:
+    QString m_selector;
+    CssDeclaration::List m_declarations;
+};
+
+class CssSheet
+{
+  public:
+    void addRule( const QString &selector, const QString &property,
+      const QString &value );
+    void addRule( const CssRule & );
+
+    CssRule &rule( const QString &selector );
+  
+    QString render();
+
+  private:
+    QMap <QString,CssRule> m_rules;
+};
+
 class HtmlElement
 {
   public:
@@ -56,11 +106,16 @@ class HtmlDoc : public HtmlElement
 {
   public:
     HtmlDoc();
+
+    void setCss( const CssSheet & );
     
     QString html();
 
   protected:
     void writeElements( QXmlStreamWriter &xml, HtmlElement::List &elements );
+
+  private:
+    CssSheet m_css;
 };
 
 #endif
