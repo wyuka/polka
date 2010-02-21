@@ -29,6 +29,7 @@
 #include <klocale.h>
 #include <KUrl>
 #include <KInputDialog>
+#include <KRandom>
 
 PersonView::PersonView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model )
@@ -208,17 +209,18 @@ void PersonView::addEmail()
     m_model->insert( m_identity );
 
 //    showIdentity( m_identity );
-  }  
+  }
 }
 
 void PersonView::addComment()
 {
   CommentEditor *editor = new CommentEditor( this );
   if ( editor->exec() == CommentEditor::Accepted ) {
-    Comment c;
-    c.setText( editor->comment() );
     Comments cs = m_identity.comments();
-    cs.addComment( c );
+    Comment c;
+    c.setId( KRandom::randomString( 10 ) );
+    c.setText( editor->comment() );
+    cs.insert( c );
     m_identity.setComments( cs );
     
     m_model->insert( m_identity );

@@ -292,6 +292,45 @@ Comment::List Comments::commentList() const
   return mCommentList;
 }
 
+Comment Comments::findComment( const QString &id, Flags flags )
+{
+  foreach( Comment v, mCommentList ) {
+    if ( v.id() == id ) return v;
+  }
+  Comment v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Comments::insert( const Comment &v )
+{
+  int i = 0;
+  for( ; i < mCommentList.size(); ++i ) {
+    if ( mCommentList[i].id() == v.id() ) {
+      mCommentList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mCommentList.size() ) {
+    addComment( v );
+  }
+  return true;
+}
+
+bool Comments::remove( const Comment &v )
+{
+  Comment::List::Iterator it;
+  for( it = mCommentList.begin(); it != mCommentList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mCommentList.end() ) {
+    mCommentList.erase( it );
+  }
+  return true;
+}
+
 Comments Comments::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "comments" ) {
@@ -658,6 +697,45 @@ void Notes::setNoteList( const Note::List &v )
 Note::List Notes::noteList() const
 {
   return mNoteList;
+}
+
+Note Notes::findNote( const QString &id, Flags flags )
+{
+  foreach( Note v, mNoteList ) {
+    if ( v.id() == id ) return v;
+  }
+  Note v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Notes::insert( const Note &v )
+{
+  int i = 0;
+  for( ; i < mNoteList.size(); ++i ) {
+    if ( mNoteList[i].id() == v.id() ) {
+      mNoteList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mNoteList.size() ) {
+    addNote( v );
+  }
+  return true;
+}
+
+bool Notes::remove( const Note &v )
+{
+  Note::List::Iterator it;
+  for( it = mNoteList.begin(); it != mNoteList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mNoteList.end() ) {
+    mNoteList.erase( it );
+  }
+  return true;
 }
 
 Notes Notes::parseElement( const QDomElement &element, bool *ok )

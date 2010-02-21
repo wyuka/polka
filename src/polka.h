@@ -104,9 +104,15 @@ class Comment
 class Comments
 {
   public:
+    enum Flags { None, AutoCreate };
+
+  public:
     void addComment( const Comment &v );
     void setCommentList( const Comment::List &v );
     Comment::List commentList() const;
+    Comment findComment( const QString &id, Flags flags = None );
+    bool insert( const Comment &v );
+    bool remove( const Comment &v );
     /**
       Parse XML object from DOM element.
      */
@@ -224,9 +230,15 @@ class Note
 class Notes
 {
   public:
+    enum Flags { None, AutoCreate };
+
+  public:
     void addNote( const Note &v );
     void setNoteList( const Note::List &v );
     Note::List noteList() const;
+    Note findNote( const QString &id, Flags flags = None );
+    bool insert( const Note &v );
+    bool remove( const Note &v );
     /**
       Parse XML object from DOM element.
      */
