@@ -1,4 +1,5 @@
 set(polka_SRCS
+  commenteditor.cpp
   fanmenuelement.cpp
   fanmenu.cpp
   gitremote.cpp

@@ -24,6 +24,7 @@
 #include "pictureselector.h"
 #include "regiongrabber.h"
 #include "polkamodel.h"
+#include "commenteditor.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -135,9 +136,14 @@ void PersonView::showIdentity( const Identity &identity )
 
   HtmlElement &editBar = doc.element("div");
   editBar.attribute( "class", "editbar" );
+
   HtmlElement &addEmail = editBar.element("span").element("a");
   addEmail.attribute("href","polka:addEmail");
   addEmail.text("Add email");
+
+  HtmlElement &addComment = editBar.element("span").element("a");
+  addComment.attribute("href","polka:addComment");
+  addComment.text("Add comment");
 
   qDebug() << doc.html();
 
@@ -179,6 +185,7 @@ void PersonView::slotLinkClicked( const QUrl &url )
     QString action = url.path();
     qDebug() << "ACTION" << action;
     if ( action == "addEmail" ) addEmail();
+    else if ( action == "addComment" ) addComment();
     else qDebug() << "unknown action" << action;
   }
 }
@@ -199,4 +206,18 @@ void PersonView::addEmail()
 
 //    showIdentity( m_identity );
   }  
+}
+
+void PersonView::addComment()
+{
+  CommentEditor *editor = new CommentEditor( this );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Comment c;
+    c.setText( editor->comment() );
+    Comments cs = m_identity.comments();
+    cs.addComment( c );
+    m_identity.setComments( cs );
+    
+    m_model->insert( m_identity );
+  }
 }

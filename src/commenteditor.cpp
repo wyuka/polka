@@ -28,6 +28,8 @@ CommentEditor::CommentEditor( QWidget *parent )
 
   m_edit = new QTextEdit;
   setMainWidget( m_edit );
+
+  m_edit->setFocus();
 }
 
 QString CommentEditor::comment() const
