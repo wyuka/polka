@@ -197,9 +197,12 @@ void PolkaView::showView()
 
 void PolkaView::showPerson( const Identity &identity )
 {
+  KDialog *dialog = new KDialog( this );
+  dialog->setButtons( KDialog::Ok );
   PersonView *view = new PersonView( m_model );
   view->showIdentity( identity );
-  view->show();
+  dialog->setMainWidget( view );
+  dialog->show();
 }
 
 void PolkaView::removePerson( const Identity &identity, const Identity &group )

@@ -57,10 +57,6 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   pictureSelectorLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
-  button = new QPushButton( i18n("Close") );
-  topLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( close() ) );
-
   connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
     SLOT( showIdentity( const Identity & ) ) );
 }
