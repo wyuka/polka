@@ -121,17 +121,20 @@ void PersonView::showIdentity( const Identity &identity )
     a.text(email.text());
   }
 
-  HtmlElement &commentDiv = doc.element("div");
-  commentDiv.attribute( "class", "trigger" );
-  commentDiv.element("h2").text(i18n("Comments"));
-  HtmlElement &span = commentDiv.element("span");
-  span.attribute("class","edit-link");
-  HtmlElement &a = span.element("a");
-  a.attribute("href","polka:editComment");
-  a.text("Edit");
+  HtmlElement &commentsDiv = doc.element("div");
+  commentsDiv.element("h2").text(i18n("Comments"));
   
   foreach( Comment comment, identity.comments().commentList() ) {
+    HtmlElement &commentDiv = commentsDiv.element( "div" );
+    commentDiv.attribute( "class", "trigger" );
+
     commentDiv.element("p").text( comment.text() );
+
+    HtmlElement &span = commentDiv.element("span");
+    span.attribute("class","edit-link");
+    HtmlElement &a = span.element("a");
+    a.attribute("href","polka:editComment/" + comment.id() );
+    a.text("Edit");
   }
 
   HtmlElement &editBar = doc.element("div");
