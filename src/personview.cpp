@@ -100,12 +100,18 @@ void PersonView::showIdentity( const Identity &identity )
 
   rule.add( "-webkit-border-radius", "6px" );
 
+  // Show edit link on hover
+  css.addRule( ".edit-link", "font-size", "60%" );
+  css.addRule( ".trigger span.edit-link", "display", "none" );
+  css.addRule( ".trigger:hover span.edit-link", "display", "block" );
+
   doc.setCss( css );
 
   doc.element("h1").text(identity.displayName());
   if ( !identity.name().text().isEmpty() ) {
     doc.element("p").text(identity.name().text());
   }
+
   HtmlElement &div = doc.element("div");
 //  div.attribute("contentEditable", true);
   foreach( Email email, identity.emails().emailList() ) {
@@ -113,16 +119,25 @@ void PersonView::showIdentity( const Identity &identity )
     a.attribute("href","mailto:" + email.text());
     a.text(email.text());
   }
-  doc.element("h2").text(i18n("Comments"));
+
+  HtmlElement &commentDiv = doc.element("div");
+  commentDiv.attribute( "class", "trigger" );
+  commentDiv.element("h2").text(i18n("Comments"));
+  HtmlElement &span = commentDiv.element("span");
+  span.attribute("class","edit-link");
+  HtmlElement &a = span.element("a");
+  a.attribute("href","polka:editComment");
+  a.text("Edit");
+  
   foreach( Comment comment, identity.comments().commentList() ) {
-    doc.element("p").text( comment.text() );
+    commentDiv.element("p").text( comment.text() );
   }
 
   HtmlElement &editBar = doc.element("div");
   editBar.attribute( "class", "editbar" );
-  HtmlElement &a = editBar.element("span").element("a");
-  a.attribute("href","polka:addEmail");
-  a.text("Add email");
+  HtmlElement &addEmail = editBar.element("span").element("a");
+  addEmail.attribute("href","polka:addEmail");
+  addEmail.text("Add email");
 
   qDebug() << doc.html();
 
