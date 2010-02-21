@@ -43,12 +43,10 @@ class PolkaModel : public QObject
     Identity findIdentity( const QString &id );
     void insert( Identity ); // create
 
-  public:
     // FIXME: consistent API for querying lists of identities
     Identity::List persons();
     Identity::List identitiesOfGroup( const Identity &group );
     Identity::List identitiesOfGroup( const QString &id );
-
     // FIXME: maybe replace by read-only polka access
     Identity::List allIdentities();
 
