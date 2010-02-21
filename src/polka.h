@@ -382,6 +382,8 @@ class Email
     typedef QList<Email> List;
 
   public:
+    void setId( const QString &v );
+    QString id() const;
     void setUpdatedAt( const QString &v );
     QString updatedAt() const;
     void setText( const QString &v );
@@ -393,6 +395,7 @@ class Email
     QString writeElement();
 
   private:
+    QString mId;
     QString mUpdatedAt;
     QString mText;
 };
@@ -400,9 +403,15 @@ class Email
 class Emails
 {
   public:
+    enum Flags { None, AutoCreate };
+
+  public:
     void addEmail( const Email &v );
     void setEmailList( const Email::List &v );
     Email::List emailList() const;
+    Email findEmail( const QString &id, Flags flags = None );
+    bool insert( const Email &v );
+    bool remove( const Email &v );
     /**
       Parse XML object from DOM element.
      */

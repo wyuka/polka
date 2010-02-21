@@ -12,8 +12,8 @@
     <birthname>Hans Kaese</birthname>
     <birthday>19011224</birthday>
     <emails>
-      <email updated_at="20090901T120034Z">hw@example.com</email>
-      <email updated_at="20090901T120034Z" comment="1">hw@example.org</email>
+      <email id="123" updated_at="20090901T120034Z">hw@example.com</email>
+      <email id="345" updated_at="20090901T120034Z" comment="1">hw@example.org</email>
     </emails>
     <pictures>
       <picture updated_at="20090901T120023Z" picture_type="local">

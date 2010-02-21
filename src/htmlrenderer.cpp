@@ -67,9 +67,19 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   HtmlElement &div = doc.element("div");
 //  div.attribute("contentEditable", true);
   foreach( Email email, identity.emails().emailList() ) {
-    HtmlElement &a = div.element("div").element("a");
+    HtmlElement &emailDiv = div.element("div");
+    emailDiv.attribute("class", "trigger" );
+
+    HtmlElement &a = emailDiv.element("a");
     a.attribute("href","mailto:" + email.text());
     a.text(email.text());
+
+    HtmlElement &span = emailDiv.element("span");
+    span.attribute("class","edit-link");
+
+    HtmlElement &r = span.element("a");
+    r.attribute("href","polka:removeEmail/" + email.id());
+    r.text("Remove");
   }
 
   HtmlElement &commentsDiv = doc.element("div");

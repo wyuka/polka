@@ -1187,6 +1187,16 @@ QString Pictures::writeElement()
 }
 
 
+void Email::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString Email::id() const
+{
+  return mId;
+}
+
 void Email::setUpdatedAt( const QString &v )
 {
   mUpdatedAt = v;
@@ -1218,6 +1228,7 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
   Email result = Email();
 
   result.setText( element.text() );
+  result.setId( element.attribute( "id" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
@@ -1228,7 +1239,7 @@ QString Email::writeElement()
 {
   QString xml;
   if ( !text().isEmpty() ) {
-    xml += indent() + "<email updated_at=\"" + updatedAt() + "\">" + text() + "</email>\n";
+    xml += indent() + "<email id=\"" + id() + "\" updated_at=\"" + updatedAt() + "\">" + text() + "</email>\n";
   }
   return xml;
 }
@@ -1247,6 +1258,45 @@ void Emails::setEmailList( const Email::List &v )
 Email::List Emails::emailList() const
 {
   return mEmailList;
+}
+
+Email Emails::findEmail( const QString &id, Flags flags )
+{
+  foreach( Email v, mEmailList ) {
+    if ( v.id() == id ) return v;
+  }
+  Email v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Emails::insert( const Email &v )
+{
+  int i = 0;
+  for( ; i < mEmailList.size(); ++i ) {
+    if ( mEmailList[i].id() == v.id() ) {
+      mEmailList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mEmailList.size() ) {
+    addEmail( v );
+  }
+  return true;
+}
+
+bool Emails::remove( const Email &v )
+{
+  Email::List::Iterator it;
+  for( it = mEmailList.begin(); it != mEmailList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mEmailList.end() ) {
+    mEmailList.erase( it );
+  }
+  return true;
 }
 
 Emails Emails::parseElement( const QDomElement &element, bool *ok )

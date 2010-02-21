@@ -120,6 +120,7 @@ void PersonView::slotLinkClicked( const QUrl &url )
     QString action = path.first();
     qDebug() << "ACTION" << action;
     if ( action == "addEmail" ) addEmail();
+    else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
@@ -134,6 +135,7 @@ void PersonView::addEmail()
     i18n("Enter new email address"), QString(), &ok );
   if ( ok ) {
     Email e;
+    e.setId( KRandom::randomString( 10 ) );
     e.setText( email );
     Emails es = m_identity.emails();
     es.addEmail( e );
@@ -143,6 +145,16 @@ void PersonView::addEmail()
 
 //    showIdentity( m_identity );
   }
+}
+
+void PersonView::removeEmail( const QString &id )
+{
+  Emails es = m_identity.emails();
+  Email e = es.findEmail( id );
+  es.remove( e );
+  m_identity.setEmails( es );
+  
+  m_model->insert( m_identity );
 }
 
 void PersonView::addComment()
