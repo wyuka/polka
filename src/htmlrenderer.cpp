@@ -87,6 +87,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     HtmlElement &a = span.element("a");
     a.attribute("href","polka:editComment/" + comment.id() );
     a.text("Edit");
+
+    HtmlElement &r = span.element("a");
+    r.attribute("href","polka:removeComment/" + comment.id() );
+    r.text("Remove");
   }
 
   HtmlElement &editBar = doc.element("div");

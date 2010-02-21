@@ -126,6 +126,7 @@ void PersonView::slotLinkClicked( const QUrl &url )
     if ( action == "addEmail" ) addEmail();
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
+    else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
     else qDebug() << "unknown action" << action;
   }
 }
@@ -177,4 +178,14 @@ void PersonView::editComment( const QString &id )
     
     m_model->insert( m_identity );
   }
+}
+
+void PersonView::removeComment( const QString &id )
+{
+  Comments cs = m_identity.comments();
+  Comment c = cs.findComment( id );
+  cs.remove( c );
+  m_identity.setComments( cs );
+  
+  m_model->insert( m_identity );
 }

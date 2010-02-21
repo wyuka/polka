@@ -51,6 +51,7 @@ class PersonView : public QWidget
     void addEmail();
     void addComment();
     void editComment( const QString &id );
+    void removeComment( const QString &id );
   
   private:
     PolkaModel *m_model;
