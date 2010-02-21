@@ -34,9 +34,12 @@ class PersonView : public QWidget
   public:
     PersonView( PolkaModel *, QWidget *parent = 0 );
 
+  public slots:
     void showIdentity( const Identity & );
   
   protected slots:
+    void showIdentity();
+  
     void setImage( const QPixmap & );
 
     void grabPicture();

@@ -58,6 +58,9 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   button = new QPushButton( i18n("Close") );
   topLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( close() ) );
+
+  connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
+    SLOT( showIdentity( const Identity & ) ) );
 }
 
 void PersonView::showIdentity( const Identity &identity )
@@ -100,6 +103,11 @@ void PersonView::showIdentity( const Identity &identity )
   qDebug() << doc.html();
 
   m_webView->setHtml( doc.html() );
+}
+
+void PersonView::showIdentity()
+{
+  showIdentity( m_identity );
 }
 
 void PersonView::setImage( const QPixmap &pixmap )
@@ -147,6 +155,9 @@ void PersonView::addEmail()
     Emails es = m_identity.emails();
     es.addEmail( e );
     m_identity.setEmails( es );
-    showIdentity( m_identity );
+
+    m_model->insert( m_identity );
+
+//    showIdentity( m_identity );
   }  
 }
