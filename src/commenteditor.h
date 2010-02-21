@@ -28,6 +28,7 @@ class CommentEditor : public KDialog
   public:
     CommentEditor( QWidget *parent );
 
+    void setComment( const QString & );
     QString comment() const;
     
   private:

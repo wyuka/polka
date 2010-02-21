@@ -186,10 +186,12 @@ void PersonView::slotLinkClicked( const QUrl &url )
   qDebug() << "CLICKED" << url;
 
   if ( url.scheme() == "polka" ) {
-    QString action = url.path();
+    QStringList path = url.path().split("/");
+    QString action = path.first();
     qDebug() << "ACTION" << action;
     if ( action == "addEmail" ) addEmail();
     else if ( action == "addComment" ) addComment();
+    else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else qDebug() << "unknown action" << action;
   }
 }
@@ -221,6 +223,22 @@ void PersonView::addComment()
     c.setId( KRandom::randomString( 10 ) );
     c.setText( editor->comment() );
     cs.insert( c );
+    m_identity.setComments( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::editComment( const QString &id )
+{
+  Comment comment = m_identity.comments().findComment( id );
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.text() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Comments cs = m_identity.comments();
+    comment.setText( editor->comment() );
+    cs.insert( comment );
     m_identity.setComments( cs );
     
     m_model->insert( m_identity );

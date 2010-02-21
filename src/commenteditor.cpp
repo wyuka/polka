@@ -19,10 +19,12 @@
 
 #include "commenteditor.h"
 
+#include <KLocale>
+
 CommentEditor::CommentEditor( QWidget *parent )
   : KDialog( parent )
 {
-  setCaption("Add Comment");
+  setCaption( i18n("Add Comment") );
   setButtons( Ok | Cancel );
   setModal( true );
 
@@ -30,6 +32,13 @@ CommentEditor::CommentEditor( QWidget *parent )
   setMainWidget( m_edit );
 
   m_edit->setFocus();
+}
+
+void CommentEditor::setComment( const QString &text )
+{
+  setCaption( i18n("Edit Comment") );
+
+  m_edit->setPlainText( text );
 }
 
 QString CommentEditor::comment() const

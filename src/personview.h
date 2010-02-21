@@ -50,6 +50,7 @@ class PersonView : public QWidget
   protected:
     void addEmail();
     void addComment();
+    void editComment( const QString &id );
   
   private:
     PolkaModel *m_model;
