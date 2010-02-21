@@ -19,12 +19,12 @@
 
 #include "personview.h"
 
-#include "htmlcreator.h"
 #include "imageloader.h"
 #include "pictureselector.h"
 #include "regiongrabber.h"
 #include "polkamodel.h"
 #include "commenteditor.h"
+#include "htmlrenderer.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -79,79 +79,13 @@ void PersonView::showIdentity( const Identity &identity )
       SLOT( setImage( const QPixmap & ) ) );
   }
 
-  HtmlDoc doc;
+  HtmlRenderer renderer;
 
-  CssSheet css;
+  QString html = renderer.renderPerson( identity );
 
-  CssRule &rule = css.rule( ".editbar" );
+  qDebug() << html;
 
-  rule.add( "background-color", "#80CCFF" );
-  
-  QString radius = "6px 6px";
-  
-  rule.add( "padding", radius );
-
-  // FIXME: Make it work with more recent webkit version (seems to work in
-  // Chromium, but not in QWebKit 4.5.
-/*
-  rule.add( "border-bottom-left-radius", radius );
-  rule.add( "border-bottom-right-radius", radius );
-  rule.add( "border-top-left-radius", radius );
-  rule.add( "border-top-right-radius", radius );
-*/
-
-  rule.add( "-webkit-border-radius", "6px" );
-
-  // Show edit link on hover
-  css.addRule( ".edit-link", "font-size", "60%" );
-  css.addRule( ".trigger span.edit-link", "display", "none" );
-  css.addRule( ".trigger:hover span.edit-link", "display", "block" );
-
-  doc.setCss( css );
-
-  doc.element("h1").text(identity.displayName());
-  if ( !identity.name().text().isEmpty() ) {
-    doc.element("p").text(identity.name().text());
-  }
-
-  HtmlElement &div = doc.element("div");
-//  div.attribute("contentEditable", true);
-  foreach( Email email, identity.emails().emailList() ) {
-    HtmlElement &a = div.element("div").element("a");
-    a.attribute("href","mailto:" + email.text());
-    a.text(email.text());
-  }
-
-  HtmlElement &commentsDiv = doc.element("div");
-  commentsDiv.element("h2").text(i18n("Comments"));
-  
-  foreach( Comment comment, identity.comments().commentList() ) {
-    HtmlElement &commentDiv = commentsDiv.element( "div" );
-    commentDiv.attribute( "class", "trigger" );
-
-    commentDiv.element("p").text( comment.text() );
-
-    HtmlElement &span = commentDiv.element("span");
-    span.attribute("class","edit-link");
-    HtmlElement &a = span.element("a");
-    a.attribute("href","polka:editComment/" + comment.id() );
-    a.text("Edit");
-  }
-
-  HtmlElement &editBar = doc.element("div");
-  editBar.attribute( "class", "editbar" );
-
-  HtmlElement &addEmail = editBar.element("span").element("a");
-  addEmail.attribute("href","polka:addEmail");
-  addEmail.text("Add email");
-
-  HtmlElement &addComment = editBar.element("span").element("a");
-  addComment.attribute("href","polka:addComment");
-  addComment.text("Add comment");
-
-  qDebug() << doc.html();
-
-  m_webView->setHtml( doc.html() );
+  m_webView->setHtml( html );
 }
 
 void PersonView::showIdentity()

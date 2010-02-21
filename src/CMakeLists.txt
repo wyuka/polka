@@ -1,4 +1,5 @@
 set(polka_SRCS
+  htmlrenderer.cpp
   commenteditor.cpp
   fanmenuelement.cpp
   fanmenu.cpp
