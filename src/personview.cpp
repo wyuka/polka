@@ -90,6 +90,12 @@ void PersonView::showIdentity( const Identity &identity )
     doc.element("p").text( comment.text() );
   }
 
+  HtmlElement &editBar = doc.element("div");
+  editBar.attribute( "class", "editbar" );
+  HtmlElement &a = editBar.element("span").element("a");
+  a.attribute("href","polka:addEmail");
+  a.text("Add email");
+
   qDebug() << doc.html();
 
   m_webView->setHtml( doc.html() );

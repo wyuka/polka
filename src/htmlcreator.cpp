@@ -38,6 +38,11 @@ void HtmlElement::attribute( const QString &key, const QString &value )
   m_attributes.insert( key, value );
 }
 
+void HtmlElement::attribute( const QString &key, const char *string )
+{
+  m_attributes.insert( key, QString( string ) );
+}
+
 void HtmlElement::attribute( const QString &key, bool value )
 {
   m_attributes.insert( key, value ? "true" : "false" );
