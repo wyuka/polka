@@ -36,6 +36,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   CssRule &rule = css.rule( ".editbar" );
 
   rule.add( "background-color", "#80CCFF" );
+  rule.add( "border", "1px solid" );
+  
+  rule.add( "position", "absolute" );
+  rule.add( "bottom", "10px" );
   
   QString radius = "6px 6px";
   
@@ -51,6 +55,8 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
 */
 
   rule.add( "-webkit-border-radius", "6px" );
+
+  css.addRule( ".editbar span", "margin-right", "10px" );
 
   // Show edit link on hover
   css.addRule( ".edit-link", "font-size", "60%" );
