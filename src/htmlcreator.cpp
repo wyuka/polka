@@ -138,19 +138,27 @@ HtmlElement &HtmlElement::element( const QString &name )
   return m_childElements.last();
 }
 
-void HtmlElement::attribute( const QString &key, const QString &value )
+HtmlElement &HtmlElement::attribute( const QString &key, const QString &value )
 {
   m_attributes.insert( key, value );
+  return *this;
 }
 
-void HtmlElement::attribute( const QString &key, const char *string )
+HtmlElement &HtmlElement::attribute( const QString &key, const char *string )
 {
   m_attributes.insert( key, QString( string ) );
+  return *this;
 }
 
-void HtmlElement::attribute( const QString &key, bool value )
+HtmlElement &HtmlElement::attribute( const QString &key, bool value )
 {
   m_attributes.insert( key, value ? "true" : "false" );
+  return *this;
+}
+
+HtmlElement &HtmlElement::c( const QString &value )
+{
+  return attribute( "class", value );
 }
 
 void HtmlElement::text( const QString &text )

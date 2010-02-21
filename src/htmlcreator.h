@@ -83,9 +83,14 @@ class HtmlElement
     
     HtmlElement &element( const QString &name );
 
-    void attribute( const QString &key, const QString &value );
-    void attribute( const QString &key, const char * );
-    void attribute( const QString &key, bool );
+    HtmlElement &attribute( const QString &key, const QString &value );
+    HtmlElement &attribute( const QString &key, const char * );
+    HtmlElement &attribute( const QString &key, bool );
+
+    /**
+      Class attribute. Short function name as "class" is a reserved word.
+    */
+    HtmlElement &c( const QString &classValue );
 
     void text( const QString &text );
 

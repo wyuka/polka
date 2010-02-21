@@ -73,15 +73,13 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   HtmlElement &div = doc.element("div");
 //  div.attribute("contentEditable", true);
   foreach( Email email, identity.emails().emailList() ) {
-    HtmlElement &emailDiv = div.element("div");
-    emailDiv.attribute("class", "trigger" );
+    HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
     a.attribute("href","mailto:" + email.text());
     a.text(email.text());
 
-    HtmlElement &span = emailDiv.element("span");
-    span.attribute("class","edit-link");
+    HtmlElement &span = emailDiv.element("span").c("edit-link");
 
     HtmlElement &r = span.element("a");
     r.attribute("href","polka:removeEmail/" + email.id());
@@ -92,13 +90,11 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   commentsDiv.element("h2").text(i18n("Comments"));
   
   foreach( Comment comment, identity.comments().commentList() ) {
-    HtmlElement &commentDiv = commentsDiv.element( "div" );
-    commentDiv.attribute( "class", "trigger" );
+    HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
     commentDiv.element("p").text( comment.text() );
 
-    HtmlElement &span = commentDiv.element("span");
-    span.attribute("class","edit-link");
+    HtmlElement &span = commentDiv.element("span").c("edit-link");
     
     HtmlElement &a = span.element("a");
     a.attribute("href","polka:editComment/" + comment.id() );
@@ -109,8 +105,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     r.text("Remove");
   }
 
-  HtmlElement &editBar = doc.element("div");
-  editBar.attribute( "class", "editbar" );
+  HtmlElement &editBar = doc.element("div").c("editbar");
 
   HtmlElement &addEmail = editBar.element("span").element("a");
   addEmail.attribute("href","polka:addEmail");
