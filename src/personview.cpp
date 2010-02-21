@@ -27,6 +27,7 @@
 
 #include <klocale.h>
 #include <KUrl>
+#include <KInputDialog>
 
 PersonView::PersonView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model )
@@ -126,4 +127,26 @@ void PersonView::slotRegionGrabbed( const QPixmap &pixmap )
 void PersonView::slotLinkClicked( const QUrl &url )
 {
   qDebug() << "CLICKED" << url;
+
+  if ( url.scheme() == "polka" ) {
+    QString action = url.path();
+    qDebug() << "ACTION" << action;
+    if ( action == "addEmail" ) addEmail();
+    else qDebug() << "unknown action" << action;
+  }
+}
+
+void PersonView::addEmail()
+{
+  bool ok;
+  QString email = KInputDialog::getText( i18n("Add email"),
+    i18n("Enter new email address"), QString(), &ok );
+  if ( ok ) {
+    Email e;
+    e.setText( email );
+    Emails es = m_identity.emails();
+    es.addEmail( e );
+    m_identity.setEmails( es );
+    showIdentity( m_identity );
+  }  
 }
