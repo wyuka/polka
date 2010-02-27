@@ -27,6 +27,7 @@
     </pictures>
     <phones>
       <phone comment="2">
+        <id>123</id>
         <phone_type>Mobile</phone_type>
         <phone_number>123/3848484</phone_number>
       </phone>

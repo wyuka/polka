@@ -1,4 +1,5 @@
 set(polka_SRCS
+  phoneeditor.cpp
   htmlrenderer.cpp
   commenteditor.cpp
   fanmenuelement.cpp

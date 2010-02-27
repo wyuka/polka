@@ -886,6 +886,21 @@ QString Phone::comment() const
   return mComment;
 }
 
+void Phone::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString Phone::id() const
+{
+  return mId;
+}
+
+bool Phone::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Phone::setPhoneType( const QString &v )
 {
   mPhoneType = v;
@@ -919,7 +934,10 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "phone_type" ) {
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "phone_type" ) {
       result.setPhoneType( e.text() );
     }
     else if ( e.tagName() == "phone_number" ) {
@@ -938,6 +956,9 @@ QString Phone::writeElement()
   QString xml;
   xml += indent() + "<phone comment=\"" + comment() + "\">\n";
   indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
   if ( !phoneType().isEmpty() ) {
     xml += indent() + "<phone_type>" + phoneType() + "</phone_type>\n";
   }
@@ -963,6 +984,45 @@ void Phones::setPhoneList( const Phone::List &v )
 Phone::List Phones::phoneList() const
 {
   return mPhoneList;
+}
+
+Phone Phones::findPhone( const QString &id, Flags flags )
+{
+  foreach( Phone v, mPhoneList ) {
+    if ( v.id() == id ) return v;
+  }
+  Phone v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Phones::insert( const Phone &v )
+{
+  int i = 0;
+  for( ; i < mPhoneList.size(); ++i ) {
+    if ( mPhoneList[i].id() == v.id() ) {
+      mPhoneList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mPhoneList.size() ) {
+    addPhone( v );
+  }
+  return true;
+}
+
+bool Phones::remove( const Phone &v )
+{
+  Phone::List::Iterator it;
+  for( it = mPhoneList.begin(); it != mPhoneList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mPhoneList.end() ) {
+    mPhoneList.erase( it );
+  }
+  return true;
 }
 
 Phones Phones::parseElement( const QDomElement &element, bool *ok )

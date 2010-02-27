@@ -294,6 +294,9 @@ class Phone
   public:
     void setComment( const QString &v );
     QString comment() const;
+    void setId( const QString &v );
+    QString id() const;
+    bool isValid() const;
     void setPhoneType( const QString &v );
     QString phoneType() const;
     void setPhoneNumber( const QString &v );
@@ -306,6 +309,7 @@ class Phone
 
   private:
     QString mComment;
+    QString mId;
     QString mPhoneType;
     QString mPhoneNumber;
 };
@@ -313,9 +317,15 @@ class Phone
 class Phones
 {
   public:
+    enum Flags { None, AutoCreate };
+
+  public:
     void addPhone( const Phone &v );
     void setPhoneList( const Phone::List &v );
     Phone::List phoneList() const;
+    Phone findPhone( const QString &id, Flags flags = None );
+    bool insert( const Phone &v );
+    bool remove( const Phone &v );
     /**
       Parse XML object from DOM element.
      */

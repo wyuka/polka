@@ -25,6 +25,7 @@
 #include "polkamodel.h"
 #include "commenteditor.h"
 #include "htmlrenderer.h"
+#include "phoneeditor.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -122,6 +123,9 @@ void PersonView::slotLinkClicked( const QUrl &url )
     if ( action == "addEmail" ) addEmail();
     else if ( action == "editEmail" ) editEmail( path.value( 1 ) );
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
+    else if ( action == "addPhone" ) addPhone();
+    else if ( action == "editPhone" ) editPhone( path.value( 1 ) );
+    else if ( action == "removePhone" ) removePhone( path.value( 1 ) );
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
@@ -212,6 +216,46 @@ void PersonView::removeComment( const QString &id )
   Comment c = cs.findComment( id );
   cs.remove( c );
   m_identity.setComments( cs );
+  
+  m_model->insert( m_identity );
+}
+
+void PersonView::addPhone()
+{
+  PhoneEditor *editor = new PhoneEditor( this );
+  if ( editor->exec() == PhoneEditor::Accepted ) {
+    Phones cs = m_identity.phones();
+    Phone c = editor->phone();
+    c.setId( KRandom::randomString( 10 ) );
+    cs.insert( c );
+    m_identity.setPhones( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::editPhone( const QString &id )
+{
+  Phone phone = m_identity.phones().findPhone( id );
+
+  PhoneEditor *editor = new PhoneEditor( this );
+  editor->setPhone( phone );
+  if ( editor->exec() == PhoneEditor::Accepted ) {
+    Phones cs = m_identity.phones();
+    phone = editor->phone();
+    cs.insert( phone );
+    m_identity.setPhones( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::removePhone( const QString &id )
+{
+  Phones cs = m_identity.phones();
+  Phone c = cs.findPhone( id );
+  cs.remove( c );
+  m_identity.setPhones( cs );
   
   m_model->insert( m_identity );
 }

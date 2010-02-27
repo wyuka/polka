@@ -71,7 +71,6 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   }
 
   HtmlElement &div = doc.element("div");
-//  div.attribute("contentEditable", true);
   foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
@@ -89,6 +88,26 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
 
     HtmlElement &r = span.element("a");
     r.attribute("href","polka:removeEmail/" + email.id());
+    r.text("Remove");
+  }
+
+  HtmlElement &phonesDiv = doc.element("div");
+  foreach( Phone phone, identity.phones().phoneList() ) {
+    HtmlElement &phoneDiv = phonesDiv.element("div").c("trigger");
+
+    HtmlElement &p = phoneDiv.element("p");
+    p.text(phone.phoneNumber());
+
+    HtmlElement &span1 = phoneDiv.element("span").c("edit-link");
+
+    HtmlElement &e = span1.element("a");
+    e.attribute("href","polka:editPhone/" + phone.id());
+    e.text("Edit");
+
+    HtmlElement &span2 = phoneDiv.element("span").c("edit-link");
+
+    HtmlElement &r = span2.element("a");
+    r.attribute("href","polka:removePhone/" + phone.id());
     r.text("Remove");
   }
 
@@ -116,6 +135,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   HtmlElement &addEmail = editBar.element("span").element("a");
   addEmail.attribute("href","polka:addEmail");
   addEmail.text("Add email");
+
+  HtmlElement &addPhone = editBar.element("span").element("a");
+  addPhone.attribute("href","polka:addPhone");
+  addPhone.text("Add phone");
 
   HtmlElement &addComment = editBar.element("span").element("a");
   addComment.attribute("href","polka:addComment");
