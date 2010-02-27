@@ -132,23 +132,25 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     r.text("Remove");
   }
 
-  HtmlElement &commentsDiv = doc.element("div");
-  commentsDiv.element("h2").text(i18n("Comments"));
-  
-  foreach( Comment comment, identity.comments().commentList() ) {
-    HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
+  if ( !identity.comments().commentList().isEmpty() ) {
+    HtmlElement &commentsDiv = doc.element("div");
+    commentsDiv.element("h2").text(i18n("Comments"));
 
-    commentDiv.element("p").text( comment.text() );
+    foreach( Comment comment, identity.comments().commentList() ) {
+      HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
-    HtmlElement &span = commentDiv.element("span").c("edit-link");
-    
-    HtmlElement &a = span.element("a");
-    a.attribute("href","polka:editComment/" + comment.id() );
-    a.text("Edit");
+      commentDiv.element("p").text( comment.text() );
 
-    HtmlElement &r = span.element("a");
-    r.attribute("href","polka:removeComment/" + comment.id() );
-    r.text("Remove");
+      HtmlElement &span = commentDiv.element("span").c("edit-link");
+
+      HtmlElement &a = span.element("a");
+      a.attribute("href","polka:editComment/" + comment.id() );
+      a.text("Edit");
+
+      HtmlElement &r = span.element("a");
+      r.attribute("href","polka:removeComment/" + comment.id() );
+      r.text("Remove");
+    }
   }
 
   HtmlElement &editBar = doc.element("div").c("editbar");
