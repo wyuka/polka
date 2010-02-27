@@ -24,7 +24,7 @@
 CommentEditor::CommentEditor( QWidget *parent )
   : KDialog( parent )
 {
-  setCaption( i18n("Add Comment") );
+  setCaption( i18n("Add comment") );
   setButtons( Ok | Cancel );
   setModal( true );
 
@@ -36,7 +36,7 @@ CommentEditor::CommentEditor( QWidget *parent )
 
 void CommentEditor::setComment( const QString &text )
 {
-  setCaption( i18n("Edit Comment") );
+  setCaption( i18n("Edit comment") );
 
   m_edit->setPlainText( text );
 }
