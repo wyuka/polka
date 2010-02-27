@@ -34,6 +34,16 @@
         <phone_number>+492348237373</phone_number>
       </phone>
     </phones>
+    <addresses>
+      <address>
+        <id>123</id>
+        <label>Hauptstrasse 3\n12345Hintertupfingen</label>
+      </address>
+      <address>
+        <id>123</id>
+        <label>Hauptstrasse 5\n12345Hintertupfingen</label>
+      </address>
+    </addresses>
     <relations>
       <relation relation_type="is_married_to" target="77fzuwehf6t"/>
       <relation relation_type="reports_to" target="77fzuwehf6t"/>
@@ -85,7 +95,6 @@
   </identity>
   <identity>
     <name updated_at="20090901T120034Z">Alfred E. Neumann</name>
-    <address>Hauptstrasse 3\n12345Hintertupfingen</address>
     <phones>
       <phone>
         <phone_number>+492348237373</phone_number>

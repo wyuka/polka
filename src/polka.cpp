@@ -936,6 +936,167 @@ QString Relations::writeElement()
 }
 
 
+void Address::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString Address::id() const
+{
+  return mId;
+}
+
+bool Address::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void Address::setLabel( const QString &v )
+{
+  mLabel = v;
+}
+
+QString Address::label() const
+{
+  return mLabel;
+}
+
+Address Address::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "address" ) {
+    qCritical() << "Expected 'address', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Address();
+  }
+
+  Address result = Address();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "label" ) {
+      result.setLabel( e.text() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Address::writeElement()
+{
+  QString xml;
+  xml += indent() + "<address>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  if ( !label().isEmpty() ) {
+    xml += indent() + "<label>" + label() + "</label>\n";
+  }
+  indent( -2 );
+  xml += indent() + "</address>\n";
+  return xml;
+}
+
+
+void Addresses::addAddress( const Address &v )
+{
+  mAddressList.append( v );
+}
+
+void Addresses::setAddressList( const Address::List &v )
+{
+  mAddressList = v;
+}
+
+Address::List Addresses::addressList() const
+{
+  return mAddressList;
+}
+
+Address Addresses::findAddress( const QString &id, Flags flags )
+{
+  foreach( Address v, mAddressList ) {
+    if ( v.id() == id ) return v;
+  }
+  Address v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Addresses::insert( const Address &v )
+{
+  int i = 0;
+  for( ; i < mAddressList.size(); ++i ) {
+    if ( mAddressList[i].id() == v.id() ) {
+      mAddressList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mAddressList.size() ) {
+    addAddress( v );
+  }
+  return true;
+}
+
+bool Addresses::remove( const Address &v )
+{
+  Address::List::Iterator it;
+  for( it = mAddressList.begin(); it != mAddressList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mAddressList.end() ) {
+    mAddressList.erase( it );
+  }
+  return true;
+}
+
+Addresses Addresses::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "addresses" ) {
+    qCritical() << "Expected 'addresses', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Addresses();
+  }
+
+  Addresses result = Addresses();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "address" ) {
+      bool ok;
+      Address o = Address::parseElement( e, &ok );
+      if ( ok ) result.addAddress( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString Addresses::writeElement()
+{
+  QString xml;
+  xml += indent() + "<addresses>\n";
+  indent( 2 );
+  foreach( Address e, addressList() ) {
+    xml += e.writeElement();
+  }
+  indent( -2 );
+  xml += indent() + "</addresses>\n";
+  return xml;
+}
+
+
 void Phone::setComment( const QString &v )
 {
   mComment = v;
@@ -1735,6 +1896,16 @@ Phones Identity::phones() const
   return mPhones;
 }
 
+void Identity::setAddresses( const Addresses &v )
+{
+  mAddresses = v;
+}
+
+Addresses Identity::addresses() const
+{
+  return mAddresses;
+}
+
 void Identity::setRelations( const Relations &v )
 {
   mRelations = v;
@@ -1832,6 +2003,11 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Phones o = Phones::parseElement( e, &ok );
       if ( ok ) result.setPhones( o );
     }
+    else if ( e.tagName() == "addresses" ) {
+      bool ok;
+      Addresses o = Addresses::parseElement( e, &ok );
+      if ( ok ) result.setAddresses( o );
+    }
     else if ( e.tagName() == "relations" ) {
       bool ok;
       Relations o = Relations::parseElement( e, &ok );
@@ -1881,6 +2057,7 @@ QString Identity::writeElement()
   xml += emails().writeElement();
   xml += pictures().writeElement();
   xml += phones().writeElement();
+  xml += addresses().writeElement();
   xml += relations().writeElement();
   xml += notes().writeElement();
   xml += links().writeElement();

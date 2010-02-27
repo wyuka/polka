@@ -27,6 +27,7 @@
 #include "htmlrenderer.h"
 #include "phoneeditor.h"
 #include "linkeditor.h"
+#include "addresseditor.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -137,6 +138,10 @@ void PersonView::slotLinkClicked( const QUrl &url )
     else if ( action == "editLink" ) editLink( path.value( 1 ) );
     else if ( action == "removeLink" ) removeLink( path.value( 1 ) );
 
+    else if ( action == "addAddress" ) addAddress();
+    else if ( action == "editAddress" ) editAddress( path.value( 1 ) );
+    else if ( action == "removeAddress" ) removeAddress( path.value( 1 ) );
+
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
@@ -189,6 +194,47 @@ void PersonView::removeEmail( const QString &id )
   Email e = es.findEmail( id );
   es.remove( e );
   m_identity.setEmails( es );
+  
+  m_model->insert( m_identity );
+}
+
+void PersonView::addAddress()
+{
+  AddressEditor *editor = new AddressEditor( this );
+  if ( editor->exec() == AddressEditor::Accepted ) {
+    Addresses cs = m_identity.addresses();
+    Address c;
+    c.setId( KRandom::randomString( 10 ) );
+    c.setLabel( editor->address() );
+    cs.insert( c );
+    m_identity.setAddresses( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::editAddress( const QString &id )
+{
+  Address address = m_identity.addresses().findAddress( id );
+
+  AddressEditor *editor = new AddressEditor( this );
+  editor->setAddress( address.label() );
+  if ( editor->exec() == AddressEditor::Accepted ) {
+    Addresses cs = m_identity.addresses();
+    address.setLabel( editor->address() );
+    cs.insert( address );
+    m_identity.setAddresses( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::removeAddress( const QString &id )
+{
+  Addresses cs = m_identity.addresses();
+  Address c = cs.findAddress( id );
+  cs.remove( c );
+  m_identity.setAddresses( cs );
   
   m_model->insert( m_identity );
 }

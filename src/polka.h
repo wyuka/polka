@@ -296,6 +296,50 @@ class Relations
     Relation::List mRelationList;
 };
 
+class Address
+{
+  public:
+    typedef QList<Address> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    bool isValid() const;
+    void setLabel( const QString &v );
+    QString label() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Address parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    QString mLabel;
+};
+
+class Addresses
+{
+  public:
+    enum Flags { None, AutoCreate };
+
+  public:
+    void addAddress( const Address &v );
+    void setAddressList( const Address::List &v );
+    Address::List addressList() const;
+    Address findAddress( const QString &id, Flags flags = None );
+    bool insert( const Address &v );
+    bool remove( const Address &v );
+    /**
+      Parse XML object from DOM element.
+     */
+    static Addresses parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    Address::List mAddressList;
+};
+
 class Phone
 {
   public:
@@ -524,6 +568,8 @@ class Identity
     Pictures pictures() const;
     void setPhones( const Phones &v );
     Phones phones() const;
+    void setAddresses( const Addresses &v );
+    Addresses addresses() const;
     void setRelations( const Relations &v );
     Relations relations() const;
     void setNotes( const Notes &v );
@@ -549,6 +595,7 @@ class Identity
     Emails mEmails;
     Pictures mPictures;
     Phones mPhones;
+    Addresses mAddresses;
     Relations mRelations;
     Notes mNotes;
     Links mLinks;

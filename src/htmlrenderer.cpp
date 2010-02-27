@@ -117,6 +117,26 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     r.text("Remove");
   }
 
+  HtmlElement &addressesDiv = doc.element("div");
+  foreach( Address address, identity.addresses().addressList() ) {
+    HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
+
+    HtmlElement &p = addressDiv.element("pre");
+    p.text(address.label());
+
+    HtmlElement &span1 = addressDiv.element("span").c("edit-link");
+
+    HtmlElement &e = span1.element("a");
+    e.attribute("href","polka:editAddress/" + address.id());
+    e.text("Edit");
+
+    HtmlElement &span2 = addressDiv.element("span").c("edit-link");
+
+    HtmlElement &r = span2.element("a");
+    r.attribute("href","polka:removeAddress/" + address.id());
+    r.text("Remove");
+  }
+
   HtmlElement &linksDiv = doc.element("div");
   foreach( Link link, identity.links().linkList() ) {
     HtmlElement &linkDiv = linksDiv.element("div").c("trigger");
@@ -168,6 +188,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   HtmlElement &addPhone = editBar.element("span").element("a");
   addPhone.attribute("href","polka:addPhone");
   addPhone.text("Add phone");
+
+  HtmlElement &addAddress = editBar.element("span").element("a");
+  addAddress.attribute("href","polka:addAddress");
+  addAddress.text("Add address");
 
   HtmlElement &addLink = editBar.element("span").element("a");
   addLink.attribute("href","polka:addLink");
