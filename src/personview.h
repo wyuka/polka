@@ -49,6 +49,7 @@ class PersonView : public QWidget
 
   protected:
     void addEmail();
+    void editEmail( const QString &email );
     void removeEmail( const QString &id );
 
     void addComment();

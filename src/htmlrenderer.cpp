@@ -79,6 +79,12 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     a.attribute("href","mailto:" + email.text());
     a.text(email.text());
 
+    HtmlElement &span1 = emailDiv.element("span").c("edit-link");
+
+    HtmlElement &e = span1.element("a");
+    e.attribute("href","polka:editEmail/" + email.id());
+    e.text("Edit");
+
     HtmlElement &span = emailDiv.element("span").c("edit-link");
 
     HtmlElement &r = span.element("a");

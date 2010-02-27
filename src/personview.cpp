@@ -120,6 +120,7 @@ void PersonView::slotLinkClicked( const QUrl &url )
     QString action = path.first();
     qDebug() << "ACTION" << action;
     if ( action == "addEmail" ) addEmail();
+    else if ( action == "editEmail" ) editEmail( path.value( 1 ) );
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
@@ -144,6 +145,23 @@ void PersonView::addEmail()
     m_model->insert( m_identity );
 
 //    showIdentity( m_identity );
+  }
+}
+
+void PersonView::editEmail( const QString &id )
+{
+  Email e = m_identity.emails().findEmail( id );
+
+  bool ok;
+  QString email = KInputDialog::getText( i18n("Add email"),
+    i18n("Enter new email address"), e.text(), &ok );
+  if ( ok ) {
+    Emails es = m_identity.emails();
+    e.setText( email );
+    es.insert( e );
+    m_identity.setEmails( es );
+    
+    m_model->insert( m_identity );
   }
 }
 
