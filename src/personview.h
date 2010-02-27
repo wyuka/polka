@@ -48,6 +48,8 @@ class PersonView : public QWidget
     void slotLinkClicked( const QUrl & );
 
   protected:
+    void editName();
+
     void addEmail();
     void editEmail( const QString &id );
     void removeEmail( const QString &id );

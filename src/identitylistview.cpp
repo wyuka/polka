@@ -59,7 +59,7 @@ void IdentityListView::setGroup( const Identity &group )
   m_group = group;
 
   setItemModel( m_model->itemModel( group.id() ) );
-  setGroupName( group.displayName() );
+  setGroupName( group.name().text() );
 }
 
 Identity IdentityListView::group() const

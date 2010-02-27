@@ -1675,16 +1675,6 @@ Groups Identity::groups() const
   return mGroups;
 }
 
-void Identity::setDisplayName( const QString &v )
-{
-  mDisplayName = v;
-}
-
-QString Identity::displayName() const
-{
-  return mDisplayName;
-}
-
 void Identity::setName( const Name &v )
 {
   mName = v;
@@ -1816,9 +1806,6 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Groups o = Groups::parseElement( e, &ok );
       if ( ok ) result.setGroups( o );
     }
-    else if ( e.tagName() == "display_name" ) {
-      result.setDisplayName( e.text() );
-    }
     else if ( e.tagName() == "name" ) {
       bool ok;
       Name o = Name::parseElement( e, &ok );
@@ -1886,9 +1873,6 @@ QString Identity::writeElement()
     xml += indent() + "<id>" + id() + "</id>\n";
   }
   xml += groups().writeElement();
-  if ( !displayName().isEmpty() ) {
-    xml += indent() + "<display_name>" + displayName() + "</display_name>\n";
-  }
   xml += name().writeElement();
   if ( !birthname().isEmpty() ) {
     xml += indent() + "<birthname>" + birthname() + "</birthname>\n";

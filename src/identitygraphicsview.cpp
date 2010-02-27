@@ -80,7 +80,7 @@ void IdentityGraphicsView::setGroup( const Identity &group )
 {
   m_group = group;
 
-  setGroupName( group.displayName() );
+  setGroupName( group.name().text() );
 
   createItems();
 }

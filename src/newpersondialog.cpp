@@ -77,8 +77,10 @@ Identity NewPersonDialog::identity()
     m_matchList->selectionModel()->selectedIndexes();
 
   if ( selectedIndexes.isEmpty() ) {
-    Identity identity;  
-    identity.setDisplayName( m_nameInput->text() );
+    Identity identity;
+    Name name;
+    name.setText( m_nameInput->text() );
+    identity.setName( name );
     return identity;
   } else {
     if ( selectedIndexes.count() > 1 ) {

@@ -65,10 +65,16 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
 
   doc.setCss( css );
 
-  doc.element("h1").text(identity.displayName());
-  if ( !identity.name().text().isEmpty() ) {
-    doc.element("p").text(identity.name().text());
-  }
+  HtmlElement &titleDiv = doc.element("div");
+  titleDiv.c("trigger");
+
+  titleDiv.element("h1").text(identity.name().text());
+
+  HtmlElement &titleEditSpan = titleDiv.element("span").c("edit-link");
+
+  HtmlElement &titleEdit = titleEditSpan.element("a");
+  titleEdit.attribute("href","polka:editName");
+  titleEdit.text(i18n("Edit"));
 
   HtmlElement &div = doc.element("div");
   foreach( Email email, identity.emails().emailList() ) {

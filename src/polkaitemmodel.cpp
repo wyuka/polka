@@ -55,7 +55,7 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   Identity identity = getIdentityData( index );
 
   if (role == Qt::DisplayRole) {
-    return identity.displayName();
+    return identity.name().text();
   } else if ( role == Qt::UserRole ) {
     return identity.id();
   } else if ( role == Qt::DecorationRole ) {

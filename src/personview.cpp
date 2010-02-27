@@ -122,7 +122,10 @@ void PersonView::slotLinkClicked( const QUrl &url )
     QStringList path = url.path().split("/");
     QString action = path.first();
     qDebug() << "ACTION" << action;
-    if ( action == "addEmail" ) addEmail();
+    
+    if ( action == "editName" ) editName();
+    
+    else if ( action == "addEmail" ) addEmail();
     else if ( action == "editEmail" ) editEmail( path.value( 1 ) );
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
 
@@ -310,4 +313,19 @@ void PersonView::removeLink( const QString &id )
   m_identity.setLinks( cs );
   
   m_model->insert( m_identity );
+}
+
+void PersonView::editName()
+{
+  Name name = m_identity.name();
+
+  bool ok;
+  QString nameString = KInputDialog::getText( i18n("Edit name"),
+    QString(), name.text(), &ok );
+  if ( ok ) {
+    name.setText( nameString );
+    m_identity.setName( name );
+    
+    m_model->insert( m_identity );
+  }  
 }

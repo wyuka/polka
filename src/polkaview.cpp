@@ -143,7 +143,9 @@ void PolkaView::newGroup()
     i18n("Enter name of group to add"), QString(), &ok );
   if ( ok ) {
     Identity identity;
-    identity.setDisplayName( name );
+    Name n;
+    n.setText( name );
+    identity.setName( n );
     
     m_model->insert( identity );
   }
