@@ -498,41 +498,59 @@ QString ExtendedAttributes::writeElement()
 }
 
 
-void Profile::setProfileType( const QString &v )
+void Link::setId( const QString &v )
 {
-  mProfileType = v;
+  mId = v;
 }
 
-QString Profile::profileType() const
+QString Link::id() const
 {
-  return mProfileType;
+  return mId;
 }
 
-void Profile::setUrl( const QString &v )
+bool Link::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void Link::setLinkType( const QString &v )
+{
+  mLinkType = v;
+}
+
+QString Link::linkType() const
+{
+  return mLinkType;
+}
+
+void Link::setUrl( const QString &v )
 {
   mUrl = v;
 }
 
-QString Profile::url() const
+QString Link::url() const
 {
   return mUrl;
 }
 
-Profile Profile::parseElement( const QDomElement &element, bool *ok )
+Link Link::parseElement( const QDomElement &element, bool *ok )
 {
-  if ( element.tagName() != "profile" ) {
-    qCritical() << "Expected 'profile', got '" << element.tagName() << "'.";
+  if ( element.tagName() != "link" ) {
+    qCritical() << "Expected 'link', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
-    return Profile();
+    return Link();
   }
 
-  Profile result = Profile();
+  Link result = Link();
 
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "profile_type" ) {
-      result.setProfileType( e.text() );
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "link_type" ) {
+      result.setLinkType( e.text() );
     }
     else if ( e.tagName() == "url" ) {
       result.setUrl( e.text() );
@@ -544,55 +562,97 @@ Profile Profile::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Profile::writeElement()
+QString Link::writeElement()
 {
   QString xml;
-  xml += indent() + "<profile>\n";
+  xml += indent() + "<link>\n";
   indent( 2 );
-  if ( !profileType().isEmpty() ) {
-    xml += indent() + "<profile_type>" + profileType() + "</profile_type>\n";
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  if ( !linkType().isEmpty() ) {
+    xml += indent() + "<link_type>" + linkType() + "</link_type>\n";
   }
   if ( !url().isEmpty() ) {
     xml += indent() + "<url>" + url() + "</url>\n";
   }
   indent( -2 );
-  xml += indent() + "</profile>\n";
+  xml += indent() + "</link>\n";
   return xml;
 }
 
 
-void Profiles::addProfile( const Profile &v )
+void Links::addLink( const Link &v )
 {
-  mProfileList.append( v );
+  mLinkList.append( v );
 }
 
-void Profiles::setProfileList( const Profile::List &v )
+void Links::setLinkList( const Link::List &v )
 {
-  mProfileList = v;
+  mLinkList = v;
 }
 
-Profile::List Profiles::profileList() const
+Link::List Links::linkList() const
 {
-  return mProfileList;
+  return mLinkList;
 }
 
-Profiles Profiles::parseElement( const QDomElement &element, bool *ok )
+Link Links::findLink( const QString &id, Flags flags )
 {
-  if ( element.tagName() != "profiles" ) {
-    qCritical() << "Expected 'profiles', got '" << element.tagName() << "'.";
+  foreach( Link v, mLinkList ) {
+    if ( v.id() == id ) return v;
+  }
+  Link v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Links::insert( const Link &v )
+{
+  int i = 0;
+  for( ; i < mLinkList.size(); ++i ) {
+    if ( mLinkList[i].id() == v.id() ) {
+      mLinkList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mLinkList.size() ) {
+    addLink( v );
+  }
+  return true;
+}
+
+bool Links::remove( const Link &v )
+{
+  Link::List::Iterator it;
+  for( it = mLinkList.begin(); it != mLinkList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mLinkList.end() ) {
+    mLinkList.erase( it );
+  }
+  return true;
+}
+
+Links Links::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "links" ) {
+    qCritical() << "Expected 'links', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
-    return Profiles();
+    return Links();
   }
 
-  Profiles result = Profiles();
+  Links result = Links();
 
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "profile" ) {
+    if ( e.tagName() == "link" ) {
       bool ok;
-      Profile o = Profile::parseElement( e, &ok );
-      if ( ok ) result.addProfile( o );
+      Link o = Link::parseElement( e, &ok );
+      if ( ok ) result.addLink( o );
     }
   }
 
@@ -601,16 +661,16 @@ Profiles Profiles::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Profiles::writeElement()
+QString Links::writeElement()
 {
   QString xml;
-  xml += indent() + "<profiles>\n";
+  xml += indent() + "<links>\n";
   indent( 2 );
-  foreach( Profile e, profileList() ) {
+  foreach( Link e, linkList() ) {
     xml += e.writeElement();
   }
   indent( -2 );
-  xml += indent() + "</profiles>\n";
+  xml += indent() + "</links>\n";
   return xml;
 }
 
@@ -1705,14 +1765,14 @@ Notes Identity::notes() const
   return mNotes;
 }
 
-void Identity::setProfiles( const Profiles &v )
+void Identity::setLinks( const Links &v )
 {
-  mProfiles = v;
+  mLinks = v;
 }
 
-Profiles Identity::profiles() const
+Links Identity::links() const
 {
-  return mProfiles;
+  return mLinks;
 }
 
 void Identity::setExtendedAttributes( const ExtendedAttributes &v )
@@ -1795,10 +1855,10 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Notes o = Notes::parseElement( e, &ok );
       if ( ok ) result.setNotes( o );
     }
-    else if ( e.tagName() == "profiles" ) {
+    else if ( e.tagName() == "links" ) {
       bool ok;
-      Profiles o = Profiles::parseElement( e, &ok );
-      if ( ok ) result.setProfiles( o );
+      Links o = Links::parseElement( e, &ok );
+      if ( ok ) result.setLinks( o );
     }
     else if ( e.tagName() == "extended_attributes" ) {
       bool ok;
@@ -1839,7 +1899,7 @@ QString Identity::writeElement()
   xml += phones().writeElement();
   xml += relations().writeElement();
   xml += notes().writeElement();
-  xml += profiles().writeElement();
+  xml += links().writeElement();
   xml += extendedAttributes().writeElement();
   xml += comments().writeElement();
   indent( -2 );

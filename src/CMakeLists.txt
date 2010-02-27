@@ -1,4 +1,5 @@
 set(polka_SRCS
+  linkeditor.cpp
   phoneeditor.cpp
   htmlrenderer.cpp
   commenteditor.cpp

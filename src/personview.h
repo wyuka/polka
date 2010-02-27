@@ -56,6 +56,10 @@ class PersonView : public QWidget
     void editPhone( const QString &id );
     void removePhone( const QString &id );
 
+    void addLink();
+    void editLink( const QString &id );
+    void removeLink( const QString &id );
+
     void addComment();
     void editComment( const QString &id );
     void removeComment( const QString &id );

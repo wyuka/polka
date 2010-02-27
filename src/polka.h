@@ -163,41 +163,51 @@ class ExtendedAttributes
     Attribute::List mAttributeList;
 };
 
-class Profile
+class Link
 {
   public:
-    typedef QList<Profile> List;
+    typedef QList<Link> List;
 
   public:
-    void setProfileType( const QString &v );
-    QString profileType() const;
+    void setId( const QString &v );
+    QString id() const;
+    bool isValid() const;
+    void setLinkType( const QString &v );
+    QString linkType() const;
     void setUrl( const QString &v );
     QString url() const;
     /**
       Parse XML object from DOM element.
      */
-    static Profile parseElement( const QDomElement &element, bool *ok );
+    static Link parseElement( const QDomElement &element, bool *ok );
     QString writeElement();
 
   private:
-    QString mProfileType;
+    QString mId;
+    QString mLinkType;
     QString mUrl;
 };
 
-class Profiles
+class Links
 {
   public:
-    void addProfile( const Profile &v );
-    void setProfileList( const Profile::List &v );
-    Profile::List profileList() const;
+    enum Flags { None, AutoCreate };
+
+  public:
+    void addLink( const Link &v );
+    void setLinkList( const Link::List &v );
+    Link::List linkList() const;
+    Link findLink( const QString &id, Flags flags = None );
+    bool insert( const Link &v );
+    bool remove( const Link &v );
     /**
       Parse XML object from DOM element.
      */
-    static Profiles parseElement( const QDomElement &element, bool *ok );
+    static Links parseElement( const QDomElement &element, bool *ok );
     QString writeElement();
 
   private:
-    Profile::List mProfileList;
+    Link::List mLinkList;
 };
 
 class Note
@@ -520,8 +530,8 @@ class Identity
     Relations relations() const;
     void setNotes( const Notes &v );
     Notes notes() const;
-    void setProfiles( const Profiles &v );
-    Profiles profiles() const;
+    void setLinks( const Links &v );
+    Links links() const;
     void setExtendedAttributes( const ExtendedAttributes &v );
     ExtendedAttributes extendedAttributes() const;
     void setComments( const Comments &v );
@@ -544,7 +554,7 @@ class Identity
     Phones mPhones;
     Relations mRelations;
     Notes mNotes;
-    Profiles mProfiles;
+    Links mLinks;
     ExtendedAttributes mExtendedAttributes;
     Comments mComments;
 };

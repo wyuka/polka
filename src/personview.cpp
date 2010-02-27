@@ -26,11 +26,13 @@
 #include "commenteditor.h"
 #include "htmlrenderer.h"
 #include "phoneeditor.h"
+#include "linkeditor.h"
 
 #include <klocale.h>
 #include <KUrl>
 #include <KInputDialog>
 #include <KRandom>
+#include <KRun>
 
 PersonView::PersonView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model )
@@ -123,13 +125,22 @@ void PersonView::slotLinkClicked( const QUrl &url )
     if ( action == "addEmail" ) addEmail();
     else if ( action == "editEmail" ) editEmail( path.value( 1 ) );
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
+
     else if ( action == "addPhone" ) addPhone();
     else if ( action == "editPhone" ) editPhone( path.value( 1 ) );
     else if ( action == "removePhone" ) removePhone( path.value( 1 ) );
+
+    else if ( action == "addLink" ) addLink();
+    else if ( action == "editLink" ) editLink( path.value( 1 ) );
+    else if ( action == "removeLink" ) removeLink( path.value( 1 ) );
+
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
+
     else qDebug() << "unknown action" << action;
+  } else {
+    new KRun( KUrl( url ), this );
   }
 }
 
@@ -256,6 +267,47 @@ void PersonView::removePhone( const QString &id )
   Phone c = cs.findPhone( id );
   cs.remove( c );
   m_identity.setPhones( cs );
+  
+  m_model->insert( m_identity );
+}
+
+
+void PersonView::addLink()
+{
+  LinkEditor *editor = new LinkEditor( this );
+  if ( editor->exec() == LinkEditor::Accepted ) {
+    Links cs = m_identity.links();
+    Link c = editor->link();
+    c.setId( KRandom::randomString( 10 ) );
+    cs.insert( c );
+    m_identity.setLinks( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::editLink( const QString &id )
+{
+  Link link = m_identity.links().findLink( id );
+
+  LinkEditor *editor = new LinkEditor( this );
+  editor->setLink( link );
+  if ( editor->exec() == LinkEditor::Accepted ) {
+    Links cs = m_identity.links();
+    link = editor->link();
+    cs.insert( link );
+    m_identity.setLinks( cs );
+    
+    m_model->insert( m_identity );
+  }
+}
+
+void PersonView::removeLink( const QString &id )
+{
+  Links cs = m_identity.links();
+  Link c = cs.findLink( id );
+  cs.remove( c );
+  m_identity.setLinks( cs );
   
   m_model->insert( m_identity );
 }

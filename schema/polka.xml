@@ -47,16 +47,17 @@
         Can't come.
       </note>
     </notes>
-    <profiles>
-      <profile>
-        <profile_type>xing</profile_type>
+    <links>
+      <link>
+        <id>dkljga</id>
+        <link_type>xing</link_type>
         <url>http://xing.de/hw</url>
-      </profile>
-      <profile>
-        <profile_type>twitter</profile_type>
+      </link>
+      <link>
+        <link_type>twitter</link_type>
         <url>http://twitter.com/hw</url>
-      </profile>
-    </profiles>
+      </link>
+    </links>
     <extended_attributes>
       <attribute type="string">
         <key>Favorite Food</key>

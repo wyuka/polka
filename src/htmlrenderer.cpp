@@ -111,6 +111,27 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     r.text("Remove");
   }
 
+  HtmlElement &linksDiv = doc.element("div");
+  foreach( Link link, identity.links().linkList() ) {
+    HtmlElement &linkDiv = linksDiv.element("div").c("trigger");
+
+    HtmlElement &a = linkDiv.element("a");
+    a.attribute("href", link.url());
+    a.text(link.url());
+
+    HtmlElement &span1 = linkDiv.element("span").c("edit-link");
+
+    HtmlElement &e = span1.element("a");
+    e.attribute("href","polka:editLink/" + link.id());
+    e.text("Edit");
+
+    HtmlElement &span = linkDiv.element("span").c("edit-link");
+
+    HtmlElement &r = span.element("a");
+    r.attribute("href","polka:removeLink/" + link.id());
+    r.text("Remove");
+  }
+
   HtmlElement &commentsDiv = doc.element("div");
   commentsDiv.element("h2").text(i18n("Comments"));
   
@@ -139,6 +160,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   HtmlElement &addPhone = editBar.element("span").element("a");
   addPhone.attribute("href","polka:addPhone");
   addPhone.text("Add phone");
+
+  HtmlElement &addLink = editBar.element("span").element("a");
+  addLink.attribute("href","polka:addLink");
+  addLink.text("Add link");
 
   HtmlElement &addComment = editBar.element("span").element("a");
   addComment.attribute("href","polka:addComment");

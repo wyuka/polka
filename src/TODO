@@ -5,15 +5,13 @@
 * Add button to arrange items in default configuration with smooth animation
 
 * Edit details of person
-  * comment
   * name
-  * emails
-  * phone numbers
   * address
-  * urls
 * Save modification date of fields
 * Show modification date of fields
 * Edit comments for each field
+
+* Show nice text for links.
 
 * Make sure new items don't overlap with existing moved ones.
 
