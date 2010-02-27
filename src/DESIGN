@@ -14,6 +14,7 @@
   * no limitations by storage format
   * user-oriented design
   * friendly, organic design (be human, not formal, be helpful, not strict)
+  * Provide example data at first start and use it to explain the application
 
 = design guidelines
 
