@@ -188,7 +188,7 @@ QString HtmlDoc::html()
   xml.writeStartElement( "style" );
   xml.writeAttribute( "type", "text/css" );
   
-  xml.writeComment( m_css.render() );
+  xml.writeComment( "\n" + m_css.render() );
   xml.writeEndElement();
 
   xml.writeStartElement( "body" );
