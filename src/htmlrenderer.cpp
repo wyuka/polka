@@ -60,8 +60,8 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
 
   // Show edit link on hover
   css.addRule( ".edit-link", "font-size", "60%" );
-  css.addRule( ".trigger span.edit-link", "display", "none" );
-  css.addRule( ".trigger:hover span.edit-link", "display", "block" );
+  css.addRule( ".trigger span.edit-link", "visibility", "hidden" );
+  css.addRule( ".trigger:hover span.edit-link", "visibility", "visible" );
 
   doc.setCss( css );
 
