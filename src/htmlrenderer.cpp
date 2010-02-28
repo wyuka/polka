@@ -38,7 +38,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   rule.add( "background-color", "#80CCFF" );
   rule.add( "border", "1px solid" );
   
-  rule.add( "position", "absolute" );
+//  rule.add( "position", "absolute" );
   rule.add( "bottom", "10px" );
   
   QString radius = "6px 6px";
@@ -58,8 +58,14 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
 
   css.addRule( ".editbar span", "margin-right", "10px" );
 
+  css.addRule( ".address", "float", "left" );
+  css.addRule( ".address", "padding-bottom", "10px" );
+  css.addRule( ".address pre", "display", "inline" );
+
   // Show edit link on hover
   css.addRule( ".edit-link", "font-size", "60%" );
+  css.addRule( ".edit-link", "padding-left", "4px" );
+  css.addRule( ".edit-link.first", "padding-left", "12px" );
   css.addRule( ".trigger span.edit-link", "visibility", "hidden" );
   css.addRule( ".trigger:hover span.edit-link", "visibility", "visible" );
 
@@ -68,9 +74,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   HtmlElement &titleDiv = doc.element("div");
   titleDiv.c("trigger");
 
-  titleDiv.element("h1").text(identity.name().text());
+  HtmlElement &h1 = titleDiv.element("h1");
+  h1.text( identity.name().text() );
 
-  HtmlElement &titleEditSpan = titleDiv.element("span").c("edit-link");
+  HtmlElement &titleEditSpan = h1.element("span").c("edit-link first");
 
   HtmlElement &titleEdit = titleEditSpan.element("a");
   titleEdit.attribute("href","polka:editName");
@@ -84,7 +91,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     a.attribute("href","mailto:" + email.text());
     a.text(email.text());
 
-    HtmlElement &span1 = emailDiv.element("span").c("edit-link");
+    HtmlElement &span1 = emailDiv.element("span").c("edit-link first");
 
     HtmlElement &e = span1.element("a");
     e.attribute("href","polka:editEmail/" + email.id());
@@ -104,13 +111,13 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     HtmlElement &p = phoneDiv.element("p");
     p.text(phone.phoneNumber());
 
-    HtmlElement &span1 = phoneDiv.element("span").c("edit-link");
+    HtmlElement &span1 = p.element("span").c("edit-link first");
 
     HtmlElement &e = span1.element("a");
     e.attribute("href","polka:editPhone/" + phone.id());
     e.text("Edit");
 
-    HtmlElement &span2 = phoneDiv.element("span").c("edit-link");
+    HtmlElement &span2 = p.element("span").c("edit-link");
 
     HtmlElement &r = span2.element("a");
     r.attribute("href","polka:removePhone/" + phone.id());
@@ -121,10 +128,13 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   foreach( Address address, identity.addresses().addressList() ) {
     HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
 
-    HtmlElement &p = addressDiv.element("pre");
+    HtmlElement &d = addressDiv.element("div");
+    d.c("address");
+
+    HtmlElement &p = d.element("pre");
     p.text(address.label());
 
-    HtmlElement &span1 = addressDiv.element("span").c("edit-link");
+    HtmlElement &span1 = addressDiv.element("span").c("edit-link first");
 
     HtmlElement &e = span1.element("a");
     e.attribute("href","polka:editAddress/" + address.id());
@@ -135,6 +145,8 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     HtmlElement &r = span2.element("a");
     r.attribute("href","polka:removeAddress/" + address.id());
     r.text("Remove");
+
+    addressDiv.element("br").attribute("clear","all");
   }
 
   HtmlElement &linksDiv = doc.element("div");
@@ -145,7 +157,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     a.attribute("href", link.url());
     a.text(link.url());
 
-    HtmlElement &span1 = linkDiv.element("span").c("edit-link");
+    HtmlElement &span1 = linkDiv.element("span").c("edit-link first");
 
     HtmlElement &e = span1.element("a");
     e.attribute("href","polka:editLink/" + link.id());
@@ -165,9 +177,10 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     foreach( Comment comment, identity.comments().commentList() ) {
       HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
-      commentDiv.element("p").text( comment.text() );
+      HtmlElement &p = commentDiv.element("p");
+      p.text( comment.text() );
 
-      HtmlElement &span = commentDiv.element("span").c("edit-link");
+      HtmlElement &span = p.element("span").c("edit-link first");
 
       HtmlElement &a = span.element("a");
       a.attribute("href","polka:editComment/" + comment.id() );
