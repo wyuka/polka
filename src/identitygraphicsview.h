@@ -25,6 +25,7 @@
 
 class PolkaItemModel;
 class PolkaModel;
+class IdentityItem;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -55,6 +56,8 @@ class IdentityGraphicsView : public QWidget
     PolkaModel *m_model;
 
     Identity m_group;
+
+    QList<IdentityItem *> m_items;
 
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  

@@ -71,6 +71,16 @@ IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
   setFlags( ItemIsMovable );
 }
 
+void IdentityItem::setDefaultPos( const QPointF &pos )
+{
+  m_defaultPos = pos;
+}
+
+QPointF IdentityItem::defaultPos() const
+{
+  return m_defaultPos;
+}
+
 void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );

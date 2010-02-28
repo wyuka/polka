@@ -29,8 +29,14 @@ class PolkaModel;
 class IdentityItem : public QObject, public QGraphicsEllipseItem
 {
     Q_OBJECT
+
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
+
   public:
     IdentityItem( PolkaModel *, const Identity & );
+
+    void setDefaultPos( const QPointF & );
+    QPointF defaultPos() const;
 
   signals:
     void showPerson( const Identity & );
@@ -53,6 +59,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
   private:
     PolkaModel *m_model;
     Identity m_identity;
+
+    QPointF m_defaultPos;
 
     QGraphicsRectItem *m_nameItem;
     FanMenu *m_fanMenu;

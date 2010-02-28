@@ -26,6 +26,8 @@
 
 #include <KLocale>
 
+#include <QPropertyAnimation>
+
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model )
 {
@@ -88,6 +90,7 @@ void IdentityGraphicsView::setGroup( const Identity &group )
 void IdentityGraphicsView::createItems()
 {
   m_scene->clear();
+  m_items.clear();
 
   Identity::List identities = m_model->identitiesOfGroup( m_group );
 
@@ -104,6 +107,7 @@ void IdentityGraphicsView::createItems()
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
     IdentityItem *item = new IdentityItem( m_model, identity );
+    m_items.append( item );
 
     connect( item, SIGNAL( showPerson( const Identity & ) ),
       SIGNAL( showPerson( const Identity & ) ) );
@@ -112,6 +116,8 @@ void IdentityGraphicsView::createItems()
 
     connect( item, SIGNAL( itemMoved( const Identity &, const QPointF & ) ),
       SLOT( savePosition( const Identity &, const QPointF & ) ) );
+
+    item->setDefaultPos( QPointF( posX, posY ) );
 
     IdentityPosition p = view.findIdentityPosition( identity.id() );
     if ( p.isValid() ) {
@@ -155,5 +161,16 @@ void IdentityGraphicsView::resetLayout()
 {
   m_model->clearViewPositions( m_group );
 
-  createItems();
+  foreach( IdentityItem *item, m_items ) {
+    if ( item->pos() != item->defaultPos() ) {
+      QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+
+      animation->setDuration(500);
+      animation->setStartValue( item->pos() );
+      animation->setEndValue( item->defaultPos() );
+      animation->setEasingCurve( QEasingCurve::OutCubic );
+
+      animation->start();
+    }
+  }
 }
