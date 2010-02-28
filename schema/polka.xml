@@ -25,7 +25,7 @@
       </picture>
     </pictures>
     <phones>
-      <phone comment="2">
+      <phone comment="2" updated_at="20090901T120023Z">
         <id>123</id>
         <phone_type>Mobile</phone_type>
         <phone_number>123/3848484</phone_number>
@@ -35,7 +35,7 @@
       </phone>
     </phones>
     <addresses>
-      <address>
+      <address updated_at="20090901T120023Z">
         <id>123</id>
         <label>Hauptstrasse 3\n12345Hintertupfingen</label>
       </address>
@@ -57,7 +57,7 @@
       </note>
     </notes>
     <links>
-      <link>
+      <link updated_at="20090901T120023Z">
         <id>dkljga</id>
         <link_type>xing</link_type>
         <url>http://xing.de/hw</url>
@@ -78,7 +78,7 @@
       </attribute>
     </extended_attributes>
     <comments>
-      <comment id="1">Don't use it anymore.</comment>
+      <comment id="1" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       <comment id="2">Always switched off.</comment>
     </comments>
   </identity>

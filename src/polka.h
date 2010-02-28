@@ -88,6 +88,8 @@ class Comment
   public:
     void setId( const QString &v );
     QString id() const;
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
     void setText( const QString &v );
     QString text() const;
     /**
@@ -98,6 +100,7 @@ class Comment
 
   private:
     QString mId;
+    QString mUpdatedAt;
     QString mText;
 };
 
@@ -169,6 +172,8 @@ class Link
     typedef QList<Link> List;
 
   public:
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
     void setId( const QString &v );
     QString id() const;
     bool isValid() const;
@@ -183,6 +188,7 @@ class Link
     QString writeElement();
 
   private:
+    QString mUpdatedAt;
     QString mId;
     QString mLinkType;
     QString mUrl;
@@ -302,6 +308,8 @@ class Address
     typedef QList<Address> List;
 
   public:
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
     void setId( const QString &v );
     QString id() const;
     bool isValid() const;
@@ -314,6 +322,7 @@ class Address
     QString writeElement();
 
   private:
+    QString mUpdatedAt;
     QString mId;
     QString mLabel;
 };
@@ -348,6 +357,8 @@ class Phone
   public:
     void setComment( const QString &v );
     QString comment() const;
+    void setUpdatedAt( const QString &v );
+    QString updatedAt() const;
     void setId( const QString &v );
     QString id() const;
     bool isValid() const;
@@ -363,6 +374,7 @@ class Phone
 
   private:
     QString mComment;
+    QString mUpdatedAt;
     QString mId;
     QString mPhoneType;
     QString mPhoneNumber;

@@ -240,6 +240,16 @@ QString Comment::id() const
   return mId;
 }
 
+void Comment::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Comment::updatedAt() const
+{
+  return mUpdatedAt;
+}
+
 void Comment::setText( const QString &v )
 {
   mText = v;
@@ -262,6 +272,7 @@ Comment Comment::parseElement( const QDomElement &element, bool *ok )
 
   result.setText( element.text() );
   result.setId( element.attribute( "id" ) );
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -271,7 +282,7 @@ QString Comment::writeElement()
 {
   QString xml;
   if ( !text().isEmpty() ) {
-    xml += indent() + "<comment id=\"" + id() + "\">" + text() + "</comment>\n";
+    xml += indent() + "<comment id=\"" + id() + "\" updated_at=\"" + updatedAt() + "\">" + text() + "</comment>\n";
   }
   return xml;
 }
@@ -498,6 +509,16 @@ QString ExtendedAttributes::writeElement()
 }
 
 
+void Link::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Link::updatedAt() const
+{
+  return mUpdatedAt;
+}
+
 void Link::setId( const QString &v )
 {
   mId = v;
@@ -557,6 +578,7 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -565,7 +587,7 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
 QString Link::writeElement()
 {
   QString xml;
-  xml += indent() + "<link>\n";
+  xml += indent() + "<link updated_at=\"" + updatedAt() + "\">\n";
   indent( 2 );
   if ( !id().isEmpty() ) {
     xml += indent() + "<id>" + id() + "</id>\n";
@@ -936,6 +958,16 @@ QString Relations::writeElement()
 }
 
 
+void Address::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Address::updatedAt() const
+{
+  return mUpdatedAt;
+}
+
 void Address::setId( const QString &v )
 {
   mId = v;
@@ -982,6 +1014,7 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -990,7 +1023,7 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
 QString Address::writeElement()
 {
   QString xml;
-  xml += indent() + "<address>\n";
+  xml += indent() + "<address updated_at=\"" + updatedAt() + "\">\n";
   indent( 2 );
   if ( !id().isEmpty() ) {
     xml += indent() + "<id>" + id() + "</id>\n";
@@ -1107,6 +1140,16 @@ QString Phone::comment() const
   return mComment;
 }
 
+void Phone::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Phone::updatedAt() const
+{
+  return mUpdatedAt;
+}
+
 void Phone::setId( const QString &v )
 {
   mId = v;
@@ -1167,6 +1210,7 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
   }
 
   result.setComment( element.attribute( "comment" ) );
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -1175,7 +1219,7 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
 QString Phone::writeElement()
 {
   QString xml;
-  xml += indent() + "<phone comment=\"" + comment() + "\">\n";
+  xml += indent() + "<phone comment=\"" + comment() + "\" updated_at=\"" + updatedAt() + "\">\n";
   indent( 2 );
   if ( !id().isEmpty() ) {
     xml += indent() + "<id>" + id() + "</id>\n";
