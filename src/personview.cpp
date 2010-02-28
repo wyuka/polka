@@ -34,14 +34,24 @@
 #include <KInputDialog>
 #include <KRandom>
 #include <KRun>
+#include <KDirWatch>
 
 PersonView::PersonView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model )
+  : QWidget( parent ), m_model( model ), m_dirWatch( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
+  QBoxLayout *titleLayout = new QHBoxLayout;
+  topLayout->addLayout( titleLayout );
+
   m_titleLabel = new QLabel;
-  topLayout->addWidget( m_titleLabel );
+  titleLayout->addWidget( m_titleLabel );
+
+  titleLayout->addStretch( 1 );
+  
+  QPushButton *button = new QPushButton( i18n("Debug HTML") );
+  connect( button, SIGNAL( clicked() ), SLOT( debugHtml() ) );
+  titleLayout->addWidget( button );
   
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
@@ -57,7 +67,7 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
 
   pictureSelectorLayout->addStretch( 1 );
 
-  QPushButton *button = new QPushButton( i18n("Grab Picture") );
+  button = new QPushButton( i18n("Grab Picture") );
   pictureSelectorLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
@@ -374,4 +384,49 @@ void PersonView::editName()
     
     m_model->insert( m_identity );
   }  
+}
+
+void PersonView::debugHtml()
+{
+  HtmlRenderer renderer;
+
+  QString html = renderer.renderPerson( m_identity );
+  
+  QFile file("polka.html");
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    qDebug() << "Error opening html debug file";
+    return;
+  }
+  
+  QTextStream out(&file);
+  out << html;
+  
+  file.close();
+
+  if ( !m_dirWatch ) {
+    m_dirWatch = new KDirWatch( this );
+    m_dirWatch->addFile( file.fileName() );
+    connect( m_dirWatch, SIGNAL( dirty( const QString & ) ),
+      SLOT( reloadDebugHtml() ) );  
+  }
+  
+  m_webView->setHtml( html );
+}
+
+void PersonView::reloadDebugHtml()
+{
+  qDebug() << "RELOAD DEBUG HTML";
+
+  QFile file("polka.html");
+  if (!file.open(QIODevice::ReadOnly)) {
+    qDebug() << "Error opening html debug file";
+    return;
+  }
+  
+  QTextStream in(&file);
+  QString html = in.readAll();
+  
+  file.close();
+
+  m_webView->setHtml( html );
 }

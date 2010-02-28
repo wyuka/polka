@@ -27,6 +27,7 @@
 class PictureSelector;
 class RegionGrabber;
 class PolkaModel;
+class KDirWatch;
 
 class PersonView : public QWidget
 {
@@ -46,6 +47,9 @@ class PersonView : public QWidget
     void slotRegionGrabbed( const QPixmap & );
 
     void slotLinkClicked( const QUrl & );
+
+    void debugHtml();
+    void reloadDebugHtml();
 
   protected:
     void editName();
@@ -79,6 +83,8 @@ class PersonView : public QWidget
     PictureSelector *m_pictureSelector;
 
     RegionGrabber *m_regionGrabber;
+
+    KDirWatch *m_dirWatch;
 };
 
 #endif
