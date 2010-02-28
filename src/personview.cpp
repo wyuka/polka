@@ -35,6 +35,7 @@
 #include <KRandom>
 #include <KRun>
 #include <KDirWatch>
+#include <KProcess>
 
 PersonView::PersonView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model ), m_dirWatch( 0 )
@@ -411,6 +412,11 @@ void PersonView::debugHtml()
   }
   
   m_webView->setHtml( html );
+  
+  QStringList args;
+  args << file.fileName();
+  
+  KProcess::execute( "nc", args );
 }
 
 void PersonView::reloadDebugHtml()
