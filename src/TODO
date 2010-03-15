@@ -4,6 +4,8 @@
 * Show modification date of fields
 * Edit comments for each field
 
+* Make first startup work smoothly.
+
 * Show nice text for links.
 
 * Make sure new items don't overlap with existing moved ones.
