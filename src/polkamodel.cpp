@@ -35,7 +35,6 @@ PolkaModel::PolkaModel( QObject *parent )
     m_commitCommand( 0 )
 {
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
-  m_gitDir->addFile( "std.polka" );
 
   m_gitRemote = new GitRemote( m_gitDir );
   connect( m_gitRemote, SIGNAL( pulled() ), SLOT( readData() ) );
@@ -129,11 +128,16 @@ PolkaItemModel *PolkaModel::groupItemModel()
 
 bool PolkaModel::readData()
 {
-  m_polka = Polka::parseFile( m_gitDir->filePath( "std.polka" ),
-    &m_dataIsValid );
+  QString dataFile = m_gitDir->filePath( "std.polka" );
 
-  if ( !m_dataIsValid ) {
-    return false;
+  if ( QFile::exists( dataFile ) ) {
+    m_polka = Polka::parseFile( dataFile, &m_dataIsValid );
+
+    if ( !m_dataIsValid ) {
+      return false;
+    }
+  } else {
+    m_dataIsValid = true;
   }
 
   foreach( Identity identity, m_polka.identityList() ) {
@@ -183,6 +187,7 @@ void PolkaModel::writeData()
   }
 
   m_polka.writeFile( m_gitDir->filePath( "std.polka" ) );
+  m_gitDir->addFile( "std.polka" );
   m_commitCommand = m_gitDir->commitData();
 }
 

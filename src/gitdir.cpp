@@ -45,9 +45,7 @@ void GitDir::init()
   QDir dir( m_dirPath );
   if ( !dir.exists() ) {
     dir.mkpath( m_dirPath );
-    QStringList args;
-    args << "init";
-    m_process->start( "git", args );
+    executeCommand( "init" );
   }
 }
 
@@ -68,7 +66,7 @@ void GitDir::slotProcessFinished( int exitCode,
 }
 
 // FIXME: Return a GitFile object, which can be used as handle.
-void GitDir::addFile( const QString &fileName )
+void GitDir::createPath( const QString &fileName )
 {
   QString filePath = GitDir::filePath( fileName );
   if ( !QFile::exists( filePath ) ) {
@@ -76,18 +74,19 @@ void GitDir::addFile( const QString &fileName )
     QDir dir( fi.absoluteDir() );
     if ( !dir.exists() ) {
       dir.mkpath( dir.path() );
-    } 
-       
-    QFile file( filePath );
-    if ( !file.open( QIODevice::WriteOnly ) ) {
-      qDebug() << "Unable to open file.";
-    } else {
-      QTextStream ts( &file );
-      ts << "\n";
-      
-      executeCommand( "add", fileName );
-      executeCommit();
     }
+  }
+}
+
+// FIXME: Return a GitFile object, which can be used as handle.
+void GitDir::addFile( const QString &fileName )
+{
+  QString filePath = GitDir::filePath( fileName );
+  if ( !QFile::exists( filePath ) ) {
+    qDebug() << "ERROR: file" << filePath << "doesn't exist";
+  } else {
+    executeCommand( "add", fileName );
+    executeCommit();
   }
 }
 

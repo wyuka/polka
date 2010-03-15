@@ -72,8 +72,9 @@ void LocalPicture::setPixmap( const QPixmap &pixmap )
   m_pixmap = scalePicture( pixmap );
 
   if ( !fileExists() ) {
-    m_gitDir->addFile( localFilePath() );
+    m_gitDir->createPath( localFilePath() );
     m_pixmap.save( fullFilePath(), "PNG" );
+    m_gitDir->addFile( localFilePath() );
   }
   
   emit pixmapChanged( m_pixmap );

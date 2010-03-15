@@ -34,11 +34,16 @@ class GitDir : public QObject
     void init();
 
     /**
-      Add file to git repo. The file is created as an empty file. Directories in
+      Directories in
       the file name are created automatically. Call this function before you
       write to the file.
     */
+    void createPath( const QString &fileName );
+    /**
+      Add file to git repo.
+    */
     void addFile( const QString &fileName );
+
   
     QString filePath( const QString &fileName );
   
