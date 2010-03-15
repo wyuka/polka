@@ -26,7 +26,9 @@
 
 #include <KLocale>
 
+#if QT_VERSION >= 0x040600
 #include <QPropertyAnimation>
+#endif
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model )
@@ -163,6 +165,7 @@ void IdentityGraphicsView::resetLayout()
 
   foreach( IdentityItem *item, m_items ) {
     if ( item->pos() != item->defaultPos() ) {
+#if QT_VERSION >= 0x040600
       QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
 
       animation->setDuration(500);
@@ -171,6 +174,9 @@ void IdentityGraphicsView::resetLayout()
       animation->setEasingCurve( QEasingCurve::OutCubic );
 
       animation->start();
+#else
+      item->setPos( item->defaultPos() );
+#endif
     }
   }
 }
