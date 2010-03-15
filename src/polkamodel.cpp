@@ -31,7 +31,8 @@
 #include <QDebug>
 
 PolkaModel::PolkaModel( QObject *parent )
-  : QObject( parent ), m_allItemModel( 0 ), m_groupItemModel( 0 ),
+  : QObject( parent ), m_allItemModel( 0 ), m_personsItemModel( 0 ),
+    m_groupItemModel( 0 ),
     m_commitCommand( 0 )
 {
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );

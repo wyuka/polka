@@ -4,8 +4,6 @@
 * Show modification date of fields
 * Edit comments for each field
 
-* Make first startup work smoothly.
-
 * Show nice text for links.
 
 * Make sure new items don't overlap with existing moved ones.
@@ -23,6 +21,8 @@
 * graphical group view
 * More than one (remote) repo, to separate for example private and job data
 * Group specific display names
+
+* Make first startup beautiful.
 
 * Migrate data between schema versions
 

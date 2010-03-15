@@ -24,7 +24,7 @@
 #include <KPushButton>
 
 NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
-  : KDialog( parent ), m_model( model )
+  : KDialog( parent ), m_model( model ), m_proxyModel( 0 ), m_matchList( 0 )
 {
   setCaption( "New Person" );
   setButtons( KDialog::Ok | KDialog::Cancel );
@@ -39,22 +39,25 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   
   m_nameInput = new QLineEdit;
   topLayout->addWidget( m_nameInput );
-
-  m_matchList = new QListView;
-  topLayout->addWidget( m_matchList );
-  connect( m_matchList, SIGNAL( activated( const QModelIndex & ) ),
-    SLOT( accept() ) );
-
-  m_proxyModel = new QSortFilterProxyModel(this);
-  m_proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
-
-  m_proxyModel->setSourceModel( m_model->personsItemModel() );
-  m_matchList->setModel( m_proxyModel );
-
-  connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
-    m_proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
   connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
     SLOT( checkOkButton() ) );
+
+  if ( !m_model->persons().isEmpty() ) {
+    m_matchList = new QListView;
+    
+    m_proxyModel = new QSortFilterProxyModel(this);
+    m_proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
+
+    topLayout->addWidget( m_matchList );
+    connect( m_matchList, SIGNAL( activated( const QModelIndex & ) ),
+      SLOT( accept() ) );
+
+    m_proxyModel->setSourceModel( m_model->personsItemModel() );
+    m_matchList->setModel( m_proxyModel );
+
+    connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
+      m_proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
+  }
 
   setMainWidget( topWidget );
 
@@ -73,16 +76,16 @@ NewPersonDialog::~NewPersonDialog()
 
 Identity NewPersonDialog::identity()
 {
-  QModelIndexList selectedIndexes =
-    m_matchList->selectionModel()->selectedIndexes();
-
-  if ( selectedIndexes.isEmpty() ) {
+  if ( !m_matchList || m_matchList->selectionModel()->selectedIndexes().isEmpty() ) {
     Identity identity;
     Name name;
     name.setText( m_nameInput->text() );
     identity.setName( name );
     return identity;
   } else {
+    QModelIndexList selectedIndexes =
+      m_matchList->selectionModel()->selectedIndexes();
+
     if ( selectedIndexes.count() > 1 ) {
       KMessageBox::information( 0, "More than one person selected" );
     }
