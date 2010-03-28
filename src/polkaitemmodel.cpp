@@ -52,7 +52,7 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
 
   if ( index.row() >= rowCount( QModelIndex() ) ) return QVariant();
 
-  Identity identity = getIdentityData( index );
+  Polka::Identity identity = getIdentityData( index );
 
   if (role == Qt::DisplayRole) {
     return identity.name().text();
@@ -65,7 +65,7 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   }
 }
 
-Identity PolkaItemModel::getIdentityData( const QModelIndex &index ) const
+Polka::Identity PolkaItemModel::getIdentityData( const QModelIndex &index ) const
 {
   return m_model->identitiesOfGroup( m_groupId ).at( index.row() );
 }
@@ -87,7 +87,7 @@ void PolkaItemModel::updateData()
   reset();
 }
 
-Identity PolkaItemModel::identity( const QModelIndex &index )
+Polka::Identity PolkaItemModel::identity( const QModelIndex &index )
 {
   return m_model->identitiesOfGroup( m_groupId ).at( index.row() );
 }

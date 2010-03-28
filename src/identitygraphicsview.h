@@ -33,29 +33,30 @@ class IdentityGraphicsView : public QWidget
   public:
     IdentityGraphicsView( PolkaModel *, QWidget *parent = 0 );
 
-    void setGroup( const Identity & );
-    Identity group() const;
+    void setGroup( const Polka::Identity & );
+    Polka::Identity group() const;
 
     void setGroupName( const QString & );
 
   signals:
     void goBack();
     void newPerson();
-    void showPerson( const Identity & );
-    void removePerson( const Identity &person, const Identity &group );
+    void showPerson( const Polka::Identity & );
+    void removePerson( const Polka::Identity &person,
+      const Polka::Identity &group );
 
   protected slots:
     void resetLayout();
   
     void createItems();
-    void slotRemovePerson( const Identity & );
+    void slotRemovePerson( const Polka::Identity & );
 
-    void savePosition( const Identity &, const QPointF & );
+    void savePosition( const Polka::Identity &, const QPointF & );
 
   private:
     PolkaModel *m_model;
 
-    Identity m_group;
+    Polka::Identity m_group;
 
     QList<IdentityItem *> m_items;
 

@@ -29,15 +29,15 @@ class PictureSelectorButton : public QWidget
   public:
     PictureSelectorButton( QWidget *parent = 0 );
 
-    void setPicture( const Picture & );
+    void setPicture( const Polka::Picture & );
 
-    Picture picture() const;
+    Polka::Picture picture() const;
 
   protected slots:
     void setPixmap( const QPixmap & );
 
   private:
-    Picture m_picture;
+    Polka::Picture m_picture;
   
     QLabel *m_label;
 };

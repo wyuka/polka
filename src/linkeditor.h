@@ -30,11 +30,11 @@ class LinkEditor : public KDialog
   public:
     LinkEditor( QWidget *parent );
 
-    void setLink( const Link & );
-    Link link();
+    void setLink( const Polka::Link & );
+    Polka::Link link();
     
   private:
-    Link m_link;
+    Polka::Link m_link;
 
     QLineEdit *m_urlEdit;
 };

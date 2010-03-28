@@ -28,10 +28,10 @@ class PolkaAllItemModel : public PolkaItemModel
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-    Identity identity( const QModelIndex &index );
+    Polka::Identity identity( const QModelIndex &index );
 
   protected:
-    Identity getIdentityData( const QModelIndex &index ) const;
+    Polka::Identity getIdentityData( const QModelIndex &index ) const;
 };
 
 #endif

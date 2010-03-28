@@ -29,10 +29,10 @@ class PictureSelector : public QWidget
   public:
     PictureSelector( QWidget *parent = 0 );
 
-    void setPictures( const Picture::List & );
+    void setPictures( const Polka::Picture::List & );
 
   signals:
-    void pictureSelected( const Picture & );
+    void pictureSelected( const Polka::Picture & );
 
   private:
     QBoxLayout *m_layout;

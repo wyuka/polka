@@ -16,13 +16,15 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef POLKA_H
-#define POLKA_H
+#ifndef POLKA_POLKA_H
+#define POLKA_POLKA_H
 
 #include <QString>
 #include <QDomElement>
 #include <QList>
 #include <QDate>
+
+namespace Polka {
 
 class IdentityPosition
 {
@@ -646,5 +648,7 @@ class Polka
     Identity::List mIdentityList;
     GroupView::List mGroupViewList;
 };
+
+}
 
 #endif

@@ -46,9 +46,10 @@ class PolkaView : public QWidget
 
     void showGroupList();
     void showView();
-    void showGroupView( const Identity & );
-    void showPerson( const Identity & );
-    void removePerson( const Identity &person, const Identity &group );
+    void showGroupView( const Polka::Identity & );
+    void showPerson( const Polka::Identity & );
+    void removePerson( const Polka::Identity &person,
+      const Polka::Identity &group );
 
   signals:
     void dataWritten();
@@ -69,7 +70,7 @@ class PolkaView : public QWidget
   private:
     PolkaModel *m_model;
 
-    Identity m_group;
+    Polka::Identity m_group;
 
     QCheckBox *m_graphicsModeCheck;
     QCheckBox *m_syncingCheck;

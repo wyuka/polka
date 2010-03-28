@@ -35,7 +35,7 @@ LocalPicture::LocalPicture( GitDir *gitDir )
   m_defaultPixmap = QPixmap( picPath );
 }
 
-void LocalPicture::setPicture( const Picture &picture )
+void LocalPicture::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
 }

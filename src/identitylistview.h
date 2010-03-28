@@ -32,8 +32,8 @@ class IdentityListView : public QWidget
   public:
     IdentityListView( PolkaModel *, QWidget *parent = 0 );
 
-    void setGroup( const Identity & );
-    Identity group() const;
+    void setGroup( const Polka::Identity & );
+    Polka::Identity group() const;
 
     void setItemModel( PolkaItemModel * );
 
@@ -42,7 +42,7 @@ class IdentityListView : public QWidget
   signals:
     void goBack();
     void newPerson();
-    void showPerson( const Identity & );
+    void showPerson( const Polka::Identity & );
 
   protected slots:
     void slotItemClicked( const QModelIndex &index );
@@ -51,7 +51,7 @@ class IdentityListView : public QWidget
     PolkaModel *m_model;
     PolkaItemModel *m_itemModel;
 
-    Identity m_group;
+    Polka::Identity m_group;
 
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  

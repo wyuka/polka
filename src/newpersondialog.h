@@ -33,7 +33,7 @@ class NewPersonDialog : public KDialog
     NewPersonDialog( PolkaModel *, QWidget *parent = 0 );
     ~NewPersonDialog();
 
-    Identity identity();
+    Polka::Identity identity();
 
   protected slots:
     void checkOkButton();

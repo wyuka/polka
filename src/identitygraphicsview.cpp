@@ -72,15 +72,15 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( resetLayout() ) );
 
-  connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
+  connect( m_model, SIGNAL( identityInserted( const Polka::Identity & ) ),
     SLOT( createItems() ) );
-  connect( m_model, SIGNAL( identityChanged( const Identity & ) ),
+  connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( createItems() ) );
-  connect( m_model, SIGNAL( identityRemoved( const Identity & ) ),
+  connect( m_model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
     SLOT( createItems() ) );
 }
 
-void IdentityGraphicsView::setGroup( const Identity &group )
+void IdentityGraphicsView::setGroup( const Polka::Identity &group )
 {
   m_group = group;
 
@@ -94,7 +94,7 @@ void IdentityGraphicsView::createItems()
   m_scene->clear();
   m_items.clear();
 
-  Identity::List identities = m_model->identitiesOfGroup( m_group );
+  Polka::Identity::List identities = m_model->identitiesOfGroup( m_group );
 
   int columns = sqrt( identities.size() );
   int spacing = 150;
@@ -102,26 +102,26 @@ void IdentityGraphicsView::createItems()
   int x = 0;
   int y = 0;
 
-  GroupView view = m_model->groupView( m_group );
+  Polka::GroupView view = m_model->groupView( m_group );
 
-  foreach( Identity identity, identities ) {
+  foreach( Polka::Identity identity, identities ) {
     qreal posX = x * spacing + ( y % 2 ) * spacing / 2;
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
     IdentityItem *item = new IdentityItem( m_model, identity );
     m_items.append( item );
 
-    connect( item, SIGNAL( showPerson( const Identity & ) ),
-      SIGNAL( showPerson( const Identity & ) ) );
-    connect( item, SIGNAL( removePerson( const Identity & ) ),
-      SLOT( slotRemovePerson( const Identity & ) ) );
+    connect( item, SIGNAL( showPerson( const Polka::Identity & ) ),
+      SIGNAL( showPerson( const Polka::Identity & ) ) );
+    connect( item, SIGNAL( removePerson( const Polka::Identity & ) ),
+      SLOT( slotRemovePerson( const Polka::Identity & ) ) );
 
-    connect( item, SIGNAL( itemMoved( const Identity &, const QPointF & ) ),
-      SLOT( savePosition( const Identity &, const QPointF & ) ) );
+    connect( item, SIGNAL( itemMoved( const Polka::Identity &, const QPointF & ) ),
+      SLOT( savePosition( const Polka::Identity &, const QPointF & ) ) );
 
     item->setDefaultPos( QPointF( posX, posY ) );
 
-    IdentityPosition p = view.findIdentityPosition( identity.id() );
+    Polka::IdentityPosition p = view.findIdentityPosition( identity.id() );
     if ( p.isValid() ) {
       item->setPos( p.x(), p.y() );
     } else {
@@ -138,7 +138,7 @@ void IdentityGraphicsView::createItems()
   }
 }
 
-Identity IdentityGraphicsView::group() const
+Polka::Identity IdentityGraphicsView::group() const
 {
   return m_group;
 }
@@ -148,12 +148,12 @@ void IdentityGraphicsView::setGroupName( const QString &name )
   m_groupNameLabel->setText( "<b>" + name + "</b>" );
 }
 
-void IdentityGraphicsView::slotRemovePerson( const Identity &identity )
+void IdentityGraphicsView::slotRemovePerson( const Polka::Identity &identity )
 {
   emit removePerson( identity, m_group );
 }
 
-void IdentityGraphicsView::savePosition( const Identity &identity,
+void IdentityGraphicsView::savePosition( const Polka::Identity &identity,
   const QPointF &pos )
 {
   m_model->saveViewPosition( m_group, identity, pos );

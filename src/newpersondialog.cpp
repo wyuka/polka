@@ -74,11 +74,11 @@ NewPersonDialog::~NewPersonDialog()
   saveDialogSize( cg );
 }
 
-Identity NewPersonDialog::identity()
+Polka::Identity NewPersonDialog::identity()
 {
   if ( !m_matchList || m_matchList->selectionModel()->selectedIndexes().isEmpty() ) {
-    Identity identity;
-    Name name;
+    Polka::Identity identity;
+    Polka::Name name;
     name.setText( m_nameInput->text() );
     identity.setName( name );
     return identity;

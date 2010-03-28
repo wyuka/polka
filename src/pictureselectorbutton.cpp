@@ -30,14 +30,14 @@ PictureSelectorButton::PictureSelectorButton( QWidget *parent )
   topLayout->addWidget( m_label );
 }
 
-void PictureSelectorButton::setPicture( const Picture &picture )
+void PictureSelectorButton::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
   connect( ImageLoader::load( m_picture.url() ),
     SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
 }
 
-Picture PictureSelectorButton::picture() const
+Polka::Picture PictureSelectorButton::picture() const
 {
   return m_picture;
 }

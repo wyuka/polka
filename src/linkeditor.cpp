@@ -34,7 +34,7 @@ LinkEditor::LinkEditor( QWidget *parent )
   m_urlEdit->setFocus();
 }
 
-void LinkEditor::setLink( const Link &link )
+void LinkEditor::setLink( const Polka::Link &link )
 {
   m_link = link;
 
@@ -43,7 +43,7 @@ void LinkEditor::setLink( const Link &link )
   m_urlEdit->setText( link.url() );
 }
 
-Link LinkEditor::link()
+Polka::Link LinkEditor::link()
 {
   m_link.setUrl( m_urlEdit->text() );
 

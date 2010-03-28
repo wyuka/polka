@@ -33,16 +33,16 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 
   public:
-    IdentityItem( PolkaModel *, const Identity & );
+    IdentityItem( PolkaModel *, const Polka::Identity & );
 
     void setDefaultPos( const QPointF & );
     QPointF defaultPos() const;
 
   signals:
-    void showPerson( const Identity & );
-    void removePerson( const Identity & );
+    void showPerson( const Polka::Identity & );
+    void removePerson( const Polka::Identity & );
 
-    void itemMoved( const Identity &, const QPointF & );
+    void itemMoved( const Polka::Identity &, const QPointF & );
 
   protected:
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
@@ -58,7 +58,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
   private:
     PolkaModel *m_model;
-    Identity m_identity;
+    Polka::Identity m_identity;
 
     QPointF m_defaultPos;
 

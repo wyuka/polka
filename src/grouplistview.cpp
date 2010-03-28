@@ -52,7 +52,7 @@ void GroupListView::setItemModel( PolkaItemModel *itemModel )
 
 void GroupListView::slotItemClicked( const QModelIndex &index )
 {
-  Identity identity = m_itemModel->identity( index );
+  Polka::Identity identity = m_itemModel->identity( index );
 
   emit groupClicked( identity );
 }

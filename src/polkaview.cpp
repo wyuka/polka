@@ -52,26 +52,26 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_groupListView = new GroupListView;
   m_viewLayout->addWidget( m_groupListView );
-  connect( m_groupListView, SIGNAL( groupClicked( const Identity & ) ),
-    SLOT( showGroupView( const Identity & ) ) );
+  connect( m_groupListView, SIGNAL( groupClicked( const Polka::Identity & ) ),
+    SLOT( showGroupView( const Polka::Identity & ) ) );
   connect( m_groupListView, SIGNAL( newGroup() ), SLOT( newGroup() ) );
 
   m_groupView = new IdentityListView( m_model );
   m_viewLayout->addWidget( m_groupView );
   connect( m_groupView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupView, SIGNAL( showPerson( const Identity & ) ),
-    SLOT( showPerson( const Identity & ) ) );
+  connect( m_groupView, SIGNAL( showPerson( const Polka::Identity & ) ),
+    SLOT( showPerson( const Polka::Identity & ) ) );
 
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
   m_viewLayout->addWidget( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupGraphicsView, SIGNAL( showPerson( const Identity & ) ),
-    SLOT( showPerson( const Identity & ) ) );
-  connect( m_groupGraphicsView, SIGNAL( removePerson( const Identity &,
-    const Identity & ) ),
-    SLOT( removePerson( const Identity &, const Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( showPerson( const Polka::Identity & ) ),
+    SLOT( showPerson( const Polka::Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( removePerson( const Polka::Identity &,
+    const Polka::Identity & ) ),
+    SLOT( removePerson( const Polka::Identity &, const Polka::Identity & ) ) );
 
   readConfig();
 
@@ -118,7 +118,7 @@ void PolkaView::readData()
   if ( Settings::shownGroup().isEmpty() ) {
     showGroupList();
   } else {
-    Identity group = m_model->findIdentity( Settings::shownGroup() );
+    Polka::Identity group = m_model->findIdentity( Settings::shownGroup() );
     showGroupView( group );
   }
 
@@ -142,8 +142,8 @@ void PolkaView::newGroup()
   QString name = KInputDialog::getText( i18n("New Group"),
     i18n("Enter name of group to add"), QString(), &ok );
   if ( ok ) {
-    Identity identity;
-    Name n;
+    Polka::Identity identity;
+    Polka::Name n;
     n.setText( name );
     identity.setName( n );
     
@@ -155,10 +155,10 @@ void PolkaView::newPerson()
 {
   NewPersonDialog *dialog = new NewPersonDialog( m_model, this );
   if ( dialog->exec() == QDialog::Accepted ) {
-    Identity identity = dialog->identity();
+    Polka::Identity identity = dialog->identity();
 
-    Groups groups = identity.groups();
-    Group group;
+    Polka::Groups groups = identity.groups();
+    Polka::Group group;
     group.setId( m_group.id() );
     groups.addGroup( group );
     identity.setGroups( groups );
@@ -170,12 +170,12 @@ void PolkaView::newPerson()
 
 void PolkaView::showGroupList()
 {
-  m_group = Identity();
+  m_group = Polka::Identity();
 
   m_viewLayout->setCurrentWidget( m_groupListView );
 }
 
-void PolkaView::showGroupView( const Identity &group )
+void PolkaView::showGroupView( const Polka::Identity &group )
 {
   m_group = group;
 
@@ -197,7 +197,7 @@ void PolkaView::showView()
   }
 }
 
-void PolkaView::showPerson( const Identity &identity )
+void PolkaView::showPerson( const Polka::Identity &identity )
 {
   KDialog *dialog = new KDialog( this );
   dialog->setButtons( KDialog::Ok );
@@ -207,7 +207,8 @@ void PolkaView::showPerson( const Identity &identity )
   dialog->show();
 }
 
-void PolkaView::removePerson( const Identity &identity, const Identity &group )
+void PolkaView::removePerson( const Polka::Identity &identity,
+  const Polka::Identity &group )
 {
   m_model->removePerson( identity, group );
 }

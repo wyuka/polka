@@ -35,12 +35,12 @@ int PolkaAllItemModel::rowCount(const QModelIndex &parent) const
   return model()->allIdentities().count();
 }
 
-Identity PolkaAllItemModel::getIdentityData( const QModelIndex &index ) const
+Polka::Identity PolkaAllItemModel::getIdentityData( const QModelIndex &index ) const
 {
   return model()->allIdentities().at( index.row() );
 }
 
-Identity PolkaAllItemModel::identity( const QModelIndex &index )
+Polka::Identity PolkaAllItemModel::identity( const QModelIndex &index )
 {
   return model()->allIdentities().at( index.row() );
 }

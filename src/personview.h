@@ -36,7 +36,7 @@ class PersonView : public QWidget
     PersonView( PolkaModel *, QWidget *parent = 0 );
 
   public slots:
-    void showIdentity( const Identity & );
+    void showIdentity( const Polka::Identity & );
   
   protected slots:
     void showIdentity();
@@ -76,7 +76,7 @@ class PersonView : public QWidget
   
   private:
     PolkaModel *m_model;
-    Identity m_identity;
+    Polka::Identity m_identity;
   
     QLabel *m_titleLabel;
     QWebView *m_webView;

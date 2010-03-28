@@ -40,10 +40,10 @@ class PolkaItemModel : public QAbstractListModel
 
     void updateData();
 
-    virtual Identity identity( const QModelIndex &index );
+    virtual Polka::Identity identity( const QModelIndex &index );
 
   protected:
-    virtual Identity getIdentityData( const QModelIndex &index ) const;
+    virtual Polka::Identity getIdentityData( const QModelIndex &index ) const;
 
   private:
     PolkaModel *m_model;

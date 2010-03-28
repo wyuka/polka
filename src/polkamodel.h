@@ -40,33 +40,34 @@ class PolkaModel : public QObject
     void writeData();
 
     // FIXME: create create,read,update,delete identity functions
-    Identity findIdentity( const QString &id );
-    void insert( Identity ); // create
+    Polka::Identity findIdentity( const QString &id );
+    void insert( Polka::Identity ); // create
 
     // FIXME: consistent API for querying lists of identities
-    Identity::List persons();
-    Identity::List identitiesOfGroup( const Identity &group );
-    Identity::List identitiesOfGroup( const QString &id );
+    Polka::Identity::List persons();
+    Polka::Identity::List identitiesOfGroup( const Polka::Identity &group );
+    Polka::Identity::List identitiesOfGroup( const QString &id );
     // FIXME: maybe replace by read-only polka access
-    Identity::List allIdentities();
+    Polka::Identity::List allIdentities();
 
-    void removePerson( const Identity &person, const Identity &group );
+    void removePerson( const Polka::Identity &person,
+      const Polka::Identity &group );
 
     PolkaItemModel *allItemModel();
     PolkaItemModel *personsItemModel();
     PolkaItemModel *groupItemModel();
     PolkaItemModel *itemModel( const QString &id = QString() );
 
-    QPixmap picture( const Identity & ) const;
+    QPixmap picture( const Polka::Identity & ) const;
 
-    void importPicture( const QPixmap &, const Identity & );
+    void importPicture( const QPixmap &, const Polka::Identity & );
 
-    void saveViewPosition( const Identity &group,
-      const Identity &identity,
+    void saveViewPosition( const Polka::Identity &group,
+      const Polka::Identity &identity,
       const QPointF &pos );
-    void clearViewPositions( const Identity &group );
+    void clearViewPositions( const Polka::Identity &group );
 
-    GroupView groupView( const Identity &group );
+    Polka::GroupView groupView( const Polka::Identity &group );
 
   public slots:
     bool readData();
@@ -75,9 +76,9 @@ class PolkaModel : public QObject
     void dataWritten();
 
     // FIXME: What's the difference between inserted and changed?
-    void identityInserted( const Identity & );
-    void identityChanged( const Identity & );
-    void identityRemoved( const Identity & );
+    void identityInserted( const Polka::Identity & );
+    void identityChanged( const Polka::Identity & );
+    void identityRemoved( const Polka::Identity & );
 
   protected slots:
     void slotCommandExecuted( int id );
@@ -90,11 +91,11 @@ class PolkaModel : public QObject
     GitDir *m_gitDir;
     GitRemote *m_gitRemote;
   
-    Polka m_polka;
+    Polka::Polka m_polka;
     bool m_dataIsValid;
 
-    Identity::List m_groups;
-    QMap<QString,Identity::List> m_groupMap;
+    Polka::Identity::List m_groups;
+    QMap<QString,Polka::Identity::List> m_groupMap;
 
     PolkaItemModel *m_allItemModel;
     PolkaItemModel *m_personsItemModel;

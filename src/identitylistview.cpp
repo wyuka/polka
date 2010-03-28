@@ -54,7 +54,7 @@ IdentityListView::IdentityListView( PolkaModel *model, QWidget *parent )
     SLOT( slotItemClicked( const QModelIndex & ) ) );
 }
 
-void IdentityListView::setGroup( const Identity &group )
+void IdentityListView::setGroup( const Polka::Identity &group )
 {
   m_group = group;
 
@@ -62,7 +62,7 @@ void IdentityListView::setGroup( const Identity &group )
   setGroupName( group.name().text() );
 }
 
-Identity IdentityListView::group() const
+Polka::Identity IdentityListView::group() const
 {
   return m_group;
 }
@@ -81,7 +81,7 @@ void IdentityListView::setGroupName( const QString &name )
 
 void IdentityListView::slotItemClicked( const QModelIndex &index )
 {
-  Identity identity = m_itemModel->identity( index );
+  Polka::Identity identity = m_itemModel->identity( index );
 
   emit showPerson( identity );
 }

@@ -27,7 +27,7 @@ HtmlRenderer::HtmlRenderer()
 {
 }
 
-QString HtmlRenderer::renderPerson( const Identity &identity )
+QString HtmlRenderer::renderPerson( const Polka::Identity &identity )
 {
   HtmlDoc doc;
 
@@ -84,7 +84,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   titleEdit.text(i18n("Edit"));
 
   HtmlElement &div = doc.element("div");
-  foreach( Email email, identity.emails().emailList() ) {
+  foreach( Polka::Email email, identity.emails().emailList() ) {
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
@@ -105,7 +105,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   }
 
   HtmlElement &phonesDiv = doc.element("div");
-  foreach( Phone phone, identity.phones().phoneList() ) {
+  foreach( Polka::Phone phone, identity.phones().phoneList() ) {
     HtmlElement &phoneDiv = phonesDiv.element("div").c("trigger");
 
     HtmlElement &p = phoneDiv.element("p");
@@ -125,7 +125,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   }
 
   HtmlElement &addressesDiv = doc.element("div");
-  foreach( Address address, identity.addresses().addressList() ) {
+  foreach( Polka::Address address, identity.addresses().addressList() ) {
     HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
 
     HtmlElement &d = addressDiv.element("div");
@@ -150,7 +150,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
   }
 
   HtmlElement &linksDiv = doc.element("div");
-  foreach( Link link, identity.links().linkList() ) {
+  foreach( Polka::Link link, identity.links().linkList() ) {
     HtmlElement &linkDiv = linksDiv.element("div").c("trigger");
 
     HtmlElement &a = linkDiv.element("a");
@@ -174,7 +174,7 @@ QString HtmlRenderer::renderPerson( const Identity &identity )
     HtmlElement &commentsDiv = doc.element("div");
     commentsDiv.element("h2").text(i18n("Comments"));
 
-    foreach( Comment comment, identity.comments().commentList() ) {
+    foreach( Polka::Comment comment, identity.comments().commentList() ) {
       HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
       HtmlElement &p = commentDiv.element("p");

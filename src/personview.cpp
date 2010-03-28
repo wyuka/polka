@@ -72,15 +72,15 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   pictureSelectorLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
-  connect( m_model, SIGNAL( identityInserted( const Identity & ) ),
-    SLOT( showIdentity( const Identity & ) ) );
+  connect( m_model, SIGNAL( identityInserted( const Polka::Identity & ) ),
+    SLOT( showIdentity( const Polka::Identity & ) ) );
 }
 
-void PersonView::showIdentity( const Identity &identity )
+void PersonView::showIdentity( const Polka::Identity &identity )
 {
   m_identity = identity;
 
-  Picture::List pictures = identity.pictures().pictureList();
+  Polka::Picture::List pictures = identity.pictures().pictureList();
 
   if ( !pictures.isEmpty() ) {
     m_pictureSelector->setPictures( pictures );
@@ -169,10 +169,10 @@ void PersonView::addEmail()
   QString email = KInputDialog::getText( i18n("Add email"),
     i18n("Enter new email address"), QString(), &ok );
   if ( ok ) {
-    Email e;
+    Polka::Email e;
     e.setId( KRandom::randomString( 10 ) );
     e.setText( email );
-    Emails es = m_identity.emails();
+    Polka::Emails es = m_identity.emails();
     es.addEmail( e );
     m_identity.setEmails( es );
 
@@ -184,13 +184,13 @@ void PersonView::addEmail()
 
 void PersonView::editEmail( const QString &id )
 {
-  Email e = m_identity.emails().findEmail( id );
+  Polka::Email e = m_identity.emails().findEmail( id );
 
   bool ok;
   QString email = KInputDialog::getText( i18n("Add email"),
     i18n("Enter new email address"), e.text(), &ok );
   if ( ok ) {
-    Emails es = m_identity.emails();
+    Polka::Emails es = m_identity.emails();
     e.setText( email );
     es.insert( e );
     m_identity.setEmails( es );
@@ -201,8 +201,8 @@ void PersonView::editEmail( const QString &id )
 
 void PersonView::removeEmail( const QString &id )
 {
-  Emails es = m_identity.emails();
-  Email e = es.findEmail( id );
+  Polka::Emails es = m_identity.emails();
+  Polka::Email e = es.findEmail( id );
   es.remove( e );
   m_identity.setEmails( es );
   
@@ -213,8 +213,8 @@ void PersonView::addAddress()
 {
   AddressEditor *editor = new AddressEditor( this );
   if ( editor->exec() == AddressEditor::Accepted ) {
-    Addresses cs = m_identity.addresses();
-    Address c;
+    Polka::Addresses cs = m_identity.addresses();
+    Polka::Address c;
     c.setId( KRandom::randomString( 10 ) );
     c.setLabel( editor->address() );
     cs.insert( c );
@@ -226,12 +226,12 @@ void PersonView::addAddress()
 
 void PersonView::editAddress( const QString &id )
 {
-  Address address = m_identity.addresses().findAddress( id );
+  Polka::Address address = m_identity.addresses().findAddress( id );
 
   AddressEditor *editor = new AddressEditor( this );
   editor->setAddress( address.label() );
   if ( editor->exec() == AddressEditor::Accepted ) {
-    Addresses cs = m_identity.addresses();
+    Polka::Addresses cs = m_identity.addresses();
     address.setLabel( editor->address() );
     cs.insert( address );
     m_identity.setAddresses( cs );
@@ -242,8 +242,8 @@ void PersonView::editAddress( const QString &id )
 
 void PersonView::removeAddress( const QString &id )
 {
-  Addresses cs = m_identity.addresses();
-  Address c = cs.findAddress( id );
+  Polka::Addresses cs = m_identity.addresses();
+  Polka::Address c = cs.findAddress( id );
   cs.remove( c );
   m_identity.setAddresses( cs );
   
@@ -254,8 +254,8 @@ void PersonView::addComment()
 {
   CommentEditor *editor = new CommentEditor( this );
   if ( editor->exec() == CommentEditor::Accepted ) {
-    Comments cs = m_identity.comments();
-    Comment c;
+    Polka::Comments cs = m_identity.comments();
+    Polka::Comment c;
     c.setId( KRandom::randomString( 10 ) );
     c.setText( editor->comment() );
     cs.insert( c );
@@ -267,12 +267,12 @@ void PersonView::addComment()
 
 void PersonView::editComment( const QString &id )
 {
-  Comment comment = m_identity.comments().findComment( id );
+  Polka::Comment comment = m_identity.comments().findComment( id );
 
   CommentEditor *editor = new CommentEditor( this );
   editor->setComment( comment.text() );
   if ( editor->exec() == CommentEditor::Accepted ) {
-    Comments cs = m_identity.comments();
+    Polka::Comments cs = m_identity.comments();
     comment.setText( editor->comment() );
     cs.insert( comment );
     m_identity.setComments( cs );
@@ -283,8 +283,8 @@ void PersonView::editComment( const QString &id )
 
 void PersonView::removeComment( const QString &id )
 {
-  Comments cs = m_identity.comments();
-  Comment c = cs.findComment( id );
+  Polka::Comments cs = m_identity.comments();
+  Polka::Comment c = cs.findComment( id );
   cs.remove( c );
   m_identity.setComments( cs );
   
@@ -295,8 +295,8 @@ void PersonView::addPhone()
 {
   PhoneEditor *editor = new PhoneEditor( this );
   if ( editor->exec() == PhoneEditor::Accepted ) {
-    Phones cs = m_identity.phones();
-    Phone c = editor->phone();
+    Polka::Phones cs = m_identity.phones();
+    Polka::Phone c = editor->phone();
     c.setId( KRandom::randomString( 10 ) );
     cs.insert( c );
     m_identity.setPhones( cs );
@@ -307,12 +307,12 @@ void PersonView::addPhone()
 
 void PersonView::editPhone( const QString &id )
 {
-  Phone phone = m_identity.phones().findPhone( id );
+  Polka::Phone phone = m_identity.phones().findPhone( id );
 
   PhoneEditor *editor = new PhoneEditor( this );
   editor->setPhone( phone );
   if ( editor->exec() == PhoneEditor::Accepted ) {
-    Phones cs = m_identity.phones();
+    Polka::Phones cs = m_identity.phones();
     phone = editor->phone();
     cs.insert( phone );
     m_identity.setPhones( cs );
@@ -323,8 +323,8 @@ void PersonView::editPhone( const QString &id )
 
 void PersonView::removePhone( const QString &id )
 {
-  Phones cs = m_identity.phones();
-  Phone c = cs.findPhone( id );
+  Polka::Phones cs = m_identity.phones();
+  Polka::Phone c = cs.findPhone( id );
   cs.remove( c );
   m_identity.setPhones( cs );
   
@@ -336,8 +336,8 @@ void PersonView::addLink()
 {
   LinkEditor *editor = new LinkEditor( this );
   if ( editor->exec() == LinkEditor::Accepted ) {
-    Links cs = m_identity.links();
-    Link c = editor->link();
+    Polka::Links cs = m_identity.links();
+    Polka::Link c = editor->link();
     c.setId( KRandom::randomString( 10 ) );
     cs.insert( c );
     m_identity.setLinks( cs );
@@ -348,12 +348,12 @@ void PersonView::addLink()
 
 void PersonView::editLink( const QString &id )
 {
-  Link link = m_identity.links().findLink( id );
+  Polka::Link link = m_identity.links().findLink( id );
 
   LinkEditor *editor = new LinkEditor( this );
   editor->setLink( link );
   if ( editor->exec() == LinkEditor::Accepted ) {
-    Links cs = m_identity.links();
+    Polka::Links cs = m_identity.links();
     link = editor->link();
     cs.insert( link );
     m_identity.setLinks( cs );
@@ -364,8 +364,8 @@ void PersonView::editLink( const QString &id )
 
 void PersonView::removeLink( const QString &id )
 {
-  Links cs = m_identity.links();
-  Link c = cs.findLink( id );
+  Polka::Links cs = m_identity.links();
+  Polka::Link c = cs.findLink( id );
   cs.remove( c );
   m_identity.setLinks( cs );
   
@@ -374,7 +374,7 @@ void PersonView::removeLink( const QString &id )
 
 void PersonView::editName()
 {
-  Name name = m_identity.name();
+  Polka::Name name = m_identity.name();
 
   bool ok;
   QString nameString = KInputDialog::getText( i18n("Edit name"),

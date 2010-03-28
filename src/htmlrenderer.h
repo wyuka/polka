@@ -26,8 +26,7 @@ class HtmlRenderer
   public:
     HtmlRenderer();
 
-    QString renderPerson( const Identity & );
-
+    QString renderPerson( const Polka::Identity & );
 };
 
 #endif

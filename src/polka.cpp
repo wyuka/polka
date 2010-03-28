@@ -26,6 +26,8 @@
 #include <QtCore/QtDebug>
 #include <QtCore/QFile>
 
+namespace Polka {
+
 QString indent( int n = 0 )
 {
   static int i = 0;
@@ -2320,4 +2322,4 @@ bool Polka::writeFile( const QString &filename )
   return true;
 }
 
-
+}

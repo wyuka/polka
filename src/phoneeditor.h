@@ -30,11 +30,11 @@ class PhoneEditor : public KDialog
   public:
     PhoneEditor( QWidget *parent );
 
-    void setPhone( const Phone & );
-    Phone phone();
+    void setPhone( const Polka::Phone & );
+    Polka::Phone phone();
     
   private:
-    Phone m_phone;
+    Polka::Phone m_phone;
 
     QLineEdit *m_numberEdit;
 };

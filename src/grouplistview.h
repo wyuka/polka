@@ -34,7 +34,7 @@ class GroupListView : public QWidget
     void setItemModel( PolkaItemModel * );
 
   signals:
-    void groupClicked( const Identity & );
+    void groupClicked( const Polka::Identity & );
     void newGroup();
 
   protected slots:

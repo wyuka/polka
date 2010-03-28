@@ -26,12 +26,12 @@ PictureSelector::PictureSelector( QWidget *parent )
 {
 }
 
-void PictureSelector::setPictures( const Picture::List &pictures )
+void PictureSelector::setPictures( const Polka::Picture::List &pictures )
 {
   delete m_layout;
   m_layout = new QHBoxLayout( this );
 
-  foreach( Picture picture, pictures ) {
+  foreach( Polka::Picture picture, pictures ) {
     PictureSelectorButton *button = new PictureSelectorButton;
     m_layout->addWidget( button );
     

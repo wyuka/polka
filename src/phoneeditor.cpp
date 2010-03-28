@@ -34,7 +34,7 @@ PhoneEditor::PhoneEditor( QWidget *parent )
   m_numberEdit->setFocus();
 }
 
-void PhoneEditor::setPhone( const Phone &phone )
+void PhoneEditor::setPhone( const Polka::Phone &phone )
 {
   m_phone = phone;
 
@@ -43,7 +43,7 @@ void PhoneEditor::setPhone( const Phone &phone )
   m_numberEdit->setText( phone.phoneNumber() );
 }
 
-Phone PhoneEditor::phone()
+Polka::Phone PhoneEditor::phone()
 {
   m_phone.setPhoneNumber( m_numberEdit->text() );
 

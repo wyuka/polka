@@ -24,7 +24,7 @@
 
 #include <KLocale>
 
-IdentityItem::IdentityItem( PolkaModel *model, const Identity &identity )
+IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   : QObject( model ), m_model( model ), m_identity( identity )
 {
   int itemSize = 110;
