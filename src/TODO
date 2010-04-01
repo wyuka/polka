@@ -28,6 +28,8 @@
 
 = kxml_compiler
 
+* Move to stream reader and writer, check that email addresses containing <jd>
+work.
 * eliminate pictures() from identity().pictures().pictureList()
 * add a way to add custom functions to classes
   (e.g. bool isEmpty() { m_id.isEmpty(); })
