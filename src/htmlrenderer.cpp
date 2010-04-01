@@ -44,6 +44,7 @@ QString HtmlRenderer::renderPerson( const Polka::Identity &identity )
   QString radius = "6px 6px";
   
   rule.add( "padding", radius );
+  rule.add( "margin-top", "20px" );
 
   // FIXME: Make it work with more recent webkit version (seems to work in
   // Chromium, but not in QWebKit 4.5.
