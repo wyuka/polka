@@ -217,3 +217,68 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
 
   return doc.html();
 }
+
+QString HtmlRenderer::personView( const Polka::Identity &identity )
+{
+  HtmlDoc doc;
+
+  CssSheet css;
+
+  HtmlElement &titleDiv = doc.element("div");
+
+  HtmlElement &h1 = titleDiv.element("h1");
+  h1.text( identity.name().text() );
+
+  HtmlElement &div = doc.element("div");
+  foreach( Polka::Email email, identity.emails().emailList() ) {
+    HtmlElement &emailDiv = div.element("div").c("trigger");
+
+    HtmlElement &a = emailDiv.element("a");
+    a.attribute("href","mailto:" + email.text());
+    a.text(email.text());
+  }
+
+  HtmlElement &phonesDiv = doc.element("div");
+  foreach( Polka::Phone phone, identity.phones().phoneList() ) {
+    HtmlElement &phoneDiv = phonesDiv.element("div").c("trigger");
+
+    HtmlElement &p = phoneDiv.element("p");
+    p.text(phone.phoneNumber());
+  }
+
+  HtmlElement &addressesDiv = doc.element("div");
+  foreach( Polka::Address address, identity.addresses().addressList() ) {
+    HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
+
+    HtmlElement &d = addressDiv.element("div");
+    d.c("address");
+
+    HtmlElement &p = d.element("pre");
+    p.text(address.label());
+
+    addressDiv.element("br").attribute("clear","all");
+  }
+
+  HtmlElement &linksDiv = doc.element("div");
+  foreach( Polka::Link link, identity.links().linkList() ) {
+    HtmlElement &linkDiv = linksDiv.element("div").c("trigger");
+
+    HtmlElement &a = linkDiv.element("a");
+    a.attribute("href", link.url());
+    a.text(link.url());
+  }
+
+  if ( !identity.comments().commentList().isEmpty() ) {
+    HtmlElement &commentsDiv = doc.element("div");
+    commentsDiv.element("h2").text(i18n("Comments"));
+
+    foreach( Polka::Comment comment, identity.comments().commentList() ) {
+      HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
+
+      HtmlElement &p = commentDiv.element("p");
+      p.text( comment.text() );
+    }
+  }
+
+  return doc.html();
+}
