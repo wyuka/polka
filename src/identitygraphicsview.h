@@ -19,7 +19,7 @@
 #ifndef IDENTITYGRAPHICSVIEW_H
 #define IDENTITYGRAPHICSVIEW_H
 
-#include "polka.h"
+#include "polka/polka.h"
 
 #include <QtGui>
 

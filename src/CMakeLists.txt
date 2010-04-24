@@ -1,8 +1,7 @@
-set(polka_SRCS
+set(polka_bin_SRCS
   addresseditor.cpp
   linkeditor.cpp
   phoneeditor.cpp
-  htmlrenderer.cpp
   commenteditor.cpp
   fanmenuelement.cpp
   fanmenu.cpp
@@ -17,13 +16,11 @@ set(polka_SRCS
   polkaview.cpp
   polkamodel.cpp
   gitdir.cpp
-  polka.cpp
   gitcommand.cpp
   polkaitemmodel.cpp
   polkaallitemmodel.cpp
   polkapersonsitemmodel.cpp
   personview.cpp
-  htmlcreator.cpp
   imageloader.cpp
   pictureselector.cpp
   pictureselectorbutton.cpp
@@ -31,15 +28,16 @@ set(polka_SRCS
   regiongrabber.cpp
 )
 
-kde4_add_ui_files(polka_SRCS polkaview_base.ui prefs_base.ui)
+kde4_add_ui_files(polka_bin_SRCS polkaview_base.ui prefs_base.ui)
 
-kde4_add_kcfg_files(polka_SRCS settings.kcfgc )
+kde4_add_kcfg_files(polka_bin_SRCS settings.kcfgc )
 
-kde4_add_executable(polka ${polka_SRCS})
+kde4_add_executable(polka_bin ${polka_bin_SRCS})
+set_target_properties( polka_bin PROPERTIES OUTPUT_NAME polka )
 
-target_link_libraries(polka ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${QT_QTWEBKIT_LIBRARY})
+target_link_libraries(polka_bin polka ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${QT_QTWEBKIT_LIBRARY})
 
-install(TARGETS polka ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS polka_bin ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
 ########### install files ###############

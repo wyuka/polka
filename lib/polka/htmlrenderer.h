@@ -19,9 +19,11 @@
 #ifndef HTMLRENDERER_H
 #define HTMLRENDERER_H
 
+#include <polka/polka_export.h>
+
 #include "polka.h"
 
-class HtmlRenderer
+class POLKA_EXPORT HtmlRenderer
 {
   public:
     HtmlRenderer();

@@ -23,7 +23,7 @@
 
 #include <KDialog>
 
-#include "polka.h"
+#include "polka/polka.h"
 
 class PhoneEditor : public KDialog
 {

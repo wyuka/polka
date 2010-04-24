@@ -19,7 +19,7 @@
 #ifndef PERSONVIEW_H
 #define PERSONVIEW_H
 
-#include "polka.h"
+#include "polka/polka.h"
 
 #include <QtGui>
 #include <QWebView>

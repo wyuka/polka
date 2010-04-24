@@ -19,7 +19,7 @@
 #ifndef POLKAITEMMODEL_H
 #define POLKAITEMMODEL_H
 
-#include "polka.h"
+#include "polka/polka.h"
 
 #include <QAbstractListModel>
 

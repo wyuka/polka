@@ -19,7 +19,7 @@
 #ifndef LOCALPICTURE_H
 #define LOCALPICTURE_H
 
-#include "polka.h"
+#include "polka/polka.h"
 #include "gitdir.h"
 
 #include <QPixmap>

@@ -19,7 +19,7 @@
 #ifndef PICTURESELECTORBUTTON_H
 #define PICTURESELECTORBUTTON_H
 
-#include "polka.h"
+#include "polka/polka.h"
 
 #include <QtGui>
 

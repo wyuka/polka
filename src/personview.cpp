@@ -24,7 +24,7 @@
 #include "regiongrabber.h"
 #include "polkamodel.h"
 #include "commenteditor.h"
-#include "htmlrenderer.h"
+#include "polka/htmlrenderer.h"
 #include "phoneeditor.h"
 #include "linkeditor.h"
 #include "addresseditor.h"

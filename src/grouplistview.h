@@ -19,7 +19,7 @@
 #ifndef GROUPLISTVIEW_H
 #define GROUPLISTVIEW_H
 
-#include "polka.h"
+#include "polka/polka.h"
 
 #include <QtGui>
 

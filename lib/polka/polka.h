@@ -19,6 +19,8 @@
 #ifndef POLKA_POLKA_H
 #define POLKA_POLKA_H
 
+#include <polka/polka_export.h>
+
 #include <QString>
 #include <QDomElement>
 #include <QList>
@@ -26,7 +28,7 @@
 
 namespace Polka {
 
-class IdentityPosition
+class POLKA_EXPORT IdentityPosition
 {
   public:
     typedef QList<IdentityPosition> List;
@@ -51,7 +53,7 @@ class IdentityPosition
     int mY;
 };
 
-class GroupView
+class POLKA_EXPORT GroupView
 {
   public:
     typedef QList<GroupView> List;
@@ -80,7 +82,7 @@ class GroupView
     IdentityPosition::List mIdentityPositionList;
 };
 
-class Comment
+class POLKA_EXPORT Comment
 {
   public:
     typedef QList<Comment> List;
@@ -104,7 +106,7 @@ class Comment
     QString mText;
 };
 
-class Comments
+class POLKA_EXPORT Comments
 {
   public:
     enum Flags { None, AutoCreate };
@@ -126,7 +128,7 @@ class Comments
     Comment::List mCommentList;
 };
 
-class Attribute
+class POLKA_EXPORT Attribute
 {
   public:
     typedef QList<Attribute> List;
@@ -150,7 +152,7 @@ class Attribute
     QString mValue;
 };
 
-class ExtendedAttributes
+class POLKA_EXPORT ExtendedAttributes
 {
   public:
     void addAttribute( const Attribute &v );
@@ -166,7 +168,7 @@ class ExtendedAttributes
     Attribute::List mAttributeList;
 };
 
-class Link
+class POLKA_EXPORT Link
 {
   public:
     typedef QList<Link> List;
@@ -194,7 +196,7 @@ class Link
     QString mUrl;
 };
 
-class Links
+class POLKA_EXPORT Links
 {
   public:
     enum Flags { None, AutoCreate };
@@ -216,7 +218,7 @@ class Links
     Link::List mLinkList;
 };
 
-class Note
+class POLKA_EXPORT Note
 {
   public:
     typedef QList<Note> List;
@@ -243,7 +245,7 @@ class Note
     QString mText;
 };
 
-class Notes
+class POLKA_EXPORT Notes
 {
   public:
     enum Flags { None, AutoCreate };
@@ -265,7 +267,7 @@ class Notes
     Note::List mNoteList;
 };
 
-class Relation
+class POLKA_EXPORT Relation
 {
   public:
     typedef QList<Relation> List;
@@ -286,7 +288,7 @@ class Relation
     QString mTarget;
 };
 
-class Relations
+class POLKA_EXPORT Relations
 {
   public:
     void addRelation( const Relation &v );
@@ -302,7 +304,7 @@ class Relations
     Relation::List mRelationList;
 };
 
-class Address
+class POLKA_EXPORT Address
 {
   public:
     typedef QList<Address> List;
@@ -327,7 +329,7 @@ class Address
     QString mLabel;
 };
 
-class Addresses
+class POLKA_EXPORT Addresses
 {
   public:
     enum Flags { None, AutoCreate };
@@ -349,7 +351,7 @@ class Addresses
     Address::List mAddressList;
 };
 
-class Phone
+class POLKA_EXPORT Phone
 {
   public:
     typedef QList<Phone> List;
@@ -380,7 +382,7 @@ class Phone
     QString mPhoneNumber;
 };
 
-class Phones
+class POLKA_EXPORT Phones
 {
   public:
     enum Flags { None, AutoCreate };
@@ -402,7 +404,7 @@ class Phones
     Phone::List mPhoneList;
 };
 
-class Picture
+class POLKA_EXPORT Picture
 {
   public:
     typedef QList<Picture> List;
@@ -430,7 +432,7 @@ class Picture
     QString mUrl;
 };
 
-class Pictures
+class POLKA_EXPORT Pictures
 {
   public:
     enum Flags { None, AutoCreate };
@@ -452,7 +454,7 @@ class Pictures
     Picture::List mPictureList;
 };
 
-class Email
+class POLKA_EXPORT Email
 {
   public:
     typedef QList<Email> List;
@@ -476,7 +478,7 @@ class Email
     QString mText;
 };
 
-class Emails
+class POLKA_EXPORT Emails
 {
   public:
     enum Flags { None, AutoCreate };
@@ -498,7 +500,7 @@ class Emails
     Email::List mEmailList;
 };
 
-class Group
+class POLKA_EXPORT Group
 {
   public:
     typedef QList<Group> List;
@@ -517,7 +519,7 @@ class Group
     QString mId;
 };
 
-class Groups
+class POLKA_EXPORT Groups
 {
   public:
     enum Flags { None, AutoCreate };
@@ -539,7 +541,7 @@ class Groups
     Group::List mGroupList;
 };
 
-class Name
+class POLKA_EXPORT Name
 {
   public:
     void setUpdatedAt( const QString &v );
@@ -557,7 +559,7 @@ class Name
     QString mText;
 };
 
-class Identity
+class POLKA_EXPORT Identity
 {
   public:
     typedef QList<Identity> List;
@@ -615,7 +617,7 @@ class Identity
     Comments mComments;
 };
 
-class Polka
+class POLKA_EXPORT Polka
 {
   public:
     enum Flags { None, AutoCreate };

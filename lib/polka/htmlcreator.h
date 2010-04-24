@@ -19,12 +19,14 @@
 #ifndef HTMLCREATOR_H
 #define HTMLCREATOR_H
 
+#include <polka/polka_export.h>
+
 #include <QList>
 #include <QString>
 #include <QMap>
 #include <QXmlStreamWriter>
 
-class CssDeclaration
+class POLKA_EXPORT CssDeclaration
 {
   public:
     typedef QList<CssDeclaration> List;
@@ -39,7 +41,7 @@ class CssDeclaration
     QString m_value;
 };
 
-class CssRule
+class POLKA_EXPORT CssRule
 {
   public:
     CssRule();
@@ -59,7 +61,7 @@ class CssRule
     CssDeclaration::List m_declarations;
 };
 
-class CssSheet
+class POLKA_EXPORT CssSheet
 {
   public:
     void addRule( const QString &selector, const QString &property,
@@ -74,7 +76,7 @@ class CssSheet
     QMap <QString,CssRule> m_rules;
 };
 
-class HtmlElement
+class POLKA_EXPORT HtmlElement
 {
   public:
     typedef QList<HtmlElement> List;
@@ -107,7 +109,7 @@ class HtmlElement
     QMap<QString,QString> m_attributes;
 };
 
-class HtmlDoc : public HtmlElement
+class POLKA_EXPORT HtmlDoc : public HtmlElement
 {
   public:
     HtmlDoc();

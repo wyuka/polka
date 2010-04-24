@@ -19,7 +19,7 @@
 #ifndef NEWPERSONDIALOG_H
 #define NEWPERSONDIALOG_H
 
-#include "polka.h"
+#include "polka/polka.h"
 #include "polkamodel.h"
 
 #include <KDialog>

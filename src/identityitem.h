@@ -19,7 +19,7 @@
 #ifndef IDENTITYITEM_H
 #define IDENTITYITEM_H
 
-#include "polka.h"
+#include "polka/polka.h"
 #include "fanmenu.h"
 
 #include <QtGui>
