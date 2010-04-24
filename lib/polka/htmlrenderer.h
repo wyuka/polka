@@ -28,7 +28,7 @@ class POLKA_EXPORT HtmlRenderer
   public:
     HtmlRenderer();
 
-    QString renderPerson( const Polka::Identity & );
+    QString personEditor( const Polka::Identity & );
 };
 
 #endif

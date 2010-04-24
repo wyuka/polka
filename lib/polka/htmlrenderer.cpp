@@ -27,7 +27,7 @@ HtmlRenderer::HtmlRenderer()
 {
 }
 
-QString HtmlRenderer::renderPerson( const Polka::Identity &identity )
+QString HtmlRenderer::personEditor( const Polka::Identity &identity )
 {
   HtmlDoc doc;
 

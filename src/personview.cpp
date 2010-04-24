@@ -92,7 +92,7 @@ void PersonView::showIdentity( const Polka::Identity &identity )
 
   HtmlRenderer renderer;
 
-  QString html = renderer.renderPerson( identity );
+  QString html = renderer.personEditor( identity );
 
   qDebug() << html;
 
@@ -391,7 +391,7 @@ void PersonView::debugHtml()
 {
   HtmlRenderer renderer;
 
-  QString html = renderer.renderPerson( m_identity );
+  QString html = renderer.personEditor( m_identity );
   
   QFile file("polka.html");
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
