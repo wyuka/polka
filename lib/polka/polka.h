@@ -20,7 +20,6 @@
 #define POLKA_POLKA_H
 
 #include <polka/polka_export.h>
-
 #include <QString>
 #include <QDomElement>
 #include <QList>

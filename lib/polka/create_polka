@@ -1,3 +1,4 @@
 #!/bin/bash
 
-kxml_compiler ../../schema/polka.xml --namespace=Polka --license=gpl
+kxml_compiler ../../schema/polka.xml --namespace=Polka --license=gpl \
+  --export=polka/polka
