@@ -6,8 +6,6 @@
 
 * Show nice text for links.
 
-* Put all lib classes in namespace
-
 * Make sure new items don't overlap with existing moved ones.
 
 * Drop images e.g. from web pages to add new pictures to person

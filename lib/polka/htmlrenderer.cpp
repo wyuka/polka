@@ -23,11 +23,13 @@
 
 #include <KLocale>
 
+namespace Polka {
+
 HtmlRenderer::HtmlRenderer()
 {
 }
 
-QString HtmlRenderer::personEditor( const Polka::Identity &identity )
+QString HtmlRenderer::personEditor( const Identity &identity )
 {
   HtmlDoc doc;
 
@@ -85,7 +87,7 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
   titleEdit.text(i18n("Edit"));
 
   HtmlElement &div = doc.element("div");
-  foreach( Polka::Email email, identity.emails().emailList() ) {
+  foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
@@ -106,7 +108,7 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
   }
 
   HtmlElement &phonesDiv = doc.element("div");
-  foreach( Polka::Phone phone, identity.phones().phoneList() ) {
+  foreach( Phone phone, identity.phones().phoneList() ) {
     HtmlElement &phoneDiv = phonesDiv.element("div").c("trigger");
 
     HtmlElement &p = phoneDiv.element("p");
@@ -126,7 +128,7 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
   }
 
   HtmlElement &addressesDiv = doc.element("div");
-  foreach( Polka::Address address, identity.addresses().addressList() ) {
+  foreach( Address address, identity.addresses().addressList() ) {
     HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
 
     HtmlElement &d = addressDiv.element("div");
@@ -151,7 +153,7 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
   }
 
   HtmlElement &linksDiv = doc.element("div");
-  foreach( Polka::Link link, identity.links().linkList() ) {
+  foreach( Link link, identity.links().linkList() ) {
     HtmlElement &linkDiv = linksDiv.element("div").c("trigger");
 
     HtmlElement &a = linkDiv.element("a");
@@ -175,7 +177,7 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
     HtmlElement &commentsDiv = doc.element("div");
     commentsDiv.element("h2").text(i18n("Comments"));
 
-    foreach( Polka::Comment comment, identity.comments().commentList() ) {
+    foreach( Comment comment, identity.comments().commentList() ) {
       HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
       HtmlElement &p = commentDiv.element("p");
@@ -218,7 +220,7 @@ QString HtmlRenderer::personEditor( const Polka::Identity &identity )
   return doc.html();
 }
 
-QString HtmlRenderer::personView( const Polka::Identity &identity )
+QString HtmlRenderer::personView( const Identity &identity )
 {
   HtmlDoc doc;
 
@@ -230,7 +232,7 @@ QString HtmlRenderer::personView( const Polka::Identity &identity )
   h1.text( identity.name().text() );
 
   HtmlElement &div = doc.element("div");
-  foreach( Polka::Email email, identity.emails().emailList() ) {
+  foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
@@ -239,7 +241,7 @@ QString HtmlRenderer::personView( const Polka::Identity &identity )
   }
 
   HtmlElement &phonesDiv = doc.element("div");
-  foreach( Polka::Phone phone, identity.phones().phoneList() ) {
+  foreach( Phone phone, identity.phones().phoneList() ) {
     HtmlElement &phoneDiv = phonesDiv.element("div").c("trigger");
 
     HtmlElement &p = phoneDiv.element("p");
@@ -247,7 +249,7 @@ QString HtmlRenderer::personView( const Polka::Identity &identity )
   }
 
   HtmlElement &addressesDiv = doc.element("div");
-  foreach( Polka::Address address, identity.addresses().addressList() ) {
+  foreach( Address address, identity.addresses().addressList() ) {
     HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
 
     HtmlElement &d = addressDiv.element("div");
@@ -260,7 +262,7 @@ QString HtmlRenderer::personView( const Polka::Identity &identity )
   }
 
   HtmlElement &linksDiv = doc.element("div");
-  foreach( Polka::Link link, identity.links().linkList() ) {
+  foreach( Link link, identity.links().linkList() ) {
     HtmlElement &linkDiv = linksDiv.element("div").c("trigger");
 
     HtmlElement &a = linkDiv.element("a");
@@ -272,7 +274,7 @@ QString HtmlRenderer::personView( const Polka::Identity &identity )
     HtmlElement &commentsDiv = doc.element("div");
     commentsDiv.element("h2").text(i18n("Comments"));
 
-    foreach( Polka::Comment comment, identity.comments().commentList() ) {
+    foreach( Comment comment, identity.comments().commentList() ) {
       HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
       HtmlElement &p = commentDiv.element("p");
@@ -281,4 +283,6 @@ QString HtmlRenderer::personView( const Polka::Identity &identity )
   }
 
   return doc.html();
+}
+
 }

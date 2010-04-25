@@ -90,7 +90,7 @@ void PersonView::showIdentity( const Polka::Identity &identity )
       SLOT( setImage( const QPixmap & ) ) );
   }
 
-  HtmlRenderer renderer;
+  Polka::HtmlRenderer renderer;
 
   QString html = renderer.personEditor( identity );
 
@@ -389,7 +389,7 @@ void PersonView::editName()
 
 void PersonView::debugHtml()
 {
-  HtmlRenderer renderer;
+  Polka::HtmlRenderer renderer;
 
   QString html = renderer.personEditor( m_identity );
   

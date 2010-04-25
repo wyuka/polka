@@ -21,6 +21,8 @@
 
 #include <QDebug>
 
+namespace Polka {
+
 CssDeclaration::CssDeclaration( const QString &property, const QString &value )
   : m_property( property ), m_value( value )
 {
@@ -222,4 +224,6 @@ void HtmlDoc::writeElements( QXmlStreamWriter &xml,
 void HtmlDoc::setCss( const CssSheet &css )
 {
   m_css = css;
+}
+
 }

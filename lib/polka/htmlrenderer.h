@@ -23,13 +23,17 @@
 
 #include "polka.h"
 
+namespace Polka {
+
 class POLKA_EXPORT HtmlRenderer
 {
   public:
     HtmlRenderer();
 
-    QString personEditor( const Polka::Identity & );
-    QString personView( const Polka::Identity & );
+    QString personEditor( const Identity & );
+    QString personView( const Identity & );
 };
+
+}
 
 #endif

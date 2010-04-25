@@ -26,6 +26,8 @@
 #include <QMap>
 #include <QXmlStreamWriter>
 
+namespace Polka {
+
 class POLKA_EXPORT CssDeclaration
 {
   public:
@@ -124,5 +126,7 @@ class POLKA_EXPORT HtmlDoc : public HtmlElement
   private:
     CssSheet m_css;
 };
+
+}
 
 #endif
