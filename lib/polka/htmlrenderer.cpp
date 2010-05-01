@@ -224,8 +224,6 @@ QString HtmlRenderer::personView( const Identity &identity )
 {
   HtmlDoc doc;
 
-  CssSheet css;
-
   HtmlElement &titleDiv = doc.element("div");
 
   HtmlElement &h1 = titleDiv.element("h1");
@@ -280,6 +278,35 @@ QString HtmlRenderer::personView( const Identity &identity )
       HtmlElement &p = commentDiv.element("p");
       p.text( comment.text() );
     }
+  }
+
+  return doc.html();
+}
+
+QString HtmlRenderer::personSummary( const Identity &identity )
+{
+  HtmlDoc doc;
+
+  HtmlElement &div = doc.element("div");
+  foreach( Email email, identity.emails().emailList() ) {
+    HtmlElement &emailDiv = div.element("div").c("trigger");
+
+    HtmlElement &a = emailDiv.element("a");
+    a.attribute("href","mailto:" + email.text());
+    a.text(email.text());
+  }
+
+  HtmlElement &addressesDiv = doc.element("div");
+  foreach( Address address, identity.addresses().addressList() ) {
+    HtmlElement &addressDiv = addressesDiv.element("div").c("trigger");
+
+    HtmlElement &d = addressDiv.element("div");
+    d.c("address");
+
+    HtmlElement &p = d.element("pre");
+    p.text(address.label());
+
+    addressDiv.element("br").attribute("clear","all");
   }
 
   return doc.html();

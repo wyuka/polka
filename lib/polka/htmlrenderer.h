@@ -32,6 +32,7 @@ class POLKA_EXPORT HtmlRenderer
 
     QString personEditor( const Identity & );
     QString personView( const Identity & );
+    QString personSummary( const Identity & );
 };
 
 }
