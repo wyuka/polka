@@ -1,5 +1,9 @@
 = Polka
 
+* When cloning group wrong people are shown
+* Clone people, when cloning group
+* Test removal of group with people
+
 * Save and commit after every change
 
 * Save modification date of fields
@@ -17,6 +21,7 @@
   remote) one
 * Only pull and push, if repo actually has a remote repo configured
 * Prevent saving while save is still in progress (especially with push)
+
 * Undo based on git (commit changes with message. Rollback from UI)
 
 * merge group list view and identity list view ?
