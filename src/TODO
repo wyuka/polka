@@ -1,5 +1,7 @@
 = Polka
 
+* Save and commit after every change
+
 * Save modification date of fields
 * Show modification date of fields
 * Edit comments for each field
