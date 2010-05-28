@@ -31,6 +31,7 @@ void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
   int endAngle )
 {
   m_item = menuItem;
+  m_item->setElement( this );
 
   qreal blockHeight = 60;
   qreal blockRadius = 90;
@@ -69,15 +70,21 @@ void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
   setPath( blockPath );
 
 
-  QGraphicsTextItem *textItem = new QGraphicsTextItem( menuItem->text(), this );
+  m_textItem = new QGraphicsTextItem( this );
+  updateText();
+}
+
+void FanMenuElement::updateText()
+{
+  m_textItem->setPlainText( m_item->text() );
 
   qreal textX = boundingRect().x() + boundingRect().width() / 2;
   qreal textY = boundingRect().y() + boundingRect().height() / 2;
 
-  textX -= textItem->boundingRect().width() / 2;
-  textY -= textItem->boundingRect().height() / 2;
+  textX -= m_textItem->boundingRect().width() / 2;
+  textY -= m_textItem->boundingRect().height() / 2;
    
-  textItem->setPos( textX, textY );
+  m_textItem->setPos( textX, textY );
 }
 
 void FanMenuElement::mousePressEvent( QGraphicsSceneMouseEvent * )

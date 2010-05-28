@@ -129,6 +129,13 @@
       <x>123</x>
       <y>654</y>
     </identity_position>
+    <identity_check>
+      <id>fuejf</id>
+      <checked>true</checked>
+    </identity_check>
+    <identity_check>
+      <id>fuejfxx</id>
+    </identity_check>
   </group_view>
   <group_view>
     <id>shshx</id>

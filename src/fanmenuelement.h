@@ -30,6 +30,8 @@ class FanMenuElement : public QGraphicsPathItem
 
     void setup( FanMenu::Item *, int startAngle, int endAngle );
 
+    void updateText();
+
   protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * );
     void hoverEnterEvent( QGraphicsSceneHoverEvent * );
@@ -37,6 +39,7 @@ class FanMenuElement : public QGraphicsPathItem
   private:
     FanMenu *m_menu;
     FanMenu::Item *m_item;
+    QGraphicsTextItem *m_textItem;
 };
 
 #endif

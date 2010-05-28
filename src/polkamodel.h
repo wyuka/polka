@@ -67,6 +67,9 @@ class PolkaModel : public QObject
       const QPointF &pos );
     void clearViewPositions( const Polka::Identity &group );
 
+    void saveViewCheck( const Polka::Identity &group,
+      const Polka::Identity &identity, bool checked );
+
     Polka::GroupView groupView( const Polka::Identity &group );
 
   public slots:

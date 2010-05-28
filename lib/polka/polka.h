@@ -27,6 +27,28 @@
 
 namespace Polka {
 
+class POLKA_EXPORT IdentityCheck
+{
+  public:
+    typedef QList<IdentityCheck> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    bool isValid() const;
+    void setChecked( const QString &v );
+    QString checked() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static IdentityCheck parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    QString mChecked;
+};
+
 class POLKA_EXPORT IdentityPosition
 {
   public:
@@ -70,6 +92,12 @@ class POLKA_EXPORT GroupView
     IdentityPosition findIdentityPosition( const QString &id, Flags flags = None );
     bool insert( const IdentityPosition &v );
     bool remove( const IdentityPosition &v );
+    void addIdentityCheck( const IdentityCheck &v );
+    void setIdentityCheckList( const IdentityCheck::List &v );
+    IdentityCheck::List identityCheckList() const;
+    IdentityCheck findIdentityCheck( const QString &id, Flags flags = None );
+    bool insert( const IdentityCheck &v );
+    bool remove( const IdentityCheck &v );
     /**
       Parse XML object from DOM element.
      */
@@ -79,6 +107,7 @@ class POLKA_EXPORT GroupView
   private:
     QString mId;
     IdentityPosition::List mIdentityPositionList;
+    IdentityCheck::List mIdentityCheckList;
 };
 
 class POLKA_EXPORT Comment

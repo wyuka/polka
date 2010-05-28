@@ -23,13 +23,26 @@
 #include "fanmenuelement.h"
 
 FanMenu::Item::Item( const QString &text )
-  : m_text( text )
+  : m_text( text ), m_element( 0 )
 {
+}
+
+void FanMenu::Item::setText( const QString &text )
+{
+  m_text = text;
+  if ( m_element ) {
+    m_element->updateText();
+  }
 }
 
 QString FanMenu::Item::text() const
 {
   return m_text;
+}
+
+void FanMenu::Item::setElement( FanMenuElement *element )
+{
+  m_element = element;
 }
 
 

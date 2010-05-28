@@ -118,6 +118,8 @@ void IdentityGraphicsView::createItems()
 
     connect( item, SIGNAL( itemMoved( const Polka::Identity &, const QPointF & ) ),
       SLOT( savePosition( const Polka::Identity &, const QPointF & ) ) );
+    connect( item, SIGNAL( itemChecked( const Polka::Identity &, bool ) ),
+      SLOT( saveCheck( const Polka::Identity &, bool ) ) );
 
     item->setDefaultPos( QPointF( posX, posY ) );
 
@@ -127,6 +129,12 @@ void IdentityGraphicsView::createItems()
     } else {
       item->setPos( posX, posY );
     }
+
+    Polka::IdentityCheck c = view.findIdentityCheck( identity.id() );
+    if ( c.isValid() ) {
+      item->checkItem();
+    }
+
     m_scene->addItem( item );
 
     x++;
@@ -157,6 +165,12 @@ void IdentityGraphicsView::savePosition( const Polka::Identity &identity,
   const QPointF &pos )
 {
   m_model->saveViewPosition( m_group, identity, pos );
+}
+
+void IdentityGraphicsView::saveCheck( const Polka::Identity &identity,
+  bool checked )
+{
+  m_model->saveViewCheck( m_group, identity, checked );
 }
 
 void IdentityGraphicsView::resetLayout()

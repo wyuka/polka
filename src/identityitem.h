@@ -38,11 +38,15 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void setDefaultPos( const QPointF & );
     QPointF defaultPos() const;
 
+    void checkItem();
+
   signals:
     void showPerson( const Polka::Identity & );
     void removePerson( const Polka::Identity & );
 
     void itemMoved( const Polka::Identity &, const QPointF & );
+    
+    void itemChecked( const Polka::Identity &, bool );
 
   protected:
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
@@ -61,12 +65,15 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     Polka::Identity m_identity;
 
     QPointF m_defaultPos;
+    bool m_checked;
 
     QGraphicsRectItem *m_nameItem;
-    FanMenu *m_fanMenu;
+    QGraphicsPathItem *m_checkItem;
 
+    FanMenu *m_fanMenu;
     FanMenu::Item *m_removeMenuItem;
     FanMenu::Item *m_showMenuItem;
+    FanMenu::Item *m_checkMenuItem;
 
     QPointF m_movePos;
 };

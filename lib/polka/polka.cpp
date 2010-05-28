@@ -36,6 +36,74 @@ QString indent( int n = 0 )
   return space.fill( ' ', i );
 }
 
+void IdentityCheck::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString IdentityCheck::id() const
+{
+  return mId;
+}
+
+bool IdentityCheck::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void IdentityCheck::setChecked( const QString &v )
+{
+  mChecked = v;
+}
+
+QString IdentityCheck::checked() const
+{
+  return mChecked;
+}
+
+IdentityCheck IdentityCheck::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "identity_check" ) {
+    qCritical() << "Expected 'identity_check', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return IdentityCheck();
+  }
+
+  IdentityCheck result = IdentityCheck();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "checked" ) {
+      result.setChecked( e.text() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString IdentityCheck::writeElement()
+{
+  QString xml;
+  xml += indent() + "<identity_check>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  if ( !checked().isEmpty() ) {
+    xml += indent() + "<checked>" + checked() + "</checked>\n";
+  }
+  indent( -2 );
+  xml += indent() + "</identity_check>\n";
+  return xml;
+}
+
+
 void IdentityPosition::setId( const QString &v )
 {
   mId = v;
@@ -185,6 +253,60 @@ bool GroupView::remove( const IdentityPosition &v )
   return true;
 }
 
+void GroupView::addIdentityCheck( const IdentityCheck &v )
+{
+  mIdentityCheckList.append( v );
+}
+
+void GroupView::setIdentityCheckList( const IdentityCheck::List &v )
+{
+  mIdentityCheckList = v;
+}
+
+IdentityCheck::List GroupView::identityCheckList() const
+{
+  return mIdentityCheckList;
+}
+
+IdentityCheck GroupView::findIdentityCheck( const QString &id, Flags flags )
+{
+  foreach( IdentityCheck v, mIdentityCheckList ) {
+    if ( v.id() == id ) return v;
+  }
+  IdentityCheck v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool GroupView::insert( const IdentityCheck &v )
+{
+  int i = 0;
+  for( ; i < mIdentityCheckList.size(); ++i ) {
+    if ( mIdentityCheckList[i].id() == v.id() ) {
+      mIdentityCheckList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mIdentityCheckList.size() ) {
+    addIdentityCheck( v );
+  }
+  return true;
+}
+
+bool GroupView::remove( const IdentityCheck &v )
+{
+  IdentityCheck::List::Iterator it;
+  for( it = mIdentityCheckList.begin(); it != mIdentityCheckList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mIdentityCheckList.end() ) {
+    mIdentityCheckList.erase( it );
+  }
+  return true;
+}
+
 GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "group_view" ) {
@@ -206,6 +328,11 @@ GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
       IdentityPosition o = IdentityPosition::parseElement( e, &ok );
       if ( ok ) result.addIdentityPosition( o );
     }
+    else if ( e.tagName() == "identity_check" ) {
+      bool ok;
+      IdentityCheck o = IdentityCheck::parseElement( e, &ok );
+      if ( ok ) result.addIdentityCheck( o );
+    }
   }
 
 
@@ -222,6 +349,9 @@ QString GroupView::writeElement()
     xml += indent() + "<id>" + id() + "</id>\n";
   }
   foreach( IdentityPosition e, identityPositionList() ) {
+    xml += e.writeElement();
+  }
+  foreach( IdentityCheck e, identityCheckList() ) {
     xml += e.writeElement();
   }
   indent( -2 );

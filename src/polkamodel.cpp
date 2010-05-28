@@ -323,6 +323,24 @@ void PolkaModel::clearViewPositions( const Polka::Identity &group )
   m_polka.remove( view );
 }
 
+void PolkaModel::saveViewCheck( const Polka::Identity &group,
+  const Polka::Identity &identity,
+  bool checked )
+{
+  Polka::GroupView v = m_polka.findGroupView( group.id(),
+    Polka::Polka::AutoCreate );
+  if ( checked ) {
+    Polka::IdentityCheck c = v.findIdentityCheck( identity.id(),
+      Polka::GroupView::AutoCreate );
+    v.insert( c );
+  } else {
+    Polka::IdentityCheck c = v.findIdentityCheck( identity.id(),
+      Polka::GroupView::AutoCreate );
+    if ( c.isValid() ) v.remove( c );
+  }
+  m_polka.insert( v );
+}
+
 Polka::GroupView PolkaModel::groupView( const Polka::Identity &group )
 {
   return m_polka.findGroupView( group.id() );

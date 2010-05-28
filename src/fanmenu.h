@@ -22,6 +22,7 @@
 #include <QtGui>
 
 class IdentityItem;
+class FanMenuElement;
 
 class FanMenu : public QObject, public QGraphicsLineItem
 {
@@ -30,11 +31,15 @@ class FanMenu : public QObject, public QGraphicsLineItem
     class Item {
       public:
         Item( const QString &text );
-        
+
+        void setText( const QString &text );        
         QString text() const;
+        
+        void setElement( FanMenuElement * );
         
       private:
         QString m_text;
+        FanMenuElement *m_element;
     };
 
     FanMenu( IdentityItem *parent );

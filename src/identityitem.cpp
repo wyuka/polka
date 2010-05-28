@@ -25,7 +25,8 @@
 #include <KLocale>
 
 IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
-  : QObject( model ), m_model( model ), m_identity( identity )
+  : QObject( model ), m_model( model ), m_identity( identity ),
+    m_checked( false ), m_checkItem( 0 )
 {
   int itemSize = 110;
 
@@ -63,6 +64,7 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   m_fanMenu->hide();
 
   m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
+  m_checkMenuItem = m_fanMenu->addItem( i18n("Check") );
   m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
   m_fanMenu->setupItems();
 
@@ -119,7 +121,34 @@ void IdentityItem::slotItemSelected( FanMenu::Item *item )
     emit removePerson( m_identity );
   } else if ( item == m_showMenuItem ) {
     emit showPerson( m_identity );
+  } else if ( item == m_checkMenuItem ) {
+    checkItem();
   }
+}
+
+void IdentityItem::checkItem()
+{
+  if ( !m_checkItem ) {
+    QPainterPath path;
+    path.lineTo( 10,20 );
+    path.lineTo( 30, -20 );
+    path.lineTo( 20, -20 );
+    path.lineTo( 10, 10 );
+    path.lineTo( 0, 0 );
+    
+    m_checkItem = new QGraphicsPathItem( path, this );
+    m_checkItem->setBrush( Qt::darkGreen );
+    m_checkItem->setPos( 40, 20 );
+  }
+  if ( m_checked ) {
+    m_checkItem->hide();
+    m_checkMenuItem->setText( i18n("Check") );
+  } else {
+    m_checkItem->show();
+    m_checkMenuItem->setText( i18n("Uncheck") );
+  }
+  m_checked = !m_checked;
+  emit itemChecked( m_identity, m_checked );
 }
 
 QVariant IdentityItem::itemChange( GraphicsItemChange change,
