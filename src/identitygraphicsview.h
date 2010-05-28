@@ -44,6 +44,8 @@ class IdentityGraphicsView : public QWidget
     void showPerson( const Polka::Identity & );
     void removePerson( const Polka::Identity &person,
       const Polka::Identity &group );
+    void cloneGroup( const Polka::Identity &group );
+    void removeGroup( const Polka::Identity &group );
 
   protected slots:
     void resetLayout();
@@ -53,6 +55,9 @@ class IdentityGraphicsView : public QWidget
 
     void savePosition( const Polka::Identity &, const QPointF & );
     void saveCheck( const Polka::Identity &, bool checked );
+
+    void emitCloneGroup();
+    void emitRemoveGroup();
 
   private:
     PolkaModel *m_model;

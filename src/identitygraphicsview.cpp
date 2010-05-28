@@ -50,7 +50,15 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 
   buttonLayout->addStretch( 1 );
 
-  QPushButton *button = new QPushButton( i18n("New Person") );
+  QPushButton *button = new QPushButton( i18n("Clone Group") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( emitCloneGroup() ) );
+
+  button = new QPushButton( i18n("Remove Group") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( emitRemoveGroup() ) );
+
+  button = new QPushButton( i18n("New Person") );
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
 
@@ -193,4 +201,14 @@ void IdentityGraphicsView::resetLayout()
 #endif
     }
   }
+}
+
+void IdentityGraphicsView::emitCloneGroup()
+{
+  emit cloneGroup( m_group );
+}
+
+void IdentityGraphicsView::emitRemoveGroup()
+{
+  emit removeGroup( m_group );
 }

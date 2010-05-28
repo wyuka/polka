@@ -52,6 +52,7 @@ class PolkaModel : public QObject
 
     void removePerson( const Polka::Identity &person,
       const Polka::Identity &group );
+    void removeGroup( const Polka::Identity &group );
 
     PolkaItemModel *allItemModel();
     PolkaItemModel *personsItemModel();

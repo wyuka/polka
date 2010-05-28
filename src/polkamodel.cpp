@@ -259,6 +259,19 @@ void PolkaModel::removePerson( const Polka::Identity &person,
   }
 }
 
+void PolkaModel::removeGroup( const Polka::Identity &group )
+{
+  Polka::Identity::List members = m_groupMap.value( group.id() );
+  foreach( Polka::Identity member, members ) {
+    removePerson( member, group );
+  }
+  m_polka.remove( group );
+
+  setupGroups();
+  
+  emit identityRemoved( group );
+}
+
 QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
 {
   if ( m_localPictures.contains( identity.id() ) ) {
@@ -320,7 +333,8 @@ void PolkaModel::saveViewPosition( const Polka::Identity &group,
 void PolkaModel::clearViewPositions( const Polka::Identity &group )
 {
   Polka::GroupView view = m_polka.findGroupView( group.id() );
-  m_polka.remove( view );
+  view.setIdentityPositionList( Polka::IdentityPosition::List() );
+  m_polka.insert( view );
 }
 
 void PolkaModel::saveViewCheck( const Polka::Identity &group,

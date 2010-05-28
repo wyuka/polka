@@ -72,6 +72,10 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_groupGraphicsView, SIGNAL( removePerson( const Polka::Identity &,
     const Polka::Identity & ) ),
     SLOT( removePerson( const Polka::Identity &, const Polka::Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( cloneGroup( const Polka::Identity & ) ),
+    SLOT( cloneGroup( const Polka::Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( removeGroup( const Polka::Identity & ) ),
+    SLOT( removeGroup( const Polka::Identity & ) ) );
 
   readConfig();
 
@@ -149,6 +153,30 @@ void PolkaView::newGroup()
     
     m_model->insert( identity );
   }
+}
+
+void PolkaView::cloneGroup( const Polka::Identity &group )
+{
+  bool ok;
+  QString name = KInputDialog::getText( i18n("Clone Group"),
+    i18n("Enter name of new group"),
+    i18n("Clone of %1").arg( group.name().text() ),
+    &ok );
+  if ( ok ) {
+    Polka::Identity identity;
+    Polka::Name n;
+    n.setText( name );
+    identity.setName( n );
+    m_model->insert( identity );
+    
+    showGroupView( identity );
+  }
+}
+
+void PolkaView::removeGroup( const Polka::Identity &group )
+{
+  m_model->removeGroup( group );
+  showGroupList();
 }
 
 void PolkaView::newPerson()
