@@ -207,7 +207,7 @@ void PolkaModel::slotPushed()
   emit dataWritten();
 }
 
-void PolkaModel::insert( Polka::Identity identity )
+Polka::Identity PolkaModel::insert( Polka::Identity identity )
 {
   if ( identity.id().isEmpty() ) {
     identity.setId( KRandom::randomString( 10 ) );
@@ -225,6 +225,8 @@ void PolkaModel::insert( Polka::Identity identity )
   }
 
   emit identityInserted( identity );
+
+  return identity;
 }
 
 void PolkaModel::removePerson( const Polka::Identity &person,

@@ -41,7 +41,7 @@ class PolkaModel : public QObject
 
     // FIXME: create create,read,update,delete identity functions
     Polka::Identity findIdentity( const QString &id );
-    void insert( Polka::Identity ); // create
+    Polka::Identity insert( Polka::Identity ); // create
 
     // FIXME: consistent API for querying lists of identities
     Polka::Identity::List persons();
