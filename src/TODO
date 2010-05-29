@@ -1,8 +1,5 @@
 = Polka
 
-* Clone people, when cloning group
-* Test removal of group with people
-
 * Save and commit after every change
 
 * Save modification date of fields

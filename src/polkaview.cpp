@@ -167,9 +167,14 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
     Polka::Name n;
     n.setText( name );
     identity.setName( n );
-    Polka::Identity group = m_model->insert( identity );
+    Polka::Identity new_group = m_model->insert( identity );
+
+    Polka::Identity::List members = m_model->identitiesOfGroup( group );
+    foreach( Polka::Identity member, members ) {
+      m_model->addPerson( member, new_group );
+    }
     
-    showGroupView( group );
+    showGroupView( new_group );
   }
 }
 
