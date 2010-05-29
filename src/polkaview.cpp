@@ -185,13 +185,7 @@ void PolkaView::newPerson()
   if ( dialog->exec() == QDialog::Accepted ) {
     Polka::Identity identity = dialog->identity();
 
-    Polka::Groups groups = identity.groups();
-    Polka::Group group;
-    group.setId( m_group.id() );
-    groups.addGroup( group );
-    identity.setGroups( groups );
-    
-    m_model->insert( identity );
+    m_model->addPerson( identity, m_group );
   }
   return;
 }

@@ -229,6 +229,20 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity )
   return identity;
 }
 
+void PolkaModel::addPerson( const Polka::Identity &person,
+  const Polka::Identity &group )
+{
+  Polka::Identity p = person;
+
+  Polka::Groups groups = p.groups();
+  Polka::Group g;
+  g.setId( group.id() );
+  groups.addGroup( g );
+  p.setGroups( groups );
+
+  insert( p );
+}
+
 void PolkaModel::removePerson( const Polka::Identity &person,
   const Polka::Identity &group )
 {
