@@ -282,6 +282,7 @@ void PolkaModel::removeGroup( const Polka::Identity &group )
     removePerson( member, group );
   }
   m_polka.remove( group );
+  m_polka.remove( m_polka.findGroupView( group.id() ) );
 
   setupGroups();
   
