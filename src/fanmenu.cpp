@@ -46,12 +46,12 @@ void FanMenu::Item::setElement( FanMenuElement *element )
 }
 
 
-FanMenu::FanMenu( IdentityItem *parent )
-  : QObject( parent ), QGraphicsLineItem( parent )
+FanMenu::FanMenu( QGraphicsItem *parent )
+  : QGraphicsLineItem( parent )
 {
 }
 
-void FanMenu::setupItems()
+void FanMenu::setupItems( int coverage )
 {
   int startAngle = -5;
   int endAngle = 185;
@@ -63,7 +63,7 @@ void FanMenu::setupItems()
   for( int i = 0; i < count; ++i ) {
     int angle = startAngle + i * width + i * spacing;
     FanMenuElement *element = new FanMenuElement( this );
-    element->setup( m_items[i], angle, angle + width );
+    element->setup( m_items[i], angle, angle + width, coverage );
   }
 }
 

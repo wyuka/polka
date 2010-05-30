@@ -28,7 +28,7 @@ class FanMenuElement : public QGraphicsPathItem
   public:
     FanMenuElement( FanMenu * );
 
-    void setup( FanMenu::Item *, int startAngle, int endAngle );
+    void setup( FanMenu::Item *, int startAngle, int endAngle, int coverage );
 
     void updateText();
 

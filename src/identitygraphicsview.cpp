@@ -223,11 +223,38 @@ void IdentityGraphicsView::addLabel()
   }
 }
 
+void IdentityGraphicsView::removeLabel( LabelItem *item,
+  const Polka::ViewLabel &label )
+{
+  delete item;
+  m_model->removeViewLabel( m_group, label );
+}
+
+void IdentityGraphicsView::renameLabel( LabelItem *item,
+  Polka::ViewLabel label )
+{
+  bool ok;
+  QString name = KInputDialog::getText( i18n("Rename Label"),
+    i18n("Enter new text of label"), label.text(),
+    &ok );
+  if ( ok ) {
+    item->setText( name );
+  
+    label.setText( name );
+    m_model->saveViewLabel( m_group, label );
+  }
+}
+
 LabelItem *IdentityGraphicsView::createLabelItem( const Polka::ViewLabel &label )
 {
   LabelItem *item = new LabelItem( m_model, label );
+
   connect( item, SIGNAL( itemMoved( const Polka::ViewLabel &, const QPointF & ) ),
     SLOT( saveLabel( const Polka::ViewLabel &, const QPointF & ) ) );
+  connect( item, SIGNAL( removeLabel( LabelItem *, const Polka::ViewLabel & ) ),
+    SLOT( removeLabel( LabelItem *, const Polka::ViewLabel & ) ) );
+  connect( item, SIGNAL( renameLabel( LabelItem *, const Polka::ViewLabel & ) ),
+    SLOT( renameLabel( LabelItem *, const Polka::ViewLabel & ) ) );
 
   m_scene->addItem( item );
 

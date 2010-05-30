@@ -68,6 +68,8 @@ class PolkaModel : public QObject
 
     void saveViewLabel( const Polka::Identity &group,
       const Polka::ViewLabel &label );
+    void removeViewLabel( const Polka::Identity &group,
+      const Polka::ViewLabel &label );
 
     void saveViewPosition( const Polka::Identity &group,
       const Polka::Identity &identity,

@@ -35,18 +35,32 @@ class LabelItem : public QObject, public QGraphicsRectItem
   public:
     LabelItem( PolkaModel *, const Polka::ViewLabel & );
 
+    void setText( const QString & );
+
   signals:
     void itemMoved( const Polka::ViewLabel &, const QPointF & );
+    void removeLabel( LabelItem *, const Polka::ViewLabel & );
+    void renameLabel( LabelItem *, const Polka::ViewLabel & );
     
   protected:
+    void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
+    void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
+
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
+
+  protected slots:
+    void slotItemSelected( FanMenu::Item * );
 
   private:
     PolkaModel *m_model;
     Polka::ViewLabel m_label;
 
     QGraphicsTextItem *m_textItem;
+
+    FanMenu *m_fanMenu;
+    FanMenu::Item *m_removeMenuItem;
+    FanMenu::Item *m_renameMenuItem;
 
     QPointF m_movePos;
 };

@@ -58,6 +58,8 @@ class IdentityGraphicsView : public QWidget
     void slotRemovePerson( const Polka::Identity & );
 
     void addLabel();
+    void removeLabel( LabelItem *, const Polka::ViewLabel & );
+    void renameLabel( LabelItem *, Polka::ViewLabel );
 
     void savePosition( const Polka::Identity &, const QPointF & );
     void saveLabel( const Polka::ViewLabel &, const QPointF & );

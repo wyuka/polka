@@ -42,9 +42,12 @@ class FanMenu : public QObject, public QGraphicsLineItem
         FanMenuElement *m_element;
     };
 
-    FanMenu( IdentityItem *parent );
+    FanMenu( QGraphicsItem *parent );
 
-    void setupItems();
+    /**
+      Setup items. freeSpace is the percentage of the radius the menu covers.
+    */
+    void setupItems( int coverage = 67 );
 
     Item *addItem( const QString &text ); 
 

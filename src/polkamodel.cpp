@@ -346,6 +346,15 @@ void PolkaModel::saveViewLabel( const Polka::Identity &group,
   m_polka.insert( v );
 }
 
+void PolkaModel::removeViewLabel( const Polka::Identity &group,
+  const Polka::ViewLabel &label )
+{
+  Polka::GroupView v = m_polka.findGroupView( group.id(),
+    Polka::Polka::AutoCreate );
+  v.remove( label );
+  m_polka.insert( v );
+}
+
 void PolkaModel::saveViewPosition( const Polka::Identity &group,
   const Polka::Identity &identity,
   const QPointF &pos )

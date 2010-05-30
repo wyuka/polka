@@ -26,18 +26,50 @@
 LabelItem::LabelItem( PolkaModel *model, const Polka::ViewLabel &label )
   : QObject( model ), m_model( model ), m_label( label )
 {
-  m_textItem = new QGraphicsTextItem( label.text(), this );
+  setBrush( QColor( 220,220,220 ) );
+
+  m_textItem = new QGraphicsTextItem( this );
+  setText( label.text() );
+
+  m_fanMenu = new FanMenu( this );
+  connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
+    SLOT( slotItemSelected( FanMenu::Item * ) ) );
+  m_fanMenu->setZValue( 50 );
+  m_fanMenu->hide();
+
+  m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
+  m_renameMenuItem = m_fanMenu->addItem( i18n("Rename") );
+  m_fanMenu->setupItems( 80 );
+
+  setAcceptHoverEvents( true );
+
+  setFlags( ItemIsMovable );
+}
+
+void LabelItem::setText( const QString &text )
+{
+  m_textItem->setPlainText( text );
 
   int textWidth = m_textItem->boundingRect().width();
   int textHeight = m_textItem->boundingRect().height();
 
-  setRect( 0, 0, textWidth, textHeight );
-  setBrush( QColor( 220,220,220 ) );
-  setZValue( 10 );
+  setRect( - textWidth / 2, - textHeight / 2, textWidth, textHeight );
 
-  m_textItem->setPos( 0, 0 );
+  m_textItem->setPos( - textWidth / 2, - textHeight / 2 );
+}
 
-  setFlags( ItemIsMovable );
+void LabelItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
+{
+  Q_UNUSED( event );
+
+  m_fanMenu->show();
+}
+
+void LabelItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
+{
+  Q_UNUSED( event );
+
+  m_fanMenu->hide();
 }
 
 void LabelItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
@@ -54,4 +86,13 @@ void LabelItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   }
 
   QGraphicsRectItem::mouseReleaseEvent( event );
+}
+
+void LabelItem::slotItemSelected( FanMenu::Item *item )
+{
+  if ( item == m_removeMenuItem ) {
+    emit removeLabel( this, m_label );
+  } else if ( item == m_renameMenuItem ) {
+    emit renameLabel( this, m_label );
+  }
 }
