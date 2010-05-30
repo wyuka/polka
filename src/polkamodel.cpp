@@ -332,6 +332,20 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   emit identityChanged( identity );
 }
 
+void PolkaModel::saveViewLabel( const Polka::Identity &group,
+  const Polka::ViewLabel &label )
+{
+  Polka::GroupView v = m_polka.findGroupView( group.id(),
+    Polka::Polka::AutoCreate );
+  Polka::ViewLabel l = v.findViewLabel( label.id(),
+    Polka::GroupView::AutoCreate );
+  l.setText( label.text() );
+  l.setX( label.x() );
+  l.setY( label.y() );
+  v.insert( l );
+  m_polka.insert( v );
+}
+
 void PolkaModel::saveViewPosition( const Polka::Identity &group,
   const Polka::Identity &identity,
   const QPointF &pos )

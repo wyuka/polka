@@ -23,8 +23,11 @@
 #include "polkaitemmodel.h"
 #include "personview.h"
 #include "identityitem.h"
+#include "labelitem.h"
 
 #include <KLocale>
+#include <KInputDialog>
+#include <KRandom>
 
 #if QT_VERSION >= 0x040600
 #include <QPropertyAnimation>
@@ -58,6 +61,10 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( emitRemoveGroup() ) );
 
+  button = new QPushButton( i18n("Add Label") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( addLabel() ) );
+
   button = new QPushButton( i18n("New Person") );
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
@@ -66,10 +73,10 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 //  m_scene->setBackgroundBrush( Qt::red );
   m_scene->setBackgroundBrush( QColor( 70,70,100 ) );
 
-  QGraphicsView *view = new QGraphicsView( m_scene );
-  view->setRenderHint( QPainter::Antialiasing );
-  topLayout->addWidget( view );
-  view->show();
+  m_view = new QGraphicsView( m_scene );
+  m_view->setRenderHint( QPainter::Antialiasing );
+  topLayout->addWidget( m_view );
+  m_view->show();
 
   buttonLayout = new QHBoxLayout;
   topLayout->addLayout( buttonLayout );
@@ -152,6 +159,10 @@ void IdentityGraphicsView::createItems()
       y++;
     }
   }
+  
+  foreach( Polka::ViewLabel label, view.viewLabelList() ) {
+    createLabelItem( label );
+  }
 }
 
 Polka::Identity IdentityGraphicsView::group() const
@@ -175,10 +186,54 @@ void IdentityGraphicsView::savePosition( const Polka::Identity &identity,
   m_model->saveViewPosition( m_group, identity, pos );
 }
 
+void IdentityGraphicsView::saveLabel( const Polka::ViewLabel &label,
+  const QPointF &pos )
+{
+  Polka::ViewLabel l = label;
+  l.setX( pos.x() );
+  l.setY( pos.y() );
+  m_model->saveViewLabel( m_group, l );
+}
+
+
 void IdentityGraphicsView::saveCheck( const Polka::Identity &identity,
   bool checked )
 {
   m_model->saveViewCheck( m_group, identity, checked );
+}
+
+void IdentityGraphicsView::addLabel()
+{
+  bool ok;
+  QString name = KInputDialog::getText( i18n("Add Label"),
+    i18n("Enter text of label"), QString(),
+    &ok );
+  if ( ok ) {
+    Polka::ViewLabel label;
+    label.setId( KRandom::randomString( 10 ) );
+    label.setText( name );
+    
+    QPointF pos = m_view->mapToScene( QPoint( 10, 10 ) );
+    label.setX( pos.x() );
+    label.setY( pos.y() );
+
+    createLabelItem( label );
+    
+    m_model->saveViewLabel( m_group, label );
+  }
+}
+
+LabelItem *IdentityGraphicsView::createLabelItem( const Polka::ViewLabel &label )
+{
+  LabelItem *item = new LabelItem( m_model, label );
+  connect( item, SIGNAL( itemMoved( const Polka::ViewLabel &, const QPointF & ) ),
+    SLOT( saveLabel( const Polka::ViewLabel &, const QPointF & ) ) );
+
+  m_scene->addItem( item );
+
+  item->setPos( label.x(), label.y() );
+
+  return item;
 }
 
 void IdentityGraphicsView::resetLayout()

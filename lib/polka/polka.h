@@ -27,6 +27,34 @@
 
 namespace Polka {
 
+class POLKA_EXPORT ViewLabel
+{
+  public:
+    typedef QList<ViewLabel> List;
+
+  public:
+    void setId( const QString &v );
+    QString id() const;
+    bool isValid() const;
+    void setText( const QString &v );
+    QString text() const;
+    void setX( int v );
+    int x() const;
+    void setY( int v );
+    int y() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static ViewLabel parseElement( const QDomElement &element, bool *ok );
+    QString writeElement();
+
+  private:
+    QString mId;
+    QString mText;
+    int mX;
+    int mY;
+};
+
 class POLKA_EXPORT IdentityCheck
 {
   public:
@@ -98,6 +126,12 @@ class POLKA_EXPORT GroupView
     IdentityCheck findIdentityCheck( const QString &id, Flags flags = None );
     bool insert( const IdentityCheck &v );
     bool remove( const IdentityCheck &v );
+    void addViewLabel( const ViewLabel &v );
+    void setViewLabelList( const ViewLabel::List &v );
+    ViewLabel::List viewLabelList() const;
+    ViewLabel findViewLabel( const QString &id, Flags flags = None );
+    bool insert( const ViewLabel &v );
+    bool remove( const ViewLabel &v );
     /**
       Parse XML object from DOM element.
      */
@@ -108,6 +142,7 @@ class POLKA_EXPORT GroupView
     QString mId;
     IdentityPosition::List mIdentityPositionList;
     IdentityCheck::List mIdentityCheckList;
+    ViewLabel::List mViewLabelList;
 };
 
 class POLKA_EXPORT Comment

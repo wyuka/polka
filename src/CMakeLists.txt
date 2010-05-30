@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  labelitem.cpp
   addresseditor.cpp
   linkeditor.cpp
   phoneeditor.cpp

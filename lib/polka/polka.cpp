@@ -36,6 +36,102 @@ QString indent( int n = 0 )
   return space.fill( ' ', i );
 }
 
+void ViewLabel::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString ViewLabel::id() const
+{
+  return mId;
+}
+
+bool ViewLabel::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void ViewLabel::setText( const QString &v )
+{
+  mText = v;
+}
+
+QString ViewLabel::text() const
+{
+  return mText;
+}
+
+void ViewLabel::setX( int v )
+{
+  mX = v;
+}
+
+int ViewLabel::x() const
+{
+  return mX;
+}
+
+void ViewLabel::setY( int v )
+{
+  mY = v;
+}
+
+int ViewLabel::y() const
+{
+  return mY;
+}
+
+ViewLabel ViewLabel::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "view_label" ) {
+    qCritical() << "Expected 'view_label', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return ViewLabel();
+  }
+
+  ViewLabel result = ViewLabel();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+    else if ( e.tagName() == "text" ) {
+      result.setText( e.text() );
+    }
+    else if ( e.tagName() == "x" ) {
+      result.setX( e.text().toInt() );
+    }
+    else if ( e.tagName() == "y" ) {
+      result.setY( e.text().toInt() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+QString ViewLabel::writeElement()
+{
+  QString xml;
+  xml += indent() + "<view_label>\n";
+  indent( 2 );
+  if ( !id().isEmpty() ) {
+    xml += indent() + "<id>" + id() + "</id>\n";
+  }
+  if ( !text().isEmpty() ) {
+    xml += indent() + "<text>" + text() + "</text>\n";
+  }
+  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
+  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
+  indent( -2 );
+  xml += indent() + "</view_label>\n";
+  return xml;
+}
+
+
 void IdentityCheck::setId( const QString &v )
 {
   mId = v;
@@ -307,6 +403,60 @@ bool GroupView::remove( const IdentityCheck &v )
   return true;
 }
 
+void GroupView::addViewLabel( const ViewLabel &v )
+{
+  mViewLabelList.append( v );
+}
+
+void GroupView::setViewLabelList( const ViewLabel::List &v )
+{
+  mViewLabelList = v;
+}
+
+ViewLabel::List GroupView::viewLabelList() const
+{
+  return mViewLabelList;
+}
+
+ViewLabel GroupView::findViewLabel( const QString &id, Flags flags )
+{
+  foreach( ViewLabel v, mViewLabelList ) {
+    if ( v.id() == id ) return v;
+  }
+  ViewLabel v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool GroupView::insert( const ViewLabel &v )
+{
+  int i = 0;
+  for( ; i < mViewLabelList.size(); ++i ) {
+    if ( mViewLabelList[i].id() == v.id() ) {
+      mViewLabelList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mViewLabelList.size() ) {
+    addViewLabel( v );
+  }
+  return true;
+}
+
+bool GroupView::remove( const ViewLabel &v )
+{
+  ViewLabel::List::Iterator it;
+  for( it = mViewLabelList.begin(); it != mViewLabelList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mViewLabelList.end() ) {
+    mViewLabelList.erase( it );
+  }
+  return true;
+}
+
 GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "group_view" ) {
@@ -333,6 +483,11 @@ GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
       IdentityCheck o = IdentityCheck::parseElement( e, &ok );
       if ( ok ) result.addIdentityCheck( o );
     }
+    else if ( e.tagName() == "view_label" ) {
+      bool ok;
+      ViewLabel o = ViewLabel::parseElement( e, &ok );
+      if ( ok ) result.addViewLabel( o );
+    }
   }
 
 
@@ -352,6 +507,9 @@ QString GroupView::writeElement()
     xml += e.writeElement();
   }
   foreach( IdentityCheck e, identityCheckList() ) {
+    xml += e.writeElement();
+  }
+  foreach( ViewLabel e, viewLabelList() ) {
     xml += e.writeElement();
   }
   indent( -2 );

@@ -136,6 +136,18 @@
     <identity_check>
       <id>fuejfxx</id>
     </identity_check>
+    <view_label>
+      <id>dhdhd</id>
+      <text>Label Text</text>
+      <x>123</x>
+      <y>64764</y>
+    </view_label>
+    <view_label>
+      <id>dhdhdd</id>
+      <text>Label Text</text>
+      <x>123</x>
+      <y>64764</y>
+    </view_label>
   </group_view>
   <group_view>
     <id>shshx</id>

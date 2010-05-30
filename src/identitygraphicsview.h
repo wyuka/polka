@@ -26,6 +26,7 @@
 class PolkaItemModel;
 class PolkaModel;
 class IdentityItem;
+class LabelItem;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -47,13 +48,19 @@ class IdentityGraphicsView : public QWidget
     void cloneGroup( const Polka::Identity &group );
     void removeGroup( const Polka::Identity &group );
 
+  protected:
+    LabelItem *createLabelItem( const Polka::ViewLabel &label );
+
   protected slots:
     void resetLayout();
   
     void createItems();
     void slotRemovePerson( const Polka::Identity & );
 
+    void addLabel();
+
     void savePosition( const Polka::Identity &, const QPointF & );
+    void saveLabel( const Polka::ViewLabel &, const QPointF & );
     void saveCheck( const Polka::Identity &, bool checked );
 
     void emitCloneGroup();
@@ -69,6 +76,7 @@ class IdentityGraphicsView : public QWidget
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  
     QGraphicsScene *m_scene;
+    QGraphicsView *m_view;
 };
 
 #endif

@@ -66,6 +66,9 @@ class PolkaModel : public QObject
 
     void importPicture( const QPixmap &, const Polka::Identity & );
 
+    void saveViewLabel( const Polka::Identity &group,
+      const Polka::ViewLabel &label );
+
     void saveViewPosition( const Polka::Identity &group,
       const Polka::Identity &identity,
       const QPointF &pos );

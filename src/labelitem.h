@@ -1,0 +1,54 @@
+/*
+    This file is part of KDE.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+    USA.
+*/
+#ifndef LABELITEM_H
+#define LABELITEM_H
+
+#include "polka/polka.h"
+#include "fanmenu.h"
+
+#include <QtGui>
+
+class PolkaModel;
+
+class LabelItem : public QObject, public QGraphicsRectItem
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
+
+  public:
+    LabelItem( PolkaModel *, const Polka::ViewLabel & );
+
+  signals:
+    void itemMoved( const Polka::ViewLabel &, const QPointF & );
+    
+  protected:
+    void mousePressEvent( QGraphicsSceneMouseEvent *event );
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
+
+  private:
+    PolkaModel *m_model;
+    Polka::ViewLabel m_label;
+
+    QGraphicsTextItem *m_textItem;
+
+    QPointF m_movePos;
+};
+
+#endif
