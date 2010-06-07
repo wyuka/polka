@@ -2594,6 +2594,27 @@ Polka Polka::parseFile( const QString &filename, bool *ok )
   return c;
 }
 
+Polka Polka::parseString( const QString &xml, bool *ok )
+{
+  QString errorMsg;
+  int errorLine, errorCol;
+  QDomDocument doc;
+  if ( !doc.setContent( xml, false, &errorMsg, &errorLine, &errorCol ) ) {
+    qCritical() << errorMsg << " at " << errorLine << "," << errorCol;
+    if ( ok ) *ok = false;
+    return Polka();
+  }
+
+  qDebug() << "CONTENT:" << doc.toString();
+
+  bool documentOk;
+  Polka c = parseElement( doc.documentElement(), &documentOk );
+  if ( ok ) {
+    *ok = documentOk;
+  }
+  return c;
+}
+
 bool Polka::writeFile( const QString &filename )
 {
   QFile file( filename );

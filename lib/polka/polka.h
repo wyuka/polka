@@ -706,6 +706,7 @@ class POLKA_EXPORT Polka
     static Polka parseElement( const QDomElement &element, bool *ok );
     QString writeElement();
     static Polka parseFile( const QString &filename, bool *ok );
+    static Polka parseString( const QString &xml, bool *ok );
     bool writeFile( const QString &filename );
 
   private:
