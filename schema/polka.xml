@@ -47,14 +47,6 @@
       <relation relation_type="is_married_to" target="77fzuwehf6t"/>
       <relation relation_type="reports_to" target="77fzuwehf6t"/>
     </relations>
-    <notes>
-      <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
-        Sent him invitation to dinner party.
-      </note>
-      <note id="2" reply_to="1">
-        Can't come.
-      </note>
-    </notes>
     <links>
       <link created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>dkljga</id>
@@ -110,11 +102,6 @@
   <identity is_group="true">
     <id>fkjfrf6rhfrf6f5ewzf</id>
     <name>Dinner Party on Sep 23</name>
-    <notes>
-      <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
-        Everybody was invited.
-      </note>
-    </notes>
   </identity>
   <group_view>
     <id>shsh</id>

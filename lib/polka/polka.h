@@ -293,55 +293,6 @@ class POLKA_EXPORT Links
     Link::List mLinkList;
 };
 
-class POLKA_EXPORT Note
-{
-  public:
-    typedef QList<Note> List;
-
-  public:
-    void setId( const QString &v );
-    QString id() const;
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
-    /**
-      Parse XML object from DOM element.
-     */
-    static Note parseElement( const QDomElement &element, bool *ok );
-    void writeElement( QXmlStreamWriter &xml );
-
-  private:
-    QString mId;
-    QString mCreatedAt;
-    QString mUpdatedAt;
-    QString mText;
-};
-
-class POLKA_EXPORT Notes
-{
-  public:
-    enum Flags { None, AutoCreate };
-
-  public:
-    void addNote( const Note &v );
-    void setNoteList( const Note::List &v );
-    Note::List noteList() const;
-    Note findNote( const QString &id, Flags flags = None );
-    bool insert( const Note &v );
-    bool remove( const Note &v );
-    /**
-      Parse XML object from DOM element.
-     */
-    static Notes parseElement( const QDomElement &element, bool *ok );
-    void writeElement( QXmlStreamWriter &xml );
-
-  private:
-    Note::List mNoteList;
-};
-
 class POLKA_EXPORT Relation
 {
   public:
@@ -695,8 +646,6 @@ class POLKA_EXPORT Identity
     Addresses addresses() const;
     void setRelations( const Relations &v );
     Relations relations() const;
-    void setNotes( const Notes &v );
-    Notes notes() const;
     void setLinks( const Links &v );
     Links links() const;
     void setExtendedAttributes( const ExtendedAttributes &v );
@@ -719,7 +668,6 @@ class POLKA_EXPORT Identity
     Phones mPhones;
     Addresses mAddresses;
     Relations mRelations;
-    Notes mNotes;
     Links mLinks;
     ExtendedAttributes mExtendedAttributes;
     Comments mComments;

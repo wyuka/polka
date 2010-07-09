@@ -992,167 +992,6 @@ void Links::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Note::setId( const QString &v )
-{
-  mId = v;
-}
-
-QString Note::id() const
-{
-  return mId;
-}
-
-void Note::setCreatedAt( const QString &v )
-{
-  mCreatedAt = v;
-}
-
-QString Note::createdAt() const
-{
-  return mCreatedAt;
-}
-
-void Note::setUpdatedAt( const QString &v )
-{
-  mUpdatedAt = v;
-}
-
-QString Note::updatedAt() const
-{
-  return mUpdatedAt;
-}
-
-void Note::setText( const QString &v )
-{
-  mText = v;
-}
-
-QString Note::text() const
-{
-  return mText;
-}
-
-Note Note::parseElement( const QDomElement &element, bool *ok )
-{
-  if ( element.tagName() != "note" ) {
-    qCritical() << "Expected 'note', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return Note();
-  }
-
-  Note result = Note();
-
-  result.setText( element.text() );
-  result.setId( element.attribute( "id" ) );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
-
-  if ( ok ) *ok = true;
-  return result;
-}
-
-void Note::writeElement( QXmlStreamWriter &xml )
-{
-  if ( !text().isEmpty() ) {
-    xml.writeStartElement( "note" );
-    xml.writeAttribute( "id", id() );
-    xml.writeAttribute( "created_at", createdAt() );
-    xml.writeAttribute( "updated_at", updatedAt() );
-    xml.writeCharacters( text() );
-    xml.writeEndElement();
-  }
-}
-
-
-void Notes::addNote( const Note &v )
-{
-  mNoteList.append( v );
-}
-
-void Notes::setNoteList( const Note::List &v )
-{
-  mNoteList = v;
-}
-
-Note::List Notes::noteList() const
-{
-  return mNoteList;
-}
-
-Note Notes::findNote( const QString &id, Flags flags )
-{
-  foreach( Note v, mNoteList ) {
-    if ( v.id() == id ) return v;
-  }
-  Note v;
-  if ( flags == AutoCreate ) {
-    v.setId( id );
-  }
-  return v;
-}
-
-bool Notes::insert( const Note &v )
-{
-  int i = 0;
-  for( ; i < mNoteList.size(); ++i ) {
-    if ( mNoteList[i].id() == v.id() ) {
-      mNoteList[i] = v;
-      return true;
-    }
-  }
-  if ( i == mNoteList.size() ) {
-    addNote( v );
-  }
-  return true;
-}
-
-bool Notes::remove( const Note &v )
-{
-  Note::List::Iterator it;
-  for( it = mNoteList.begin(); it != mNoteList.end(); ++it ) {
-    if ( (*it).id() == v.id() ) break;
-  }
-  if ( it != mNoteList.end() ) {
-    mNoteList.erase( it );
-  }
-  return true;
-}
-
-Notes Notes::parseElement( const QDomElement &element, bool *ok )
-{
-  if ( element.tagName() != "notes" ) {
-    qCritical() << "Expected 'notes', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return Notes();
-  }
-
-  Notes result = Notes();
-
-  QDomNode n;
-  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
-    QDomElement e = n.toElement();
-    if ( e.tagName() == "note" ) {
-      bool ok;
-      Note o = Note::parseElement( e, &ok );
-      if ( ok ) result.addNote( o );
-    }
-  }
-
-
-  if ( ok ) *ok = true;
-  return result;
-}
-
-void Notes::writeElement( QXmlStreamWriter &xml )
-{
-  xml.writeStartElement( "notes" );
-  foreach( Note e, noteList() ) {
-    e.writeElement( xml );
-  }
-  xml.writeEndElement();
-}
-
-
 void Relation::setRelationType( const QString &v )
 {
   mRelationType = v;
@@ -2330,16 +2169,6 @@ Relations Identity::relations() const
   return mRelations;
 }
 
-void Identity::setNotes( const Notes &v )
-{
-  mNotes = v;
-}
-
-Notes Identity::notes() const
-{
-  return mNotes;
-}
-
 void Identity::setLinks( const Links &v )
 {
   mLinks = v;
@@ -2426,11 +2255,6 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Relations o = Relations::parseElement( e, &ok );
       if ( ok ) result.setRelations( o );
     }
-    else if ( e.tagName() == "notes" ) {
-      bool ok;
-      Notes o = Notes::parseElement( e, &ok );
-      if ( ok ) result.setNotes( o );
-    }
     else if ( e.tagName() == "links" ) {
       bool ok;
       Links o = Links::parseElement( e, &ok );
@@ -2467,7 +2291,6 @@ void Identity::writeElement( QXmlStreamWriter &xml )
   phones().writeElement( xml );
   addresses().writeElement( xml );
   relations().writeElement( xml );
-  notes().writeElement( xml );
   links().writeElement( xml );
   extendedAttributes().writeElement( xml );
   comments().writeElement( xml );
