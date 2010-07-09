@@ -7,15 +7,14 @@
       </group>
       <group><id>633hedehe</id></group>
     </groups>
-    <name updated_at="20090901T120034Z">Hans Wurst</name>
-    <birthname>Hans Kaese</birthname>
-    <birthday>19011224</birthday>
+    <name created_at="20090901T120034Z" updated_at="20090901T120034Z">Hans Wurst</name>
+    <birthday created_at="20090901T120034Z" updated_at="20090901T120034Z">19011224</birthday>
     <emails>
-      <email id="123" updated_at="20090901T120034Z">hw@example.com</email>
-      <email id="345" updated_at="20090901T120034Z" comment="1">hw@example.org</email>
+      <email id="123" created_at="20090901T120034Z" updated_at="20090901T120034Z">hw@example.com</email>
+      <email id="345" created_at="20090901T120034Z" updated_at="20090901T120034Z" comment="1">hw@example.org</email>
     </emails>
     <pictures>
-      <picture updated_at="20090901T120023Z" picture_type="local">
+      <picture created_at="20090901T120034Z" updated_at="20090901T120023Z" picture_type="local">
         <id>z77z4ufhjf</id>
         <url>http://somewhere.example.com</url>
       </picture>
@@ -25,7 +24,7 @@
       </picture>
     </pictures>
     <phones>
-      <phone comment="2" updated_at="20090901T120023Z">
+      <phone comment="2" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>123</id>
         <phone_type>Mobile</phone_type>
         <phone_number>123/3848484</phone_number>
@@ -35,7 +34,7 @@
       </phone>
     </phones>
     <addresses>
-      <address updated_at="20090901T120023Z">
+      <address created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>123</id>
         <label>Hauptstrasse 3\n12345Hintertupfingen</label>
       </address>
@@ -57,7 +56,7 @@
       </note>
     </notes>
     <links>
-      <link updated_at="20090901T120023Z">
+      <link created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>dkljga</id>
         <link_type>xing</link_type>
         <url>http://xing.de/hw</url>
@@ -68,7 +67,7 @@
       </link>
     </links>
     <extended_attributes>
-      <attribute type="string">
+      <attribute type="string" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <key>Favorite Food</key>
         <value>Spagetti</value>
       </attribute>
@@ -78,7 +77,7 @@
       </attribute>
     </extended_attributes>
     <comments>
-      <comment id="1" updated_at="20090901T120023Z">Don't use it anymore.</comment>
+      <comment id="1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       <comment id="2">Always switched off.</comment>
     </comments>
   </identity>

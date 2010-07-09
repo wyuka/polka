@@ -22,19 +22,10 @@
 #include <QtDebug>
 #include <QFile>
 #include <QDomDocument>
-#include <QtCore/QTextStream>
 #include <QtCore/QtDebug>
 #include <QtCore/QFile>
 
 namespace Polka {
-
-QString indent( int n = 0 )
-{
-  static int i = 0;
-  i += n;
-  QString space;
-  return space.fill( ' ', i );
-}
 
 void ViewLabel::setId( const QString &v )
 {
@@ -113,22 +104,18 @@ ViewLabel ViewLabel::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString ViewLabel::writeElement()
+void ViewLabel::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<view_label>\n";
-  indent( 2 );
+  xml.writeStartElement( "view_label" );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   if ( !text().isEmpty() ) {
-    xml += indent() + "<text>" + text() + "</text>\n";
+    xml.writeTextElement(  "text", text() );
   }
-  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
-  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
-  indent( -2 );
-  xml += indent() + "</view_label>\n";
-  return xml;
+  xml.writeTextElement(  "x", QString::number( x() ) );
+  xml.writeTextElement(  "y", QString::number( y() ) );
+  xml.writeEndElement();
 }
 
 
@@ -183,20 +170,16 @@ IdentityCheck IdentityCheck::parseElement( const QDomElement &element, bool *ok 
   return result;
 }
 
-QString IdentityCheck::writeElement()
+void IdentityCheck::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<identity_check>\n";
-  indent( 2 );
+  xml.writeStartElement( "identity_check" );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   if ( !checked().isEmpty() ) {
-    xml += indent() + "<checked>" + checked() + "</checked>\n";
+    xml.writeTextElement(  "checked", checked() );
   }
-  indent( -2 );
-  xml += indent() + "</identity_check>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -264,19 +247,15 @@ IdentityPosition IdentityPosition::parseElement( const QDomElement &element, boo
   return result;
 }
 
-QString IdentityPosition::writeElement()
+void IdentityPosition::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<identity_position>\n";
-  indent( 2 );
+  xml.writeStartElement( "identity_position" );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
-  xml += indent() + "<x>" + QString::number( x() ) + "</x>\n";
-  xml += indent() + "<y>" + QString::number( y() ) + "</y>\n";
-  indent( -2 );
-  xml += indent() + "</identity_position>\n";
-  return xml;
+  xml.writeTextElement(  "x", QString::number( x() ) );
+  xml.writeTextElement(  "y", QString::number( y() ) );
+  xml.writeEndElement();
 }
 
 
@@ -495,26 +474,22 @@ GroupView GroupView::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString GroupView::writeElement()
+void GroupView::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<group_view>\n";
-  indent( 2 );
+  xml.writeStartElement( "group_view" );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   foreach( IdentityPosition e, identityPositionList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
   foreach( IdentityCheck e, identityCheckList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
   foreach( ViewLabel e, viewLabelList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</group_view>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -526,6 +501,16 @@ void Comment::setId( const QString &v )
 QString Comment::id() const
 {
   return mId;
+}
+
+void Comment::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Comment::createdAt() const
+{
+  return mCreatedAt;
 }
 
 void Comment::setUpdatedAt( const QString &v )
@@ -560,19 +545,23 @@ Comment Comment::parseElement( const QDomElement &element, bool *ok )
 
   result.setText( element.text() );
   result.setId( element.attribute( "id" ) );
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Comment::writeElement()
+void Comment::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
   if ( !text().isEmpty() ) {
-    xml += indent() + "<comment id=\"" + id() + "\" updated_at=\"" + updatedAt() + "\">" + text() + "</comment>\n";
+    xml.writeStartElement( "comment" );
+    xml.writeAttribute( "id", id() );
+    xml.writeAttribute( "created_at", createdAt() );
+    xml.writeAttribute( "updated_at", updatedAt() );
+    xml.writeCharacters( text() );
+    xml.writeEndElement();
   }
-  return xml;
 }
 
 
@@ -655,17 +644,13 @@ Comments Comments::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Comments::writeElement()
+void Comments::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<comments>\n";
-  indent( 2 );
+  xml.writeStartElement( "comments" );
   foreach( Comment e, commentList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</comments>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -677,6 +662,26 @@ void Attribute::setType( const QString &v )
 QString Attribute::type() const
 {
   return mType;
+}
+
+void Attribute::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Attribute::createdAt() const
+{
+  return mCreatedAt;
+}
+
+void Attribute::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Attribute::updatedAt() const
+{
+  return mUpdatedAt;
 }
 
 void Attribute::setKey( const QString &v )
@@ -721,25 +726,26 @@ Attribute Attribute::parseElement( const QDomElement &element, bool *ok )
   }
 
   result.setType( element.attribute( "type" ) );
+  result.setCreatedAt( element.attribute( "created_at" ) );
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Attribute::writeElement()
+void Attribute::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<attribute type=\"" + type() + "\">\n";
-  indent( 2 );
+  xml.writeStartElement( "attribute" );
+  xml.writeAttribute( "type", type() );
+  xml.writeAttribute( "created_at", createdAt() );
+  xml.writeAttribute( "updated_at", updatedAt() );
   if ( !key().isEmpty() ) {
-    xml += indent() + "<key>" + key() + "</key>\n";
+    xml.writeTextElement(  "key", key() );
   }
   if ( !value().isEmpty() ) {
-    xml += indent() + "<value>" + value() + "</value>\n";
+    xml.writeTextElement(  "value", value() );
   }
-  indent( -2 );
-  xml += indent() + "</attribute>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -783,19 +789,25 @@ ExtendedAttributes ExtendedAttributes::parseElement( const QDomElement &element,
   return result;
 }
 
-QString ExtendedAttributes::writeElement()
+void ExtendedAttributes::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<extended_attributes>\n";
-  indent( 2 );
+  xml.writeStartElement( "extended_attributes" );
   foreach( Attribute e, attributeList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</extended_attributes>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
+
+void Link::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Link::createdAt() const
+{
+  return mCreatedAt;
+}
 
 void Link::setUpdatedAt( const QString &v )
 {
@@ -866,29 +878,28 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Link::writeElement()
+void Link::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<link updated_at=\"" + updatedAt() + "\">\n";
-  indent( 2 );
+  xml.writeStartElement( "link" );
+  xml.writeAttribute( "created_at", createdAt() );
+  xml.writeAttribute( "updated_at", updatedAt() );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   if ( !linkType().isEmpty() ) {
-    xml += indent() + "<link_type>" + linkType() + "</link_type>\n";
+    xml.writeTextElement(  "link_type", linkType() );
   }
   if ( !url().isEmpty() ) {
-    xml += indent() + "<url>" + url() + "</url>\n";
+    xml.writeTextElement(  "url", url() );
   }
-  indent( -2 );
-  xml += indent() + "</link>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -971,17 +982,13 @@ Links Links::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Links::writeElement()
+void Links::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<links>\n";
-  indent( 2 );
+  xml.writeStartElement( "links" );
   foreach( Link e, linkList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</links>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1044,13 +1051,16 @@ Note Note::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Note::writeElement()
+void Note::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
   if ( !text().isEmpty() ) {
-    xml += indent() + "<note id=\"" + id() + "\" created_at=\"" + createdAt() + "\" updated_at=\"" + updatedAt() + "\">" + text() + "</note>\n";
+    xml.writeStartElement( "note" );
+    xml.writeAttribute( "id", id() );
+    xml.writeAttribute( "created_at", createdAt() );
+    xml.writeAttribute( "updated_at", updatedAt() );
+    xml.writeCharacters( text() );
+    xml.writeEndElement();
   }
-  return xml;
 }
 
 
@@ -1133,17 +1143,13 @@ Notes Notes::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Notes::writeElement()
+void Notes::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<notes>\n";
-  indent( 2 );
+  xml.writeStartElement( "notes" );
   foreach( Note e, noteList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</notes>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1184,11 +1190,9 @@ Relation Relation::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Relation::writeElement()
+void Relation::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<relation relation_type=\"" + relationType() + "\" target=\"" + target() + "\"/>\n";
-  return xml;
+  xml.writeEmptyElement( "relation" );
 }
 
 
@@ -1232,19 +1236,25 @@ Relations Relations::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Relations::writeElement()
+void Relations::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<relations>\n";
-  indent( 2 );
+  xml.writeStartElement( "relations" );
   foreach( Relation e, relationList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</relations>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
+
+void Address::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Address::createdAt() const
+{
+  return mCreatedAt;
+}
 
 void Address::setUpdatedAt( const QString &v )
 {
@@ -1302,26 +1312,25 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Address::writeElement()
+void Address::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<address updated_at=\"" + updatedAt() + "\">\n";
-  indent( 2 );
+  xml.writeStartElement( "address" );
+  xml.writeAttribute( "created_at", createdAt() );
+  xml.writeAttribute( "updated_at", updatedAt() );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   if ( !label().isEmpty() ) {
-    xml += indent() + "<label>" + label() + "</label>\n";
+    xml.writeTextElement(  "label", label() );
   }
-  indent( -2 );
-  xml += indent() + "</address>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1404,17 +1413,13 @@ Addresses Addresses::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Addresses::writeElement()
+void Addresses::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<addresses>\n";
-  indent( 2 );
+  xml.writeStartElement( "addresses" );
   foreach( Address e, addressList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</addresses>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1426,6 +1431,16 @@ void Phone::setComment( const QString &v )
 QString Phone::comment() const
 {
   return mComment;
+}
+
+void Phone::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Phone::createdAt() const
+{
+  return mCreatedAt;
 }
 
 void Phone::setUpdatedAt( const QString &v )
@@ -1498,29 +1513,29 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
   }
 
   result.setComment( element.attribute( "comment" ) );
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Phone::writeElement()
+void Phone::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<phone comment=\"" + comment() + "\" updated_at=\"" + updatedAt() + "\">\n";
-  indent( 2 );
+  xml.writeStartElement( "phone" );
+  xml.writeAttribute( "comment", comment() );
+  xml.writeAttribute( "created_at", createdAt() );
+  xml.writeAttribute( "updated_at", updatedAt() );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   if ( !phoneType().isEmpty() ) {
-    xml += indent() + "<phone_type>" + phoneType() + "</phone_type>\n";
+    xml.writeTextElement(  "phone_type", phoneType() );
   }
   if ( !phoneNumber().isEmpty() ) {
-    xml += indent() + "<phone_number>" + phoneNumber() + "</phone_number>\n";
+    xml.writeTextElement(  "phone_number", phoneNumber() );
   }
-  indent( -2 );
-  xml += indent() + "</phone>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1603,19 +1618,25 @@ Phones Phones::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Phones::writeElement()
+void Phones::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<phones>\n";
-  indent( 2 );
+  xml.writeStartElement( "phones" );
   foreach( Phone e, phoneList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</phones>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
+
+void Picture::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Picture::createdAt() const
+{
+  return mCreatedAt;
+}
 
 void Picture::setUpdatedAt( const QString &v )
 {
@@ -1683,6 +1704,7 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
   result.setPictureType( element.attribute( "picture_type" ) );
 
@@ -1690,20 +1712,19 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Picture::writeElement()
+void Picture::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<picture updated_at=\"" + updatedAt() + "\" picture_type=\"" + pictureType() + "\">\n";
-  indent( 2 );
+  xml.writeStartElement( "picture" );
+  xml.writeAttribute( "created_at", createdAt() );
+  xml.writeAttribute( "updated_at", updatedAt() );
+  xml.writeAttribute( "picture_type", pictureType() );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
   if ( !url().isEmpty() ) {
-    xml += indent() + "<url>" + url() + "</url>\n";
+    xml.writeTextElement(  "url", url() );
   }
-  indent( -2 );
-  xml += indent() + "</picture>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1786,17 +1807,13 @@ Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Pictures::writeElement()
+void Pictures::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<pictures>\n";
-  indent( 2 );
+  xml.writeStartElement( "pictures" );
   foreach( Picture e, pictureList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</pictures>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1808,6 +1825,16 @@ void Email::setId( const QString &v )
 QString Email::id() const
 {
   return mId;
+}
+
+void Email::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Email::createdAt() const
+{
+  return mCreatedAt;
 }
 
 void Email::setUpdatedAt( const QString &v )
@@ -1842,19 +1869,23 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
 
   result.setText( element.text() );
   result.setId( element.attribute( "id" ) );
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Email::writeElement()
+void Email::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
   if ( !text().isEmpty() ) {
-    xml += indent() + "<email id=\"" + id() + "\" updated_at=\"" + updatedAt() + "\">" + text() + "</email>\n";
+    xml.writeStartElement( "email" );
+    xml.writeAttribute( "id", id() );
+    xml.writeAttribute( "created_at", createdAt() );
+    xml.writeAttribute( "updated_at", updatedAt() );
+    xml.writeCharacters( text() );
+    xml.writeEndElement();
   }
-  return xml;
 }
 
 
@@ -1937,17 +1968,13 @@ Emails Emails::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Emails::writeElement()
+void Emails::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<emails>\n";
-  indent( 2 );
+  xml.writeStartElement( "emails" );
   foreach( Email e, emailList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</emails>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -1989,17 +2016,13 @@ Group Group::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Group::writeElement()
+void Group::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<group>\n";
-  indent( 2 );
+  xml.writeStartElement( "group" );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
-  indent( -2 );
-  xml += indent() + "</group>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 
@@ -2082,19 +2105,25 @@ Groups Groups::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Groups::writeElement()
+void Groups::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<groups>\n";
-  indent( 2 );
+  xml.writeStartElement( "groups" );
   foreach( Group e, groupList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</groups>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
+
+void Name::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Name::createdAt() const
+{
+  return mCreatedAt;
+}
 
 void Name::setUpdatedAt( const QString &v )
 {
@@ -2127,19 +2156,82 @@ Name Name::parseElement( const QDomElement &element, bool *ok )
   Name result = Name();
 
   result.setText( element.text() );
+  result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
   if ( ok ) *ok = true;
   return result;
 }
 
-QString Name::writeElement()
+void Name::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
   if ( !text().isEmpty() ) {
-    xml += indent() + "<name updated_at=\"" + updatedAt() + "\">" + text() + "</name>\n";
+    xml.writeStartElement( "name" );
+    xml.writeAttribute( "created_at", createdAt() );
+    xml.writeAttribute( "updated_at", updatedAt() );
+    xml.writeCharacters( text() );
+    xml.writeEndElement();
   }
-  return xml;
+}
+
+
+void Birthday::setCreatedAt( const QString &v )
+{
+  mCreatedAt = v;
+}
+
+QString Birthday::createdAt() const
+{
+  return mCreatedAt;
+}
+
+void Birthday::setUpdatedAt( const QString &v )
+{
+  mUpdatedAt = v;
+}
+
+QString Birthday::updatedAt() const
+{
+  return mUpdatedAt;
+}
+
+void Birthday::setText( const QString &v )
+{
+  mText = v;
+}
+
+QString Birthday::text() const
+{
+  return mText;
+}
+
+Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "birthday" ) {
+    qCritical() << "Expected 'birthday', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Birthday();
+  }
+
+  Birthday result = Birthday();
+
+  result.setText( element.text() );
+  result.setCreatedAt( element.attribute( "created_at" ) );
+  result.setUpdatedAt( element.attribute( "updated_at" ) );
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+void Birthday::writeElement( QXmlStreamWriter &xml )
+{
+  if ( !text().isEmpty() ) {
+    xml.writeStartElement( "birthday" );
+    xml.writeAttribute( "created_at", createdAt() );
+    xml.writeAttribute( "updated_at", updatedAt() );
+    xml.writeCharacters( text() );
+    xml.writeEndElement();
+  }
 }
 
 
@@ -2178,22 +2270,12 @@ Name Identity::name() const
   return mName;
 }
 
-void Identity::setBirthname( const QString &v )
-{
-  mBirthname = v;
-}
-
-QString Identity::birthname() const
-{
-  return mBirthname;
-}
-
-void Identity::setBirthday( const QDate &v )
+void Identity::setBirthday( const Birthday &v )
 {
   mBirthday = v;
 }
 
-QDate Identity::birthday() const
+Birthday Identity::birthday() const
 {
   return mBirthday;
 }
@@ -2314,11 +2396,10 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Name o = Name::parseElement( e, &ok );
       if ( ok ) result.setName( o );
     }
-    else if ( e.tagName() == "birthname" ) {
-      result.setBirthname( e.text() );
-    }
     else if ( e.tagName() == "birthday" ) {
-      result.setBirthday( QDate::fromString( e.text(), Qt::ISODate ) );
+      bool ok;
+      Birthday o = Birthday::parseElement( e, &ok );
+      if ( ok ) result.setBirthday( o );
     }
     else if ( e.tagName() == "emails" ) {
       bool ok;
@@ -2372,32 +2453,25 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Identity::writeElement()
+void Identity::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<identity>\n";
-  indent( 2 );
+  xml.writeStartElement( "identity" );
   if ( !id().isEmpty() ) {
-    xml += indent() + "<id>" + id() + "</id>\n";
+    xml.writeTextElement(  "id", id() );
   }
-  xml += groups().writeElement();
-  xml += name().writeElement();
-  if ( !birthname().isEmpty() ) {
-    xml += indent() + "<birthname>" + birthname() + "</birthname>\n";
-  }
-  xml += indent() + "<birthday>" + birthday().toString( Qt::ISODate ) + "</birthday>\n";
-  xml += emails().writeElement();
-  xml += pictures().writeElement();
-  xml += phones().writeElement();
-  xml += addresses().writeElement();
-  xml += relations().writeElement();
-  xml += notes().writeElement();
-  xml += links().writeElement();
-  xml += extendedAttributes().writeElement();
-  xml += comments().writeElement();
-  indent( -2 );
-  xml += indent() + "</identity>\n";
-  return xml;
+  groups().writeElement( xml );
+  name().writeElement( xml );
+  birthday().writeElement( xml );
+  emails().writeElement( xml );
+  pictures().writeElement( xml );
+  phones().writeElement( xml );
+  addresses().writeElement( xml );
+  relations().writeElement( xml );
+  notes().writeElement( xml );
+  links().writeElement( xml );
+  extendedAttributes().writeElement( xml );
+  comments().writeElement( xml );
+  xml.writeEndElement();
 }
 
 
@@ -2550,20 +2624,17 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
   return result;
 }
 
-QString Polka::writeElement()
+void Polka::writeElement( QXmlStreamWriter &xml )
 {
-  QString xml;
-  xml += indent() + "<polka schemaVersion=\"" + schemaVersion() + "\">\n";
-  indent( 2 );
+  xml.writeStartElement( "polka" );
+  xml.writeAttribute( "schemaVersion", schemaVersion() );
   foreach( Identity e, identityList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
   foreach( GroupView e, groupViewList() ) {
-    xml += e.writeElement();
+    e.writeElement( xml );
   }
-  indent( -2 );
-  xml += indent() + "</polka>\n";
-  return xml;
+  xml.writeEndElement();
 }
 
 Polka Polka::parseFile( const QString &filename, bool *ok )
@@ -2584,8 +2655,6 @@ Polka Polka::parseFile( const QString &filename, bool *ok )
     return Polka();
   }
 
-  qDebug() << "CONTENT:" << doc.toString();
-
   bool documentOk;
   Polka c = parseElement( doc.documentElement(), &documentOk );
   if ( ok ) {
@@ -2605,8 +2674,6 @@ Polka Polka::parseString( const QString &xml, bool *ok )
     return Polka();
   }
 
-  qDebug() << "CONTENT:" << doc.toString();
-
   bool documentOk;
   Polka c = parseElement( doc.documentElement(), &documentOk );
   if ( ok ) {
@@ -2623,9 +2690,12 @@ bool Polka::writeFile( const QString &filename )
     return false;
   }
 
-  QTextStream ts( &file );
-  ts << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-  ts << writeElement();
+  QXmlStreamWriter xml( &file );
+  xml.setAutoFormatting( true );
+  xml.setAutoFormattingIndent( 2 );
+  xml.writeStartDocument( "1.0" );
+  writeElement( xml );
+  xml.writeEndDocument();
   file.close();
 
   return true;
