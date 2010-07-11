@@ -99,7 +99,7 @@ void IdentityGraphicsView::setGroup( const Polka::Identity &group )
 {
   m_group = group;
 
-  setGroupName( group.name().text() );
+  setGroupName( group.name().value() );
 
   createItems();
 }

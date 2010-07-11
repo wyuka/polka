@@ -171,7 +171,7 @@ void PersonView::addEmail()
   if ( ok ) {
     Polka::Email e;
     e.setId( KRandom::randomString( 10 ) );
-    e.setText( email );
+    e.setValue( email );
     Polka::Emails es = m_identity.emails();
     es.addEmail( e );
     m_identity.setEmails( es );
@@ -188,10 +188,10 @@ void PersonView::editEmail( const QString &id )
 
   bool ok;
   QString email = KInputDialog::getText( i18n("Add email"),
-    i18n("Enter new email address"), e.text(), &ok );
+    i18n("Enter new email address"), e.value(), &ok );
   if ( ok ) {
     Polka::Emails es = m_identity.emails();
-    e.setText( email );
+    e.setValue( email );
     es.insert( e );
     m_identity.setEmails( es );
     
@@ -257,7 +257,7 @@ void PersonView::addComment()
     Polka::Comments cs = m_identity.comments();
     Polka::Comment c;
     c.setId( KRandom::randomString( 10 ) );
-    c.setText( editor->comment() );
+    c.setValue( editor->comment() );
     cs.insert( c );
     m_identity.setComments( cs );
     
@@ -270,10 +270,10 @@ void PersonView::editComment( const QString &id )
   Polka::Comment comment = m_identity.comments().findComment( id );
 
   CommentEditor *editor = new CommentEditor( this );
-  editor->setComment( comment.text() );
+  editor->setComment( comment.value() );
   if ( editor->exec() == CommentEditor::Accepted ) {
     Polka::Comments cs = m_identity.comments();
-    comment.setText( editor->comment() );
+    comment.setValue( editor->comment() );
     cs.insert( comment );
     m_identity.setComments( cs );
     
@@ -378,9 +378,9 @@ void PersonView::editName()
 
   bool ok;
   QString nameString = KInputDialog::getText( i18n("Edit name"),
-    QString(), name.text(), &ok );
+    QString(), name.value(), &ok );
   if ( ok ) {
-    name.setText( nameString );
+    name.setValue( nameString );
     m_identity.setName( name );
     
     m_model->insert( m_identity );

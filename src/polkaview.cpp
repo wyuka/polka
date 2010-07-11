@@ -148,7 +148,7 @@ void PolkaView::newGroup()
   if ( ok ) {
     Polka::Identity identity;
     Polka::Name n;
-    n.setText( name );
+    n.setValue( name );
     identity.setName( n );
     
     m_model->insert( identity );
@@ -160,12 +160,12 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
   bool ok;
   QString name = KInputDialog::getText( i18n("Clone Group"),
     i18n("Enter name of new group"),
-    i18n("Clone of %1").arg( group.name().text() ),
+    i18n("Clone of %1").arg( group.name().value() ),
     &ok );
   if ( ok ) {
     Polka::Identity identity;
     Polka::Name n;
-    n.setText( name );
+    n.setValue( name );
     identity.setName( n );
     Polka::Identity new_group = m_model->insert( identity );
 

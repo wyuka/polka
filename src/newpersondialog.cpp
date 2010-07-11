@@ -79,7 +79,7 @@ Polka::Identity NewPersonDialog::identity()
   if ( !m_matchList || m_matchList->selectionModel()->selectedIndexes().isEmpty() ) {
     Polka::Identity identity;
     Polka::Name name;
-    name.setText( m_nameInput->text() );
+    name.setValue( m_nameInput->text() );
     identity.setName( name );
     return identity;
   } else {

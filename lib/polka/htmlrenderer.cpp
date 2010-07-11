@@ -78,7 +78,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
   titleDiv.c("trigger");
 
   HtmlElement &h1 = titleDiv.element("h1");
-  h1.text( identity.name().text() );
+  h1.text( identity.name().value() );
 
   HtmlElement &titleEditSpan = h1.element("span").c("edit-link first");
 
@@ -91,8 +91,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
-    a.attribute("href","mailto:" + email.text());
-    a.text(email.text());
+    a.attribute("href","mailto:" + email.value());
+    a.text(email.value());
 
     HtmlElement &span1 = emailDiv.element("span").c("edit-link first");
 
@@ -181,7 +181,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
       HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
       HtmlElement &p = commentDiv.element("p");
-      p.text( comment.text() );
+      p.text( comment.value() );
 
       HtmlElement &span = p.element("span").c("edit-link first");
 
@@ -227,15 +227,15 @@ QString HtmlRenderer::personView( const Identity &identity )
   HtmlElement &titleDiv = doc.element("div");
 
   HtmlElement &h1 = titleDiv.element("h1");
-  h1.text( identity.name().text() );
+  h1.text( identity.name().value() );
 
   HtmlElement &div = doc.element("div");
   foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
-    a.attribute("href","mailto:" + email.text());
-    a.text(email.text());
+    a.attribute("href","mailto:" + email.value());
+    a.text(email.value());
   }
 
   HtmlElement &phonesDiv = doc.element("div");
@@ -276,7 +276,7 @@ QString HtmlRenderer::personView( const Identity &identity )
       HtmlElement &commentDiv = commentsDiv.element( "div" ).c("trigger");
 
       HtmlElement &p = commentDiv.element("p");
-      p.text( comment.text() );
+      p.text( comment.value() );
     }
   }
 
@@ -292,8 +292,8 @@ QString HtmlRenderer::personSummary( const Identity &identity )
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
-    a.attribute("href","mailto:" + email.text());
-    a.text(email.text());
+    a.attribute("href","mailto:" + email.value());
+    a.text(email.value());
   }
 
   HtmlElement &addressesDiv = doc.element("div");

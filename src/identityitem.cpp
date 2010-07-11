@@ -42,7 +42,7 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   QGraphicsItem *item = new QGraphicsPixmapItem( pixmap, this );  
   item->setPos( -pixmap.width() / 2, -pixmap.height() / 2 );
 
-  QGraphicsTextItem *textItem = new QGraphicsTextItem( identity.name().text() );
+  QGraphicsTextItem *textItem = new QGraphicsTextItem( identity.name().value() );
 
   int textWidth = textItem->boundingRect().width();
   int textHeight = textItem->boundingRect().height();

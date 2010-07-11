@@ -23,6 +23,7 @@
 #include <QString>
 #include <QDomElement>
 #include <QList>
+#include <QDateTime>
 #include <QDate>
 #include <QtXml/QXmlStreamWriter>
 
@@ -154,12 +155,12 @@ class POLKA_EXPORT Comment
   public:
     void setId( const QString &v );
     QString id() const;
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QString &v );
+    QString value() const;
     /**
       Parse XML object from DOM element.
      */
@@ -168,9 +169,9 @@ class POLKA_EXPORT Comment
 
   private:
     QString mId;
-    QString mCreatedAt;
-    QString mUpdatedAt;
-    QString mText;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mValue;
 };
 
 class POLKA_EXPORT Comments
@@ -203,10 +204,10 @@ class POLKA_EXPORT Attribute
   public:
     void setType( const QString &v );
     QString type() const;
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setKey( const QString &v );
     QString key() const;
     void setValue( const QString &v );
@@ -219,8 +220,8 @@ class POLKA_EXPORT Attribute
 
   private:
     QString mType;
-    QString mCreatedAt;
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mKey;
     QString mValue;
 };
@@ -247,10 +248,10 @@ class POLKA_EXPORT Link
     typedef QList<Link> List;
 
   public:
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
     bool isValid() const;
@@ -265,8 +266,8 @@ class POLKA_EXPORT Link
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mCreatedAt;
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mLinkType;
     QString mUrl;
@@ -337,10 +338,10 @@ class POLKA_EXPORT Address
     typedef QList<Address> List;
 
   public:
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
     bool isValid() const;
@@ -353,8 +354,8 @@ class POLKA_EXPORT Address
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mCreatedAt;
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mLabel;
 };
@@ -387,12 +388,12 @@ class POLKA_EXPORT Phone
     typedef QList<Phone> List;
 
   public:
-    void setComment( const QString &v );
-    QString comment() const;
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    void setComment( int v );
+    int comment() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
     bool isValid() const;
@@ -407,9 +408,9 @@ class POLKA_EXPORT Phone
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mComment;
-    QString mCreatedAt;
-    QString mUpdatedAt;
+    int mComment;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mPhoneType;
     QString mPhoneNumber;
@@ -443,10 +444,10 @@ class POLKA_EXPORT Picture
     typedef QList<Picture> List;
 
   public:
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setPictureType( const QString &v );
     QString pictureType() const;
     void setId( const QString &v );
@@ -461,8 +462,8 @@ class POLKA_EXPORT Picture
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mCreatedAt;
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mPictureType;
     QString mId;
     QString mUrl;
@@ -498,12 +499,12 @@ class POLKA_EXPORT Email
   public:
     void setId( const QString &v );
     QString id() const;
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QString &v );
+    QString value() const;
     /**
       Parse XML object from DOM element.
      */
@@ -512,9 +513,9 @@ class POLKA_EXPORT Email
 
   private:
     QString mId;
-    QString mCreatedAt;
-    QString mUpdatedAt;
-    QString mText;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mValue;
 };
 
 class POLKA_EXPORT Emails
@@ -583,12 +584,12 @@ class POLKA_EXPORT Groups
 class POLKA_EXPORT Name
 {
   public:
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QString &v );
+    QString value() const;
     /**
       Parse XML object from DOM element.
      */
@@ -596,20 +597,20 @@ class POLKA_EXPORT Name
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mCreatedAt;
-    QString mUpdatedAt;
-    QString mText;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mValue;
 };
 
 class POLKA_EXPORT Birthday
 {
   public:
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setDate( const QDate &v );
-    QDate date() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QDate &v );
+    QDate value() const;
     /**
       Parse XML object from DOM element.
      */
@@ -617,9 +618,9 @@ class POLKA_EXPORT Birthday
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mCreatedAt;
-    QString mUpdatedAt;
-    QDate mDate;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QDate mValue;
 };
 
 class POLKA_EXPORT Identity
@@ -680,8 +681,8 @@ class POLKA_EXPORT Polka
     enum Flags { None, AutoCreate };
 
   public:
-    void setSchemaVersion( const QString &v );
-    QString schemaVersion() const;
+    void setSchemaVersion( int v );
+    int schemaVersion() const;
     void addIdentity( const Identity &v );
     void setIdentityList( const Identity::List &v );
     Identity::List identityList() const;
@@ -704,7 +705,7 @@ class POLKA_EXPORT Polka
     bool writeFile( const QString &filename );
 
   private:
-    QString mSchemaVersion;
+    int mSchemaVersion;
     Identity::List mIdentityList;
     GroupView::List mGroupViewList;
 };

@@ -503,34 +503,34 @@ QString Comment::id() const
   return mId;
 }
 
-void Comment::setCreatedAt( const QString &v )
+void Comment::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Comment::createdAt() const
+QDateTime Comment::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Comment::setUpdatedAt( const QString &v )
+void Comment::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Comment::updatedAt() const
+QDateTime Comment::updatedAt() const
 {
   return mUpdatedAt;
 }
 
-void Comment::setText( const QString &v )
+void Comment::setValue( const QString &v )
 {
-  mText = v;
+  mValue = v;
 }
 
-QString Comment::text() const
+QString Comment::value() const
 {
-  return mText;
+  return mValue;
 }
 
 Comment Comment::parseElement( const QDomElement &element, bool *ok )
@@ -543,10 +543,10 @@ Comment Comment::parseElement( const QDomElement &element, bool *ok )
 
   Comment result = Comment();
 
-  result.setText( element.text() );
+  result.setValue( element.text() );
   result.setId( element.attribute( "id" ) );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -554,12 +554,12 @@ Comment Comment::parseElement( const QDomElement &element, bool *ok )
 
 void Comment::writeElement( QXmlStreamWriter &xml )
 {
-  if ( !text().isEmpty() ) {
+  if ( !value().isEmpty() ) {
     xml.writeStartElement( "comment" );
     xml.writeAttribute( "id", id() );
-    xml.writeAttribute( "created_at", createdAt() );
-    xml.writeAttribute( "updated_at", updatedAt() );
-    xml.writeCharacters( text() );
+    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeCharacters( value() );
     xml.writeEndElement();
   }
 }
@@ -664,22 +664,22 @@ QString Attribute::type() const
   return mType;
 }
 
-void Attribute::setCreatedAt( const QString &v )
+void Attribute::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Attribute::createdAt() const
+QDateTime Attribute::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Attribute::setUpdatedAt( const QString &v )
+void Attribute::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Attribute::updatedAt() const
+QDateTime Attribute::updatedAt() const
 {
   return mUpdatedAt;
 }
@@ -726,8 +726,8 @@ Attribute Attribute::parseElement( const QDomElement &element, bool *ok )
   }
 
   result.setType( element.attribute( "type" ) );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -737,8 +737,8 @@ void Attribute::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "attribute" );
   xml.writeAttribute( "type", type() );
-  xml.writeAttribute( "created_at", createdAt() );
-  xml.writeAttribute( "updated_at", updatedAt() );
+  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
   if ( !key().isEmpty() ) {
     xml.writeTextElement(  "key", key() );
   }
@@ -799,22 +799,22 @@ void ExtendedAttributes::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Link::setCreatedAt( const QString &v )
+void Link::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Link::createdAt() const
+QDateTime Link::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Link::setUpdatedAt( const QString &v )
+void Link::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Link::updatedAt() const
+QDateTime Link::updatedAt() const
 {
   return mUpdatedAt;
 }
@@ -878,8 +878,8 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -888,8 +888,8 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
 void Link::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "link" );
-  xml.writeAttribute( "created_at", createdAt() );
-  xml.writeAttribute( "updated_at", updatedAt() );
+  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1085,22 +1085,22 @@ void Relations::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Address::setCreatedAt( const QString &v )
+void Address::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Address::createdAt() const
+QDateTime Address::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Address::setUpdatedAt( const QString &v )
+void Address::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Address::updatedAt() const
+QDateTime Address::updatedAt() const
 {
   return mUpdatedAt;
 }
@@ -1151,8 +1151,8 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -1161,8 +1161,8 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
 void Address::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "address" );
-  xml.writeAttribute( "created_at", createdAt() );
-  xml.writeAttribute( "updated_at", updatedAt() );
+  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1262,32 +1262,32 @@ void Addresses::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Phone::setComment( const QString &v )
+void Phone::setComment( int v )
 {
   mComment = v;
 }
 
-QString Phone::comment() const
+int Phone::comment() const
 {
   return mComment;
 }
 
-void Phone::setCreatedAt( const QString &v )
+void Phone::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Phone::createdAt() const
+QDateTime Phone::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Phone::setUpdatedAt( const QString &v )
+void Phone::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Phone::updatedAt() const
+QDateTime Phone::updatedAt() const
 {
   return mUpdatedAt;
 }
@@ -1351,9 +1351,9 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
-  result.setComment( element.attribute( "comment" ) );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setComment( element.attribute( "comment" ).toInt() );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -1362,9 +1362,9 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
 void Phone::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "phone" );
-  xml.writeAttribute( "comment", comment() );
-  xml.writeAttribute( "created_at", createdAt() );
-  xml.writeAttribute( "updated_at", updatedAt() );
+  xml.writeAttribute( "comment", QString::number( comment() ) );
+  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1467,22 +1467,22 @@ void Phones::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Picture::setCreatedAt( const QString &v )
+void Picture::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Picture::createdAt() const
+QDateTime Picture::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Picture::setUpdatedAt( const QString &v )
+void Picture::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Picture::updatedAt() const
+QDateTime Picture::updatedAt() const
 {
   return mUpdatedAt;
 }
@@ -1543,8 +1543,8 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
   result.setPictureType( element.attribute( "picture_type" ) );
 
   if ( ok ) *ok = true;
@@ -1554,8 +1554,8 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
 void Picture::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "picture" );
-  xml.writeAttribute( "created_at", createdAt() );
-  xml.writeAttribute( "updated_at", updatedAt() );
+  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
   xml.writeAttribute( "picture_type", pictureType() );
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
@@ -1666,34 +1666,34 @@ QString Email::id() const
   return mId;
 }
 
-void Email::setCreatedAt( const QString &v )
+void Email::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Email::createdAt() const
+QDateTime Email::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Email::setUpdatedAt( const QString &v )
+void Email::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Email::updatedAt() const
+QDateTime Email::updatedAt() const
 {
   return mUpdatedAt;
 }
 
-void Email::setText( const QString &v )
+void Email::setValue( const QString &v )
 {
-  mText = v;
+  mValue = v;
 }
 
-QString Email::text() const
+QString Email::value() const
 {
-  return mText;
+  return mValue;
 }
 
 Email Email::parseElement( const QDomElement &element, bool *ok )
@@ -1706,10 +1706,10 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
 
   Email result = Email();
 
-  result.setText( element.text() );
+  result.setValue( element.text() );
   result.setId( element.attribute( "id" ) );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -1717,12 +1717,12 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
 
 void Email::writeElement( QXmlStreamWriter &xml )
 {
-  if ( !text().isEmpty() ) {
+  if ( !value().isEmpty() ) {
     xml.writeStartElement( "email" );
     xml.writeAttribute( "id", id() );
-    xml.writeAttribute( "created_at", createdAt() );
-    xml.writeAttribute( "updated_at", updatedAt() );
-    xml.writeCharacters( text() );
+    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeCharacters( value() );
     xml.writeEndElement();
   }
 }
@@ -1954,34 +1954,34 @@ void Groups::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Name::setCreatedAt( const QString &v )
+void Name::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Name::createdAt() const
+QDateTime Name::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Name::setUpdatedAt( const QString &v )
+void Name::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Name::updatedAt() const
+QDateTime Name::updatedAt() const
 {
   return mUpdatedAt;
 }
 
-void Name::setText( const QString &v )
+void Name::setValue( const QString &v )
 {
-  mText = v;
+  mValue = v;
 }
 
-QString Name::text() const
+QString Name::value() const
 {
-  return mText;
+  return mValue;
 }
 
 Name Name::parseElement( const QDomElement &element, bool *ok )
@@ -1994,9 +1994,9 @@ Name Name::parseElement( const QDomElement &element, bool *ok )
 
   Name result = Name();
 
-  result.setText( element.text() );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setValue( element.text() );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -2004,44 +2004,44 @@ Name Name::parseElement( const QDomElement &element, bool *ok )
 
 void Name::writeElement( QXmlStreamWriter &xml )
 {
-  if ( !text().isEmpty() ) {
+  if ( !value().isEmpty() ) {
     xml.writeStartElement( "name" );
-    xml.writeAttribute( "created_at", createdAt() );
-    xml.writeAttribute( "updated_at", updatedAt() );
-    xml.writeCharacters( text() );
+    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeCharacters( value() );
     xml.writeEndElement();
   }
 }
 
 
-void Birthday::setCreatedAt( const QString &v )
+void Birthday::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
 }
 
-QString Birthday::createdAt() const
+QDateTime Birthday::createdAt() const
 {
   return mCreatedAt;
 }
 
-void Birthday::setUpdatedAt( const QString &v )
+void Birthday::setUpdatedAt( const QDateTime &v )
 {
   mUpdatedAt = v;
 }
 
-QString Birthday::updatedAt() const
+QDateTime Birthday::updatedAt() const
 {
   return mUpdatedAt;
 }
 
-void Birthday::setDate( const QDate &v )
+void Birthday::setValue( const QDate &v )
 {
-  mDate = v;
+  mValue = v;
 }
 
-QDate Birthday::date() const
+QDate Birthday::value() const
 {
-  return mDate;
+  return mValue;
 }
 
 Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
@@ -2054,10 +2054,9 @@ Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
 
   Birthday result = Birthday();
 
-  qDebug() << element.text() << QDate::fromString( element.text(), "yyyyMMdd" );
-  result.setDate( QDate::fromString( element.text(), "yyyyMMdd" ) );
-  result.setCreatedAt( element.attribute( "created_at" ) );
-  result.setUpdatedAt( element.attribute( "updated_at" ) );
+  result.setValue( QDate::fromString( element.text(), "yyyyMMdd" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -2065,11 +2064,11 @@ Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
 
 void Birthday::writeElement( QXmlStreamWriter &xml )
 {
-  if ( date().isValid() ) {
+  if ( value().isValid() ) {
     xml.writeStartElement( "birthday" );
-    xml.writeAttribute( "created_at", createdAt() );
-    xml.writeAttribute( "updated_at", updatedAt() );
-    xml.writeCharacters( date().toString( "yyyyMMdd" ) );
+    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    xml.writeCharacters( value().toString( "yyyyMMdd" ) );
     xml.writeEndElement();
   }
 }
@@ -2299,12 +2298,12 @@ void Identity::writeElement( QXmlStreamWriter &xml )
 }
 
 
-void Polka::setSchemaVersion( const QString &v )
+void Polka::setSchemaVersion( int v )
 {
   mSchemaVersion = v;
 }
 
-QString Polka::schemaVersion() const
+int Polka::schemaVersion() const
 {
   return mSchemaVersion;
 }
@@ -2442,7 +2441,7 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
-  result.setSchemaVersion( element.attribute( "schemaVersion" ) );
+  result.setSchemaVersion( element.attribute( "schemaVersion" ).toInt() );
 
   if ( ok ) *ok = true;
   return result;
@@ -2451,7 +2450,7 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
 void Polka::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "polka" );
-  xml.writeAttribute( "schemaVersion", schemaVersion() );
+  xml.writeAttribute( "schemaVersion", QString::number( schemaVersion() ) );
   foreach( Identity e, identityList() ) {
     e.writeElement( xml );
   }
