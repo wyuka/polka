@@ -2034,14 +2034,14 @@ QString Birthday::updatedAt() const
   return mUpdatedAt;
 }
 
-void Birthday::setText( const QString &v )
+void Birthday::setDate( const QDate &v )
 {
-  mText = v;
+  mDate = v;
 }
 
-QString Birthday::text() const
+QDate Birthday::date() const
 {
-  return mText;
+  return mDate;
 }
 
 Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
@@ -2054,7 +2054,8 @@ Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
 
   Birthday result = Birthday();
 
-  result.setText( element.text() );
+  qDebug() << element.text() << QDate::fromString( element.text(), "yyyyMMdd" );
+  result.setDate( QDate::fromString( element.text(), "yyyyMMdd" ) );
   result.setCreatedAt( element.attribute( "created_at" ) );
   result.setUpdatedAt( element.attribute( "updated_at" ) );
 
@@ -2064,11 +2065,11 @@ Birthday Birthday::parseElement( const QDomElement &element, bool *ok )
 
 void Birthday::writeElement( QXmlStreamWriter &xml )
 {
-  if ( !text().isEmpty() ) {
+  if ( date().isValid() ) {
     xml.writeStartElement( "birthday" );
     xml.writeAttribute( "created_at", createdAt() );
     xml.writeAttribute( "updated_at", updatedAt() );
-    xml.writeCharacters( text() );
+    xml.writeCharacters( date().toString( "yyyyMMdd" ) );
     xml.writeEndElement();
   }
 }

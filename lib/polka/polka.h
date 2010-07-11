@@ -23,6 +23,7 @@
 #include <QString>
 #include <QDomElement>
 #include <QList>
+#include <QDate>
 #include <QtXml/QXmlStreamWriter>
 
 namespace Polka {
@@ -607,8 +608,8 @@ class POLKA_EXPORT Birthday
     QString createdAt() const;
     void setUpdatedAt( const QString &v );
     QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setDate( const QDate &v );
+    QDate date() const;
     /**
       Parse XML object from DOM element.
      */
@@ -618,7 +619,7 @@ class POLKA_EXPORT Birthday
   private:
     QString mCreatedAt;
     QString mUpdatedAt;
-    QString mText;
+    QDate mDate;
 };
 
 class POLKA_EXPORT Identity
