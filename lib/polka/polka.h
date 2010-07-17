@@ -153,6 +153,7 @@ class POLKA_EXPORT Comment
     typedef QList<Comment> List;
 
   public:
+    Comment();
     bool isValid() const;
     void setId( const QString &v );
     QString id() const;
@@ -203,6 +204,7 @@ class POLKA_EXPORT Attribute
     typedef QList<Attribute> List;
 
   public:
+    Attribute();
     void setType( const QString &v );
     QString type() const;
     void setCreatedAt( const QDateTime &v );
@@ -249,6 +251,7 @@ class POLKA_EXPORT Link
     typedef QList<Link> List;
 
   public:
+    Link();
     bool isValid() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
@@ -339,6 +342,7 @@ class POLKA_EXPORT Address
     typedef QList<Address> List;
 
   public:
+    Address();
     bool isValid() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
@@ -389,6 +393,7 @@ class POLKA_EXPORT Phone
     typedef QList<Phone> List;
 
   public:
+    Phone();
     bool isValid() const;
     void setComment( int v );
     int comment() const;
@@ -445,13 +450,14 @@ class POLKA_EXPORT Picture
     typedef QList<Picture> List;
 
   public:
+    Picture();
     bool isValid() const;
+    void setPictureType( const QString &v );
+    QString pictureType() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
     QDateTime updatedAt() const;
-    void setPictureType( const QString &v );
-    QString pictureType() const;
     void setId( const QString &v );
     QString id() const;
     void setUrl( const QString &v );
@@ -463,9 +469,9 @@ class POLKA_EXPORT Picture
     void writeElement( QXmlStreamWriter &xml );
 
   private:
+    QString mPictureType;
     QDateTime mCreatedAt;
     QDateTime mUpdatedAt;
-    QString mPictureType;
     QString mId;
     QString mUrl;
 };
@@ -498,6 +504,7 @@ class POLKA_EXPORT Email
     typedef QList<Email> List;
 
   public:
+    Email();
     bool isValid() const;
     void setId( const QString &v );
     QString id() const;
@@ -586,6 +593,7 @@ class POLKA_EXPORT Groups
 class POLKA_EXPORT Name
 {
   public:
+    Name();
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
@@ -607,6 +615,7 @@ class POLKA_EXPORT Name
 class POLKA_EXPORT Birthday
 {
   public:
+    Birthday();
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );

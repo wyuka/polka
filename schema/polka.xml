@@ -14,7 +14,7 @@
       <email id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z" comment="1">hw@example.org</email>
     </emails>
     <pictures>
-      <picture created_at="20090901T120034Z" updated_at="20090901T120023Z" picture_type="local">
+      <picture  picture_type="local" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>z77z4ufhjf</id>
         <url>http://somewhere.example.com</url>
       </picture>

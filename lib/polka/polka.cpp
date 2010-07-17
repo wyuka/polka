@@ -493,6 +493,13 @@ void GroupView::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Comment::Comment()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 bool Comment::isValid() const
 {
   return !mId.isEmpty();
@@ -501,6 +508,7 @@ bool Comment::isValid() const
 void Comment::setId( const QString &v )
 {
   mId = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Comment::id() const
@@ -531,6 +539,7 @@ QDateTime Comment::updatedAt() const
 void Comment::setValue( const QString &v )
 {
   mValue = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Comment::value() const
@@ -659,9 +668,17 @@ void Comments::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Attribute::Attribute()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 void Attribute::setType( const QString &v )
 {
   mType = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Attribute::type() const
@@ -692,6 +709,7 @@ QDateTime Attribute::updatedAt() const
 void Attribute::setKey( const QString &v )
 {
   mKey = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Attribute::key() const
@@ -702,6 +720,7 @@ QString Attribute::key() const
 void Attribute::setValue( const QString &v )
 {
   mValue = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Attribute::value() const
@@ -804,6 +823,13 @@ void ExtendedAttributes::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Link::Link()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 bool Link::isValid() const
 {
   return !mId.isEmpty();
@@ -832,6 +858,7 @@ QDateTime Link::updatedAt() const
 void Link::setId( const QString &v )
 {
   mId = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Link::id() const
@@ -842,6 +869,7 @@ QString Link::id() const
 void Link::setLinkType( const QString &v )
 {
   mLinkType = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Link::linkType() const
@@ -852,6 +880,7 @@ QString Link::linkType() const
 void Link::setUrl( const QString &v )
 {
   mUrl = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Link::url() const
@@ -1090,6 +1119,13 @@ void Relations::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Address::Address()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 bool Address::isValid() const
 {
   return !mId.isEmpty();
@@ -1118,6 +1154,7 @@ QDateTime Address::updatedAt() const
 void Address::setId( const QString &v )
 {
   mId = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Address::id() const
@@ -1128,6 +1165,7 @@ QString Address::id() const
 void Address::setLabel( const QString &v )
 {
   mLabel = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Address::label() const
@@ -1267,6 +1305,13 @@ void Addresses::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Phone::Phone()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 bool Phone::isValid() const
 {
   return !mId.isEmpty();
@@ -1275,6 +1320,7 @@ bool Phone::isValid() const
 void Phone::setComment( int v )
 {
   mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 int Phone::comment() const
@@ -1305,6 +1351,7 @@ QDateTime Phone::updatedAt() const
 void Phone::setId( const QString &v )
 {
   mId = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Phone::id() const
@@ -1315,6 +1362,7 @@ QString Phone::id() const
 void Phone::setPhoneType( const QString &v )
 {
   mPhoneType = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Phone::phoneType() const
@@ -1325,6 +1373,7 @@ QString Phone::phoneType() const
 void Phone::setPhoneNumber( const QString &v )
 {
   mPhoneNumber = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Phone::phoneNumber() const
@@ -1472,9 +1521,27 @@ void Phones::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Picture::Picture()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 bool Picture::isValid() const
 {
   return !mId.isEmpty();
+}
+
+void Picture::setPictureType( const QString &v )
+{
+  mPictureType = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+QString Picture::pictureType() const
+{
+  return mPictureType;
 }
 
 void Picture::setCreatedAt( const QDateTime &v )
@@ -1497,19 +1564,10 @@ QDateTime Picture::updatedAt() const
   return mUpdatedAt;
 }
 
-void Picture::setPictureType( const QString &v )
-{
-  mPictureType = v;
-}
-
-QString Picture::pictureType() const
-{
-  return mPictureType;
-}
-
 void Picture::setId( const QString &v )
 {
   mId = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Picture::id() const
@@ -1520,6 +1578,7 @@ QString Picture::id() const
 void Picture::setUrl( const QString &v )
 {
   mUrl = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Picture::url() const
@@ -1548,9 +1607,9 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setPictureType( element.attribute( "picture_type" ) );
   result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
   result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
-  result.setPictureType( element.attribute( "picture_type" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -1559,9 +1618,9 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
 void Picture::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "picture" );
+  xml.writeAttribute( "picture_type", pictureType() );
   xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
   xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "picture_type", pictureType() );
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1661,6 +1720,13 @@ void Pictures::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Email::Email()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 bool Email::isValid() const
 {
   return !mId.isEmpty();
@@ -1669,6 +1735,7 @@ bool Email::isValid() const
 void Email::setId( const QString &v )
 {
   mId = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Email::id() const
@@ -1699,6 +1766,7 @@ QDateTime Email::updatedAt() const
 void Email::setValue( const QString &v )
 {
   mValue = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Email::value() const
@@ -1964,6 +2032,13 @@ void Groups::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Name::Name()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 void Name::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
@@ -1987,6 +2062,7 @@ QDateTime Name::updatedAt() const
 void Name::setValue( const QString &v )
 {
   mValue = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QString Name::value() const
@@ -2024,6 +2100,13 @@ void Name::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Birthday::Birthday()
+{
+  QDateTime now = QDateTime::currentDateTime();
+  setCreatedAt( now );
+  setUpdatedAt( now );
+}
+
 void Birthday::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
@@ -2047,6 +2130,7 @@ QDateTime Birthday::updatedAt() const
 void Birthday::setValue( const QDate &v )
 {
   mValue = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
 }
 
 QDate Birthday::value() const
