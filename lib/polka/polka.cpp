@@ -27,6 +27,11 @@
 
 namespace Polka {
 
+bool ViewLabel::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void ViewLabel::setId( const QString &v )
 {
   mId = v;
@@ -35,11 +40,6 @@ void ViewLabel::setId( const QString &v )
 QString ViewLabel::id() const
 {
   return mId;
-}
-
-bool ViewLabel::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void ViewLabel::setText( const QString &v )
@@ -119,6 +119,11 @@ void ViewLabel::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool IdentityCheck::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void IdentityCheck::setId( const QString &v )
 {
   mId = v;
@@ -127,11 +132,6 @@ void IdentityCheck::setId( const QString &v )
 QString IdentityCheck::id() const
 {
   return mId;
-}
-
-bool IdentityCheck::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void IdentityCheck::setChecked( const QString &v )
@@ -183,6 +183,11 @@ void IdentityCheck::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool IdentityPosition::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void IdentityPosition::setId( const QString &v )
 {
   mId = v;
@@ -191,11 +196,6 @@ void IdentityPosition::setId( const QString &v )
 QString IdentityPosition::id() const
 {
   return mId;
-}
-
-bool IdentityPosition::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void IdentityPosition::setX( int v )
@@ -259,6 +259,11 @@ void IdentityPosition::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool GroupView::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void GroupView::setId( const QString &v )
 {
   mId = v;
@@ -267,11 +272,6 @@ void GroupView::setId( const QString &v )
 QString GroupView::id() const
 {
   return mId;
-}
-
-bool GroupView::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void GroupView::addIdentityPosition( const IdentityPosition &v )
@@ -492,6 +492,11 @@ void GroupView::writeElement( QXmlStreamWriter &xml )
   xml.writeEndElement();
 }
 
+
+bool Comment::isValid() const
+{
+  return !mId.isEmpty();
+}
 
 void Comment::setId( const QString &v )
 {
@@ -799,6 +804,11 @@ void ExtendedAttributes::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Link::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Link::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
@@ -827,11 +837,6 @@ void Link::setId( const QString &v )
 QString Link::id() const
 {
   return mId;
-}
-
-bool Link::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void Link::setLinkType( const QString &v )
@@ -1085,6 +1090,11 @@ void Relations::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Address::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Address::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
@@ -1113,11 +1123,6 @@ void Address::setId( const QString &v )
 QString Address::id() const
 {
   return mId;
-}
-
-bool Address::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void Address::setLabel( const QString &v )
@@ -1262,6 +1267,11 @@ void Addresses::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Phone::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Phone::setComment( int v )
 {
   mComment = v;
@@ -1300,11 +1310,6 @@ void Phone::setId( const QString &v )
 QString Phone::id() const
 {
   return mId;
-}
-
-bool Phone::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void Phone::setPhoneType( const QString &v )
@@ -1467,6 +1472,11 @@ void Phones::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Picture::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Picture::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
@@ -1505,11 +1515,6 @@ void Picture::setId( const QString &v )
 QString Picture::id() const
 {
   return mId;
-}
-
-bool Picture::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void Picture::setUrl( const QString &v )
@@ -1655,6 +1660,11 @@ void Pictures::writeElement( QXmlStreamWriter &xml )
   xml.writeEndElement();
 }
 
+
+bool Email::isValid() const
+{
+  return !mId.isEmpty();
+}
 
 void Email::setId( const QString &v )
 {
@@ -1817,6 +1827,11 @@ void Emails::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Group::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Group::setId( const QString &v )
 {
   mId = v;
@@ -1825,11 +1840,6 @@ void Group::setId( const QString &v )
 QString Group::id() const
 {
   return mId;
-}
-
-bool Group::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 Group Group::parseElement( const QDomElement &element, bool *ok )
@@ -2074,6 +2084,11 @@ void Birthday::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Identity::isValid() const
+{
+  return !mId.isEmpty();
+}
+
 void Identity::setId( const QString &v )
 {
   mId = v;
@@ -2082,11 +2097,6 @@ void Identity::setId( const QString &v )
 QString Identity::id() const
 {
   return mId;
-}
-
-bool Identity::isValid() const
-{
-  return !mId.isEmpty();
 }
 
 void Identity::setGroups( const Groups &v )

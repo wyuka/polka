@@ -35,9 +35,9 @@ class POLKA_EXPORT ViewLabel
     typedef QList<ViewLabel> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setText( const QString &v );
     QString text() const;
     void setX( int v );
@@ -63,9 +63,9 @@ class POLKA_EXPORT IdentityCheck
     typedef QList<IdentityCheck> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setChecked( const QString &v );
     QString checked() const;
     /**
@@ -85,9 +85,9 @@ class POLKA_EXPORT IdentityPosition
     typedef QList<IdentityPosition> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setX( int v );
     int x() const;
     void setY( int v );
@@ -113,9 +113,9 @@ class POLKA_EXPORT GroupView
     enum Flags { None, AutoCreate };
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void addIdentityPosition( const IdentityPosition &v );
     void setIdentityPositionList( const IdentityPosition::List &v );
     IdentityPosition::List identityPositionList() const;
@@ -153,6 +153,7 @@ class POLKA_EXPORT Comment
     typedef QList<Comment> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
     void setCreatedAt( const QDateTime &v );
@@ -248,13 +249,13 @@ class POLKA_EXPORT Link
     typedef QList<Link> List;
 
   public:
+    bool isValid() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
     QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setLinkType( const QString &v );
     QString linkType() const;
     void setUrl( const QString &v );
@@ -338,13 +339,13 @@ class POLKA_EXPORT Address
     typedef QList<Address> List;
 
   public:
+    bool isValid() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
     QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setLabel( const QString &v );
     QString label() const;
     /**
@@ -388,6 +389,7 @@ class POLKA_EXPORT Phone
     typedef QList<Phone> List;
 
   public:
+    bool isValid() const;
     void setComment( int v );
     int comment() const;
     void setCreatedAt( const QDateTime &v );
@@ -396,7 +398,6 @@ class POLKA_EXPORT Phone
     QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setPhoneType( const QString &v );
     QString phoneType() const;
     void setPhoneNumber( const QString &v );
@@ -444,6 +445,7 @@ class POLKA_EXPORT Picture
     typedef QList<Picture> List;
 
   public:
+    bool isValid() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
@@ -452,7 +454,6 @@ class POLKA_EXPORT Picture
     QString pictureType() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setUrl( const QString &v );
     QString url() const;
     /**
@@ -497,6 +498,7 @@ class POLKA_EXPORT Email
     typedef QList<Email> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
     void setCreatedAt( const QDateTime &v );
@@ -546,9 +548,9 @@ class POLKA_EXPORT Group
     typedef QList<Group> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     /**
       Parse XML object from DOM element.
      */
@@ -629,9 +631,9 @@ class POLKA_EXPORT Identity
     typedef QList<Identity> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setGroups( const Groups &v );
     Groups groups() const;
     void setName( const Name &v );
