@@ -351,6 +351,7 @@ void PolkaModel::saveViewLabel( const Polka::Identity &group,
   l.setY( label.y() );
   v.insert( l );
   m_polka.insert( v );
+  writeData( i18n("Inserted label %1").arg( label.text() ) );
 }
 
 void PolkaModel::removeViewLabel( const Polka::Identity &group,
@@ -360,6 +361,7 @@ void PolkaModel::removeViewLabel( const Polka::Identity &group,
     Polka::Polka::AutoCreate );
   v.remove( label );
   m_polka.insert( v );
+  writeData( i18n("Removed label %1").arg( label.text() ) );
 }
 
 void PolkaModel::saveViewPosition( const Polka::Identity &group,
@@ -374,6 +376,8 @@ void PolkaModel::saveViewPosition( const Polka::Identity &group,
   p.setY( pos.y() );
   v.insert( p );
   m_polka.insert( v );
+  writeData( i18n("Moved %1 in group %2")
+    .arg( identity.name().value() ).arg( group.name().value() ) );
 }
 
 void PolkaModel::clearViewPositions( const Polka::Identity &group )
@@ -381,24 +385,30 @@ void PolkaModel::clearViewPositions( const Polka::Identity &group )
   Polka::GroupView view = m_polka.findGroupView( group.id() );
   view.setIdentityPositionList( Polka::IdentityPosition::List() );
   m_polka.insert( view );
+  writeData( i18n("Reset positions in group %1").arg( group.name().value() ) );
 }
 
 void PolkaModel::saveViewCheck( const Polka::Identity &group,
   const Polka::Identity &identity,
   bool checked )
 {
+  QString msg;
+
   Polka::GroupView v = m_polka.findGroupView( group.id(),
     Polka::Polka::AutoCreate );
   if ( checked ) {
     Polka::IdentityCheck c = v.findIdentityCheck( identity.id(),
       Polka::GroupView::AutoCreate );
     v.insert( c );
+    msg = i18n("Checked %1").arg( identity.name().value() );
   } else {
     Polka::IdentityCheck c = v.findIdentityCheck( identity.id(),
       Polka::GroupView::AutoCreate );
     if ( c.isValid() ) v.remove( c );
+    msg = i18n("Unchecked %1").arg( identity.name().value() );
   }
   m_polka.insert( v );
+  writeData( msg );
 }
 
 Polka::GroupView PolkaModel::groupView( const Polka::Identity &group )
