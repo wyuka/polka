@@ -28,7 +28,7 @@ class LocalPicture : public QObject
 {
     Q_OBJECT
   public:
-    LocalPicture( GitDir * );
+    LocalPicture( GitDir *, const Polka::Identity & );
 
     void setPicture( const Polka::Picture & );
 
@@ -49,8 +49,10 @@ class LocalPicture : public QObject
     QPixmap scalePicture( const QPixmap & );
 
   private:
-    Polka::Picture m_picture;
     GitDir *m_gitDir;
+    Polka::Identity m_identity;
+
+    Polka::Picture m_picture;
 
     QPixmap m_pixmap;
     QPixmap m_defaultPixmap;

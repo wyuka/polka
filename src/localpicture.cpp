@@ -22,13 +22,14 @@
 #include "imageloader.h"
 
 #include <KStandardDirs>
+#include <KLocale>
 
 #include <QFile>
 #include <QDir>
 #include <QDebug>
 
-LocalPicture::LocalPicture( GitDir *gitDir )
-  : m_gitDir( gitDir )
+LocalPicture::LocalPicture( GitDir *gitDir, const Polka::Identity &identity )
+  : m_gitDir( gitDir ), m_identity( identity )
 {
   QString picPath = KStandardDirs::locate( "appdata", "polka_person.png" );
   // FIXME: Take default picture from static variable
@@ -74,7 +75,8 @@ void LocalPicture::setPixmap( const QPixmap &pixmap )
   if ( !fileExists() ) {
     m_gitDir->createPath( localFilePath() );
     m_pixmap.save( fullFilePath(), "PNG" );
-    m_gitDir->addFile( localFilePath() );
+    m_gitDir->addFile( localFilePath(), i18n("Adding picture of %1").
+      arg( m_identity.name().value() ) );
   }
   
   emit pixmapChanged( m_pixmap );

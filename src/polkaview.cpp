@@ -131,9 +131,9 @@ void PolkaView::readData()
   }
 }
 
-void PolkaView::writeData()
+void PolkaView::writeData( const QString &msg )
 {
-  m_model->writeData();
+  m_model->writeData( msg );
 
   if ( Settings::remoteSyncingEnabled() ) {
     m_model->gitRemote()->push();

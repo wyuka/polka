@@ -42,17 +42,17 @@ class GitDir : public QObject
     /**
       Add file to git repo.
     */
-    void addFile( const QString &fileName );
+    void addFile( const QString &fileName, const QString &msg );
 
   
     QString filePath( const QString &fileName );
   
-    int commitData();
+    int commitData( const QString &msg );
 
     /**
       Returns id of executed command.
     */
-    int executeCommit( const QString &arg = QString() );
+    int executeCommit( const QString &arg, const QString &msg );
   
     /**
       Returns id of executed command.

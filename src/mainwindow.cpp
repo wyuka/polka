@@ -90,7 +90,7 @@ bool MainWindow::queryClose()
 {
   qDebug() << "queryClose";
   m_closing = true;
-  m_view->writeData();
+  m_view->writeData( i18n("Closing") );
   return false;
 }
 

@@ -26,6 +26,7 @@
 #include "polkapersonsitemmodel.h"
 
 #include <KRandom>
+#include <KLocale>
 
 #include <QDir>
 #include <QDebug>
@@ -175,7 +176,7 @@ void PolkaModel::setupGroups()
   }
 }
 
-void PolkaModel::writeData()
+void PolkaModel::writeData( const QString &msg )
 {
   if ( !m_dataIsValid) {
     emit dataWritten();
@@ -188,8 +189,8 @@ void PolkaModel::writeData()
   }
 
   m_polka.writeFile( m_gitDir->filePath( "std.polka" ) );
-  m_gitDir->addFile( "std.polka" );
-  m_commitCommand = m_gitDir->commitData();
+  m_gitDir->addFile( "std.polka", i18n("Saving pending changes") );
+  m_commitCommand = m_gitDir->commitData( msg );
 }
 
 void PolkaModel::slotCommandExecuted( int id )
@@ -295,7 +296,7 @@ QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
     return m_localPictures.value( identity.id() )->pixmap();
   }
 
-  LocalPicture *localPicture = new LocalPicture( m_gitDir );
+  LocalPicture *localPicture = new LocalPicture( m_gitDir, identity );
 
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
@@ -319,7 +320,7 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   Polka::Picture picture;
   picture.setId( KRandom::randomString( 10 ) );
 
-  LocalPicture *localPicture = new LocalPicture( m_gitDir );
+  LocalPicture *localPicture = new LocalPicture( m_gitDir, target );
   localPicture->setPicture( picture );
   localPicture->setPixmap( pixmap );  
   

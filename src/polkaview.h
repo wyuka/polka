@@ -38,7 +38,7 @@ class PolkaView : public QWidget
     void writeConfig();
 
     void readData();
-    void writeData();
+    void writeData( const QString &msg );
 
   public slots:
     void newPerson();
