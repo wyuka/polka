@@ -183,14 +183,15 @@ void PolkaModel::writeData( const QString &msg )
     return;
   }
 
+  // FIXME: Queue commands instead of silently failing them.
   if ( m_commitCommand > 0 ) {
     qDebug() << "ERROR" << "Commit command still running";
     return;
   }
 
   m_polka.writeFile( m_gitDir->filePath( "std.polka" ) );
-  m_gitDir->addFile( "std.polka", i18n("Saving pending changes") );
-  m_commitCommand = m_gitDir->commitData( msg );
+  m_gitDir->addFile( "std.polka", msg );
+  m_commitCommand = m_gitDir->commitData( i18n("Saving pending changes") );
 }
 
 void PolkaModel::slotCommandExecuted( int id )
@@ -208,7 +209,8 @@ void PolkaModel::slotPushed()
   emit dataWritten();
 }
 
-Polka::Identity PolkaModel::insert( Polka::Identity identity )
+Polka::Identity PolkaModel::insert( Polka::Identity identity,
+  const QString &msg )
 {
   if ( identity.id().isEmpty() ) {
     identity.setId( KRandom::randomString( 10 ) );
@@ -224,6 +226,8 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity )
       itemModel( group.id() )->updateData();
     }
   }
+
+  writeData( msg );
 
   emit identityInserted( identity );
 
@@ -241,7 +245,8 @@ void PolkaModel::addPerson( const Polka::Identity &person,
   groups.addGroup( g );
   p.setGroups( groups );
 
-  insert( p );
+  insert( p, i18n("Add %1 to group %2").arg( person.name().value() )
+    .arg( group.name().value() ) );
 }
 
 void PolkaModel::removePerson( const Polka::Identity &person,

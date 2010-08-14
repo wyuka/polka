@@ -176,7 +176,8 @@ void PersonView::addEmail()
     es.addEmail( e );
     m_identity.setEmails( es );
 
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add email address %1 to %2")
+      .arg( email ).arg( m_identity.name().value() ) );
 
 //    showIdentity( m_identity );
   }
@@ -195,7 +196,8 @@ void PersonView::editEmail( const QString &id )
     es.insert( e );
     m_identity.setEmails( es );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit email address %1 of %2")
+      .arg( email ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -206,7 +208,8 @@ void PersonView::removeEmail( const QString &id )
   es.remove( e );
   m_identity.setEmails( es );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove email address %1 from %2")
+    .arg( e.value() ).arg( m_identity.name().value() ) );
 }
 
 void PersonView::addAddress()
@@ -220,7 +223,8 @@ void PersonView::addAddress()
     cs.insert( c );
     m_identity.setAddresses( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add address to %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -236,7 +240,8 @@ void PersonView::editAddress( const QString &id )
     cs.insert( address );
     m_identity.setAddresses( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit address of %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -247,7 +252,8 @@ void PersonView::removeAddress( const QString &id )
   cs.remove( c );
   m_identity.setAddresses( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove address from %2")
+    .arg( m_identity.name().value() ) );
 }
 
 void PersonView::addComment()
@@ -261,7 +267,8 @@ void PersonView::addComment()
     cs.insert( c );
     m_identity.setComments( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add comment to %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -277,7 +284,8 @@ void PersonView::editComment( const QString &id )
     cs.insert( comment );
     m_identity.setComments( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit comment of %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -288,7 +296,8 @@ void PersonView::removeComment( const QString &id )
   cs.remove( c );
   m_identity.setComments( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove comment from %2")
+    .arg( m_identity.name().value() ) );
 }
 
 void PersonView::addPhone()
@@ -301,7 +310,8 @@ void PersonView::addPhone()
     cs.insert( c );
     m_identity.setPhones( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add phone %1 to %2")
+      .arg( c.phoneNumber() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -317,7 +327,8 @@ void PersonView::editPhone( const QString &id )
     cs.insert( phone );
     m_identity.setPhones( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit phone %1 of %2")
+      .arg( phone.phoneNumber() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -328,7 +339,8 @@ void PersonView::removePhone( const QString &id )
   cs.remove( c );
   m_identity.setPhones( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove phone %1 from %2")
+    .arg( c.phoneNumber() ).arg( m_identity.name().value() ) );
 }
 
 
@@ -342,7 +354,8 @@ void PersonView::addLink()
     cs.insert( c );
     m_identity.setLinks( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add link %1 to %2")
+      .arg( c.url() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -358,7 +371,8 @@ void PersonView::editLink( const QString &id )
     cs.insert( link );
     m_identity.setLinks( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit link %1 of %2")
+      .arg( link.url() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -369,21 +383,24 @@ void PersonView::removeLink( const QString &id )
   cs.remove( c );
   m_identity.setLinks( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove link %1 from %2")
+    .arg( c.url() ).arg( m_identity.name().value() ) );
 }
 
 void PersonView::editName()
 {
   Polka::Name name = m_identity.name();
+  QString oldNameString = name.value();
 
   bool ok;
   QString nameString = KInputDialog::getText( i18n("Edit name"),
-    QString(), name.value(), &ok );
+    QString(), oldNameString, &ok );
   if ( ok ) {
     name.setValue( nameString );
     m_identity.setName( name );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Changed name from %1 to %2")
+      .arg( oldNameString ).arg( nameString ) );
   }  
 }
 

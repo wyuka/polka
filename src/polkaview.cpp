@@ -151,7 +151,7 @@ void PolkaView::newGroup()
     n.setValue( name );
     identity.setName( n );
     
-    m_model->insert( identity );
+    m_model->insert( identity, i18n("Create group %1").arg( name ) );
   }
 }
 
@@ -167,7 +167,9 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
     Polka::Name n;
     n.setValue( name );
     identity.setName( n );
-    Polka::Identity new_group = m_model->insert( identity );
+    Polka::Identity new_group = m_model->insert( identity,
+      i18n("Clone group '%1' to '%2'").arg( group.name().value() )
+        .arg( name ) );
 
     Polka::Identity::List members = m_model->identitiesOfGroup( group );
     foreach( Polka::Identity member, members ) {
