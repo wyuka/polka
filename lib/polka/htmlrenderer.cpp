@@ -86,6 +86,9 @@ QString HtmlRenderer::personEditor( const Identity &identity )
   titleEdit.attribute("href","polka:editName");
   titleEdit.text(i18n("Edit"));
 
+  HtmlElement &m = h1.element("span").c("edit-link");
+  m.element("em").text( timeAgo( identity.name().updatedAt() ) );
+
   HtmlElement &div = doc.element("div");
   foreach( Email email, identity.emails().emailList() ) {
     HtmlElement &emailDiv = div.element("div").c("trigger");
@@ -105,6 +108,9 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &r = span.element("a");
     r.attribute("href","polka:removeEmail/" + email.id());
     r.text("Remove");
+
+    HtmlElement &m = emailDiv.element("span").c("edit-link");
+    m.element("em").text( timeAgo( email.updatedAt() ) );
   }
 
   HtmlElement &phonesDiv = doc.element("div");
@@ -125,6 +131,9 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &r = span2.element("a");
     r.attribute("href","polka:removePhone/" + phone.id());
     r.text("Remove");
+
+    HtmlElement &m = p.element("span").c("edit-link");
+    m.element("em").text( timeAgo( phone.updatedAt() ) );
   }
 
   HtmlElement &addressesDiv = doc.element("div");
@@ -149,6 +158,9 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     r.attribute("href","polka:removeAddress/" + address.id());
     r.text("Remove");
 
+    HtmlElement &m = addressDiv.element("span").c("edit-link");
+    m.element("em").text( timeAgo( address.updatedAt() ) );
+
     addressDiv.element("br").attribute("clear","all");
   }
 
@@ -171,6 +183,9 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &r = span.element("a");
     r.attribute("href","polka:removeLink/" + link.id());
     r.text("Remove");
+
+    HtmlElement &m = linkDiv.element("span").c("edit-link");
+    m.element("em").text( timeAgo( link.updatedAt() ) );
   }
 
   if ( !identity.comments().commentList().isEmpty() ) {
@@ -192,6 +207,9 @@ QString HtmlRenderer::personEditor( const Identity &identity )
       HtmlElement &r = span.element("a");
       r.attribute("href","polka:removeComment/" + comment.id() );
       r.text("Remove");
+
+      HtmlElement &m = span.element("em");
+      m.text( timeAgo( comment.updatedAt() ) );
     }
   }
 
@@ -310,6 +328,22 @@ QString HtmlRenderer::personSummary( const Identity &identity )
   }
 
   return doc.html();
+}
+
+QString HtmlRenderer::timeAgo( const QDateTime &date )
+{
+  if ( !date.isValid() ) return i18n("some time ago");
+
+  int ago = date.daysTo( QDateTime::currentDateTime() );
+
+  if ( ago < 0 ) return i18n("future");
+  if ( ago == 0 ) return i18n("today");
+  if ( ago < 7 ) return i18n("%1 days ago").arg( QString::number( ago ) );
+  if ( ago < 60 ) return i18n("%1 weeks ago")
+    .arg( QString::number( ago / 7 ) );
+  if ( ago < 500 ) return i18n("%1 months ago")
+    .arg( QString::number( ago / 30 ) );
+  return i18n("years ago");
 }
 
 }
