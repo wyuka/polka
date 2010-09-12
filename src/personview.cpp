@@ -171,7 +171,7 @@ void PersonView::addEmail()
   if ( ok ) {
     Polka::Email e;
     e.setId( KRandom::randomString( 10 ) );
-    e.setValue( email );
+    e.setEmailAddress( email );
     Polka::Emails es = m_identity.emails();
     es.addEmail( e );
     m_identity.setEmails( es );
@@ -189,10 +189,10 @@ void PersonView::editEmail( const QString &id )
 
   bool ok;
   QString email = KInputDialog::getText( i18n("Add email"),
-    i18n("Enter new email address"), e.value(), &ok );
+    i18n("Enter new email address"), e.emailAddress(), &ok );
   if ( ok ) {
     Polka::Emails es = m_identity.emails();
-    e.setValue( email );
+    e.setEmailAddress( email );
     es.insert( e );
     m_identity.setEmails( es );
     
@@ -209,7 +209,7 @@ void PersonView::removeEmail( const QString &id )
   m_identity.setEmails( es );
   
   m_model->insert( m_identity, i18n("Remove email address %1 from %2")
-    .arg( e.value() ).arg( m_identity.name().value() ) );
+    .arg( e.emailAddress() ).arg( m_identity.name().value() ) );
 }
 
 void PersonView::addAddress()

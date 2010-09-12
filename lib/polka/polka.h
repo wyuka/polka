@@ -512,8 +512,8 @@ class POLKA_EXPORT Email
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
     QDateTime updatedAt() const;
-    void setValue( const QString &v );
-    QString value() const;
+    void setEmailAddress( const QString &v );
+    QString emailAddress() const;
     /**
       Parse XML object from DOM element.
      */
@@ -524,7 +524,7 @@ class POLKA_EXPORT Email
     QString mId;
     QDateTime mCreatedAt;
     QDateTime mUpdatedAt;
-    QString mValue;
+    QString mEmailAddress;
 };
 
 class POLKA_EXPORT Emails

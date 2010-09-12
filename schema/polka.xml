@@ -10,8 +10,12 @@
     <name created_at="20090901T120034Z" updated_at="20090901T120034Z">Hans Wurst</name>
     <birthday created_at="20090901T120034Z" updated_at="20090901T120034Z">19011224</birthday>
     <emails>
-      <email id="x123" created_at="20090901T120034Z" updated_at="20090901T120034Z">hw@example.com</email>
-      <email id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z" comment="1">hw@example.org</email>
+      <email id="x123" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        <email_address>hw@example.com</email_address>
+      </email>
+      <email id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z" comment="1">
+        <email_address>hw@example.org</email_address>
+      </email>
     </emails>
     <pictures>
       <picture  picture_type="local" created_at="20090901T120034Z" updated_at="20090901T120023Z">

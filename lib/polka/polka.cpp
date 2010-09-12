@@ -1763,15 +1763,15 @@ QDateTime Email::updatedAt() const
   return mUpdatedAt;
 }
 
-void Email::setValue( const QString &v )
+void Email::setEmailAddress( const QString &v )
 {
-  mValue = v;
+  mEmailAddress = v;
   setUpdatedAt( QDateTime::currentDateTime() );
 }
 
-QString Email::value() const
+QString Email::emailAddress() const
 {
-  return mValue;
+  return mEmailAddress;
 }
 
 Email Email::parseElement( const QDomElement &element, bool *ok )
@@ -1784,7 +1784,14 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
 
   Email result = Email();
 
-  result.setValue( element.text() );
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "email_address" ) {
+      result.setEmailAddress( e.text() );
+    }
+  }
+
   result.setId( element.attribute( "id" ) );
   result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
   result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
@@ -1795,14 +1802,14 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
 
 void Email::writeElement( QXmlStreamWriter &xml )
 {
-  if ( !value().isEmpty() ) {
-    xml.writeStartElement( "email" );
-    xml.writeAttribute( "id", id() );
-    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
-    xml.writeCharacters( value() );
-    xml.writeEndElement();
+  xml.writeStartElement( "email" );
+  xml.writeAttribute( "id", id() );
+  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+  if ( !emailAddress().isEmpty() ) {
+    xml.writeTextElement(  "email_address", emailAddress() );
   }
+  xml.writeEndElement();
 }
 
 

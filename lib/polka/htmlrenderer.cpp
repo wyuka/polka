@@ -94,8 +94,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
-    a.attribute("href","mailto:" + email.value());
-    a.text(email.value());
+    a.attribute("href","mailto:" + email.emailAddress());
+    a.text(email.emailAddress());
 
     HtmlElement &span1 = emailDiv.element("span").c("edit-link first");
 
@@ -252,8 +252,8 @@ QString HtmlRenderer::personView( const Identity &identity )
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
-    a.attribute("href","mailto:" + email.value());
-    a.text(email.value());
+    a.attribute("href","mailto:" + email.emailAddress());
+    a.text(email.emailAddress());
   }
 
   HtmlElement &phonesDiv = doc.element("div");
@@ -310,8 +310,8 @@ QString HtmlRenderer::personSummary( const Identity &identity )
     HtmlElement &emailDiv = div.element("div").c("trigger");
 
     HtmlElement &a = emailDiv.element("a");
-    a.attribute("href","mailto:" + email.value());
-    a.text(email.value());
+    a.attribute("href","mailto:" + email.emailAddress());
+    a.text(email.emailAddress());
   }
 
   HtmlElement &addressesDiv = doc.element("div");
