@@ -97,20 +97,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     a.attribute("href","mailto:" + email.emailAddress());
     a.text(email.emailAddress());
 
-    HtmlElement &span1 = emailDiv.element("span").c("edit-link first");
-
-    HtmlElement &e = span1.element("a");
-    e.attribute("href","polka:editEmail/" + email.id());
-    e.text("Edit");
-
-    HtmlElement &span = emailDiv.element("span").c("edit-link");
-
-    HtmlElement &r = span.element("a");
-    r.attribute("href","polka:removeEmail/" + email.id());
-    r.text("Remove");
-
-    HtmlElement &m = emailDiv.element("span").c("edit-link");
-    m.element("em").text( timeAgo( email.updatedAt() ) );
+    addEditControls( emailDiv, "Email", email.id(), email.updatedAt() );
   }
 
   HtmlElement &phonesDiv = doc.element("div");
@@ -120,20 +107,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &p = phoneDiv.element("p");
     p.text(phone.phoneNumber());
 
-    HtmlElement &span1 = p.element("span").c("edit-link first");
-
-    HtmlElement &e = span1.element("a");
-    e.attribute("href","polka:editPhone/" + phone.id());
-    e.text("Edit");
-
-    HtmlElement &span2 = p.element("span").c("edit-link");
-
-    HtmlElement &r = span2.element("a");
-    r.attribute("href","polka:removePhone/" + phone.id());
-    r.text("Remove");
-
-    HtmlElement &m = p.element("span").c("edit-link");
-    m.element("em").text( timeAgo( phone.updatedAt() ) );
+    addEditControls( p, "Phone", phone.id(), phone.updatedAt() );
   }
 
   HtmlElement &addressesDiv = doc.element("div");
@@ -146,20 +120,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &p = d.element("pre");
     p.text(address.label());
 
-    HtmlElement &span1 = addressDiv.element("span").c("edit-link first");
-
-    HtmlElement &e = span1.element("a");
-    e.attribute("href","polka:editAddress/" + address.id());
-    e.text("Edit");
-
-    HtmlElement &span2 = addressDiv.element("span").c("edit-link");
-
-    HtmlElement &r = span2.element("a");
-    r.attribute("href","polka:removeAddress/" + address.id());
-    r.text("Remove");
-
-    HtmlElement &m = addressDiv.element("span").c("edit-link");
-    m.element("em").text( timeAgo( address.updatedAt() ) );
+    addEditControls( addressDiv, "Address", address.id(), address.updatedAt() );
 
     addressDiv.element("br").attribute("clear","all");
   }
@@ -172,20 +133,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     a.attribute("href", link.url());
     a.text(link.url());
 
-    HtmlElement &span1 = linkDiv.element("span").c("edit-link first");
-
-    HtmlElement &e = span1.element("a");
-    e.attribute("href","polka:editLink/" + link.id());
-    e.text("Edit");
-
-    HtmlElement &span = linkDiv.element("span").c("edit-link");
-
-    HtmlElement &r = span.element("a");
-    r.attribute("href","polka:removeLink/" + link.id());
-    r.text("Remove");
-
-    HtmlElement &m = linkDiv.element("span").c("edit-link");
-    m.element("em").text( timeAgo( link.updatedAt() ) );
+    addEditControls( linkDiv, "Link", link.id(), link.updatedAt() );
   }
 
   if ( !identity.comments().commentList().isEmpty() ) {
@@ -198,18 +146,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
       HtmlElement &p = commentDiv.element("p");
       p.text( comment.value() );
 
-      HtmlElement &span = p.element("span").c("edit-link first");
-
-      HtmlElement &a = span.element("a");
-      a.attribute("href","polka:editComment/" + comment.id() );
-      a.text("Edit");
-
-      HtmlElement &r = span.element("a");
-      r.attribute("href","polka:removeComment/" + comment.id() );
-      r.text("Remove");
-
-      HtmlElement &m = span.element("em");
-      m.text( timeAgo( comment.updatedAt() ) );
+      addEditControls( p, "Comment", comment.id(), comment.updatedAt() );
     }
   }
 
@@ -344,6 +281,25 @@ QString HtmlRenderer::timeAgo( const QDateTime &date )
   if ( ago < 500 ) return i18n("%1 months ago")
     .arg( QString::number( ago / 30 ) );
   return i18n("years ago");
+}
+
+void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
+  const QString &id, const QDateTime &updatedAt )
+{
+  HtmlElement &span1 = div.element("span").c("edit-link first");
+
+  HtmlElement &e = span1.element("a");
+  e.attribute("href", QString("polka:edit%1/%2").arg( typeName ).arg( id ) );
+  e.text("Edit");
+
+  HtmlElement &span2 = div.element("span").c("edit-link");
+
+  HtmlElement &r = span2.element("a");
+  r.attribute("href", QString("polka:remove%1/%2").arg( typeName ).arg( id ) );
+  r.text("Remove");
+
+  HtmlElement &m = div.element("span").c("edit-link");
+  m.element("em").text( timeAgo( updatedAt ) );
 }
 
 }
