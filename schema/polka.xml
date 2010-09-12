@@ -12,8 +12,9 @@
     <emails>
       <email id="x123" created_at="20090901T120034Z" updated_at="20090901T120034Z">
         <email_address>hw@example.com</email_address>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </email>
-      <email id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z" comment="1">
+      <email id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z">
         <email_address>hw@example.org</email_address>
       </email>
     </emails>
@@ -21,6 +22,7 @@
       <picture  picture_type="local" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>z77z4ufhjf</id>
         <url>http://somewhere.example.com</url>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </picture>
       <picture updated_at="20090901T120023Z" picture_type="gravatar">
         <id>z77z4usfsdhjf</id>
@@ -28,10 +30,11 @@
       </picture>
     </pictures>
     <phones>
-      <phone comment="y2" created_at="20090901T120034Z" updated_at="20090901T120023Z">
+      <phone created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>123</id>
         <phone_type>Mobile</phone_type>
         <phone_number>123/3848484</phone_number>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </phone>
       <phone>
         <phone_number>+492348237373</phone_number>
@@ -41,6 +44,7 @@
       <address created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>123</id>
         <label>Hauptstrasse 3\n12345Hintertupfingen</label>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </address>
       <address>
         <id>123</id>
@@ -56,6 +60,7 @@
         <id>dkljga</id>
         <link_type>xing</link_type>
         <url>http://xing.de/hw</url>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </link>
       <link>
         <link_type>twitter</link_type>
@@ -66,6 +71,7 @@
       <attribute type="string" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <key>Favorite Food</key>
         <value>Spagetti</value>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </attribute>
       <attribute type="date">
         <key>Wedding Day</key>

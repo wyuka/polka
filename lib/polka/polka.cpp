@@ -728,6 +728,17 @@ QString Attribute::value() const
   return mValue;
 }
 
+void Attribute::setComment( const Comment &v )
+{
+  mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Attribute::comment() const
+{
+  return mComment;
+}
+
 Attribute Attribute::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "attribute" ) {
@@ -746,6 +757,11 @@ Attribute Attribute::parseElement( const QDomElement &element, bool *ok )
     }
     else if ( e.tagName() == "value" ) {
       result.setValue( e.text() );
+    }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
     }
   }
 
@@ -769,6 +785,7 @@ void Attribute::writeElement( QXmlStreamWriter &xml )
   if ( !value().isEmpty() ) {
     xml.writeTextElement(  "value", value() );
   }
+  comment().writeElement( xml );
   xml.writeEndElement();
 }
 
@@ -888,6 +905,17 @@ QString Link::url() const
   return mUrl;
 }
 
+void Link::setComment( const Comment &v )
+{
+  mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Link::comment() const
+{
+  return mComment;
+}
+
 Link Link::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "link" ) {
@@ -909,6 +937,11 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
     }
     else if ( e.tagName() == "url" ) {
       result.setUrl( e.text() );
+    }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
     }
   }
 
@@ -933,6 +966,7 @@ void Link::writeElement( QXmlStreamWriter &xml )
   if ( !url().isEmpty() ) {
     xml.writeTextElement(  "url", url() );
   }
+  comment().writeElement( xml );
   xml.writeEndElement();
 }
 
@@ -1173,6 +1207,17 @@ QString Address::label() const
   return mLabel;
 }
 
+void Address::setComment( const Comment &v )
+{
+  mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Address::comment() const
+{
+  return mComment;
+}
+
 Address Address::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "address" ) {
@@ -1191,6 +1236,11 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
     }
     else if ( e.tagName() == "label" ) {
       result.setLabel( e.text() );
+    }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
     }
   }
 
@@ -1212,6 +1262,7 @@ void Address::writeElement( QXmlStreamWriter &xml )
   if ( !label().isEmpty() ) {
     xml.writeTextElement(  "label", label() );
   }
+  comment().writeElement( xml );
   xml.writeEndElement();
 }
 
@@ -1317,17 +1368,6 @@ bool Phone::isValid() const
   return !mId.isEmpty();
 }
 
-void Phone::setComment( int v )
-{
-  mComment = v;
-  setUpdatedAt( QDateTime::currentDateTime() );
-}
-
-int Phone::comment() const
-{
-  return mComment;
-}
-
 void Phone::setCreatedAt( const QDateTime &v )
 {
   mCreatedAt = v;
@@ -1381,6 +1421,17 @@ QString Phone::phoneNumber() const
   return mPhoneNumber;
 }
 
+void Phone::setComment( const Comment &v )
+{
+  mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Phone::comment() const
+{
+  return mComment;
+}
+
 Phone Phone::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "phone" ) {
@@ -1403,9 +1454,13 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
     else if ( e.tagName() == "phone_number" ) {
       result.setPhoneNumber( e.text() );
     }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
+    }
   }
 
-  result.setComment( element.attribute( "comment" ).toInt() );
   result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
   result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
 
@@ -1416,7 +1471,6 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
 void Phone::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "phone" );
-  xml.writeAttribute( "comment", QString::number( comment() ) );
   xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
   xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
   if ( !id().isEmpty() ) {
@@ -1428,6 +1482,7 @@ void Phone::writeElement( QXmlStreamWriter &xml )
   if ( !phoneNumber().isEmpty() ) {
     xml.writeTextElement(  "phone_number", phoneNumber() );
   }
+  comment().writeElement( xml );
   xml.writeEndElement();
 }
 
@@ -1586,6 +1641,17 @@ QString Picture::url() const
   return mUrl;
 }
 
+void Picture::setComment( const Comment &v )
+{
+  mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Picture::comment() const
+{
+  return mComment;
+}
+
 Picture Picture::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "picture" ) {
@@ -1604,6 +1670,11 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
     }
     else if ( e.tagName() == "url" ) {
       result.setUrl( e.text() );
+    }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
     }
   }
 
@@ -1627,6 +1698,7 @@ void Picture::writeElement( QXmlStreamWriter &xml )
   if ( !url().isEmpty() ) {
     xml.writeTextElement(  "url", url() );
   }
+  comment().writeElement( xml );
   xml.writeEndElement();
 }
 
@@ -1774,6 +1846,17 @@ QString Email::emailAddress() const
   return mEmailAddress;
 }
 
+void Email::setComment( const Comment &v )
+{
+  mComment = v;
+  setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Email::comment() const
+{
+  return mComment;
+}
+
 Email Email::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != "email" ) {
@@ -1789,6 +1872,11 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
     QDomElement e = n.toElement();
     if ( e.tagName() == "email_address" ) {
       result.setEmailAddress( e.text() );
+    }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
     }
   }
 
@@ -1809,6 +1897,7 @@ void Email::writeElement( QXmlStreamWriter &xml )
   if ( !emailAddress().isEmpty() ) {
     xml.writeTextElement(  "email_address", emailAddress() );
   }
+  comment().writeElement( xml );
   xml.writeEndElement();
 }
 

@@ -215,6 +215,8 @@ class POLKA_EXPORT Attribute
     QString key() const;
     void setValue( const QString &v );
     QString value() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
@@ -227,6 +229,7 @@ class POLKA_EXPORT Attribute
     QDateTime mUpdatedAt;
     QString mKey;
     QString mValue;
+    Comment mComment;
 };
 
 class POLKA_EXPORT ExtendedAttributes
@@ -263,6 +266,8 @@ class POLKA_EXPORT Link
     QString linkType() const;
     void setUrl( const QString &v );
     QString url() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
@@ -275,6 +280,7 @@ class POLKA_EXPORT Link
     QString mId;
     QString mLinkType;
     QString mUrl;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Links
@@ -352,6 +358,8 @@ class POLKA_EXPORT Address
     QString id() const;
     void setLabel( const QString &v );
     QString label() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
@@ -363,6 +371,7 @@ class POLKA_EXPORT Address
     QDateTime mUpdatedAt;
     QString mId;
     QString mLabel;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Addresses
@@ -395,8 +404,6 @@ class POLKA_EXPORT Phone
   public:
     Phone();
     bool isValid() const;
-    void setComment( int v );
-    int comment() const;
     void setCreatedAt( const QDateTime &v );
     QDateTime createdAt() const;
     void setUpdatedAt( const QDateTime &v );
@@ -407,6 +414,8 @@ class POLKA_EXPORT Phone
     QString phoneType() const;
     void setPhoneNumber( const QString &v );
     QString phoneNumber() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
@@ -414,12 +423,12 @@ class POLKA_EXPORT Phone
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    int mComment;
     QDateTime mCreatedAt;
     QDateTime mUpdatedAt;
     QString mId;
     QString mPhoneType;
     QString mPhoneNumber;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Phones
@@ -462,6 +471,8 @@ class POLKA_EXPORT Picture
     QString id() const;
     void setUrl( const QString &v );
     QString url() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
@@ -474,6 +485,7 @@ class POLKA_EXPORT Picture
     QDateTime mUpdatedAt;
     QString mId;
     QString mUrl;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Pictures
@@ -514,6 +526,8 @@ class POLKA_EXPORT Email
     QDateTime updatedAt() const;
     void setEmailAddress( const QString &v );
     QString emailAddress() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
@@ -525,6 +539,7 @@ class POLKA_EXPORT Email
     QDateTime mCreatedAt;
     QDateTime mUpdatedAt;
     QString mEmailAddress;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Emails
