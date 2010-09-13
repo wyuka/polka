@@ -140,18 +140,22 @@ void PersonView::slotLinkClicked( const QUrl &url )
     else if ( action == "addEmail" ) addEmail();
     else if ( action == "editEmail" ) editEmail( path.value( 1 ) );
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
+    else if ( action == "commentEmail" ) commentEmail( path.value( 1 ) );
 
     else if ( action == "addPhone" ) addPhone();
     else if ( action == "editPhone" ) editPhone( path.value( 1 ) );
     else if ( action == "removePhone" ) removePhone( path.value( 1 ) );
+    else if ( action == "commentPhone" ) commentPhone( path.value( 1 ) );
 
     else if ( action == "addLink" ) addLink();
     else if ( action == "editLink" ) editLink( path.value( 1 ) );
     else if ( action == "removeLink" ) removeLink( path.value( 1 ) );
+    else if ( action == "commentLink" ) commentLink( path.value( 1 ) );
 
     else if ( action == "addAddress" ) addAddress();
     else if ( action == "editAddress" ) editAddress( path.value( 1 ) );
     else if ( action == "removeAddress" ) removeAddress( path.value( 1 ) );
+    else if ( action == "commentAddress" ) commentAddress( path.value( 1 ) );
 
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
@@ -198,6 +202,26 @@ void PersonView::editEmail( const QString &id )
     
     m_model->insert( m_identity, i18n("Edit email address %1 of %2")
       .arg( email ).arg( m_identity.name().value() ) );
+  }
+}
+
+void PersonView::commentEmail( const QString &id )
+{
+  Polka::Email e = m_identity.emails().findEmail( id );
+
+  Polka::Comment comment = e.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Emails es = m_identity.emails();
+    comment.setValue( editor->comment() );
+    e.setComment( comment );
+    es.insert( e );
+    m_identity.setEmails( es );
+        
+    m_model->insert( m_identity, i18n("Edit comment of email %2")
+      .arg( e.emailAddress() ) );
   }
 }
 
@@ -255,6 +279,27 @@ void PersonView::removeAddress( const QString &id )
   m_model->insert( m_identity, i18n("Remove address from %2")
     .arg( m_identity.name().value() ) );
 }
+
+void PersonView::commentAddress( const QString &id )
+{
+  Polka::Address a = m_identity.addresses().findAddress( id );
+
+  Polka::Comment comment = a.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Addresses as = m_identity.addresses();
+    comment.setValue( editor->comment() );
+    a.setComment( comment );
+    as.insert( a );
+    m_identity.setAddresses( as );
+        
+    m_model->insert( m_identity, i18n("Edit comment of address of %2")
+      .arg( m_identity.name().value() ) );
+  }
+}
+
 
 void PersonView::addComment()
 {
@@ -343,6 +388,26 @@ void PersonView::removePhone( const QString &id )
     .arg( c.phoneNumber() ).arg( m_identity.name().value() ) );
 }
 
+void PersonView::commentPhone( const QString &id )
+{
+  Polka::Phone p = m_identity.phones().findPhone( id );
+
+  Polka::Comment comment = p.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Phones ps = m_identity.phones();
+    comment.setValue( editor->comment() );
+    p.setComment( comment );
+    ps.insert( p );
+    m_identity.setPhones( ps );
+        
+    m_model->insert( m_identity, i18n("Edit comment of phone %2")
+      .arg( p.phoneNumber() ) );
+  }
+}
+
 
 void PersonView::addLink()
 {
@@ -386,6 +451,27 @@ void PersonView::removeLink( const QString &id )
   m_model->insert( m_identity, i18n("Remove link %1 from %2")
     .arg( c.url() ).arg( m_identity.name().value() ) );
 }
+
+void PersonView::commentLink( const QString &id )
+{
+  Polka::Link l = m_identity.links().findLink( id );
+
+  Polka::Comment comment = l.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Links ls = m_identity.links();
+    comment.setValue( editor->comment() );
+    l.setComment( comment );
+    ls.insert( l );
+    m_identity.setLinks( ls );
+        
+    m_model->insert( m_identity, i18n("Edit comment of link %2")
+      .arg( l.url() ) );
+  }
+}
+
 
 void PersonView::editName()
 {

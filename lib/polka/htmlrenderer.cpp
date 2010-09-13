@@ -146,7 +146,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
       HtmlElement &p = commentDiv.element("p");
       p.text( comment.value() );
 
-      addEditControls( p, "Comment", comment.id(), comment.updatedAt() );
+      addEditControls( p, "Comment", comment.id(), comment.updatedAt(), false );
     }
   }
 
@@ -284,7 +284,7 @@ QString HtmlRenderer::timeAgo( const QDateTime &date )
 }
 
 void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
-  const QString &id, const QDateTime &updatedAt )
+  const QString &id, const QDateTime &updatedAt, bool commentEnabled )
 {
   HtmlElement &span1 = div.element("span").c("edit-link first");
 
@@ -297,6 +297,18 @@ void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
   HtmlElement &r = span2.element("a");
   r.attribute("href", QString("polka:remove%1/%2").arg( typeName ).arg( id ) );
   r.text("Remove");
+
+  HtmlElement &span3 = div.element("span").c("edit-link");
+
+  if ( commentEnabled ) {
+    HtmlElement &r = span3.element("b").element("a");
+    r.attribute("href", QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
+    r.text("Comment");
+  } else {
+    HtmlElement &r = span3.element("a");
+    r.attribute("href", QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
+    r.text("Comment");
+  }
 
   HtmlElement &m = div.element("span").c("edit-link");
   m.element("em").text( timeAgo( updatedAt ) );
