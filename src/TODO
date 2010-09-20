@@ -1,5 +1,7 @@
 = Polka
 
+* Using & in group names gives parse error
+
 * Save and commit after every change
 
 * Save modification date of fields
