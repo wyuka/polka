@@ -240,13 +240,16 @@ void PolkaModel::addPerson( const Polka::Identity &person,
   Polka::Identity p = person;
 
   Polka::Groups groups = p.groups();
-  Polka::Group g;
-  g.setId( group.id() );
-  groups.addGroup( g );
-  p.setGroups( groups );
 
-  insert( p, i18n("Add %1 to group %2").arg( person.name().value() )
-    .arg( group.name().value() ) );
+  if ( !groups.findGroup( group.id() ).isValid() ) {
+    Polka::Group g;
+    g.setId( group.id() );
+    groups.addGroup( g );
+    p.setGroups( groups );
+
+    insert( p, i18n("Add %1 to group %2").arg( person.name().value() )
+      .arg( group.name().value() ) );
+  }
 }
 
 void PolkaModel::removePerson( const Polka::Identity &person,
