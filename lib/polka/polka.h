@@ -23,7 +23,9 @@
 #include <QString>
 #include <QDomElement>
 #include <QList>
+#include <QDateTime>
 #include <QDate>
+#include <QtXml/QXmlStreamWriter>
 
 namespace Polka {
 
@@ -33,9 +35,9 @@ class POLKA_EXPORT ViewLabel
     typedef QList<ViewLabel> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setText( const QString &v );
     QString text() const;
     void setX( int v );
@@ -46,7 +48,7 @@ class POLKA_EXPORT ViewLabel
       Parse XML object from DOM element.
      */
     static ViewLabel parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
@@ -61,16 +63,16 @@ class POLKA_EXPORT IdentityCheck
     typedef QList<IdentityCheck> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setChecked( const QString &v );
     QString checked() const;
     /**
       Parse XML object from DOM element.
      */
     static IdentityCheck parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
@@ -83,9 +85,9 @@ class POLKA_EXPORT IdentityPosition
     typedef QList<IdentityPosition> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setX( int v );
     int x() const;
     void setY( int v );
@@ -94,7 +96,7 @@ class POLKA_EXPORT IdentityPosition
       Parse XML object from DOM element.
      */
     static IdentityPosition parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
@@ -111,9 +113,9 @@ class POLKA_EXPORT GroupView
     enum Flags { None, AutoCreate };
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void addIdentityPosition( const IdentityPosition &v );
     void setIdentityPositionList( const IdentityPosition::List &v );
     IdentityPosition::List identityPositionList() const;
@@ -136,7 +138,7 @@ class POLKA_EXPORT GroupView
       Parse XML object from DOM element.
      */
     static GroupView parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
@@ -151,22 +153,27 @@ class POLKA_EXPORT Comment
     typedef QList<Comment> List;
 
   public:
+    Comment();
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QString &v );
+    QString value() const;
     /**
       Parse XML object from DOM element.
      */
     static Comment parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
-    QString mUpdatedAt;
-    QString mText;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mValue;
 };
 
 class POLKA_EXPORT Comments
@@ -185,7 +192,7 @@ class POLKA_EXPORT Comments
       Parse XML object from DOM element.
      */
     static Comments parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Comment::List mCommentList;
@@ -197,22 +204,32 @@ class POLKA_EXPORT Attribute
     typedef QList<Attribute> List;
 
   public:
+    Attribute();
     void setType( const QString &v );
     QString type() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setKey( const QString &v );
     QString key() const;
     void setValue( const QString &v );
     QString value() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
     static Attribute parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mType;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mKey;
     QString mValue;
+    Comment mComment;
 };
 
 class POLKA_EXPORT ExtendedAttributes
@@ -225,7 +242,7 @@ class POLKA_EXPORT ExtendedAttributes
       Parse XML object from DOM element.
      */
     static ExtendedAttributes parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Attribute::List mAttributeList;
@@ -237,26 +254,33 @@ class POLKA_EXPORT Link
     typedef QList<Link> List;
 
   public:
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    Link();
+    bool isValid() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setLinkType( const QString &v );
     QString linkType() const;
     void setUrl( const QString &v );
     QString url() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
     static Link parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mLinkType;
     QString mUrl;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Links
@@ -275,59 +299,10 @@ class POLKA_EXPORT Links
       Parse XML object from DOM element.
      */
     static Links parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Link::List mLinkList;
-};
-
-class POLKA_EXPORT Note
-{
-  public:
-    typedef QList<Note> List;
-
-  public:
-    void setId( const QString &v );
-    QString id() const;
-    void setCreatedAt( const QString &v );
-    QString createdAt() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
-    /**
-      Parse XML object from DOM element.
-     */
-    static Note parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
-
-  private:
-    QString mId;
-    QString mCreatedAt;
-    QString mUpdatedAt;
-    QString mText;
-};
-
-class POLKA_EXPORT Notes
-{
-  public:
-    enum Flags { None, AutoCreate };
-
-  public:
-    void addNote( const Note &v );
-    void setNoteList( const Note::List &v );
-    Note::List noteList() const;
-    Note findNote( const QString &id, Flags flags = None );
-    bool insert( const Note &v );
-    bool remove( const Note &v );
-    /**
-      Parse XML object from DOM element.
-     */
-    static Notes parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
-
-  private:
-    Note::List mNoteList;
 };
 
 class POLKA_EXPORT Relation
@@ -344,7 +319,7 @@ class POLKA_EXPORT Relation
       Parse XML object from DOM element.
      */
     static Relation parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mRelationType;
@@ -361,7 +336,7 @@ class POLKA_EXPORT Relations
       Parse XML object from DOM element.
      */
     static Relations parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Relation::List mRelationList;
@@ -373,23 +348,30 @@ class POLKA_EXPORT Address
     typedef QList<Address> List;
 
   public:
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    Address();
+    bool isValid() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setLabel( const QString &v );
     QString label() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
     static Address parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mLabel;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Addresses
@@ -408,7 +390,7 @@ class POLKA_EXPORT Addresses
       Parse XML object from DOM element.
      */
     static Addresses parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Address::List mAddressList;
@@ -420,29 +402,33 @@ class POLKA_EXPORT Phone
     typedef QList<Phone> List;
 
   public:
-    void setComment( const QString &v );
-    QString comment() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    Phone();
+    bool isValid() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setPhoneType( const QString &v );
     QString phoneType() const;
     void setPhoneNumber( const QString &v );
     QString phoneNumber() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
     static Phone parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mComment;
-    QString mUpdatedAt;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mPhoneType;
     QString mPhoneNumber;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Phones
@@ -461,7 +447,7 @@ class POLKA_EXPORT Phones
       Parse XML object from DOM element.
      */
     static Phones parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Phone::List mPhoneList;
@@ -473,26 +459,33 @@ class POLKA_EXPORT Picture
     typedef QList<Picture> List;
 
   public:
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
+    Picture();
+    bool isValid() const;
     void setPictureType( const QString &v );
     QString pictureType() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setUrl( const QString &v );
     QString url() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
     static Picture parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mUpdatedAt;
     QString mPictureType;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
     QString mId;
     QString mUrl;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Pictures
@@ -511,7 +504,7 @@ class POLKA_EXPORT Pictures
       Parse XML object from DOM element.
      */
     static Pictures parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Picture::List mPictureList;
@@ -523,22 +516,30 @@ class POLKA_EXPORT Email
     typedef QList<Email> List;
 
   public:
+    Email();
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setEmailAddress( const QString &v );
+    QString emailAddress() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
     /**
       Parse XML object from DOM element.
      */
     static Email parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
-    QString mUpdatedAt;
-    QString mText;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mEmailAddress;
+    Comment mComment;
 };
 
 class POLKA_EXPORT Emails
@@ -557,7 +558,7 @@ class POLKA_EXPORT Emails
       Parse XML object from DOM element.
      */
     static Emails parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Email::List mEmailList;
@@ -569,14 +570,14 @@ class POLKA_EXPORT Group
     typedef QList<Group> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     /**
       Parse XML object from DOM element.
      */
     static Group parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
@@ -598,7 +599,7 @@ class POLKA_EXPORT Groups
       Parse XML object from DOM element.
      */
     static Groups parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     Group::List mGroupList;
@@ -607,19 +608,45 @@ class POLKA_EXPORT Groups
 class POLKA_EXPORT Name
 {
   public:
-    void setUpdatedAt( const QString &v );
-    QString updatedAt() const;
-    void setText( const QString &v );
-    QString text() const;
+    Name();
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QString &v );
+    QString value() const;
     /**
       Parse XML object from DOM element.
      */
     static Name parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
-    QString mUpdatedAt;
-    QString mText;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mValue;
+};
+
+class POLKA_EXPORT Birthday
+{
+  public:
+    Birthday();
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setValue( const QDate &v );
+    QDate value() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Birthday parseElement( const QDomElement &element, bool *ok );
+    void writeElement( QXmlStreamWriter &xml );
+
+  private:
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QDate mValue;
 };
 
 class POLKA_EXPORT Identity
@@ -628,17 +655,15 @@ class POLKA_EXPORT Identity
     typedef QList<Identity> List;
 
   public:
+    bool isValid() const;
     void setId( const QString &v );
     QString id() const;
-    bool isValid() const;
     void setGroups( const Groups &v );
     Groups groups() const;
     void setName( const Name &v );
     Name name() const;
-    void setBirthname( const QString &v );
-    QString birthname() const;
-    void setBirthday( const QDate &v );
-    QDate birthday() const;
+    void setBirthday( const Birthday &v );
+    Birthday birthday() const;
     void setEmails( const Emails &v );
     Emails emails() const;
     void setPictures( const Pictures &v );
@@ -649,8 +674,6 @@ class POLKA_EXPORT Identity
     Addresses addresses() const;
     void setRelations( const Relations &v );
     Relations relations() const;
-    void setNotes( const Notes &v );
-    Notes notes() const;
     void setLinks( const Links &v );
     Links links() const;
     void setExtendedAttributes( const ExtendedAttributes &v );
@@ -661,20 +684,18 @@ class POLKA_EXPORT Identity
       Parse XML object from DOM element.
      */
     static Identity parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
 
   private:
     QString mId;
     Groups mGroups;
     Name mName;
-    QString mBirthname;
-    QDate mBirthday;
+    Birthday mBirthday;
     Emails mEmails;
     Pictures mPictures;
     Phones mPhones;
     Addresses mAddresses;
     Relations mRelations;
-    Notes mNotes;
     Links mLinks;
     ExtendedAttributes mExtendedAttributes;
     Comments mComments;
@@ -686,8 +707,8 @@ class POLKA_EXPORT Polka
     enum Flags { None, AutoCreate };
 
   public:
-    void setSchemaVersion( const QString &v );
-    QString schemaVersion() const;
+    void setSchemaVersion( int v );
+    int schemaVersion() const;
     void addIdentity( const Identity &v );
     void setIdentityList( const Identity::List &v );
     Identity::List identityList() const;
@@ -704,12 +725,13 @@ class POLKA_EXPORT Polka
       Parse XML object from DOM element.
      */
     static Polka parseElement( const QDomElement &element, bool *ok );
-    QString writeElement();
+    void writeElement( QXmlStreamWriter &xml );
     static Polka parseFile( const QString &filename, bool *ok );
+    static Polka parseString( const QString &xml, bool *ok );
     bool writeFile( const QString &filename );
 
   private:
-    QString mSchemaVersion;
+    int mSchemaVersion;
     Identity::List mIdentityList;
     GroupView::List mGroupViewList;
 };

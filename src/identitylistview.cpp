@@ -59,7 +59,7 @@ void IdentityListView::setGroup( const Polka::Identity &group )
   m_group = group;
 
   setItemModel( m_model->itemModel( group.id() ) );
-  setGroupName( group.name().text() );
+  setGroupName( group.name().value() );
 }
 
 Polka::Identity IdentityListView::group() const

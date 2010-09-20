@@ -79,29 +79,29 @@ void GitDir::createPath( const QString &fileName )
 }
 
 // FIXME: Return a GitFile object, which can be used as handle.
-void GitDir::addFile( const QString &fileName )
+void GitDir::addFile( const QString &fileName, const QString &msg )
 {
   QString filePath = GitDir::filePath( fileName );
   if ( !QFile::exists( filePath ) ) {
     qDebug() << "ERROR: file" << filePath << "doesn't exist";
   } else {
     executeCommand( "add", fileName );
-    executeCommit();
+    executeCommit( QString(), msg );
   }
 }
 
-int GitDir::commitData()
+int GitDir::commitData( const QString &msg )
 {
-  return executeCommit( "-a" );
+  return executeCommit( "-a", msg );
 }
 
-int GitDir::executeCommit( const QString &arg )
+int GitDir::executeCommit( const QString &arg, const QString &msg )
 {
   GitCommand cmd = GitCommand( "commit" );
   if ( !arg.isEmpty() ) {
     cmd.addArg( arg );
   }
-  cmd.addOption( "m", "Polka was here" );
+  cmd.addOption( "m", msg );
   
   return executeCommand( cmd ); 
 }

@@ -26,6 +26,7 @@
 #include "polkapersonsitemmodel.h"
 
 #include <KRandom>
+#include <KLocale>
 
 #include <QDir>
 #include <QDebug>
@@ -175,21 +176,22 @@ void PolkaModel::setupGroups()
   }
 }
 
-void PolkaModel::writeData()
+void PolkaModel::writeData( const QString &msg )
 {
   if ( !m_dataIsValid) {
     emit dataWritten();
     return;
   }
 
+  // FIXME: Queue commands instead of silently failing them.
   if ( m_commitCommand > 0 ) {
     qDebug() << "ERROR" << "Commit command still running";
     return;
   }
 
   m_polka.writeFile( m_gitDir->filePath( "std.polka" ) );
-  m_gitDir->addFile( "std.polka" );
-  m_commitCommand = m_gitDir->commitData();
+  m_gitDir->addFile( "std.polka", msg );
+  m_commitCommand = m_gitDir->commitData( i18n("Saving pending changes") );
 }
 
 void PolkaModel::slotCommandExecuted( int id )
@@ -207,7 +209,8 @@ void PolkaModel::slotPushed()
   emit dataWritten();
 }
 
-Polka::Identity PolkaModel::insert( Polka::Identity identity )
+Polka::Identity PolkaModel::insert( Polka::Identity identity,
+  const QString &msg )
 {
   if ( identity.id().isEmpty() ) {
     identity.setId( KRandom::randomString( 10 ) );
@@ -224,6 +227,8 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity )
     }
   }
 
+  writeData( msg );
+
   emit identityInserted( identity );
 
   return identity;
@@ -235,12 +240,16 @@ void PolkaModel::addPerson( const Polka::Identity &person,
   Polka::Identity p = person;
 
   Polka::Groups groups = p.groups();
-  Polka::Group g;
-  g.setId( group.id() );
-  groups.addGroup( g );
-  p.setGroups( groups );
 
-  insert( p );
+  if ( !groups.findGroup( group.id() ).isValid() ) {
+    Polka::Group g;
+    g.setId( group.id() );
+    groups.addGroup( g );
+    p.setGroups( groups );
+
+    insert( p, i18n("Add %1 to group %2").arg( person.name().value() )
+      .arg( group.name().value() ) );
+  }
 }
 
 void PolkaModel::removePerson( const Polka::Identity &person,
@@ -295,7 +304,7 @@ QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
     return m_localPictures.value( identity.id() )->pixmap();
   }
 
-  LocalPicture *localPicture = new LocalPicture( m_gitDir );
+  LocalPicture *localPicture = new LocalPicture( m_gitDir, identity );
 
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
@@ -319,7 +328,7 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   Polka::Picture picture;
   picture.setId( KRandom::randomString( 10 ) );
 
-  LocalPicture *localPicture = new LocalPicture( m_gitDir );
+  LocalPicture *localPicture = new LocalPicture( m_gitDir, target );
   localPicture->setPicture( picture );
   localPicture->setPixmap( pixmap );  
   
@@ -345,6 +354,7 @@ void PolkaModel::saveViewLabel( const Polka::Identity &group,
   l.setY( label.y() );
   v.insert( l );
   m_polka.insert( v );
+  writeData( i18n("Inserted label %1").arg( label.text() ) );
 }
 
 void PolkaModel::removeViewLabel( const Polka::Identity &group,
@@ -354,6 +364,7 @@ void PolkaModel::removeViewLabel( const Polka::Identity &group,
     Polka::Polka::AutoCreate );
   v.remove( label );
   m_polka.insert( v );
+  writeData( i18n("Removed label %1").arg( label.text() ) );
 }
 
 void PolkaModel::saveViewPosition( const Polka::Identity &group,
@@ -368,6 +379,8 @@ void PolkaModel::saveViewPosition( const Polka::Identity &group,
   p.setY( pos.y() );
   v.insert( p );
   m_polka.insert( v );
+  writeData( i18n("Moved %1 in group %2")
+    .arg( identity.name().value() ).arg( group.name().value() ) );
 }
 
 void PolkaModel::clearViewPositions( const Polka::Identity &group )
@@ -375,24 +388,30 @@ void PolkaModel::clearViewPositions( const Polka::Identity &group )
   Polka::GroupView view = m_polka.findGroupView( group.id() );
   view.setIdentityPositionList( Polka::IdentityPosition::List() );
   m_polka.insert( view );
+  writeData( i18n("Reset positions in group %1").arg( group.name().value() ) );
 }
 
 void PolkaModel::saveViewCheck( const Polka::Identity &group,
   const Polka::Identity &identity,
   bool checked )
 {
+  QString msg;
+
   Polka::GroupView v = m_polka.findGroupView( group.id(),
     Polka::Polka::AutoCreate );
   if ( checked ) {
     Polka::IdentityCheck c = v.findIdentityCheck( identity.id(),
       Polka::GroupView::AutoCreate );
     v.insert( c );
+    msg = i18n("Checked %1").arg( identity.name().value() );
   } else {
     Polka::IdentityCheck c = v.findIdentityCheck( identity.id(),
       Polka::GroupView::AutoCreate );
     if ( c.isValid() ) v.remove( c );
+    msg = i18n("Unchecked %1").arg( identity.name().value() );
   }
   m_polka.insert( v );
+  writeData( msg );
 }
 
 Polka::GroupView PolkaModel::groupView( const Polka::Identity &group )

@@ -140,18 +140,22 @@ void PersonView::slotLinkClicked( const QUrl &url )
     else if ( action == "addEmail" ) addEmail();
     else if ( action == "editEmail" ) editEmail( path.value( 1 ) );
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
+    else if ( action == "commentEmail" ) commentEmail( path.value( 1 ) );
 
     else if ( action == "addPhone" ) addPhone();
     else if ( action == "editPhone" ) editPhone( path.value( 1 ) );
     else if ( action == "removePhone" ) removePhone( path.value( 1 ) );
+    else if ( action == "commentPhone" ) commentPhone( path.value( 1 ) );
 
     else if ( action == "addLink" ) addLink();
     else if ( action == "editLink" ) editLink( path.value( 1 ) );
     else if ( action == "removeLink" ) removeLink( path.value( 1 ) );
+    else if ( action == "commentLink" ) commentLink( path.value( 1 ) );
 
     else if ( action == "addAddress" ) addAddress();
     else if ( action == "editAddress" ) editAddress( path.value( 1 ) );
     else if ( action == "removeAddress" ) removeAddress( path.value( 1 ) );
+    else if ( action == "commentAddress" ) commentAddress( path.value( 1 ) );
 
     else if ( action == "addComment" ) addComment();
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
@@ -171,12 +175,13 @@ void PersonView::addEmail()
   if ( ok ) {
     Polka::Email e;
     e.setId( KRandom::randomString( 10 ) );
-    e.setText( email );
+    e.setEmailAddress( email );
     Polka::Emails es = m_identity.emails();
     es.addEmail( e );
     m_identity.setEmails( es );
 
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add email address %1 to %2")
+      .arg( email ).arg( m_identity.name().value() ) );
 
 //    showIdentity( m_identity );
   }
@@ -188,14 +193,35 @@ void PersonView::editEmail( const QString &id )
 
   bool ok;
   QString email = KInputDialog::getText( i18n("Add email"),
-    i18n("Enter new email address"), e.text(), &ok );
+    i18n("Enter new email address"), e.emailAddress(), &ok );
   if ( ok ) {
     Polka::Emails es = m_identity.emails();
-    e.setText( email );
+    e.setEmailAddress( email );
     es.insert( e );
     m_identity.setEmails( es );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit email address %1 of %2")
+      .arg( email ).arg( m_identity.name().value() ) );
+  }
+}
+
+void PersonView::commentEmail( const QString &id )
+{
+  Polka::Email e = m_identity.emails().findEmail( id );
+
+  Polka::Comment comment = e.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Emails es = m_identity.emails();
+    comment.setValue( editor->comment() );
+    e.setComment( comment );
+    es.insert( e );
+    m_identity.setEmails( es );
+        
+    m_model->insert( m_identity, i18n("Edit comment of email %2")
+      .arg( e.emailAddress() ) );
   }
 }
 
@@ -206,7 +232,8 @@ void PersonView::removeEmail( const QString &id )
   es.remove( e );
   m_identity.setEmails( es );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove email address %1 from %2")
+    .arg( e.emailAddress() ).arg( m_identity.name().value() ) );
 }
 
 void PersonView::addAddress()
@@ -220,7 +247,8 @@ void PersonView::addAddress()
     cs.insert( c );
     m_identity.setAddresses( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add address to %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -236,7 +264,8 @@ void PersonView::editAddress( const QString &id )
     cs.insert( address );
     m_identity.setAddresses( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit address of %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -247,8 +276,30 @@ void PersonView::removeAddress( const QString &id )
   cs.remove( c );
   m_identity.setAddresses( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove address from %2")
+    .arg( m_identity.name().value() ) );
 }
+
+void PersonView::commentAddress( const QString &id )
+{
+  Polka::Address a = m_identity.addresses().findAddress( id );
+
+  Polka::Comment comment = a.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Addresses as = m_identity.addresses();
+    comment.setValue( editor->comment() );
+    a.setComment( comment );
+    as.insert( a );
+    m_identity.setAddresses( as );
+        
+    m_model->insert( m_identity, i18n("Edit comment of address of %2")
+      .arg( m_identity.name().value() ) );
+  }
+}
+
 
 void PersonView::addComment()
 {
@@ -257,11 +308,12 @@ void PersonView::addComment()
     Polka::Comments cs = m_identity.comments();
     Polka::Comment c;
     c.setId( KRandom::randomString( 10 ) );
-    c.setText( editor->comment() );
+    c.setValue( editor->comment() );
     cs.insert( c );
     m_identity.setComments( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add comment to %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -270,14 +322,15 @@ void PersonView::editComment( const QString &id )
   Polka::Comment comment = m_identity.comments().findComment( id );
 
   CommentEditor *editor = new CommentEditor( this );
-  editor->setComment( comment.text() );
+  editor->setComment( comment.value() );
   if ( editor->exec() == CommentEditor::Accepted ) {
     Polka::Comments cs = m_identity.comments();
-    comment.setText( editor->comment() );
+    comment.setValue( editor->comment() );
     cs.insert( comment );
     m_identity.setComments( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit comment of %2")
+      .arg( m_identity.name().value() ) );
   }
 }
 
@@ -288,7 +341,8 @@ void PersonView::removeComment( const QString &id )
   cs.remove( c );
   m_identity.setComments( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove comment from %2")
+    .arg( m_identity.name().value() ) );
 }
 
 void PersonView::addPhone()
@@ -301,7 +355,8 @@ void PersonView::addPhone()
     cs.insert( c );
     m_identity.setPhones( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add phone %1 to %2")
+      .arg( c.phoneNumber() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -317,7 +372,8 @@ void PersonView::editPhone( const QString &id )
     cs.insert( phone );
     m_identity.setPhones( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit phone %1 of %2")
+      .arg( phone.phoneNumber() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -328,7 +384,28 @@ void PersonView::removePhone( const QString &id )
   cs.remove( c );
   m_identity.setPhones( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove phone %1 from %2")
+    .arg( c.phoneNumber() ).arg( m_identity.name().value() ) );
+}
+
+void PersonView::commentPhone( const QString &id )
+{
+  Polka::Phone p = m_identity.phones().findPhone( id );
+
+  Polka::Comment comment = p.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Phones ps = m_identity.phones();
+    comment.setValue( editor->comment() );
+    p.setComment( comment );
+    ps.insert( p );
+    m_identity.setPhones( ps );
+        
+    m_model->insert( m_identity, i18n("Edit comment of phone %2")
+      .arg( p.phoneNumber() ) );
+  }
 }
 
 
@@ -342,7 +419,8 @@ void PersonView::addLink()
     cs.insert( c );
     m_identity.setLinks( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Add link %1 to %2")
+      .arg( c.url() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -358,7 +436,8 @@ void PersonView::editLink( const QString &id )
     cs.insert( link );
     m_identity.setLinks( cs );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Edit link %1 of %2")
+      .arg( link.url() ).arg( m_identity.name().value() ) );
   }
 }
 
@@ -369,21 +448,45 @@ void PersonView::removeLink( const QString &id )
   cs.remove( c );
   m_identity.setLinks( cs );
   
-  m_model->insert( m_identity );
+  m_model->insert( m_identity, i18n("Remove link %1 from %2")
+    .arg( c.url() ).arg( m_identity.name().value() ) );
 }
+
+void PersonView::commentLink( const QString &id )
+{
+  Polka::Link l = m_identity.links().findLink( id );
+
+  Polka::Comment comment = l.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Links ls = m_identity.links();
+    comment.setValue( editor->comment() );
+    l.setComment( comment );
+    ls.insert( l );
+    m_identity.setLinks( ls );
+        
+    m_model->insert( m_identity, i18n("Edit comment of link %2")
+      .arg( l.url() ) );
+  }
+}
+
 
 void PersonView::editName()
 {
   Polka::Name name = m_identity.name();
+  QString oldNameString = name.value();
 
   bool ok;
   QString nameString = KInputDialog::getText( i18n("Edit name"),
-    QString(), name.text(), &ok );
+    QString(), oldNameString, &ok );
   if ( ok ) {
-    name.setText( nameString );
+    name.setValue( nameString );
     m_identity.setName( name );
     
-    m_model->insert( m_identity );
+    m_model->insert( m_identity, i18n("Changed name from %1 to %2")
+      .arg( oldNameString ).arg( nameString ) );
   }  
 }
 

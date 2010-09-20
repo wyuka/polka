@@ -131,9 +131,9 @@ void PolkaView::readData()
   }
 }
 
-void PolkaView::writeData()
+void PolkaView::writeData( const QString &msg )
 {
-  m_model->writeData();
+  m_model->writeData( msg );
 
   if ( Settings::remoteSyncingEnabled() ) {
     m_model->gitRemote()->push();
@@ -148,10 +148,10 @@ void PolkaView::newGroup()
   if ( ok ) {
     Polka::Identity identity;
     Polka::Name n;
-    n.setText( name );
+    n.setValue( name );
     identity.setName( n );
     
-    m_model->insert( identity );
+    m_model->insert( identity, i18n("Create group %1").arg( name ) );
   }
 }
 
@@ -160,14 +160,16 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
   bool ok;
   QString name = KInputDialog::getText( i18n("Clone Group"),
     i18n("Enter name of new group"),
-    i18n("Clone of %1").arg( group.name().text() ),
+    i18n("Clone of %1").arg( group.name().value() ),
     &ok );
   if ( ok ) {
     Polka::Identity identity;
     Polka::Name n;
-    n.setText( name );
+    n.setValue( name );
     identity.setName( n );
-    Polka::Identity new_group = m_model->insert( identity );
+    Polka::Identity new_group = m_model->insert( identity,
+      i18n("Clone group '%1' to '%2'").arg( group.name().value() )
+        .arg( name ) );
 
     Polka::Identity::List members = m_model->identitiesOfGroup( group );
     foreach( Polka::Identity member, members ) {

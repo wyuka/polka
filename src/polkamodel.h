@@ -37,11 +37,11 @@ class PolkaModel : public QObject
 
     GitRemote *gitRemote() const;
 
-    void writeData();
+    void writeData( const QString &msg );
 
     // FIXME: create create,read,update,delete identity functions
     Polka::Identity findIdentity( const QString &id );
-    Polka::Identity insert( Polka::Identity ); // create
+    Polka::Identity insert( Polka::Identity, const QString &msg ); // create/update
 
     // FIXME: consistent API for querying lists of identities
     Polka::Identity::List persons();

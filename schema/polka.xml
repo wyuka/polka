@@ -7,17 +7,22 @@
       </group>
       <group><id>633hedehe</id></group>
     </groups>
-    <name updated_at="20090901T120034Z">Hans Wurst</name>
-    <birthname>Hans Kaese</birthname>
-    <birthday>19011224</birthday>
+    <name created_at="20090901T120034Z" updated_at="20090901T120034Z">Hans Wurst</name>
+    <birthday created_at="20090901T120034Z" updated_at="20090901T120034Z">19011224</birthday>
     <emails>
-      <email id="123" updated_at="20090901T120034Z">hw@example.com</email>
-      <email id="345" updated_at="20090901T120034Z" comment="1">hw@example.org</email>
+      <email id="x123" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        <email_address>hw@example.com</email_address>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
+      </email>
+      <email id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        <email_address>hw@example.org</email_address>
+      </email>
     </emails>
     <pictures>
-      <picture updated_at="20090901T120023Z" picture_type="local">
+      <picture  picture_type="local" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>z77z4ufhjf</id>
         <url>http://somewhere.example.com</url>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </picture>
       <picture updated_at="20090901T120023Z" picture_type="gravatar">
         <id>z77z4usfsdhjf</id>
@@ -25,19 +30,21 @@
       </picture>
     </pictures>
     <phones>
-      <phone comment="2" updated_at="20090901T120023Z">
+      <phone created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>123</id>
         <phone_type>Mobile</phone_type>
         <phone_number>123/3848484</phone_number>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </phone>
       <phone>
         <phone_number>+492348237373</phone_number>
       </phone>
     </phones>
     <addresses>
-      <address updated_at="20090901T120023Z">
+      <address created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>123</id>
         <label>Hauptstrasse 3\n12345Hintertupfingen</label>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </address>
       <address>
         <id>123</id>
@@ -48,19 +55,12 @@
       <relation relation_type="is_married_to" target="77fzuwehf6t"/>
       <relation relation_type="reports_to" target="77fzuwehf6t"/>
     </relations>
-    <notes>
-      <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
-        Sent him invitation to dinner party.
-      </note>
-      <note id="2" reply_to="1">
-        Can't come.
-      </note>
-    </notes>
     <links>
-      <link updated_at="20090901T120023Z">
+      <link created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <id>dkljga</id>
         <link_type>xing</link_type>
         <url>http://xing.de/hw</url>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </link>
       <link>
         <link_type>twitter</link_type>
@@ -68,9 +68,10 @@
       </link>
     </links>
     <extended_attributes>
-      <attribute type="string">
+      <attribute type="string" created_at="20090901T120034Z" updated_at="20090901T120023Z">
         <key>Favorite Food</key>
         <value>Spagetti</value>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
       </attribute>
       <attribute type="date">
         <key>Wedding Day</key>
@@ -78,8 +79,8 @@
       </attribute>
     </extended_attributes>
     <comments>
-      <comment id="1" updated_at="20090901T120023Z">Don't use it anymore.</comment>
-      <comment id="2">Always switched off.</comment>
+      <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
+      <comment id="x2">Always switched off.</comment>
     </comments>
   </identity>
   <identity>
@@ -111,11 +112,6 @@
   <identity is_group="true">
     <id>fkjfrf6rhfrf6f5ewzf</id>
     <name>Dinner Party on Sep 23</name>
-    <notes>
-      <note id="1" created_at="20090901T120034Z" updated_at="20090901T120034Z">
-        Everybody was invited.
-      </note>
-    </notes>
   </identity>
   <group_view>
     <id>shsh</id>

@@ -1,13 +1,7 @@
 = Polka
 
 * Using & in group names gives parse error
-
-* Save and commit after every change
-
-* Save modification date of fields
-* Show modification date of fields
-* Edit comments for each field
-
+* Indicate if a comment for a field is there (e.g. a speech bubble)
 * Show nice text for links.
 
 * Make sure new items don't overlap with existing moved ones.

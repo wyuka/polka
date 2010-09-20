@@ -22,6 +22,7 @@
 #include <polka/polka_export.h>
 
 #include "polka.h"
+#include "htmlcreator.h"
 
 namespace Polka {
 
@@ -33,6 +34,13 @@ class POLKA_EXPORT HtmlRenderer
     QString personEditor( const Identity & );
     QString personView( const Identity & );
     QString personSummary( const Identity & );
+
+    QString timeAgo( const QDateTime & );
+
+  protected:
+    void addEditControls( HtmlElement &, const QString &typeName,
+      const QString &id, const QDateTime &updatedAt,
+      bool commentEnabled = true );
 };
 
 }
