@@ -7,6 +7,8 @@
 * Make sure new items don't overlap with existing moved ones.
 
 * Separate commit for deletion of a person.
+* Put changes in XML for addition of pictures into correct commit.
+
 * Drop images e.g. from web pages to add new pictures to person
 * Check for response when pulling from remote and don't reread data, if nothing
   has changed
