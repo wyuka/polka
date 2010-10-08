@@ -1,5 +1,8 @@
 = Polka
 
+* Integrate person view in fancy view with some moving and zooming around
+* Global context menu for adding labels etc.
+
 * Using & in group names gives parse error
 * Indicate if a comment for a field is there (e.g. a speech bubble)
 * Show nice text for links.
