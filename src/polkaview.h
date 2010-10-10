@@ -16,6 +16,7 @@ class PolkaModel;
 class IdentityListView;
 class GroupListView;
 class IdentityGraphicsView;
+class PersonView;
 
 /**
  * This is the main view class for Polka.  Most of the non-menu,
@@ -77,10 +78,11 @@ class PolkaView : public QWidget
 
     QCheckBox *m_graphicsModeCheck;
     QCheckBox *m_syncingCheck;
-    QStackedLayout *m_viewLayout;
+    QStackedLayout *m_listLayout;
     GroupListView *m_groupListView;
     IdentityListView *m_groupView;
     IdentityGraphicsView *m_groupGraphicsView;
+    PersonView *m_personView;
 };
 
 #endif

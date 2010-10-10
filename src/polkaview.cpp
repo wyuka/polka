@@ -47,24 +47,29 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_graphicsModeCheck, SIGNAL( stateChanged( int ) ),
     SLOT( showView() ) );
 
-  m_viewLayout = new QStackedLayout;
-  topLayout->addLayout( m_viewLayout );
+  QSplitter *viewSplitter = new QSplitter;
+  topLayout->addWidget( viewSplitter );
+
+  QWidget *listWidget = new QWidget;
+  viewSplitter->addWidget( listWidget );
+  
+  m_listLayout = new QStackedLayout( listWidget );
 
   m_groupListView = new GroupListView;
-  m_viewLayout->addWidget( m_groupListView );
+  m_listLayout->addWidget( m_groupListView );
   connect( m_groupListView, SIGNAL( groupClicked( const Polka::Identity & ) ),
     SLOT( showGroupView( const Polka::Identity & ) ) );
   connect( m_groupListView, SIGNAL( newGroup() ), SLOT( newGroup() ) );
 
   m_groupView = new IdentityListView( m_model );
-  m_viewLayout->addWidget( m_groupView );
+  m_listLayout->addWidget( m_groupView );
   connect( m_groupView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupView, SIGNAL( showPerson( const Polka::Identity & ) ),
     SLOT( showPerson( const Polka::Identity & ) ) );
 
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
-  m_viewLayout->addWidget( m_groupGraphicsView );
+  m_listLayout->addWidget( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
   connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupGraphicsView, SIGNAL( showPerson( const Polka::Identity & ) ),
@@ -76,6 +81,9 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( cloneGroup( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( removeGroup( const Polka::Identity & ) ),
     SLOT( removeGroup( const Polka::Identity & ) ) );
+
+  m_personView = new PersonView( m_model );
+  viewSplitter->addWidget( m_personView );
 
   readConfig();
 
@@ -201,7 +209,9 @@ void PolkaView::showGroupList()
 {
   m_group = Polka::Identity();
 
-  m_viewLayout->setCurrentWidget( m_groupListView );
+  m_listLayout->setCurrentWidget( m_groupListView );
+
+  m_personView->hide();
 }
 
 void PolkaView::showGroupView( const Polka::Identity &group )
@@ -210,11 +220,13 @@ void PolkaView::showGroupView( const Polka::Identity &group )
 
   if ( m_graphicsModeCheck->isChecked() ) {
     m_groupGraphicsView->setGroup( group );
-    m_viewLayout->setCurrentWidget( m_groupGraphicsView );
+    m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
     m_groupView->setGroup( group );
-    m_viewLayout->setCurrentWidget( m_groupView );
+    m_listLayout->setCurrentWidget( m_groupView );
   }
+
+  m_personView->hide();
 }
 
 void PolkaView::showView()
@@ -228,12 +240,17 @@ void PolkaView::showView()
 
 void PolkaView::showPerson( const Polka::Identity &identity )
 {
+#if 0
   KDialog *dialog = new KDialog( this );
   dialog->setButtons( KDialog::Ok );
   PersonView *view = new PersonView( m_model );
   view->showIdentity( identity );
   dialog->setMainWidget( view );
   dialog->show();
+#else
+  m_personView->showIdentity( identity );
+  m_personView->show();
+#endif
 }
 
 void PolkaView::removePerson( const Polka::Identity &identity,
