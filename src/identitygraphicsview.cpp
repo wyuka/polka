@@ -93,6 +93,8 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
     SLOT( createItems() ) );
   connect( m_model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
     SLOT( createItems() ) );
+
+  setMinimumWidth( 50 );
 }
 
 void IdentityGraphicsView::setGroup( const Polka::Identity &group )
