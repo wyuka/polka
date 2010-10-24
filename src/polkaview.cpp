@@ -86,6 +86,8 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_personView = new PersonView( m_model );
   viewSplitter->addWidget( m_personView );
+  connect( m_personView, SIGNAL( closeRequested() ),
+    SLOT( closePersonView() ) );
 
   readConfig();
 
@@ -265,6 +267,12 @@ void PolkaView::removePerson( const Polka::Identity &identity,
   const Polka::Identity &group )
 {
   m_model->removePerson( identity, group );
+}
+
+void PolkaView::closePersonView()
+{
+  m_personView->hide();
+  m_groupGraphicsView->setCompactLayout( false );
 }
 
 #include "polkaview.moc"

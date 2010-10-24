@@ -37,6 +37,9 @@ class PersonView : public QWidget
 
   public slots:
     void showIdentity( const Polka::Identity & );
+
+  signals:
+    void closeRequested();
   
   protected slots:
     void showIdentity();

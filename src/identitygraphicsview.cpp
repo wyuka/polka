@@ -35,7 +35,7 @@
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model ), m_compactLayout( false ),
-    m_morphAnimationGroup( 0 )
+    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -318,28 +318,51 @@ void IdentityGraphicsView::morphToCompact()
   int y = 0;
   int spacing = 20;
 
-  if ( !m_morphAnimationGroup ) {
-    m_morphAnimationGroup = new QParallelAnimationGroup( this );
-    connect( m_morphAnimationGroup, SIGNAL( finished() ),
+  if ( !m_morphToAnimation ) {
+    m_morphToAnimation = new QParallelAnimationGroup( this );
+    connect( m_morphToAnimation, SIGNAL( finished() ),
       SIGNAL( morphedToCompact() ) );
   }
-  m_morphAnimationGroup->clear();
+  m_morphToAnimation->clear();
 
   foreach( IdentityItem *item, m_items ) {
     QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
-    m_morphAnimationGroup->insertAnimation( 0, animation );
+    m_morphToAnimation->insertAnimation( 0, animation );
 
     animation->setDuration(500);
+    item->rememberPos( item->pos() );
     animation->setStartValue( item->pos() );
-    animation->setEndValue( QPoint( x, y ) );
+    QPointF target( x, y );
+    animation->setEndValue( target );
     animation->setEasingCurve( QEasingCurve::OutCubic );
     
     y += spacing;
   }
 
-  m_morphAnimationGroup->start();
+  m_morphToAnimation->start();
 }
 
 void IdentityGraphicsView::morphFromCompact()
 {
+  qDebug() << "MORPH FROM";
+
+  if ( !m_morphFromAnimation ) {
+    m_morphFromAnimation = new QParallelAnimationGroup( this );
+    connect( m_morphFromAnimation, SIGNAL( finished() ),
+      SIGNAL( morphedFromCompact() ) );
+  }
+  m_morphFromAnimation->clear();
+
+  foreach( IdentityItem *item, m_items ) {
+    QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+    m_morphFromAnimation->insertAnimation( 0, animation );
+
+    animation->setDuration(500);
+    animation->setStartValue( item->pos() );
+    animation->setEndValue( item->rememberedPos() );
+    qDebug() << "POS" << item->pos() << item->rememberedPos();
+    animation->setEasingCurve( QEasingCurve::OutCubic );
+  }
+  
+  m_morphFromAnimation->start();
 }

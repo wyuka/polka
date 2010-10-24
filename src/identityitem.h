@@ -38,6 +38,9 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void setDefaultPos( const QPointF & );
     QPointF defaultPos() const;
 
+    void rememberPos( const QPointF & );
+    QPointF rememberedPos() const;
+
     void checkItem();
 
   signals:
@@ -65,6 +68,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     Polka::Identity m_identity;
 
     QPointF m_defaultPos;
+    QPointF m_rememberedPos;
     bool m_checked;
 
     QGraphicsRectItem *m_nameItem;

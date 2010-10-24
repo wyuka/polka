@@ -83,6 +83,16 @@ QPointF IdentityItem::defaultPos() const
   return m_defaultPos;
 }
 
+void IdentityItem::rememberPos( const QPointF &pos )
+{
+  m_rememberedPos = pos;
+}
+
+QPointF IdentityItem::rememberedPos() const
+{
+  return m_rememberedPos;
+}
+
 void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );

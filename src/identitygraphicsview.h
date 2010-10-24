@@ -91,7 +91,8 @@ class IdentityGraphicsView : public QWidget
 
     bool m_compactLayout;
 
-    QAnimationGroup *m_morphAnimationGroup;
+    QAnimationGroup *m_morphToAnimation;
+    QAnimationGroup *m_morphFromAnimation;
 };
 
 #endif
