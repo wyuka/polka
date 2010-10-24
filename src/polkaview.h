@@ -70,6 +70,8 @@ class PolkaView : public QWidget
 
   protected slots:
     void slotSyncingCheckChanged();
+    
+    void finishShowPerson();
 
   private:
     PolkaModel *m_model;

@@ -34,7 +34,8 @@
 #endif
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model )
+  : QWidget( parent ), m_model( model ), m_compactLayout( false ),
+    m_morphAnimationGroup( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -97,6 +98,16 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   setMinimumWidth( 50 );
 }
 
+void IdentityGraphicsView::setCompactLayout( bool enabled )
+{
+  if ( enabled == m_compactLayout ) return;
+
+  m_compactLayout = enabled;
+
+  if ( m_compactLayout ) morphToCompact();
+  else morphFromCompact();
+}
+
 void IdentityGraphicsView::setGroup( const Polka::Identity &group )
 {
   m_group = group;
@@ -108,6 +119,8 @@ void IdentityGraphicsView::setGroup( const Polka::Identity &group )
 
 void IdentityGraphicsView::createItems()
 {
+  m_compactLayout = false;
+
   m_scene->clear();
   m_items.clear();
 
@@ -185,7 +198,9 @@ void IdentityGraphicsView::slotRemovePerson( const Polka::Identity &identity )
 void IdentityGraphicsView::savePosition( const Polka::Identity &identity,
   const QPointF &pos )
 {
-  m_model->saveViewPosition( m_group, identity, pos );
+  if ( !m_compactLayout ) {
+    m_model->saveViewPosition( m_group, identity, pos );
+  }
 }
 
 void IdentityGraphicsView::saveLabel( const Polka::ViewLabel &label,
@@ -295,4 +310,36 @@ void IdentityGraphicsView::emitCloneGroup()
 void IdentityGraphicsView::emitRemoveGroup()
 {
   emit removeGroup( m_group );
+}
+
+void IdentityGraphicsView::morphToCompact()
+{
+  int x = 0;
+  int y = 0;
+  int spacing = 20;
+
+  if ( !m_morphAnimationGroup ) {
+    m_morphAnimationGroup = new QParallelAnimationGroup( this );
+    connect( m_morphAnimationGroup, SIGNAL( finished() ),
+      SIGNAL( morphedToCompact() ) );
+  }
+  m_morphAnimationGroup->clear();
+
+  foreach( IdentityItem *item, m_items ) {
+    QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+    m_morphAnimationGroup->insertAnimation( 0, animation );
+
+    animation->setDuration(500);
+    animation->setStartValue( item->pos() );
+    animation->setEndValue( QPoint( x, y ) );
+    animation->setEasingCurve( QEasingCurve::OutCubic );
+    
+    y += spacing;
+  }
+
+  m_morphAnimationGroup->start();
+}
+
+void IdentityGraphicsView::morphFromCompact()
+{
 }

@@ -27,6 +27,7 @@ class PolkaItemModel;
 class PolkaModel;
 class IdentityItem;
 class LabelItem;
+class QAnimationGroup;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -39,6 +40,8 @@ class IdentityGraphicsView : public QWidget
 
     void setGroupName( const QString & );
 
+    void setCompactLayout( bool enabled );
+
   signals:
     void goBack();
     void newPerson();
@@ -48,8 +51,14 @@ class IdentityGraphicsView : public QWidget
     void cloneGroup( const Polka::Identity &group );
     void removeGroup( const Polka::Identity &group );
 
+    void morphedToCompact();
+    void morphedFromCompact();
+
   protected:
     LabelItem *createLabelItem( const Polka::ViewLabel &label );
+
+    void morphToCompact();
+    void morphFromCompact();
 
   protected slots:
     void resetLayout();
@@ -79,6 +88,10 @@ class IdentityGraphicsView : public QWidget
     QLabel *m_groupNameLabel;  
     QGraphicsScene *m_scene;
     QGraphicsView *m_view;
+
+    bool m_compactLayout;
+
+    QAnimationGroup *m_morphAnimationGroup;
 };
 
 #endif

@@ -81,6 +81,8 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( cloneGroup( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( removeGroup( const Polka::Identity & ) ),
     SLOT( removeGroup( const Polka::Identity & ) ) );
+  connect( m_groupGraphicsView, SIGNAL( morphedToCompact() ),
+    SLOT( finishShowPerson() ) );
 
   m_personView = new PersonView( m_model );
   viewSplitter->addWidget( m_personView );
@@ -236,6 +238,7 @@ void PolkaView::showView()
   } else {
     showGroupView( m_group );
   }
+  m_groupGraphicsView->setCompactLayout( false );
 }
 
 void PolkaView::showPerson( const Polka::Identity &identity )
@@ -249,8 +252,13 @@ void PolkaView::showPerson( const Polka::Identity &identity )
   dialog->show();
 #else
   m_personView->showIdentity( identity );
-  m_personView->show();
+  m_groupGraphicsView->setCompactLayout( true );
 #endif
+}
+
+void PolkaView::finishShowPerson()
+{
+  m_personView->show();
 }
 
 void PolkaView::removePerson( const Polka::Identity &identity,
