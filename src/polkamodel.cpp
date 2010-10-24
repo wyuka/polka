@@ -360,11 +360,13 @@ void PolkaModel::saveViewLabel( const Polka::Identity &group,
 void PolkaModel::removeViewLabel( const Polka::Identity &group,
   const Polka::ViewLabel &label )
 {
+  QString labelText = label.text();
+
   Polka::GroupView v = m_polka.findGroupView( group.id(),
     Polka::Polka::AutoCreate );
   v.remove( label );
   m_polka.insert( v );
-  writeData( i18n("Removed label %1").arg( label.text() ) );
+  writeData( i18n("Removed label %1").arg( labelText ) );
 }
 
 void PolkaModel::saveViewPosition( const Polka::Identity &group,
