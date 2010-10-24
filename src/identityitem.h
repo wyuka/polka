@@ -31,6 +31,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     Q_OBJECT
 
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale)
 
   public:
     IdentityItem( PolkaModel *, const Polka::Identity & );

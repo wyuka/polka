@@ -316,7 +316,7 @@ void IdentityGraphicsView::morphToCompact()
 {
   int x = 0;
   int y = 0;
-  int spacing = 20;
+  int spacing = 60;
 
   if ( !m_morphToAnimation ) {
     m_morphToAnimation = new QParallelAnimationGroup( this );
@@ -336,6 +336,14 @@ void IdentityGraphicsView::morphToCompact()
     animation->setEndValue( target );
     animation->setEasingCurve( QEasingCurve::OutCubic );
     
+    animation = new QPropertyAnimation(item, "scale", this );
+    m_morphToAnimation->insertAnimation( 0, animation );
+    
+    animation->setDuration( 300 );
+    animation->setStartValue( item->scale() );
+    animation->setEndValue( 0.5 );
+    animation->setEasingCurve( QEasingCurve::OutCubic );
+    
     y += spacing;
   }
 
@@ -344,8 +352,6 @@ void IdentityGraphicsView::morphToCompact()
 
 void IdentityGraphicsView::morphFromCompact()
 {
-  qDebug() << "MORPH FROM";
-
   if ( !m_morphFromAnimation ) {
     m_morphFromAnimation = new QParallelAnimationGroup( this );
     connect( m_morphFromAnimation, SIGNAL( finished() ),
@@ -360,7 +366,14 @@ void IdentityGraphicsView::morphFromCompact()
     animation->setDuration(500);
     animation->setStartValue( item->pos() );
     animation->setEndValue( item->rememberedPos() );
-    qDebug() << "POS" << item->pos() << item->rememberedPos();
+    animation->setEasingCurve( QEasingCurve::OutCubic );
+
+    animation = new QPropertyAnimation(item, "scale", this );
+    m_morphFromAnimation->insertAnimation( 0, animation );
+    
+    animation->setDuration( 300 );
+    animation->setStartValue( item->scale() );
+    animation->setEndValue( 1 );
     animation->setEasingCurve( QEasingCurve::OutCubic );
   }
   
