@@ -261,6 +261,7 @@ void PolkaView::showPerson( const Polka::Identity &identity )
 void PolkaView::finishShowPerson()
 {
   m_personView->show();
+  m_groupGraphicsView->center( m_personView->identity() );
 }
 
 void PolkaView::removePerson( const Polka::Identity &identity,

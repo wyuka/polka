@@ -108,6 +108,11 @@ void PersonView::showIdentity()
   showIdentity( m_identity );
 }
 
+Polka::Identity PersonView::identity() const
+{
+  return m_identity;
+}
+
 void PersonView::setImage( const QPixmap &pixmap )
 {
   m_titleLabel->setPixmap( pixmap );

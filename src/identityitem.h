@@ -36,6 +36,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
   public:
     IdentityItem( PolkaModel *, const Polka::Identity & );
 
+    Polka::Identity identity() const;
+
     void setDefaultPos( const QPointF & );
     QPointF defaultPos() const;
 

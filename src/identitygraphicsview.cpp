@@ -314,7 +314,9 @@ void IdentityGraphicsView::emitRemoveGroup()
 
 void IdentityGraphicsView::morphToCompact()
 {
-  int x = 0;
+  QRectF rect = m_scene->sceneRect();
+
+  int x = rect.x() + rect.width() / 2;
   int y = 0;
   int spacing = 60;
 
@@ -378,4 +380,20 @@ void IdentityGraphicsView::morphFromCompact()
   }
   
   m_morphFromAnimation->start();
+}
+
+void IdentityGraphicsView::center( const Polka::Identity &identity )
+{
+  IdentityItem *i = item( identity );
+  if ( i ) {
+    m_view->centerOn( i );
+  }
+}
+
+IdentityItem *IdentityGraphicsView::item( const Polka::Identity &identity ) const
+{
+  foreach( IdentityItem *item, m_items ) {
+    if ( item->identity().id() == identity.id() ) return item;
+  }
+  return 0;
 }

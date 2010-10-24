@@ -73,6 +73,11 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   setFlags( ItemIsMovable );
 }
 
+Polka::Identity IdentityItem::identity() const
+{
+  return m_identity;
+}
+
 void IdentityItem::setDefaultPos( const QPointF &pos )
 {
   m_defaultPos = pos;

@@ -35,6 +35,8 @@ class PersonView : public QWidget
   public:
     PersonView( PolkaModel *, QWidget *parent = 0 );
 
+    Polka::Identity identity() const;
+
   public slots:
     void showIdentity( const Polka::Identity & );
 

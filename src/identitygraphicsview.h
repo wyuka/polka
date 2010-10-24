@@ -42,6 +42,8 @@ class IdentityGraphicsView : public QWidget
 
     void setCompactLayout( bool enabled );
 
+    void center( const Polka::Identity & );
+
   signals:
     void goBack();
     void newPerson();
@@ -59,6 +61,8 @@ class IdentityGraphicsView : public QWidget
 
     void morphToCompact();
     void morphFromCompact();
+
+    IdentityItem *item( const Polka::Identity & ) const;
 
   protected slots:
     void resetLayout();
