@@ -1,7 +1,5 @@
 = Polka
 
-* Global context menu for adding labels etc.
-
 * Using & in group names gives parse error
 * Indicate if a comment for a field is there (e.g. a speech bubble)
 
@@ -20,6 +18,7 @@
 * Only pull and push, if repo actually has a remote repo configured
 * Prevent saving while save is still in progress (especially with push)
 
+* Show history
 * Undo based on git (Rollback from UI)
 
 * merge group list view and identity list view ?

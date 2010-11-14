@@ -104,6 +104,7 @@ void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 
   m_nameItem->show();
   m_fanMenu->show();
+  emit menuShown();
 }
 
 void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )

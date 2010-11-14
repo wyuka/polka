@@ -51,6 +51,11 @@ FanMenu::FanMenu( QGraphicsItem *parent )
 {
 }
 
+qreal FanMenu::radius() const
+{
+  return 90;
+}
+
 void FanMenu::setupItems( int coverage )
 {
   int startAngle = -5;
@@ -77,4 +82,9 @@ FanMenu::Item *FanMenu::addItem( const QString &text )
 void FanMenu::emitItemSelected( Item *item )
 {
   emit itemSelected( item );
+}
+
+bool FanMenu::isCloseTo( const QPointF &point )
+{
+  return QLineF( point, pos() ).length() <= radius() + 10;
 }

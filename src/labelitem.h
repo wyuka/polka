@@ -41,6 +41,8 @@ class LabelItem : public QObject, public QGraphicsRectItem
     void itemMoved( const Polka::ViewLabel &, const QPointF & );
     void removeLabel( LabelItem *, const Polka::ViewLabel & );
     void renameLabel( LabelItem *, const Polka::ViewLabel & );
+
+    void menuShown();
     
   protected:
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );

@@ -27,6 +27,7 @@ set(polka_bin_SRCS
   pictureselectorbutton.cpp
   localpicture.cpp
   regiongrabber.cpp
+  trackinggraphicsview.cpp
 )
 
 kde4_add_ui_files(polka_bin_SRCS polkaview_base.ui prefs_base.ui)

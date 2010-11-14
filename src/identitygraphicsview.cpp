@@ -24,6 +24,7 @@
 #include "personview.h"
 #include "identityitem.h"
 #include "labelitem.h"
+#include "trackinggraphicsview.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -35,7 +36,7 @@
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model ), m_compactLayout( false ),
-    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 )
+    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ), m_globalMenu( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -74,10 +75,13 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 //  m_scene->setBackgroundBrush( Qt::red );
   m_scene->setBackgroundBrush( QColor( 70,70,100 ) );
 
-  m_view = new QGraphicsView( m_scene );
+  m_view = new TrackingGraphicsView( m_scene );
   m_view->setRenderHint( QPainter::Antialiasing );
   topLayout->addWidget( m_view );
   m_view->show();
+  m_view->installEventFilter( this );
+  connect( m_view, SIGNAL( mouseMoved( const QPoint & ) ),
+    SLOT( slotMouseMoved( const QPoint & ) ) );
 
   buttonLayout = new QHBoxLayout;
   topLayout->addLayout( buttonLayout );
@@ -123,6 +127,7 @@ void IdentityGraphicsView::createItems()
 
   m_scene->clear();
   m_items.clear();
+  m_globalMenu = 0;
 
   Polka::Identity::List identities = m_model->identitiesOfGroup( m_group );
 
@@ -150,6 +155,8 @@ void IdentityGraphicsView::createItems()
       SLOT( savePosition( const Polka::Identity &, const QPointF & ) ) );
     connect( item, SIGNAL( itemChecked( const Polka::Identity &, bool ) ),
       SLOT( saveCheck( const Polka::Identity &, bool ) ) );
+
+    connect( item, SIGNAL( menuShown() ), SLOT( hideGlobalMenu() ) );
 
     item->setDefaultPos( QPointF( posX, posY ) );
 
@@ -221,6 +228,11 @@ void IdentityGraphicsView::saveCheck( const Polka::Identity &identity,
 
 void IdentityGraphicsView::addLabel()
 {
+  addLabel( m_view->mapToScene( QPoint( 10, 10 ) ) );
+}
+
+void IdentityGraphicsView::addLabel( const QPointF &pos )
+{
   bool ok;
   QString name = KInputDialog::getText( i18n("Add Label"),
     i18n("Enter text of label"), QString(),
@@ -229,11 +241,10 @@ void IdentityGraphicsView::addLabel()
     Polka::ViewLabel label;
     label.setId( KRandom::randomString( 10 ) );
     label.setText( name );
-    
-    QPointF pos = m_view->mapToScene( QPoint( 10, 10 ) );
+
     label.setX( pos.x() );
     label.setY( pos.y() );
-
+    
     createLabelItem( label );
     
     m_model->saveViewLabel( m_group, label );
@@ -272,6 +283,7 @@ LabelItem *IdentityGraphicsView::createLabelItem( const Polka::ViewLabel &label 
     SLOT( removeLabel( LabelItem *, const Polka::ViewLabel & ) ) );
   connect( item, SIGNAL( renameLabel( LabelItem *, const Polka::ViewLabel & ) ),
     SLOT( renameLabel( LabelItem *, const Polka::ViewLabel & ) ) );
+  connect( item, SIGNAL( menuShown() ), SLOT( hideGlobalMenu() ) );
 
   m_scene->addItem( item );
 
@@ -396,4 +408,57 @@ IdentityItem *IdentityGraphicsView::item( const Polka::Identity &identity ) cons
     if ( item->identity().id() == identity.id() ) return item;
   }
   return 0;
+}
+
+bool IdentityGraphicsView::eventFilter( QObject *watched, QEvent *event )
+{
+  if ( watched == m_view ) {
+    if ( event->type() == QEvent::MouseButtonPress ) {
+      QMouseEvent *mouseEvent = static_cast<QMouseEvent*>( event );
+
+      if ( !m_globalMenu ) {
+        m_globalMenu = new FanMenu( 0 );
+        connect( m_globalMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
+          SLOT( slotItemSelected( FanMenu::Item * ) ) );
+        m_globalMenu->setZValue( 50 );
+        m_addLabelItem = m_globalMenu->addItem( i18n("Add label") );
+        m_globalMenu->setupItems();
+
+        m_scene->addItem( m_globalMenu );
+      }
+      m_globalMenu->setPos( m_view->mapToScene( mouseEvent->pos() ) );
+      m_globalMenu->show();
+    } else if ( event->type() == QEvent::KeyPress ) {
+      QKeyEvent *keyEvent = static_cast<QKeyEvent*>( event );
+      if ( keyEvent->key() == Qt::Key_Escape ) {
+        hideGlobalMenu();
+      }
+    }
+  }
+  return QWidget::eventFilter( watched, event );
+}
+
+void IdentityGraphicsView::slotItemSelected( FanMenu::Item *item )
+{
+  hideGlobalMenu();
+
+  if ( item == m_addLabelItem ) {
+    addLabel( m_globalMenu->pos() );
+  }
+}
+
+void IdentityGraphicsView::hideGlobalMenu()
+{
+  if ( m_globalMenu ) {
+    m_globalMenu->hide();
+  }
+}
+
+void IdentityGraphicsView::slotMouseMoved( const QPoint &pos )
+{
+  if ( !m_globalMenu || !m_globalMenu->isVisible() ) return;
+
+  if ( !m_globalMenu->isCloseTo( m_view->mapToScene( pos ) ) ) {
+    hideGlobalMenu();
+  }
 }

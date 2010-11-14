@@ -63,6 +63,7 @@ void LabelItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
   Q_UNUSED( event );
 
   m_fanMenu->show();
+  emit menuShown();
 }
 
 void LabelItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )

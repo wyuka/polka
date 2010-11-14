@@ -33,8 +33,8 @@ void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
   m_item = menuItem;
   m_item->setElement( this );
 
-  qreal blockRadius = 90;
-  qreal blockHeight = 90 * coverage / 100;
+  qreal blockRadius = m_menu->radius();
+  qreal blockHeight = m_menu->radius() * coverage / 100;
 
   QPoint center( 0,0 );
 

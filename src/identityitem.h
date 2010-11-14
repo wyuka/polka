@@ -54,6 +54,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     
     void itemChecked( const Polka::Identity &, bool );
 
+    void menuShown();
+
   protected:
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );

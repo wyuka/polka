@@ -53,6 +53,10 @@ class FanMenu : public QObject, public QGraphicsLineItem
 
     void emitItemSelected( Item * );
 
+    bool isCloseTo( const QPointF & );
+
+    qreal radius() const;
+
   signals:
     void itemSelected( FanMenu::Item * );
 

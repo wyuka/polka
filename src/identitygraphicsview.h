@@ -21,6 +21,8 @@
 
 #include "polka/polka.h"
 
+#include "fanmenu.h"
+
 #include <QtGui>
 
 class PolkaItemModel;
@@ -64,6 +66,8 @@ class IdentityGraphicsView : public QWidget
 
     IdentityItem *item( const Polka::Identity & ) const;
 
+    bool eventFilter( QObject * watched, QEvent * event );
+
   protected slots:
     void resetLayout();
   
@@ -71,6 +75,7 @@ class IdentityGraphicsView : public QWidget
     void slotRemovePerson( const Polka::Identity & );
 
     void addLabel();
+    void addLabel( const QPointF & );
     void removeLabel( LabelItem *, const Polka::ViewLabel & );
     void renameLabel( LabelItem *, Polka::ViewLabel );
 
@@ -80,6 +85,12 @@ class IdentityGraphicsView : public QWidget
 
     void emitCloneGroup();
     void emitRemoveGroup();
+
+    void slotItemSelected( FanMenu::Item *item );
+
+    void hideGlobalMenu();
+
+    void slotMouseMoved( const QPoint &pos );
 
   private:
     PolkaModel *m_model;
@@ -97,6 +108,9 @@ class IdentityGraphicsView : public QWidget
 
     QAnimationGroup *m_morphToAnimation;
     QAnimationGroup *m_morphFromAnimation;
+
+    FanMenu *m_globalMenu;
+    FanMenu::Item *m_addLabelItem;
 };
 
 #endif
