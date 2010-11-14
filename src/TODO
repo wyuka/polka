@@ -1,9 +1,15 @@
 = Polka
 
-* Using & in group names gives parse error
 * Indicate if a comment for a field is there (e.g. a speech bubble)
 
+* Hide labels in compact view
+* Keep compact view when editing comment
+
 * Show nice text for links.
+
+* Review and fix and prettify button and control structure.
+
+* Add global menu button somewhere to make context menu discoverable
 
 * Make sure new items don't overlap with existing moved ones.
 
