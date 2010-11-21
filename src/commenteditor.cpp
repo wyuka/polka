@@ -25,8 +25,11 @@ CommentEditor::CommentEditor( QWidget *parent )
   : KDialog( parent )
 {
   setCaption( i18n("Add comment") );
-  setButtons( Ok | Cancel );
+  setButtons( User1 | Ok | Cancel );
   setModal( true );
+
+  setButtonText( User1, i18n("Clear") );
+  connect( this, SIGNAL( user1Clicked() ), SLOT( clearComment() ) );
 
   m_edit = new QTextEdit;
   setMainWidget( m_edit );
@@ -44,4 +47,10 @@ void CommentEditor::setComment( const QString &text )
 QString CommentEditor::comment() const
 {
   return m_edit->toPlainText();
+}
+
+void CommentEditor::clearComment()
+{
+  m_edit->clear();
+  m_edit->setFocus();
 }

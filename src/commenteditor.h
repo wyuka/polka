@@ -25,11 +25,15 @@
 
 class CommentEditor : public KDialog
 {
+    Q_OBJECT
   public:
     CommentEditor( QWidget *parent );
 
     void setComment( const QString & );
     QString comment() const;
+
+  protected slots:
+    void clearComment();
     
   private:
     QTextEdit *m_edit;
