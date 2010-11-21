@@ -306,6 +306,15 @@ void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
     aImg.element("img").attribute("src",commentSrc);
   }
 
+  if ( commentEnabled && comment.value().isEmpty() ) {
+    HtmlElement &span3 = div.element("span").c("edit-link");
+
+    HtmlElement &aImg = span3.element("a");
+    aImg.attribute("href",
+      QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
+    aImg.element("img").attribute("src",commentSrc);
+  }
+
   HtmlElement &span1 = div.element("span").c("edit-link first");
 
   HtmlElement &e = span1.element("a");
@@ -317,15 +326,6 @@ void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
   HtmlElement &r = span2.element("a");
   r.attribute("href", QString("polka:remove%1/%2").arg( typeName ).arg( id ) );
   r.text("Remove");
-
-  HtmlElement &span3 = div.element("span").c("edit-link");
-
-  if ( commentEnabled && comment.value().isEmpty() ) {
-    HtmlElement &aImg = span3.element("a");
-    aImg.attribute("href",
-      QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
-    aImg.element("img").attribute("src",commentSrc);
-  }
 
   HtmlElement &m = div.element("span").c("edit-link");
   m.element("em").text( timeAgo( updatedAt ) );
