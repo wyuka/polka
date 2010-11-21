@@ -40,6 +40,7 @@ class POLKA_EXPORT HtmlRenderer
   protected:
     void addEditControls( HtmlElement &, const QString &typeName,
       const QString &id, const QDateTime &updatedAt,
+      const Comment &comment,
       bool commentEnabled = true );
 };
 

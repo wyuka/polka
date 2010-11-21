@@ -22,6 +22,7 @@
 #include "htmlcreator.h"
 
 #include <KLocale>
+#include <KStandardDirs>
 
 namespace Polka {
 
@@ -72,6 +73,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
   css.addRule( ".trigger span.edit-link", "visibility", "hidden" );
   css.addRule( ".trigger:hover span.edit-link", "visibility", "visible" );
 
+  css.addRule( ".comment-icon", "margin-left", "6px" );
+
   doc.setCss( css );
 
   HtmlElement &titleDiv = doc.element("div");
@@ -97,7 +100,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     a.attribute("href","mailto:" + email.emailAddress());
     a.text(email.emailAddress());
 
-    addEditControls( emailDiv, "Email", email.id(), email.updatedAt() );
+    addEditControls( emailDiv, "Email", email.id(), email.updatedAt(),
+      email.comment() );
   }
 
   HtmlElement &phonesDiv = doc.element("div");
@@ -107,7 +111,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &p = phoneDiv.element("p");
     p.text(phone.phoneNumber());
 
-    addEditControls( p, "Phone", phone.id(), phone.updatedAt() );
+    addEditControls( p, "Phone", phone.id(), phone.updatedAt(),
+      phone.comment() );
   }
 
   HtmlElement &addressesDiv = doc.element("div");
@@ -120,7 +125,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     HtmlElement &p = d.element("pre");
     p.text(address.label());
 
-    addEditControls( addressDiv, "Address", address.id(), address.updatedAt() );
+    addEditControls( addressDiv, "Address", address.id(), address.updatedAt(),
+      address.comment() );
 
     addressDiv.element("br").attribute("clear","all");
   }
@@ -133,7 +139,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
     a.attribute("href", link.url());
     a.text(link.url());
 
-    addEditControls( linkDiv, "Link", link.id(), link.updatedAt() );
+    addEditControls( linkDiv, "Link", link.id(), link.updatedAt(),
+      link.comment() );
   }
 
   if ( !identity.comments().commentList().isEmpty() ) {
@@ -146,7 +153,8 @@ QString HtmlRenderer::personEditor( const Identity &identity )
       HtmlElement &p = commentDiv.element("p");
       p.text( comment.value() );
 
-      addEditControls( p, "Comment", comment.id(), comment.updatedAt(), false );
+      addEditControls( p, "Comment", comment.id(), comment.updatedAt(),
+        Comment(), false );
     }
   }
 
@@ -284,8 +292,20 @@ QString HtmlRenderer::timeAgo( const QDateTime &date )
 }
 
 void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
-  const QString &id, const QDateTime &updatedAt, bool commentEnabled )
+  const QString &id, const QDateTime &updatedAt,
+  const Comment &comment, bool commentEnabled )
 {
+  QString commentSrc = "file://" +
+    KStandardDirs::locate( "appdata", "comment.png" );
+
+  if ( !comment.value().isEmpty() ) {
+    HtmlElement &aImg = div.element("a");
+    aImg.c("comment-icon");
+    aImg.attribute("href",
+      QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
+    aImg.element("img").attribute("src",commentSrc);
+  }
+
   HtmlElement &span1 = div.element("span").c("edit-link first");
 
   HtmlElement &e = span1.element("a");
@@ -300,14 +320,11 @@ void HtmlRenderer::addEditControls( HtmlElement &div, const QString &typeName,
 
   HtmlElement &span3 = div.element("span").c("edit-link");
 
-  if ( commentEnabled ) {
-    HtmlElement &r = span3.element("b").element("a");
-    r.attribute("href", QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
-    r.text("Comment");
-  } else {
-    HtmlElement &r = span3.element("a");
-    r.attribute("href", QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
-    r.text("Comment");
+  if ( commentEnabled && comment.value().isEmpty() ) {
+    HtmlElement &aImg = span3.element("a");
+    aImg.attribute("href",
+      QString("polka:comment%1/%2").arg( typeName ).arg( id ) );
+    aImg.element("img").attribute("src",commentSrc);
   }
 
   HtmlElement &m = div.element("span").c("edit-link");
