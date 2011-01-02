@@ -49,6 +49,7 @@ class IdentityGraphicsView : public QWidget
   signals:
     void goBack();
     void newPerson();
+    void newGroup();
     void showPerson( const Polka::Identity & );
     void removePerson( const Polka::Identity &person,
       const Polka::Identity &group );

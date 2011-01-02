@@ -66,6 +66,11 @@ Polka::Identity::List PolkaModel::allIdentities()
   return m_polka.identityList();
 }
 
+Polka::Identity::List PolkaModel::groups()
+{
+  return m_groups;
+}
+
 Polka::Identity::List PolkaModel::persons()
 {
   // FIXME: Cache it in model.

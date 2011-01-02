@@ -67,6 +67,10 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( addLabel() ) );
 
+  button = new QPushButton( i18n("New Group") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SIGNAL( newGroup() ) );
+
   button = new QPushButton( i18n("New Person") );
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );

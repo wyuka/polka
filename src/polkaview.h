@@ -43,6 +43,7 @@ class PolkaView : public QWidget
 
   public slots:
     void newPerson();
+    void newSubGroup();
 
     void newGroup();
     void cloneGroup( const Polka::Identity &group );

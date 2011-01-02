@@ -11,6 +11,7 @@
 #include "identitygraphicsview.h"
 #include "grouplistview.h"
 #include "newpersondialog.h"
+#include "newgroupdialog.h"
 #include "settings.h"
 #include "gitremote.h"
 #include "personview.h"
@@ -71,6 +72,7 @@ PolkaView::PolkaView(QWidget *parent)
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
   m_listLayout->addWidget( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
+  connect( m_groupGraphicsView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );
   connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupGraphicsView, SIGNAL( showPerson( const Polka::Identity & ) ),
     SLOT( showPerson( const Polka::Identity & ) ) );
@@ -196,6 +198,19 @@ void PolkaView::removeGroup( const Polka::Identity &group )
 {
   m_model->removeGroup( group );
   showGroupList();
+}
+
+void PolkaView::newSubGroup()
+{
+  NewGroupDialog *dialog = new NewGroupDialog( m_model, this );
+  if ( dialog->exec() == QDialog::Accepted ) {
+    Polka::Identity group = dialog->identity();
+
+    KMessageBox::information( this, i18n("Adding group %1").arg(
+      group.name().value() ) );
+//    m_model->addPerson( identity, m_group );
+  }
+  return;
 }
 
 void PolkaView::newPerson()
