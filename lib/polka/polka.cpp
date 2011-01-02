@@ -660,11 +660,13 @@ Comments Comments::parseElement( const QDomElement &element, bool *ok )
 
 void Comments::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "comments" );
-  foreach( Comment e, commentList() ) {
-    e.writeElement( xml );
+  if ( !commentList().isEmpty() ) {
+    xml.writeStartElement( "comments" );
+    foreach( Comment e, commentList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -832,11 +834,13 @@ ExtendedAttributes ExtendedAttributes::parseElement( const QDomElement &element,
 
 void ExtendedAttributes::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "extended_attributes" );
-  foreach( Attribute e, attributeList() ) {
-    e.writeElement( xml );
+  if ( !attributeList().isEmpty() ) {
+    xml.writeStartElement( "extended_attributes" );
+    foreach( Attribute e, attributeList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -1052,11 +1056,13 @@ Links Links::parseElement( const QDomElement &element, bool *ok )
 
 void Links::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "links" );
-  foreach( Link e, linkList() ) {
-    e.writeElement( xml );
+  if ( !linkList().isEmpty() ) {
+    xml.writeStartElement( "links" );
+    foreach( Link e, linkList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -1145,11 +1151,13 @@ Relations Relations::parseElement( const QDomElement &element, bool *ok )
 
 void Relations::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "relations" );
-  foreach( Relation e, relationList() ) {
-    e.writeElement( xml );
+  if ( !relationList().isEmpty() ) {
+    xml.writeStartElement( "relations" );
+    foreach( Relation e, relationList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -1348,11 +1356,13 @@ Addresses Addresses::parseElement( const QDomElement &element, bool *ok )
 
 void Addresses::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "addresses" );
-  foreach( Address e, addressList() ) {
-    e.writeElement( xml );
+  if ( !addressList().isEmpty() ) {
+    xml.writeStartElement( "addresses" );
+    foreach( Address e, addressList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -1568,11 +1578,13 @@ Phones Phones::parseElement( const QDomElement &element, bool *ok )
 
 void Phones::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "phones" );
-  foreach( Phone e, phoneList() ) {
-    e.writeElement( xml );
+  if ( !phoneList().isEmpty() ) {
+    xml.writeStartElement( "phones" );
+    foreach( Phone e, phoneList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -1784,11 +1796,13 @@ Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
 
 void Pictures::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "pictures" );
-  foreach( Picture e, pictureList() ) {
-    e.writeElement( xml );
+  if ( !pictureList().isEmpty() ) {
+    xml.writeStartElement( "pictures" );
+    foreach( Picture e, pictureList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -1983,11 +1997,13 @@ Emails Emails::parseElement( const QDomElement &element, bool *ok )
 
 void Emails::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "emails" );
-  foreach( Email e, emailList() ) {
-    e.writeElement( xml );
+  if ( !emailList().isEmpty() ) {
+    xml.writeStartElement( "emails" );
+    foreach( Email e, emailList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
@@ -2120,11 +2136,13 @@ Groups Groups::parseElement( const QDomElement &element, bool *ok )
 
 void Groups::writeElement( QXmlStreamWriter &xml )
 {
-  xml.writeStartElement( "groups" );
-  foreach( Group e, groupList() ) {
-    e.writeElement( xml );
+  if ( !groupList().isEmpty() ) {
+    xml.writeStartElement( "groups" );
+    foreach( Group e, groupList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
   }
-  xml.writeEndElement();
 }
 
 
