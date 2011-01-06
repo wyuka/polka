@@ -78,7 +78,7 @@ Polka::Identity::List PolkaModel::persons()
   Polka::Identity::List persons;
 
   foreach( Polka::Identity identity, m_polka.identityList() ) {
-    if ( !identity.groups().groupList().isEmpty() ) {
+    if ( identity.type() != "group" ) {
       persons.append( identity );
     }
   }
@@ -165,21 +165,23 @@ void PolkaModel::setupGroups()
   m_groupMap.clear();
 
   foreach( Polka::Identity identity, m_polka.identityList() ) {
-    if ( identity.type() == "group" || identity.groups().groupList().isEmpty() ) {
-      if ( identity.type() != "group" ) {
-        identity.setType( "group" );
-        m_polka.insert( identity );
-      }
+    if ( identity.groups().groupList().isEmpty() &&
+         identity.type() != "group" ) {
+      identity.setType( "group" );
+      m_polka.insert( identity );
+    }
+      
+    if ( identity.type() == "group" ) {
       m_groups.append( identity );
-    } else {
-      foreach( Polka::Group group, identity.groups().groupList() ) {
-        if ( m_groupMap.contains( group.id() ) ) {
-          m_groupMap[ group.id() ].append( identity );
-        } else {
-          Polka::Identity::List identityList;
-          identityList.append( identity );
-          m_groupMap.insert( group.id(), identityList );
-        }
+    }
+    
+    foreach( Polka::Group group, identity.groups().groupList() ) {
+      if ( m_groupMap.contains( group.id() ) ) {
+        m_groupMap[ group.id() ].append( identity );
+      } else {
+        Polka::Identity::List identityList;
+        identityList.append( identity );
+        m_groupMap.insert( group.id(), identityList );
       }
     }
   }
@@ -228,12 +230,12 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity,
 
   setupGroups();
 
-  if ( identity.groups().groupList().isEmpty() ) {
+  if ( identity.type() == "group" ) {
     m_groupItemModel->updateData();
-  } else {
-    foreach( Polka::Group group, identity.groups().groupList() ) {
-      itemModel( group.id() )->updateData();
-    }
+  }
+
+  foreach( Polka::Group group, identity.groups().groupList() ) {
+    itemModel( group.id() )->updateData();
   }
 
   writeData( msg );
@@ -243,7 +245,7 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity,
   return identity;
 }
 
-void PolkaModel::addPerson( const Polka::Identity &person,
+void PolkaModel::addIdentity( const Polka::Identity &person,
   const Polka::Identity &group )
 {
   Polka::Identity p = person;
@@ -261,10 +263,10 @@ void PolkaModel::addPerson( const Polka::Identity &person,
   }
 }
 
-void PolkaModel::removePerson( const Polka::Identity &person,
+void PolkaModel::removeIdentity( const Polka::Identity &identity,
   const Polka::Identity &group )
 {
-  Polka::Group::List groups = person.groups().groupList();
+  Polka::Group::List groups = identity.groups().groupList();
   Polka::Group::List newGroups;
   
   foreach( Polka::Group g, groups ) {
@@ -273,23 +275,23 @@ void PolkaModel::removePerson( const Polka::Identity &person,
     }
   }
   
-  if ( newGroups.isEmpty() ) {
-    m_polka.remove( person );
+  if ( identity.type() != "group" && newGroups.isEmpty() ) {
+    m_polka.remove( identity );
     
     setupGroups();
     
-    emit identityRemoved( person );
+    emit identityRemoved( identity );
   } else {
-    Polka::Identity newPerson = person;
+    Polka::Identity newIdentity = identity;
   
     Polka::Groups gg;
     gg.setGroupList( newGroups );
-    newPerson.setGroups( gg );
-    m_polka.insert( newPerson );
+    newIdentity.setGroups( gg );
+    m_polka.insert( newIdentity );
     
     setupGroups();
     
-    emit identityChanged( newPerson );
+    emit identityChanged( newIdentity );
   }
 }
 
@@ -297,7 +299,7 @@ void PolkaModel::removeGroup( const Polka::Identity &group )
 {
   Polka::Identity::List members = m_groupMap.value( group.id() );
   foreach( Polka::Identity member, members ) {
-    removePerson( member, group );
+    removeIdentity( member, group );
   }
   m_polka.remove( group );
   m_polka.remove( m_polka.findGroupView( group.id() ) );

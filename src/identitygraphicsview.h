@@ -50,8 +50,8 @@ class IdentityGraphicsView : public QWidget
     void goBack();
     void newPerson();
     void newGroup();
-    void showPerson( const Polka::Identity & );
-    void removePerson( const Polka::Identity &person,
+    void showIdentity( const Polka::Identity & );
+    void removeIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
     void cloneGroup( const Polka::Identity &group );
     void removeGroup( const Polka::Identity &group );
@@ -73,7 +73,7 @@ class IdentityGraphicsView : public QWidget
     void resetLayout();
   
     void createItems();
-    void slotRemovePerson( const Polka::Identity & );
+    void slotRemoveIdentity( const Polka::Identity & );
 
     void addLabel();
     void addLabel( const QPointF & );

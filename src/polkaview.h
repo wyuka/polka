@@ -52,8 +52,9 @@ class PolkaView : public QWidget
     void showGroupList();
     void showView();
     void showGroupView( const Polka::Identity & );
+    void showIdentity( const Polka::Identity & );
     void showPerson( const Polka::Identity & );
-    void removePerson( const Polka::Identity &person,
+    void removeIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
 
   signals:

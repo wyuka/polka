@@ -33,6 +33,17 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
   setBrush( Qt::white );
 
+  if ( identity.type() == "group" ) {
+    int circleSize = itemSize + 14;
+    QGraphicsEllipseItem *groupCircle = new QGraphicsEllipseItem( this );
+    groupCircle->setRect( -circleSize/2, -circleSize/2,
+      circleSize, circleSize );
+    QPen pen;
+    pen.setBrush( Qt::white );
+    pen.setWidth( 4 );
+    groupCircle->setPen( pen );
+  }
+  
   QPen pen;
   pen.setBrush( Qt::NoBrush );
   setPen( pen );
@@ -65,7 +76,12 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
 
   m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
   m_checkMenuItem = m_fanMenu->addItem( i18n("Check") );
-  m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
+  if ( identity.type() == "group" ) {
+    m_showMenuItem = m_fanMenu->addItem( i18n("Go to") );
+//    m_groupShowMenuItem = m_fanMenu->addItem( i18n("Show") );
+  } else {
+    m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
+  }
   m_fanMenu->setupItems();
 
   setAcceptHoverEvents( true );
@@ -134,9 +150,9 @@ void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 void IdentityItem::slotItemSelected( FanMenu::Item *item )
 {
   if ( item == m_removeMenuItem ) {
-    emit removePerson( m_identity );
+    emit removeIdentity( m_identity );
   } else if ( item == m_showMenuItem ) {
-    emit showPerson( m_identity );
+    emit showIdentity( m_identity );
   } else if ( item == m_checkMenuItem ) {
     checkItem();
   }

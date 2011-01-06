@@ -150,10 +150,10 @@ void IdentityGraphicsView::createItems()
     IdentityItem *item = new IdentityItem( m_model, identity );
     m_items.append( item );
 
-    connect( item, SIGNAL( showPerson( const Polka::Identity & ) ),
-      SIGNAL( showPerson( const Polka::Identity & ) ) );
-    connect( item, SIGNAL( removePerson( const Polka::Identity & ) ),
-      SLOT( slotRemovePerson( const Polka::Identity & ) ) );
+    connect( item, SIGNAL( showIdentity( const Polka::Identity & ) ),
+      SIGNAL( showIdentity( const Polka::Identity & ) ) );
+    connect( item, SIGNAL( removeIdentity( const Polka::Identity & ) ),
+      SLOT( slotRemoveIdentity( const Polka::Identity & ) ) );
 
     connect( item, SIGNAL( itemMoved( const Polka::Identity &, const QPointF & ) ),
       SLOT( savePosition( const Polka::Identity &, const QPointF & ) ) );
@@ -201,9 +201,9 @@ void IdentityGraphicsView::setGroupName( const QString &name )
   m_groupNameLabel->setText( "<b>" + name + "</b>" );
 }
 
-void IdentityGraphicsView::slotRemovePerson( const Polka::Identity &identity )
+void IdentityGraphicsView::slotRemoveIdentity( const Polka::Identity &identity )
 {
-  emit removePerson( identity, m_group );
+  emit removeIdentity( identity, m_group );
 }
 
 void IdentityGraphicsView::savePosition( const Polka::Identity &identity,

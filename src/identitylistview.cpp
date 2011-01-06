@@ -83,5 +83,5 @@ void IdentityListView::slotItemClicked( const QModelIndex &index )
 {
   Polka::Identity identity = m_itemModel->identity( index );
 
-  emit showPerson( identity );
+  emit showIdentity( identity );
 }

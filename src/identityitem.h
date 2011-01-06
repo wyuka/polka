@@ -47,8 +47,10 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void checkItem();
 
   signals:
-    void showPerson( const Polka::Identity & );
-    void removePerson( const Polka::Identity & );
+    void showGroup( const Polka::Identity & );
+  
+    void showIdentity( const Polka::Identity & );
+    void removeIdentity( const Polka::Identity & );
 
     void itemMoved( const Polka::Identity &, const QPointF & );
     
@@ -82,6 +84,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     FanMenu *m_fanMenu;
     FanMenu::Item *m_removeMenuItem;
     FanMenu::Item *m_showMenuItem;
+    FanMenu::Item *m_groupShowMenuItem;
     FanMenu::Item *m_checkMenuItem;
 
     QPointF m_movePos;

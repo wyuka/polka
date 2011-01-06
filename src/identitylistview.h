@@ -42,7 +42,7 @@ class IdentityListView : public QWidget
   signals:
     void goBack();
     void newPerson();
-    void showPerson( const Polka::Identity & );
+    void showIdentity( const Polka::Identity & );
 
   protected slots:
     void slotItemClicked( const QModelIndex &index );

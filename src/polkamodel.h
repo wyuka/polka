@@ -52,9 +52,10 @@ class PolkaModel : public QObject
     // FIXME: maybe replace by read-only polka access
     Polka::Identity::List allIdentities();
 
-    void addPerson( const Polka::Identity &person,
+    void addIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
-    void removePerson( const Polka::Identity &person,
+
+    void removeIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
 
     void removeGroup( const Polka::Identity &group );
