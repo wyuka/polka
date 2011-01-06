@@ -1,10 +1,10 @@
 = Polka
 
-* Subgroups
+* Going back from subgroup to parent group
+* Explode sub group
+* Editing of group names (maybe use special personviewer?)
 
 * Merge subgroups and groups
-
-* Indicate if a comment for a field is there (e.g. a speech bubble)
 
 * Hide labels in compact view
 * Keep compact view when editing comment
@@ -49,3 +49,4 @@ work.
   (e.g. bool isEmpty() { m_id.isEmpty(); })
 * Recognize bool attributes (position.moved)
 * Instead of List create pluralized forms.
+* Support enums
