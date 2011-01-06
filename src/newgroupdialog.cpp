@@ -78,6 +78,7 @@ Polka::Identity NewGroupDialog::identity()
 {
   if ( !m_matchList || m_matchList->selectionModel()->selectedIndexes().isEmpty() ) {
     Polka::Identity identity;
+    identity.setType( "group" );
     Polka::Name name;
     name.setValue( m_nameInput->text() );
     identity.setName( name );

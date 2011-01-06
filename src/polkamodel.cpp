@@ -165,7 +165,11 @@ void PolkaModel::setupGroups()
   m_groupMap.clear();
 
   foreach( Polka::Identity identity, m_polka.identityList() ) {
-    if ( identity.groups().groupList().isEmpty() ) {
+    if ( identity.type() == "group" || identity.groups().groupList().isEmpty() ) {
+      if ( identity.type() != "group" ) {
+        identity.setType( "group" );
+        m_polka.insert( identity );
+      }
       m_groups.append( identity );
     } else {
       foreach( Polka::Group group, identity.groups().groupList() ) {
