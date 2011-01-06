@@ -656,6 +656,8 @@ class POLKA_EXPORT Identity
 
   public:
     bool isValid() const;
+    void setType( const QString &v );
+    QString type() const;
     void setId( const QString &v );
     QString id() const;
     void setGroups( const Groups &v );
@@ -687,6 +689,7 @@ class POLKA_EXPORT Identity
     void writeElement( QXmlStreamWriter &xml );
 
   private:
+    QString mType;
     QString mId;
     Groups mGroups;
     Name mName;

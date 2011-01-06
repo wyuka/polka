@@ -570,9 +570,15 @@ void Comment::writeElement( QXmlStreamWriter &xml )
 {
   if ( !value().isEmpty() ) {
     xml.writeStartElement( "comment" );
-    xml.writeAttribute( "id", id() );
-    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !id().isEmpty() ) {
+      xml.writeAttribute( "id", id() );
+    }
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
     xml.writeCharacters( value() );
     xml.writeEndElement();
   }
@@ -778,9 +784,15 @@ Attribute Attribute::parseElement( const QDomElement &element, bool *ok )
 void Attribute::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "attribute" );
-  xml.writeAttribute( "type", type() );
-  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !type().isEmpty() ) {
+      xml.writeAttribute( "type", type() );
+    }
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
   if ( !key().isEmpty() ) {
     xml.writeTextElement(  "key", key() );
   }
@@ -959,8 +971,12 @@ Link Link::parseElement( const QDomElement &element, bool *ok )
 void Link::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "link" );
-  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1262,8 +1278,12 @@ Address Address::parseElement( const QDomElement &element, bool *ok )
 void Address::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "address" );
-  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1481,8 +1501,12 @@ Phone Phone::parseElement( const QDomElement &element, bool *ok )
 void Phone::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "phone" );
-  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1701,9 +1725,15 @@ Picture Picture::parseElement( const QDomElement &element, bool *ok )
 void Picture::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "picture" );
-  xml.writeAttribute( "picture_type", pictureType() );
-  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !pictureType().isEmpty() ) {
+      xml.writeAttribute( "picture_type", pictureType() );
+    }
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -1905,9 +1935,15 @@ Email Email::parseElement( const QDomElement &element, bool *ok )
 void Email::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "email" );
-  xml.writeAttribute( "id", id() );
-  xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-  xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !id().isEmpty() ) {
+      xml.writeAttribute( "id", id() );
+    }
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
   if ( !emailAddress().isEmpty() ) {
     xml.writeTextElement(  "email_address", emailAddress() );
   }
@@ -2206,8 +2242,12 @@ void Name::writeElement( QXmlStreamWriter &xml )
 {
   if ( !value().isEmpty() ) {
     xml.writeStartElement( "name" );
-    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
     xml.writeCharacters( value() );
     xml.writeEndElement();
   }
@@ -2274,8 +2314,12 @@ void Birthday::writeElement( QXmlStreamWriter &xml )
 {
   if ( value().isValid() ) {
     xml.writeStartElement( "birthday" );
-    xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
-    xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
     xml.writeCharacters( value().toString( "yyyyMMdd" ) );
     xml.writeEndElement();
   }
@@ -2285,6 +2329,16 @@ void Birthday::writeElement( QXmlStreamWriter &xml )
 bool Identity::isValid() const
 {
   return !mId.isEmpty();
+}
+
+void Identity::setType( const QString &v )
+{
+  mType = v;
+}
+
+QString Identity::type() const
+{
+  return mType;
 }
 
 void Identity::setId( const QString &v )
@@ -2480,6 +2534,7 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
     }
   }
 
+  result.setType( element.attribute( "type" ) );
 
   if ( ok ) *ok = true;
   return result;
@@ -2488,6 +2543,9 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
 void Identity::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "identity" );
+    if ( !type().isEmpty() ) {
+      xml.writeAttribute( "type", type() );
+    }
   if ( !id().isEmpty() ) {
     xml.writeTextElement(  "id", id() );
   }
@@ -2658,7 +2716,9 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
 void Polka::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "polka" );
-  xml.writeAttribute( "schemaVersion", QString::number( schemaVersion() ) );
+    if ( !QString::number( schemaVersion() ).isEmpty() ) {
+      xml.writeAttribute( "schemaVersion", QString::number( schemaVersion() ) );
+    }
   foreach( Identity e, identityList() ) {
     e.writeElement( xml );
   }
