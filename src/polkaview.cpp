@@ -60,7 +60,7 @@ PolkaView::PolkaView(QWidget *parent)
   m_listLayout->addWidget( m_groupListView );
   connect( m_groupListView, SIGNAL( groupClicked( const Polka::Identity & ) ),
     SLOT( showGroupView( const Polka::Identity & ) ) );
-  connect( m_groupListView, SIGNAL( newGroup() ), SLOT( newGroup() ) );
+  connect( m_groupListView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );
 
   m_groupView = new IdentityListView( m_model );
   m_listLayout->addWidget( m_groupView );
@@ -154,20 +154,14 @@ void PolkaView::writeData( const QString &msg )
   }
 }
 
-void PolkaView::newGroup()
+void PolkaView::newSubGroup()
 {
-  bool ok;
-  QString name = KInputDialog::getText( i18n("New Group"),
-    i18n("Enter name of group to add"), QString(), &ok );
-  if ( ok ) {
-    Polka::Identity identity;
-    identity.setType( "group" );
-    Polka::Name n;
-    n.setValue( name );
-    identity.setName( n );
-    
-    m_model->insert( identity, i18n("Create group %1").arg( name ) );
+  NewGroupDialog *dialog = new NewGroupDialog( m_model, this );
+  if ( dialog->exec() == QDialog::Accepted ) {
+    Polka::Identity group = dialog->identity();
+    m_model->addIdentity( group, m_group );
   }
+  return;
 }
 
 void PolkaView::cloneGroup( const Polka::Identity &group )
@@ -199,16 +193,6 @@ void PolkaView::removeGroup( const Polka::Identity &group )
 {
   m_model->removeGroup( group );
   showRoot();
-}
-
-void PolkaView::newSubGroup()
-{
-  NewGroupDialog *dialog = new NewGroupDialog( m_model, this );
-  if ( dialog->exec() == QDialog::Accepted ) {
-    Polka::Identity group = dialog->identity();
-    m_model->addIdentity( group, m_group );
-  }
-  return;
 }
 
 void PolkaView::newPerson()

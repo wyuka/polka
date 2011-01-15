@@ -45,7 +45,6 @@ class PolkaView : public QWidget
     void newPerson();
     void newSubGroup();
 
-    void newGroup();
     void cloneGroup( const Polka::Identity &group );
     void removeGroup( const Polka::Identity &group );
 
