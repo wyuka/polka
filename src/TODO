@@ -4,6 +4,8 @@
 
 * Don't show root group in group selector.
 
+* Show name labels for identities, which only have the default picture.
+
 * Going back from subgroup to parent group
 * Explode sub group
 * Create sub group from checked identities
