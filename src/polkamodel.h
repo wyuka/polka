@@ -121,6 +121,8 @@ class PolkaModel : public QObject
 
     QMap<QString,QPixmap> m_pictures;
     mutable QMap<QString,LocalPicture *> m_localPictures;
+
+    QPixmap m_defaultGroupPixmap;
 };
 
 #endif

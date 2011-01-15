@@ -27,6 +27,7 @@
 
 #include <KRandom>
 #include <KLocale>
+#include <KStandardDirs>
 
 #include <QDir>
 #include <QDebug>
@@ -36,6 +37,9 @@ PolkaModel::PolkaModel( QObject *parent )
     m_groupItemModel( 0 ),
     m_commitCommand( 0 )
 {
+  QString picPath = KStandardDirs::locate( "appdata", "polka_group.png" );
+  m_defaultGroupPixmap = QPixmap( picPath );
+
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
 
   m_gitRemote = new GitRemote( m_gitDir );
@@ -319,7 +323,9 @@ QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
 
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
-  if ( !pictures.isEmpty() ) {
+  if ( pictures.isEmpty() ) {
+    if ( identity.type() == "group" ) return m_defaultGroupPixmap;
+  } else {
     localPicture->setPicture( pictures.first() );
   }
 
