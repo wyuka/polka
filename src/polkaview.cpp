@@ -64,14 +64,14 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_groupView = new IdentityListView( m_model );
   m_listLayout->addWidget( m_groupView );
-  connect( m_groupView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
+  connect( m_groupView, SIGNAL( goBack() ), SLOT( showRoot() ) );
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupView, SIGNAL( showIdentity( const Polka::Identity & ) ),
     SLOT( showIdentity( const Polka::Identity & ) ) );
 
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
   m_listLayout->addWidget( m_groupGraphicsView );
-  connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showGroupList() ) );
+  connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( showRoot() ) );
   connect( m_groupGraphicsView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );
   connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupGraphicsView, SIGNAL( showIdentity( const Polka::Identity & ) ),
@@ -93,7 +93,7 @@ PolkaView::PolkaView(QWidget *parent)
 
   readConfig();
 
-  showGroupList();
+  showRoot();
 
   readData();
 }
@@ -134,7 +134,7 @@ void PolkaView::readData()
   m_groupListView->setItemModel( m_model->groupItemModel() );
 
   if ( Settings::shownGroup().isEmpty() ) {
-    showGroupList();
+    showRoot();
   } else {
     Polka::Identity group = m_model->findIdentity( Settings::shownGroup() );
     showGroupView( group );
@@ -198,7 +198,7 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
 void PolkaView::removeGroup( const Polka::Identity &group )
 {
   m_model->removeGroup( group );
-  showGroupList();
+  showRoot();
 }
 
 void PolkaView::newSubGroup()
@@ -231,6 +231,11 @@ void PolkaView::showGroupList()
   m_personView->hide();
 }
 
+void PolkaView::showRoot()
+{
+  showGroupView( m_model->rootGroup() );
+}
+
 void PolkaView::showGroupView( const Polka::Identity &group )
 {
   m_group = group;
@@ -249,7 +254,7 @@ void PolkaView::showGroupView( const Polka::Identity &group )
 void PolkaView::showView()
 {
   if ( m_group.id().isEmpty() ) {
-    showGroupList();
+    showRoot();
   } else {
     showGroupView( m_group );
   }

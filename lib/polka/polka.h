@@ -704,6 +704,21 @@ class POLKA_EXPORT Identity
     Comments mComments;
 };
 
+class POLKA_EXPORT Root
+{
+  public:
+    void setGroup( const Group &v );
+    Group group() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Root parseElement( const QDomElement &element, bool *ok );
+    void writeElement( QXmlStreamWriter &xml );
+
+  private:
+    Group mGroup;
+};
+
 class POLKA_EXPORT Polka
 {
   public:
@@ -712,6 +727,8 @@ class POLKA_EXPORT Polka
   public:
     void setSchemaVersion( int v );
     int schemaVersion() const;
+    void setRoot( const Root &v );
+    Root root() const;
     void addIdentity( const Identity &v );
     void setIdentityList( const Identity::List &v );
     Identity::List identityList() const;
@@ -735,6 +752,7 @@ class POLKA_EXPORT Polka
 
   private:
     int mSchemaVersion;
+    Root mRoot;
     Identity::List mIdentityList;
     GroupView::List mGroupViewList;
 };

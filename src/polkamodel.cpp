@@ -70,6 +70,11 @@ Polka::Identity::List PolkaModel::allIdentities()
   return m_polka.identityList();
 }
 
+Polka::Identity PolkaModel::rootGroup()
+{
+  return m_rootGroup;
+}
+
 Polka::Identity::List PolkaModel::groups()
 {
   return m_groups;
@@ -158,6 +163,25 @@ bool PolkaModel::readData()
     }
   }
 
+  Polka::Group rootGroup = m_polka.root().group();
+
+  m_rootGroup = m_polka.findIdentity( rootGroup.id() );
+  if ( !m_rootGroup.isValid() ) {
+    m_rootGroup.setId( KRandom::randomString( 10 ) );
+    
+    m_rootGroup.setType( "group" );
+    Polka::Name n;
+    n.setValue( i18n("Your people") );
+    m_rootGroup.setName( n );
+    
+    m_polka.insert( m_rootGroup );
+
+    Polka::Root root;
+    rootGroup.setId( m_rootGroup.id() );
+    root.setGroup( rootGroup );
+    m_polka.setRoot( root );
+  }
+  
   setupGroups();
 
   return true;

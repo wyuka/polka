@@ -2564,6 +2564,49 @@ void Identity::writeElement( QXmlStreamWriter &xml )
 }
 
 
+void Root::setGroup( const Group &v )
+{
+  mGroup = v;
+}
+
+Group Root::group() const
+{
+  return mGroup;
+}
+
+Root Root::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "root" ) {
+    qCritical() << "Expected 'root', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Root();
+  }
+
+  Root result = Root();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "group" ) {
+      bool ok;
+      Group o = Group::parseElement( e, &ok );
+      if ( ok ) result.setGroup( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+void Root::writeElement( QXmlStreamWriter &xml )
+{
+  xml.writeStartElement( "root" );
+  group().writeElement( xml );
+  xml.writeEndElement();
+}
+
+
 void Polka::setSchemaVersion( int v )
 {
   mSchemaVersion = v;
@@ -2572,6 +2615,16 @@ void Polka::setSchemaVersion( int v )
 int Polka::schemaVersion() const
 {
   return mSchemaVersion;
+}
+
+void Polka::setRoot( const Root &v )
+{
+  mRoot = v;
+}
+
+Root Polka::root() const
+{
+  return mRoot;
 }
 
 void Polka::addIdentity( const Identity &v )
@@ -2695,7 +2748,12 @@ Polka Polka::parseElement( const QDomElement &element, bool *ok )
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "identity" ) {
+    if ( e.tagName() == "root" ) {
+      bool ok;
+      Root o = Root::parseElement( e, &ok );
+      if ( ok ) result.setRoot( o );
+    }
+    else if ( e.tagName() == "identity" ) {
       bool ok;
       Identity o = Identity::parseElement( e, &ok );
       if ( ok ) result.addIdentity( o );
@@ -2719,6 +2777,7 @@ void Polka::writeElement( QXmlStreamWriter &xml )
     if ( !QString::number( schemaVersion() ).isEmpty() ) {
       xml.writeAttribute( "schemaVersion", QString::number( schemaVersion() ) );
     }
+  root().writeElement( xml );
   foreach( Identity e, identityList() ) {
     e.writeElement( xml );
   }
