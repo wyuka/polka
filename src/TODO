@@ -1,5 +1,9 @@
 = Polka
 
+* History browsing, go to root, back, forward
+
+* Don't show root group in group selector.
+
 * Going back from subgroup to parent group
 * Explode sub group
 * Create sub group from checked identities
