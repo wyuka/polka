@@ -1,8 +1,23 @@
 /*
- * polkaview.h
- *
- * Copyright (C) 2009 Cornelius Schumacher <schumacher@kde.org>
- */
+    This file is part of KDE.
+
+    Copyright (C) 2009-2011 Cornelius Schumacher <schumacher@kde.org>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+    USA.
+*/
 #ifndef POLKAVIEW_H
 #define POLKAVIEW_H
 
@@ -17,16 +32,7 @@ class IdentityListView;
 class GroupListView;
 class IdentityGraphicsView;
 class PersonView;
-
-/**
- * This is the main view class for Polka.  Most of the non-menu,
- * non-toolbar, and non-statusbar (e.g., non frame) GUI code should go
- * here.
- *
- * @short Main view
- * @author Cornelius Schumacher <schumacher@kde.org>
- * @version 0.1
- */
+class SettingsWidget;
 
 class PolkaView : public QWidget
 {
@@ -62,19 +68,7 @@ class PolkaView : public QWidget
   signals:
     void dataWritten();
   
-    /**
-     * Use this signal to change the content of the statusbar
-     */
-    void signalChangeStatusbar(const QString& text);
-
-    /**
-     * Use this signal to change the content of the caption
-     */
-    void signalChangeCaption(const QString& text);
-
   protected slots:
-    void slotSyncingCheckChanged();
-    
     void finishShowPerson();
     void closePersonView();
 
@@ -83,8 +77,7 @@ class PolkaView : public QWidget
 
     Polka::Identity m_group;
 
-    QCheckBox *m_graphicsModeCheck;
-    QCheckBox *m_syncingCheck;
+    SettingsWidget *m_settingsWidget;
     QStackedLayout *m_listLayout;
     GroupListView *m_groupListView;
     IdentityListView *m_groupView;

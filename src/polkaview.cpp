@@ -1,8 +1,23 @@
 /*
- * polkaview.cpp
- *
- * Copyright (C) 2009 Cornelius Schumacher <schumacher@kde.org>
- */
+    This file is part of KDE.
+
+    Copyright (C) 2009-2011 Cornelius Schumacher <schumacher@kde.org>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+    USA.
+*/
 
 #include "polkaview.h"
 
@@ -15,6 +30,7 @@
 #include "settings.h"
 #include "gitremote.h"
 #include "personview.h"
+#include "settingswidget.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -28,25 +44,11 @@ PolkaView::PolkaView(QWidget *parent)
   
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
-  QBoxLayout *controlLayout = new QHBoxLayout;
-  topLayout->addLayout( controlLayout );
+  m_settingsWidget = new SettingsWidget( m_model );
+  topLayout->addWidget( m_settingsWidget );
+  connect( m_settingsWidget, SIGNAL( showView() ), SLOT( showView() ) );
 
-  m_syncingCheck = new QCheckBox( i18n("Syncing enabled") );
-  controlLayout->addWidget( m_syncingCheck );
-  connect( m_syncingCheck, SIGNAL( stateChanged( int ) ),
-    SLOT( slotSyncingCheckChanged() ) );
-
-  QLabel *label = new QLabel;
-  controlLayout->addWidget( label );
-  connect( m_model->gitRemote(), SIGNAL( statusChanged( const QString & ) ),
-    label, SLOT( setText( const QString & ) ) );
-
-  controlLayout->addStretch( 1 );
-
-  m_graphicsModeCheck = new QCheckBox( i18n("Use fancy view") );
-  controlLayout->addWidget( m_graphicsModeCheck );
-  connect( m_graphicsModeCheck, SIGNAL( stateChanged( int ) ),
-    SLOT( showView() ) );
+  m_settingsWidget->hide();
 
   QSplitter *viewSplitter = new QSplitter;
   topLayout->addWidget( viewSplitter );
@@ -108,21 +110,16 @@ void PolkaView::readConfig()
 {
   Settings::self()->readConfig();
 
-  m_syncingCheck->setChecked( Settings::remoteSyncingEnabled() );
-  m_graphicsModeCheck->setChecked( Settings::fancyMode() );
+  m_settingsWidget->readConfig();
 }
 
 void PolkaView::writeConfig()
 {
-  Settings::setFancyMode( m_graphicsModeCheck->isChecked() );
+  m_settingsWidget->writeConfig();
+
   Settings::setShownGroup( m_group.id() );
 
   Settings::self()->writeConfig();
-}
-
-void PolkaView::slotSyncingCheckChanged()
-{
-  Settings::setRemoteSyncingEnabled( m_syncingCheck->isChecked() );
 }
 
 void PolkaView::readData()
@@ -226,7 +223,7 @@ void PolkaView::showGroupView( const Polka::Identity &group )
 {
   m_group = group;
 
-  if ( m_graphicsModeCheck->isChecked() ) {
+  if ( m_settingsWidget->fancyMode() ) {
     m_groupGraphicsView->setGroup( group );
     m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
@@ -291,7 +288,7 @@ void PolkaView::closePersonView()
 
 void PolkaView::showSettings()
 {
-  qDebug() << "SHOW SETTINGS";
+  m_settingsWidget->show();
 }
 
 #include "polkaview.moc"
