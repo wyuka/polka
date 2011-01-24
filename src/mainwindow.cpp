@@ -1,16 +1,30 @@
 /*
- * Copyright (C) 2008 Cornelius Schumacher <schumacher@kde.org>
- */
+    This file is part of KDE.
+
+    Copyright (C) 2009-2011 Cornelius Schumacher <schumacher@kde.org>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+    USA.
+*/
+
 #include "mainwindow.h"
 #include "polkaview.h"
 #include "settings.h"
 
-#include <QtGui/QDropEvent>
-#include <QtGui/QPainter>
-#include <QtGui/QPrinter>
-
-#include <kconfigdialog.h>
 #include <kstatusbar.h>
+#include <kmenubar.h>
 
 #include <kaction.h>
 #include <kactioncollection.h>
@@ -19,28 +33,17 @@
 #include <KDE/KLocale>
 
 MainWindow::MainWindow()
-    : KXmlGuiWindow(),
-      m_view(new PolkaView(this)),
-      m_printer(0), m_closing( false )
+  : KXmlGuiWindow(), m_closing( false )
 {
-    // accept dnd
-    setAcceptDrops(true);
+  m_view = new PolkaView( this );
+  setCentralWidget( m_view );
 
-    // tell the KXmlGuiWindow that this is indeed the main widget
-    setCentralWidget(m_view);
+  setupActions();
 
-    // then, setup our actions
-    setupActions();
+  setupGUI();
 
-    // add a status bar
-    statusBar()->show();
-
-    // a call to KXmlGuiWindow::setupGUI() populates the GUI
-    // with actions, using KXMLGUI.
-    // It also applies the saved mainwindow settings, if any, and ask the
-    // mainwindow to automatically save settings if changed: window size,
-    // toolbar position, icon size, etc.
-    setupGUI();
+  statusBar()->hide();
+  menuBar()->hide();
 
   connect( m_view, SIGNAL( dataWritten() ), SLOT( slotDataWritten() ) );
 }
@@ -51,39 +54,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupActions()
 {
-    KStandardAction::openNew(this, SLOT(fileNew()), actionCollection());
-    KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
-
-    KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
-}
-
-void MainWindow::fileNew()
-{
-    // this slot is called whenever the File->New menu is selected,
-    // the New shortcut is pressed (usually CTRL+N) or the New toolbar
-    // button is clicked
-
-    // create a new window
-    (new MainWindow)->show();
-}
-
-void MainWindow::optionsPreferences()
-{
-    // The preference dialog is derived from prefs_base.ui
-    //
-    // compare the names of the widgets in the .ui file
-    // to the names of the variables in the .kcfg file
-    //avoid to have 2 dialogs shown
-    if ( KConfigDialog::showDialog( "settings" ) )  {
-        return;
-    }
-    KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
-    QWidget *generalSettingsDlg = new QWidget;
-    ui_prefs_base.setupUi(generalSettingsDlg);
-    dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
-    connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
-    dialog->show();
+  KStandardAction::quit( qApp, SLOT( closeAllWindows() ), actionCollection() );
 }
 
 bool MainWindow::queryClose()
@@ -100,5 +71,3 @@ void MainWindow::slotDataWritten()
   if ( m_closing ) deleteLater();
   m_view->writeConfig();
 }
-
-#include "mainwindow.moc"
