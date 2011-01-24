@@ -21,6 +21,9 @@
 
 * Make magic menu only show up, when a hidden option is set.
 
+* Maybe make menu disks grow bigger when menu is shown to prevent accidently
+  hiding the menu again by hitting the space between menu elements.
+
 * Show nice text for links.
 
 * Review and fix and prettify button and control structure.

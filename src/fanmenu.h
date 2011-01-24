@@ -55,13 +55,26 @@ class FanMenu : public QObject, public QGraphicsLineItem
 
     bool isCloseTo( const QPointF & );
 
+    void setRadius( qreal );
     qreal radius() const;
+
+    void setStartAngle( int angle );
+    void setEndAngle( int angle );
+
+    void setSpacing( int );
 
   signals:
     void itemSelected( FanMenu::Item * );
 
   private:
     QList<Item *> m_items;
+
+    int m_startAngle;
+    int m_endAngle;
+
+    int m_spacing;
+
+    qreal m_radius;
 };
 
 #endif

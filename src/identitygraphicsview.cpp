@@ -185,11 +185,11 @@ void IdentityGraphicsView::createItems()
 void IdentityGraphicsView::positionMenuItems()
 {
   QRect viewportRect = m_view->viewport()->rect();
-  QPoint lowerRight( viewportRect.width(), viewportRect.height() );
-  QPointF lowerRightScene = m_view->mapToScene( lowerRight );
+  QPoint upperRight( viewportRect.width(), 0 );
+  QPointF upperRightScene = m_view->mapToScene( upperRight );
 
-  m_mainMenu->setPos( lowerRightScene.x() - 150, lowerRightScene.y() - 50 );
-  m_magicMenu->setPos( lowerRightScene.x() - 150, lowerRightScene.y() - 130 );
+  m_mainMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 50 );
+  m_magicMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 130 );
 }
 
 void IdentityGraphicsView::positionAbsoluteItems()

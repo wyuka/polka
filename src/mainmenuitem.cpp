@@ -29,7 +29,7 @@ MainMenuItem::MainMenuItem()
   int itemSize = 55;
 
   setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
-  setBrush( Qt::white );
+  setBrush( QColor( 230,229,229 ) );
 
   QPen pen;
   pen.setBrush( Qt::NoBrush );
@@ -47,13 +47,17 @@ MainMenuItem::MainMenuItem()
     SLOT( slotItemSelected( FanMenu::Item * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
+  m_fanMenu->setStartAngle( 170 );
+  m_fanMenu->setEndAngle( 280 );
+  m_fanMenu->setRadius( 220 );
+  m_fanMenu->setSpacing( 5 );
 
   m_cloneGroupMenuItem = m_fanMenu->addItem( i18n("Clone\ngroup") );
   m_removeGroupMenuItem = m_fanMenu->addItem( i18n("Remove\ngroup") );
   m_addGroupMenuItem = m_fanMenu->addItem( i18n("Add\ngroup") );
   m_addPersonMenuItem = m_fanMenu->addItem( i18n("Add\nperson") );
 
-  m_fanMenu->setupItems( 80 );
+  m_fanMenu->setupItems( 90 );
 
   setAcceptHoverEvents( true );
 }

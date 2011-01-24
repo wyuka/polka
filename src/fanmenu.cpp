@@ -47,26 +47,30 @@ void FanMenu::Item::setElement( FanMenuElement *element )
 
 
 FanMenu::FanMenu( QGraphicsItem *parent )
-  : QGraphicsLineItem( parent )
+  : QGraphicsLineItem( parent ), m_startAngle( -5 ), m_endAngle( 185 ),
+    m_spacing( 10 ), m_radius( 90 )
 {
+}
+
+void FanMenu::setRadius( qreal radius )
+{
+  m_radius = radius;
 }
 
 qreal FanMenu::radius() const
 {
-  return 90;
+  return m_radius;
 }
 
 void FanMenu::setupItems( int coverage )
 {
-  int startAngle = -5;
-  int endAngle = 185;
-  int spacing = 10;
   int count = m_items.count();
  
-  int width = ( ( endAngle - startAngle ) - ( count - 1 ) * spacing ) / count;
+  int width = ( ( m_endAngle - m_startAngle ) - ( count - 1 ) * m_spacing ) /
+    count;
 
   for( int i = 0; i < count; ++i ) {
-    int angle = startAngle + i * width + i * spacing;
+    int angle = m_startAngle + i * width + i * m_spacing;
     FanMenuElement *element = new FanMenuElement( this );
     element->setup( m_items[i], angle, angle + width, coverage );
   }
@@ -87,4 +91,19 @@ void FanMenu::emitItemSelected( Item *item )
 bool FanMenu::isCloseTo( const QPointF &point )
 {
   return QLineF( point, pos() ).length() <= radius() + 10;
+}
+
+void FanMenu::setStartAngle( int angle )
+{
+  m_startAngle = angle;
+}
+
+void FanMenu::setEndAngle( int angle )
+{
+  m_endAngle = angle;
+}
+
+void FanMenu::setSpacing( int spacing )
+{
+  m_spacing = spacing;
 }

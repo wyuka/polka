@@ -29,7 +29,7 @@ MagicMenuItem::MagicMenuItem()
   int itemSize = 55;
 
   setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
-  setBrush( Qt::white );
+  setBrush( QColor( 230,229,229 ) );
 
   QPen pen;
   pen.setBrush( Qt::NoBrush );
@@ -47,6 +47,8 @@ MagicMenuItem::MagicMenuItem()
     SLOT( slotItemSelected( FanMenu::Item * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
+  m_fanMenu->setStartAngle( 80 );
+  m_fanMenu->setEndAngle( 280 );
 
   m_resetLayoutMenuItem = m_fanMenu->addItem( i18n("Reset\nlayout") );
   m_settingsMenuItem = m_fanMenu->addItem( i18n("Settings") );
