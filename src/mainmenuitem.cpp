@@ -75,12 +75,16 @@ void MainMenuItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
 
 void MainMenuItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 {
-  QGraphicsEllipseItem::mousePressEvent( event );
+  Q_UNUSED( event )
+
+  // Don't call event handler from parent, so mouse press does nothing.
 }
 
 void MainMenuItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 {
-  QGraphicsEllipseItem::mouseReleaseEvent( event );
+  Q_UNUSED( event )
+
+  // Don't call event handler from parent, so mouse release does nothing.
 }
 
 void MainMenuItem::slotItemSelected( FanMenu::Item *item )
