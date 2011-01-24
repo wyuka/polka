@@ -16,25 +16,45 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef TRACKINGGRAPHICSVIEW_H
-#define TRACKINGGRAPHICSVIEW_H
+#ifndef MAINMENUITEM_H
+#define MAINMENUITEM_H
 
-#include <QGraphicsView>
+#include "polka/polka.h"
+#include "fanmenu.h"
 
-class TrackingGraphicsView : public QGraphicsView
+#include <QtGui>
+
+class MainMenuItem : public QObject, public QGraphicsEllipseItem
 {
     Q_OBJECT
   public:
-    TrackingGraphicsView( QGraphicsScene * );
+    MainMenuItem();
 
   signals:
-    void mouseMoved( const QPoint & );
-    void viewportMoved();
+    void cloneGroup();
+    void removeGroup();
+    void addPerson();
+    void addGroup();
+  
+    void menuShown();
 
   protected:
-    void mouseMoveEvent( QMouseEvent *event );
-    void scrollContentsBy( int dx, int dy );
-    void resizeEvent( QResizeEvent *event );
+    void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
+    void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
+
+    void mousePressEvent( QGraphicsSceneMouseEvent *event );
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
+
+  protected slots:
+    void slotItemSelected( FanMenu::Item * );
+
+  private:
+    FanMenu *m_fanMenu;
+
+    FanMenu::Item *m_cloneGroupMenuItem;
+    FanMenu::Item *m_removeGroupMenuItem;
+    FanMenu::Item *m_addGroupMenuItem;
+    FanMenu::Item *m_addPersonMenuItem;
 };
 
 #endif

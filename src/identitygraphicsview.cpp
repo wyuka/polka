@@ -25,6 +25,7 @@
 #include "identityitem.h"
 #include "labelitem.h"
 #include "trackinggraphicsview.h"
+#include "mainmenuitem.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -55,26 +56,6 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 
   buttonLayout->addStretch( 1 );
 
-  QPushButton *button = new QPushButton( i18n("Clone Group") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( emitCloneGroup() ) );
-
-  button = new QPushButton( i18n("Remove Group") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( emitRemoveGroup() ) );
-
-  button = new QPushButton( i18n("Add Label") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( addLabel() ) );
-
-  button = new QPushButton( i18n("New Group") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SIGNAL( newGroup() ) );
-
-  button = new QPushButton( i18n("New Person") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
-
   m_scene = new QGraphicsScene;
 //  m_scene->setBackgroundBrush( Qt::red );
   m_scene->setBackgroundBrush( QColor( 70,70,100 ) );
@@ -86,13 +67,14 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   m_view->installEventFilter( this );
   connect( m_view, SIGNAL( mouseMoved( const QPoint & ) ),
     SLOT( slotMouseMoved( const QPoint & ) ) );
+  connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
 
   buttonLayout = new QHBoxLayout;
   topLayout->addLayout( buttonLayout );
   
   buttonLayout->addStretch( 1 );
   
-  button = new QPushButton( i18n("Reset Layout") );
+  QPushButton *button = new QPushButton( i18n("Reset Layout") );
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( resetLayout() ) );
 
@@ -189,6 +171,31 @@ void IdentityGraphicsView::createItems()
   foreach( Polka::ViewLabel label, view.viewLabelList() ) {
     createLabelItem( label );
   }
+
+  
+  m_mainMenu = new MainMenuItem();
+  m_scene->addItem( m_mainMenu );
+
+  connect( m_mainMenu, SIGNAL( cloneGroup() ), SLOT( emitCloneGroup() ) );
+  connect( m_mainMenu, SIGNAL( removeGroup() ), SLOT( emitRemoveGroup() ) );
+  connect( m_mainMenu, SIGNAL( addGroup() ), SIGNAL( newGroup() ) );
+  connect( m_mainMenu, SIGNAL( addPerson() ), SIGNAL( newPerson() ) );
+
+  positionMenuItems();
+}
+
+void IdentityGraphicsView::positionMenuItems()
+{
+  QRect viewportRect = m_view->viewport()->rect();
+  QPoint lowerRight( viewportRect.width(), viewportRect.height() );
+  QPointF lowerRightScene = m_view->mapToScene( lowerRight );
+
+  m_mainMenu->setPos( lowerRightScene.x() - 150, lowerRightScene.y() - 50 );
+}
+
+void IdentityGraphicsView::positionAbsoluteItems()
+{
+  positionMenuItems();
 }
 
 Polka::Identity IdentityGraphicsView::group() const
@@ -330,6 +337,8 @@ void IdentityGraphicsView::emitRemoveGroup()
 
 void IdentityGraphicsView::morphToCompact()
 {
+  m_mainMenu->hide();
+
   QRectF rect = m_scene->sceneRect();
 
   int x = rect.x() + rect.width() / 2;
@@ -374,6 +383,8 @@ void IdentityGraphicsView::morphFromCompact()
     m_morphFromAnimation = new QParallelAnimationGroup( this );
     connect( m_morphFromAnimation, SIGNAL( finished() ),
       SIGNAL( morphedFromCompact() ) );
+    connect( m_morphFromAnimation, SIGNAL( finished() ),
+      SLOT( finishMorphFromCompact() ) );
   }
   m_morphFromAnimation->clear();
 
@@ -396,6 +407,11 @@ void IdentityGraphicsView::morphFromCompact()
   }
   
   m_morphFromAnimation->start();
+}
+
+void IdentityGraphicsView::finishMorphFromCompact()
+{
+  m_mainMenu->show();
 }
 
 void IdentityGraphicsView::center( const Polka::Identity &identity )

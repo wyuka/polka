@@ -21,16 +21,36 @@
 
 #include <QDebug>
 #include <QMouseEvent>
+#include <QScrollBar>
 
 TrackingGraphicsView::TrackingGraphicsView( QGraphicsScene *scene )
   : QGraphicsView( scene )
 {
   setMouseTracking( true );
+
+  connect( verticalScrollBar(), SIGNAL( valueChanged( int ) ),
+    SIGNAL( viewportMoved() ) );
+  connect( horizontalScrollBar(), SIGNAL( valueChanged( int ) ),
+    SIGNAL( viewportMoved() ) );
 }
 
-void TrackingGraphicsView::mouseMoveEvent ( QMouseEvent *event )
+void TrackingGraphicsView::mouseMoveEvent( QMouseEvent *event )
 {
   emit mouseMoved( event->pos() );
 
   QGraphicsView::mouseMoveEvent( event );
+}
+
+void TrackingGraphicsView::scrollContentsBy( int dx, int dy )
+{
+//  emit viewportMoved();
+
+  QGraphicsView::scrollContentsBy( dx, dy );
+}
+
+void TrackingGraphicsView::resizeEvent( QResizeEvent *event )
+{
+  emit viewportMoved();
+  
+  QGraphicsView::resizeEvent( event );
 }

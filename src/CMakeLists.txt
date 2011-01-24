@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  mainmenuitem.cpp
   newgroupdialog.cpp
   labelitem.cpp
   addresseditor.cpp

@@ -30,6 +30,7 @@ class PolkaModel;
 class IdentityItem;
 class LabelItem;
 class QAnimationGroup;
+class MainMenuItem;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -69,6 +70,8 @@ class IdentityGraphicsView : public QWidget
 
     bool eventFilter( QObject * watched, QEvent * event );
 
+    void positionMenuItems();
+
   protected slots:
     void resetLayout();
   
@@ -93,12 +96,18 @@ class IdentityGraphicsView : public QWidget
 
     void slotMouseMoved( const QPoint &pos );
 
+    void positionAbsoluteItems();
+
+    void finishMorphFromCompact();
+
   private:
     PolkaModel *m_model;
 
     Polka::Identity m_group;
 
     QList<IdentityItem *> m_items;
+
+    MainMenuItem *m_mainMenu;
 
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  
