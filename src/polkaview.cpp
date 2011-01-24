@@ -44,12 +44,6 @@ PolkaView::PolkaView(QWidget *parent)
   
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
-  m_settingsWidget = new SettingsWidget( m_model );
-  topLayout->addWidget( m_settingsWidget );
-  connect( m_settingsWidget, SIGNAL( showView() ), SLOT( showView() ) );
-
-  m_settingsWidget->hide();
-
   QSplitter *viewSplitter = new QSplitter;
   topLayout->addWidget( viewSplitter );
 
@@ -94,6 +88,12 @@ PolkaView::PolkaView(QWidget *parent)
   viewSplitter->addWidget( m_personView );
   connect( m_personView, SIGNAL( closeRequested() ),
     SLOT( closePersonView() ) );
+
+  m_settingsWidget = new SettingsWidget( m_model );
+  topLayout->addWidget( m_settingsWidget );
+  connect( m_settingsWidget, SIGNAL( showView() ), SLOT( showView() ) );
+
+  m_settingsWidget->hide();
 
   readConfig();
 
@@ -288,7 +288,11 @@ void PolkaView::closePersonView()
 
 void PolkaView::showSettings()
 {
-  m_settingsWidget->show();
+  if ( m_settingsWidget->isVisible() ) {
+    m_settingsWidget->hide();
+  } else {
+    m_settingsWidget->show();
+  }
 }
 
 #include "polkaview.moc"
