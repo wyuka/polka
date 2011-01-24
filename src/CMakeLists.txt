@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  magicmenuitem.cpp
   mainmenuitem.cpp
   newgroupdialog.cpp
   labelitem.cpp

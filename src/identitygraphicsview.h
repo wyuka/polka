@@ -31,6 +31,7 @@ class IdentityItem;
 class LabelItem;
 class QAnimationGroup;
 class MainMenuItem;
+class MagicMenuItem;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -59,6 +60,8 @@ class IdentityGraphicsView : public QWidget
 
     void morphedToCompact();
     void morphedFromCompact();
+
+    void showSettings();
 
   protected:
     LabelItem *createLabelItem( const Polka::ViewLabel &label );
@@ -108,6 +111,7 @@ class IdentityGraphicsView : public QWidget
     QList<IdentityItem *> m_items;
 
     MainMenuItem *m_mainMenu;
+    MagicMenuItem *m_magicMenu;
 
     QPushButton *m_backButton;
     QLabel *m_groupNameLabel;  

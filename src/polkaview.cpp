@@ -85,6 +85,8 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( removeGroup( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( morphedToCompact() ),
     SLOT( finishShowPerson() ) );
+  connect( m_groupGraphicsView, SIGNAL( showSettings() ),
+    SLOT( showSettings() ) );  
 
   m_personView = new PersonView( m_model );
   viewSplitter->addWidget( m_personView );
@@ -285,6 +287,11 @@ void PolkaView::closePersonView()
 {
   m_personView->hide();
   m_groupGraphicsView->setCompactLayout( false );
+}
+
+void PolkaView::showSettings()
+{
+  qDebug() << "SHOW SETTINGS";
 }
 
 #include "polkaview.moc"

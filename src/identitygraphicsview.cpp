@@ -26,6 +26,7 @@
 #include "labelitem.h"
 #include "trackinggraphicsview.h"
 #include "mainmenuitem.h"
+#include "magicmenuitem.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -68,15 +69,6 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   connect( m_view, SIGNAL( mouseMoved( const QPoint & ) ),
     SLOT( slotMouseMoved( const QPoint & ) ) );
   connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
-
-  buttonLayout = new QHBoxLayout;
-  topLayout->addLayout( buttonLayout );
-  
-  buttonLayout->addStretch( 1 );
-  
-  QPushButton *button = new QPushButton( i18n("Reset Layout") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( resetLayout() ) );
 
   connect( m_model, SIGNAL( identityInserted( const Polka::Identity & ) ),
     SLOT( createItems() ) );
@@ -173,6 +165,12 @@ void IdentityGraphicsView::createItems()
   }
 
   
+  m_magicMenu = new MagicMenuItem();
+  m_scene->addItem( m_magicMenu );
+  
+  connect( m_magicMenu, SIGNAL( resetLayout() ), SLOT( resetLayout() ) );
+  connect( m_magicMenu, SIGNAL( showSettings() ), SIGNAL( showSettings() ) );
+
   m_mainMenu = new MainMenuItem();
   m_scene->addItem( m_mainMenu );
 
@@ -191,6 +189,7 @@ void IdentityGraphicsView::positionMenuItems()
   QPointF lowerRightScene = m_view->mapToScene( lowerRight );
 
   m_mainMenu->setPos( lowerRightScene.x() - 150, lowerRightScene.y() - 50 );
+  m_magicMenu->setPos( lowerRightScene.x() - 150, lowerRightScene.y() - 130 );
 }
 
 void IdentityGraphicsView::positionAbsoluteItems()

@@ -19,6 +19,8 @@
 * Hide labels in compact view
 * Keep compact view when editing comment
 
+* Make magic menu only show up, when a hidden option is set.
+
 * Show nice text for links.
 
 * Review and fix and prettify button and control structure.

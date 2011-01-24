@@ -57,6 +57,8 @@ class PolkaView : public QWidget
     void removeIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
 
+    void showSettings();
+
   signals:
     void dataWritten();
   
