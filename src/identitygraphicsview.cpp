@@ -61,6 +61,7 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   m_scene = new QGraphicsScene;
 //  m_scene->setBackgroundBrush( Qt::red );
   m_scene->setBackgroundBrush( QColor( 70,70,100 ) );
+  m_scene->setSceneRect( -1000, -1000, 2000, 2000 );
 
   m_view = new TrackingGraphicsView( m_scene );
   m_view->setRenderHint( QPainter::Antialiasing );
