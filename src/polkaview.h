@@ -79,6 +79,7 @@ class PolkaView : public QWidget
     QStringList m_history;
 
     SettingsWidget *m_settingsWidget;
+    QWidget *m_groupWidget;
     QStackedLayout *m_listLayout;
     IdentityListView *m_groupView;
     IdentityGraphicsView *m_groupGraphicsView;

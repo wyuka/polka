@@ -41,15 +41,12 @@ PolkaView::PolkaView(QWidget *parent)
   m_model = new PolkaModel( this );
   connect( m_model, SIGNAL( dataWritten() ), SIGNAL( dataWritten() ) );
   
-  QBoxLayout *topLayout = new QVBoxLayout( this );
+  QBoxLayout *topLayout = new QHBoxLayout( this );
 
-  QSplitter *viewSplitter = new QSplitter;
-  topLayout->addWidget( viewSplitter );
-
-  QWidget *listWidget = new QWidget;
-  viewSplitter->addWidget( listWidget );
+  m_groupWidget = new QWidget;
+  topLayout->addWidget( m_groupWidget );
   
-  m_listLayout = new QStackedLayout( listWidget );
+  m_listLayout = new QStackedLayout( m_groupWidget );
 
   m_groupView = new IdentityListView( m_model );
   m_listLayout->addWidget( m_groupView );
@@ -80,7 +77,7 @@ PolkaView::PolkaView(QWidget *parent)
   m_groupGraphicsView->setBackEnabled( false );
 
   m_personView = new PersonView( m_model );
-  viewSplitter->addWidget( m_personView );
+  topLayout->addWidget( m_personView );
   connect( m_personView, SIGNAL( closeRequested() ),
     SLOT( closePersonView() ) );
 
@@ -222,6 +219,7 @@ void PolkaView::showGroup( const Polka::Identity &group )
     m_listLayout->setCurrentWidget( m_groupView );
   }
 
+  m_groupWidget->setMaximumWidth( QWIDGETSIZE_MAX );
   m_personView->hide();
 }
 
@@ -262,7 +260,9 @@ void PolkaView::showPerson( const Polka::Identity &identity )
 void PolkaView::finishShowPerson()
 {
   m_personView->show();
-  m_groupGraphicsView->center( m_personView->identity() );
+//  m_groupGraphicsView->center( m_personView->identity() );
+
+  m_groupWidget->setMaximumWidth( 150 );
 }
 
 void PolkaView::removeIdentity( const Polka::Identity &identity,
@@ -273,6 +273,7 @@ void PolkaView::removeIdentity( const Polka::Identity &identity,
 
 void PolkaView::closePersonView()
 {
+  m_groupWidget->setMaximumWidth( QWIDGETSIZE_MAX );
   m_personView->hide();
   m_groupGraphicsView->setCompactLayout( false );
 }

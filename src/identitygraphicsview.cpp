@@ -402,8 +402,10 @@ void IdentityGraphicsView::morphToCompact()
 
   QRectF rect = m_scene->sceneRect();
 
-  int x = rect.x() + rect.width() / 2;
-  int y = 0;
+  QPointF leftBorder = m_view->mapToScene( 0, 0 );
+
+  int x = leftBorder.x() + 60;
+  int y = leftBorder.y() + 60;
   int spacing = 60;
 
   if ( !m_morphToAnimation ) {
@@ -484,7 +486,8 @@ void IdentityGraphicsView::center( const Polka::Identity &identity )
 {
   IdentityItem *i = item( identity );
   if ( i ) {
-    m_view->centerOn( i );
+    qDebug() << "CENTER";
+    m_view->centerOn( i->pos() );
   }
 }
 
