@@ -1,5 +1,7 @@
 = Polka
 
+* Prettify the person view, and remove useless buttons
+
 * Make first startup beautiful.
 
 * Separate commit for deletion of a person.
