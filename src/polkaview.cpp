@@ -212,8 +212,6 @@ void PolkaView::showGroup( const Polka::Identity &group )
     m_history.append( group.id() );
   }
 
-  qDebug() << "HISTORY" << m_history;
-
   if ( m_settingsWidget->fancyMode() ) {
     m_groupGraphicsView->setBackEnabled( m_history.size() > 1 );
     m_groupGraphicsView->setGroup( group );

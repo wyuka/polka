@@ -37,7 +37,8 @@
 #endif
 
 IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model ), m_compactLayout( false ),
+  : QWidget( parent ), m_model( model ), m_mainMenu( 0 ), m_magicMenu( 0 ),
+    m_compactLayout( false ),
     m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ), m_globalMenu( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
@@ -120,6 +121,13 @@ void IdentityGraphicsView::createItems()
   int x = 0;
   int y = 0;
 
+  qreal minX = 0;
+  qreal minY = 0;
+  qreal maxX = 0;
+  qreal maxY = 0;
+
+  bool firstItem = true;
+
   Polka::GroupView view = m_model->groupView( m_group );
 
   foreach( Polka::Identity identity, identities ) {
@@ -143,11 +151,31 @@ void IdentityGraphicsView::createItems()
 
     item->setDefaultPos( QPointF( posX, posY ) );
 
+    qreal itemX;
+    qreal itemY;
+
     Polka::IdentityPosition p = view.findIdentityPosition( identity.id() );
     if ( p.isValid() ) {
-      item->setPos( p.x(), p.y() );
+      itemX = p.x();
+      itemY = p.y();
     } else {
-      item->setPos( posX, posY );
+      itemX = posX;
+      itemY = posY;
+    }
+    item->setPos( itemX, itemY );
+
+    if ( firstItem ) {
+      firstItem = false;
+    
+      minX = itemX;
+      minY = itemY;
+      maxX = itemX;
+      maxY = itemY;
+    } else {
+      if ( itemX < minX ) minX = itemX;
+      if ( itemY < minY ) minY = itemY;
+      if ( itemX > maxX ) maxX = itemX;
+      if ( itemY > maxY ) maxY = itemY;
     }
 
     Polka::IdentityCheck c = view.findIdentityCheck( identity.id() );
@@ -169,6 +197,7 @@ void IdentityGraphicsView::createItems()
     createLabelItem( label );
   }
 
+
   
   m_magicMenu = new MagicMenuItem();
   m_scene->addItem( m_magicMenu );
@@ -185,6 +214,20 @@ void IdentityGraphicsView::createItems()
   connect( m_mainMenu, SIGNAL( addPerson() ), SIGNAL( newPerson() ) );
 
   positionMenuItems();
+
+  qreal centerX = ( minX + maxX ) / 2;
+  qreal centerY = ( minY + maxY ) / 2;
+
+  // TODO: Replace by a setting
+  if ( false ) {
+    QGraphicsEllipseItem *centerItem = new QGraphicsEllipseItem( -5, -5, 10, 10 );
+    centerItem->setBrush( Qt::red );
+    centerItem->setZValue( 1000 );
+    m_scene->addItem( centerItem );  
+    centerItem->setPos( centerX, centerY );
+  }
+
+  m_view->centerOn( centerX, centerY );
 }
 
 void IdentityGraphicsView::positionMenuItems()
@@ -193,8 +236,12 @@ void IdentityGraphicsView::positionMenuItems()
   QPoint upperRight( viewportRect.width(), 0 );
   QPointF upperRightScene = m_view->mapToScene( upperRight );
 
-  m_mainMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 50 );
-  m_magicMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 130 );
+  if ( m_mainMenu ) {
+    m_mainMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 50 );
+  }
+  if ( m_magicMenu ) {
+    m_magicMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 130 );
+  }
 }
 
 void IdentityGraphicsView::positionAbsoluteItems()
