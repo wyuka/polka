@@ -130,7 +130,7 @@ void PolkaView::readData()
     showRoot();
   } else {
     Polka::Identity group = m_model->findIdentity( m_history.last() );
-    showGroupView( group );
+    showGroup( group );
   }
 
   if ( Settings::remoteSyncingEnabled() ) {
@@ -178,7 +178,7 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
       m_model->addIdentity( member, new_group );
     }
     
-    showGroupView( new_group );
+    showGroup( new_group );
   }
 }
 
@@ -201,10 +201,10 @@ void PolkaView::newPerson()
 
 void PolkaView::showRoot()
 {
-  showGroupView( m_model->rootGroup() );
+  showGroup( m_model->rootGroup() );
 }
 
-void PolkaView::showGroupView( const Polka::Identity &group )
+void PolkaView::showGroup( const Polka::Identity &group )
 {
   m_group = group;
 
@@ -232,7 +232,7 @@ void PolkaView::showView()
   if ( m_group.id().isEmpty() ) {
     showRoot();
   } else {
-    showGroupView( m_group );
+    showGroup( m_group );
   }
   m_groupGraphicsView->setCompactLayout( false );
 }
@@ -240,7 +240,7 @@ void PolkaView::showView()
 void PolkaView::showIdentity( const Polka::Identity &identity )
 {
   if ( identity.type() == "group" ) {
-    showGroupView( identity );
+    showGroup( identity );
   } else {
     showPerson( identity );
   }
@@ -295,7 +295,7 @@ void PolkaView::goBack()
     QString id = m_history.last();
     Polka::Identity group = m_model->findIdentity( id );
     if ( group.isValid() && group.type() == "group" ) {
-      showGroupView( group );
+      showGroup( group );
       return;
     }
     m_history.takeLast();

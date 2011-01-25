@@ -8,8 +8,6 @@
 * Create sub group from checked identities
 * Editing of group names (maybe use special personviewer?)
 
-* Remove showGroupList and group list view
-* Rename PolkaView::showGroupView to showGroup
 * Consistent names for PolkaView::m_groupView and PolkaView::m_groupGraphicsView
 
 * More elegant way to handle fan menus, which doesn't require so many member
