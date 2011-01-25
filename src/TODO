@@ -8,6 +8,7 @@
 * Create sub group from checked identities
 * Editing of group names (maybe use special personviewer?)
 
+* Common base class for IdentityGraphicsView and IdentityListView.
 * Consistent names for PolkaView::m_groupView and PolkaView::m_groupGraphicsView
 
 * More elegant way to handle fan menus, which doesn't require so many member
@@ -54,7 +55,6 @@
 
 * Migrate data between schema versions
 
-* Common base class for IdentityGraphicsView and IdentityListView.
 
 = kxml_compiler
 

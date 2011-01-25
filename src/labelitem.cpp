@@ -26,7 +26,7 @@
 LabelItem::LabelItem( PolkaModel *model, const Polka::ViewLabel &label )
   : QObject( model ), m_model( model ), m_label( label )
 {
-  setBrush( QColor( 220,220,220 ) );
+  setBrush( QColor( 255,255,230 ) );
 
   m_textItem = new QGraphicsTextItem( this );
   setText( label.text() );

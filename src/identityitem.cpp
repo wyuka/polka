@@ -21,6 +21,7 @@
 
 #include "polkamodel.h"
 #include "fanmenu.h"
+#include "roundedrectitem.h"
 
 #include <KLocale>
 
@@ -58,9 +59,9 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   int textWidth = textItem->boundingRect().width();
   int textHeight = textItem->boundingRect().height();
 
-  m_nameItem = new QGraphicsRectItem( this );
+  m_nameItem = new RoundedRectItem( this );
   m_nameItem->setRect( 0, 0, textWidth, textHeight );
-  m_nameItem->setBrush( QColor( 200,200,200 ) );
+  m_nameItem->setBrush( QColor( 255,255,230 ) );
   m_nameItem->setZValue( 10 );
 
   textItem->setParentItem( m_nameItem );

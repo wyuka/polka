@@ -25,6 +25,7 @@
 #include <QtGui>
 
 class PolkaModel;
+class RoundedRectItem;
 
 class IdentityItem : public QObject, public QGraphicsEllipseItem
 {
@@ -78,7 +79,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     QPointF m_rememberedPos;
     bool m_checked;
 
-    QGraphicsRectItem *m_nameItem;
+    RoundedRectItem *m_nameItem;
     QGraphicsPathItem *m_checkItem;
 
     FanMenu *m_fanMenu;

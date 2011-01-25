@@ -21,12 +21,13 @@
 
 #include "polka/polka.h"
 #include "fanmenu.h"
+#include "roundedrectitem.h"
 
 #include <QtGui>
 
 class PolkaModel;
 
-class LabelItem : public QObject, public QGraphicsRectItem
+class LabelItem : public QObject, public RoundedRectItem
 {
     Q_OBJECT
 
