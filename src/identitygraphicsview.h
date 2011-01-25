@@ -48,6 +48,8 @@ class IdentityGraphicsView : public QWidget
 
     void center( const Polka::Identity & );
 
+    void setBackEnabled( bool enabled );
+
   signals:
     void goBack();
     void newPerson();

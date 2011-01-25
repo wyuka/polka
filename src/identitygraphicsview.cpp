@@ -80,6 +80,11 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
   setMinimumWidth( 50 );
 }
 
+void IdentityGraphicsView::setBackEnabled( bool enabled )
+{
+  m_backButton->setEnabled( enabled );
+}
+
 void IdentityGraphicsView::setCompactLayout( bool enabled )
 {
   if ( enabled == m_compactLayout ) return;

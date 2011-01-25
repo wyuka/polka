@@ -33,7 +33,6 @@ class GroupListView;
 class IdentityGraphicsView;
 class PersonView;
 class SettingsWidget;
-
 class PolkaView : public QWidget
 {
     Q_OBJECT
@@ -57,6 +56,7 @@ class PolkaView : public QWidget
     void showRoot();
     void showGroupList();
     void showView();
+    void goBack();
     void showGroupView( const Polka::Identity & );
     void showIdentity( const Polka::Identity & );
     void showPerson( const Polka::Identity & );
@@ -72,10 +72,13 @@ class PolkaView : public QWidget
     void finishShowPerson();
     void closePersonView();
 
+
   private:
     PolkaModel *m_model;
 
     Polka::Identity m_group;
+
+    QStringList m_history;
 
     SettingsWidget *m_settingsWidget;
     QStackedLayout *m_listLayout;

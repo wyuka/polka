@@ -1,17 +1,16 @@
 = Polka
 
-* History browsing, go to root, back, forward
-
 * Don't show root group in group selector.
 
 * Show name labels for identities, which only have the default picture.
 
-* Going back from subgroup to parent group
 * Explode sub group
 * Create sub group from checked identities
 * Editing of group names (maybe use special personviewer?)
 
 * Remove showGroupList and group list view
+* Rename PolkaView::showGroupView to showGroup
+* Consistent names for PolkaView::m_groupView and PolkaView::m_groupGraphicsView
 
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
@@ -54,6 +53,8 @@
 * Make first startup beautiful.
 
 * Migrate data between schema versions
+
+* Common base class for IdentityGraphicsView and IdentityListView.
 
 = kxml_compiler
 

@@ -54,6 +54,11 @@ IdentityListView::IdentityListView( PolkaModel *model, QWidget *parent )
     SLOT( slotItemClicked( const QModelIndex & ) ) );
 }
 
+void IdentityListView::setBackEnabled( bool enabled )
+{
+  m_backButton->setEnabled( enabled );
+}
+
 void IdentityListView::setGroup( const Polka::Identity &group )
 {
   m_group = group;
