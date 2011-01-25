@@ -13,6 +13,8 @@
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
 
+* When showing group, center the view on the center of the group.
+
 * Hide labels in compact view
 * Keep compact view when editing comment
 
