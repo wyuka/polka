@@ -199,7 +199,6 @@ void IdentityGraphicsView::createItems()
     createLabelItem( label );
   }
 
-
   
   m_magicMenu = new MagicMenuItem();
   m_scene->addItem( m_magicMenu );
@@ -220,7 +219,7 @@ void IdentityGraphicsView::createItems()
   qreal centerX = ( minX + maxX ) / 2;
   qreal centerY = ( minY + maxY ) / 2;
 
-  // TODO: Replace by a setting
+  // TODO: Replace by a hidden setting
   if ( false ) {
     QGraphicsEllipseItem *centerItem = new QGraphicsEllipseItem( -5, -5, 10, 10 );
     centerItem->setBrush( Qt::red );

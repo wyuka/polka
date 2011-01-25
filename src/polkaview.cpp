@@ -41,10 +41,13 @@ PolkaView::PolkaView(QWidget *parent)
   m_model = new PolkaModel( this );
   connect( m_model, SIGNAL( dataWritten() ), SIGNAL( dataWritten() ) );
   
-  QBoxLayout *topLayout = new QHBoxLayout( this );
+  QBoxLayout *topLayout = new QVBoxLayout( this );
+
+  QBoxLayout *viewLayout = new QHBoxLayout;
+  topLayout->addLayout( viewLayout );
 
   m_groupWidget = new QWidget;
-  topLayout->addWidget( m_groupWidget );
+  viewLayout->addWidget( m_groupWidget );
   
   m_listLayout = new QStackedLayout( m_groupWidget );
 
@@ -77,7 +80,7 @@ PolkaView::PolkaView(QWidget *parent)
   m_groupGraphicsView->setBackEnabled( false );
 
   m_personView = new PersonView( m_model );
-  topLayout->addWidget( m_personView );
+  viewLayout->addWidget( m_personView );
   connect( m_personView, SIGNAL( closeRequested() ),
     SLOT( closePersonView() ) );
 
@@ -203,6 +206,9 @@ void PolkaView::showRoot()
 
 void PolkaView::showGroup( const Polka::Identity &group )
 {
+  m_groupWidget->setMaximumWidth( QWIDGETSIZE_MAX );
+  m_personView->hide();
+
   m_group = group;
 
   if ( m_history.isEmpty() || m_history.last() != group.id() ) {
@@ -218,9 +224,6 @@ void PolkaView::showGroup( const Polka::Identity &group )
     m_groupView->setGroup( group );
     m_listLayout->setCurrentWidget( m_groupView );
   }
-
-  m_groupWidget->setMaximumWidth( QWIDGETSIZE_MAX );
-  m_personView->hide();
 }
 
 void PolkaView::showView()
