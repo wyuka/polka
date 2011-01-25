@@ -211,17 +211,24 @@ void PolkaView::showGroup( const Polka::Identity &group )
 
   m_group = group;
 
-  if ( m_history.isEmpty() || m_history.last() != group.id() ) {
-    m_history.append( group.id() );
+  // Return to event loop, so layout gets adjusted before new group is rendered.
+  QTimer::singleShot( 0, this, SLOT( continueShowGroup() ) );
+}
+
+void PolkaView::continueShowGroup()
+{
+
+  if ( m_history.isEmpty() || m_history.last() != m_group.id() ) {
+    m_history.append( m_group.id() );
   }
 
   if ( m_settingsWidget->fancyMode() ) {
     m_groupGraphicsView->setBackEnabled( m_history.size() > 1 );
-    m_groupGraphicsView->setGroup( group );
+    m_groupGraphicsView->setGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
     m_groupView->setBackEnabled( m_history.size() > 1 );
-    m_groupView->setGroup( group );
+    m_groupView->setGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupView );
   }
 }

@@ -69,7 +69,7 @@ class PolkaView : public QWidget
   protected slots:
     void finishShowPerson();
     void closePersonView();
-
+    void continueShowGroup();
 
   private:
     PolkaModel *m_model;
