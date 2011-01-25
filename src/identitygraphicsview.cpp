@@ -389,6 +389,7 @@ void IdentityGraphicsView::emitRemoveGroup()
 void IdentityGraphicsView::morphToCompact()
 {
   m_mainMenu->hide();
+  m_magicMenu->hide();
 
   QRectF rect = m_scene->sceneRect();
 
@@ -463,6 +464,7 @@ void IdentityGraphicsView::morphFromCompact()
 void IdentityGraphicsView::finishMorphFromCompact()
 {
   m_mainMenu->show();
+  m_magicMenu->show();
 }
 
 void IdentityGraphicsView::center( const Polka::Identity &identity )

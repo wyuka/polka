@@ -1,6 +1,12 @@
 = Polka
 
-* Don't show root group in group selector.
+* Make first startup beautiful.
+
+* Separate commit for deletion of a person.
+* Put changes in XML for addition of pictures into correct commit.
+
+* Show history
+* Undo based on git (Rollback from UI)
 
 * Show name labels for identities, which only have the default picture.
 
@@ -14,8 +20,6 @@
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
 
-* When showing group, center the view on the center of the group.
-
 * Hide labels in compact view
 * Keep compact view when editing comment
 
@@ -26,16 +30,10 @@
 
 * Show nice text for links.
 
-* Review and fix and prettify button and control structure.
-
-* Add global menu button somewhere to make context menu discoverable
-
 * Make sure new items don't overlap with existing moved ones.
 
-* Separate commit for deletion of a person.
-* Put changes in XML for addition of pictures into correct commit.
-
 * Drop images e.g. from web pages to add new pictures to person
+
 * Check for response when pulling from remote and don't reread data, if nothing
   has changed
 * On first start ask, if to create a new data repo or use an existing (possibly
@@ -43,18 +41,13 @@
 * Only pull and push, if repo actually has a remote repo configured
 * Prevent saving while save is still in progress (especially with push)
 
-* Show history
-* Undo based on git (Rollback from UI)
-
-* merge group list view and identity list view ?
-* graphical group view
 * More than one (remote) repo, to separate for example private and job data
-* Group specific display names
 
-* Make first startup beautiful.
+* Don't show root group in group selector.
 
 * Migrate data between schema versions
 
+* Group specific display names
 
 = kxml_compiler
 
