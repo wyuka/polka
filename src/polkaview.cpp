@@ -24,7 +24,6 @@
 #include "polkamodel.h"
 #include "identitylistview.h"
 #include "identitygraphicsview.h"
-#include "grouplistview.h"
 #include "newpersondialog.h"
 #include "newgroupdialog.h"
 #include "settings.h"
@@ -51,12 +50,6 @@ PolkaView::PolkaView(QWidget *parent)
   viewSplitter->addWidget( listWidget );
   
   m_listLayout = new QStackedLayout( listWidget );
-
-  m_groupListView = new GroupListView;
-  m_listLayout->addWidget( m_groupListView );
-  connect( m_groupListView, SIGNAL( groupClicked( const Polka::Identity & ) ),
-    SLOT( showGroupView( const Polka::Identity & ) ) );
-  connect( m_groupListView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );
 
   m_groupView = new IdentityListView( m_model );
   m_listLayout->addWidget( m_groupView );
@@ -130,7 +123,6 @@ void PolkaView::readData()
   }
 
   m_groupView->setItemModel( m_model->itemModel() );
-  m_groupListView->setItemModel( m_model->groupItemModel() );
 
   m_history = Settings::history();
 
@@ -205,15 +197,6 @@ void PolkaView::newPerson()
     m_model->addIdentity( identity, m_group );
   }
   return;
-}
-
-void PolkaView::showGroupList()
-{
-  m_group = Polka::Identity();
-
-  m_listLayout->setCurrentWidget( m_groupListView );
-
-  m_personView->hide();
 }
 
 void PolkaView::showRoot()

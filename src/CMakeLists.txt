@@ -14,7 +14,6 @@ set(polka_bin_SRCS
   identityitem.cpp
   identitygraphicsview.cpp
   newpersondialog.cpp
-  grouplistview.cpp
   identitylistview.cpp
   mainwindow.cpp
   main.cpp
