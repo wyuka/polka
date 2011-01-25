@@ -111,6 +111,7 @@ class IdentityGraphicsView : public QWidget
     Polka::Identity m_group;
 
     QList<IdentityItem *> m_items;
+    QList<LabelItem *> m_labelItems;
 
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;

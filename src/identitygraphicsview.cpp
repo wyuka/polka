@@ -111,6 +111,7 @@ void IdentityGraphicsView::createItems()
 
   m_scene->clear();
   m_items.clear();
+  m_labelItems.clear();
   m_globalMenu = 0;
 
   Polka::Identity::List identities = m_model->identitiesOfGroup( m_group );
@@ -316,6 +317,8 @@ void IdentityGraphicsView::addLabel( const QPointF &pos )
 void IdentityGraphicsView::removeLabel( LabelItem *item,
   const Polka::ViewLabel &label )
 {
+  m_labelItems.removeAll( item );
+
   delete item;
   m_model->removeViewLabel( m_group, label );
 }
@@ -350,6 +353,8 @@ LabelItem *IdentityGraphicsView::createLabelItem( const Polka::ViewLabel &label 
   m_scene->addItem( item );
 
   item->setPos( label.x(), label.y() );
+
+  m_labelItems.append( item );
 
   return item;
 }
@@ -390,6 +395,9 @@ void IdentityGraphicsView::morphToCompact()
 {
   m_mainMenu->hide();
   m_magicMenu->hide();
+  foreach( LabelItem *item, m_labelItems ) {
+    item->hide();
+  }
 
   QRectF rect = m_scene->sceneRect();
 
@@ -465,6 +473,10 @@ void IdentityGraphicsView::finishMorphFromCompact()
 {
   m_mainMenu->show();
   m_magicMenu->show();
+
+  foreach( LabelItem *item, m_labelItems ) {
+    item->show();
+  }  
 }
 
 void IdentityGraphicsView::center( const Polka::Identity &identity )
