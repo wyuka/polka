@@ -35,6 +35,8 @@
 
 * Drop images e.g. from web pages to add new pictures to person
 
+* Clean up git debug output.
+* Handle git errors
 * Check for response when pulling from remote and don't reread data, if nothing
   has changed
 * On first start ask, if to create a new data repo or use an existing (possibly
