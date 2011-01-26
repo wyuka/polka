@@ -43,21 +43,6 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
-  QBoxLayout *buttonLayout = new QHBoxLayout;
-  topLayout->addLayout( buttonLayout );
-
-  // FIXME: Use proper icon
-  m_backButton = new QPushButton( "<" );
-  buttonLayout->addWidget( m_backButton );
-  connect( m_backButton, SIGNAL( clicked() ), SIGNAL( goBack() ) );
-
-  buttonLayout->addStretch( 1 );
-
-  m_groupNameLabel = new QLabel;
-  buttonLayout->addWidget( m_groupNameLabel );
-
-  buttonLayout->addStretch( 1 );
-
   m_scene = new QGraphicsScene;
 //  m_scene->setBackgroundBrush( Qt::red );
   m_scene->setBackgroundBrush( QColor( 70,70,100 ) );
@@ -90,11 +75,6 @@ void IdentityGraphicsView::slotIdentityChanged( const Polka::Identity &identity 
   }
 }
 
-void IdentityGraphicsView::setBackEnabled( bool enabled )
-{
-  m_backButton->setEnabled( enabled );
-}
-
 void IdentityGraphicsView::setCompactLayout( bool enabled )
 {
   if ( enabled == m_compactLayout ) return;
@@ -108,8 +88,6 @@ void IdentityGraphicsView::setCompactLayout( bool enabled )
 void IdentityGraphicsView::setGroup( const Polka::Identity &group )
 {
   m_group = group;
-
-  setGroupName( group.name().value() );
 
   createItems();
 }
@@ -263,11 +241,6 @@ void IdentityGraphicsView::positionAbsoluteItems()
 Polka::Identity IdentityGraphicsView::group() const
 {
   return m_group;
-}
-
-void IdentityGraphicsView::setGroupName( const QString &name )
-{
-  m_groupNameLabel->setText( "<b>" + name + "</b>" );
 }
 
 void IdentityGraphicsView::slotRemoveIdentity( const Polka::Identity &identity )

@@ -46,8 +46,6 @@ class IdentityGraphicsView : public QWidget
 
     void setCompactLayout( bool enabled );
 
-    void setBackEnabled( bool enabled );
-
   signals:
     void goBack();
     void newPerson();
@@ -116,8 +114,6 @@ class IdentityGraphicsView : public QWidget
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
 
-    QPushButton *m_backButton;
-    QLabel *m_groupNameLabel;  
     QGraphicsScene *m_scene;
     QGraphicsView *m_view;
 

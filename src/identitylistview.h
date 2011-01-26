@@ -32,19 +32,17 @@ class IdentityListView : public QWidget
   public:
     IdentityListView( PolkaModel *, QWidget *parent = 0 );
 
-    void setBackEnabled( bool enabled );
-
     void setGroup( const Polka::Identity & );
     Polka::Identity group() const;
 
     void setItemModel( PolkaItemModel * );
 
-    void setGroupName( const QString & );
-
   signals:
     void goBack();
     void newPerson();
     void showIdentity( const Polka::Identity & );
+
+    void showSettings();
 
   protected slots:
     void slotItemClicked( const QModelIndex &index );

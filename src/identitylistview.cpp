@@ -29,34 +29,19 @@ IdentityListView::IdentityListView( PolkaModel *model, QWidget *parent )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
-  QBoxLayout *buttonLayout = new QHBoxLayout;
-  topLayout->addLayout( buttonLayout );
-
-  // FIXME: Use proper icon
-  m_backButton = new QPushButton( "<" );
-  buttonLayout->addWidget( m_backButton );
-  connect( m_backButton, SIGNAL( clicked() ), SIGNAL( goBack() ) );
-
-  buttonLayout->addStretch( 1 );
-
-  m_groupNameLabel = new QLabel;
-  buttonLayout->addWidget( m_groupNameLabel );
-
-  buttonLayout->addStretch( 1 );
-
-  QPushButton *button = new QPushButton( i18n("New Person") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SIGNAL( newPerson() ) );
-  
   m_flatView = new QListView;
   topLayout->addWidget( m_flatView );
   connect( m_flatView, SIGNAL( clicked( const QModelIndex & ) ),
     SLOT( slotItemClicked( const QModelIndex & ) ) );
-}
 
-void IdentityListView::setBackEnabled( bool enabled )
-{
-  m_backButton->setEnabled( enabled );
+  QBoxLayout *buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+
+  buttonLayout->addStretch( 1 );
+  
+  QPushButton *button = new QPushButton( i18n("Magic") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SIGNAL( showSettings() ) );    
 }
 
 void IdentityListView::setGroup( const Polka::Identity &group )
@@ -64,7 +49,6 @@ void IdentityListView::setGroup( const Polka::Identity &group )
   m_group = group;
 
   setItemModel( m_model->itemModel( group.id() ) );
-  setGroupName( group.name().value() );
 }
 
 Polka::Identity IdentityListView::group() const
@@ -77,11 +61,6 @@ void IdentityListView::setItemModel( PolkaItemModel *itemModel )
   m_itemModel = itemModel;
 
   m_flatView->setModel( m_itemModel );
-}
-
-void IdentityListView::setGroupName( const QString &name )
-{
-  m_groupNameLabel->setText( "<b>" + name + "</b>" );
 }
 
 void IdentityListView::slotItemClicked( const QModelIndex &index )

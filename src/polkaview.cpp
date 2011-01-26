@@ -43,6 +43,24 @@ PolkaView::PolkaView(QWidget *parent)
   
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
+  
+  QBoxLayout *buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+
+  // FIXME: Use proper icon
+  m_backButton = new QPushButton( "<" );
+  buttonLayout->addWidget( m_backButton );
+  connect( m_backButton, SIGNAL( clicked() ), SLOT( goBack() ) );
+  m_backButton->setEnabled( false );
+
+  buttonLayout->addStretch( 1 );
+
+  m_groupNameLabel = new QLabel;
+  buttonLayout->addWidget( m_groupNameLabel );
+
+  buttonLayout->addStretch( 1 );
+
+
   QBoxLayout *viewLayout = new QHBoxLayout;
   topLayout->addLayout( viewLayout );
 
@@ -57,7 +75,8 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
   connect( m_groupView, SIGNAL( showIdentity( const Polka::Identity & ) ),
     SLOT( showIdentity( const Polka::Identity & ) ) );
-  m_groupView->setBackEnabled( false );
+  connect( m_groupView, SIGNAL( showSettings() ),
+    SLOT( showSettings() ) );
 
   m_groupGraphicsView = new IdentityGraphicsView( m_model );
   m_listLayout->addWidget( m_groupGraphicsView );
@@ -77,7 +96,6 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( finishShowPerson() ) );
   connect( m_groupGraphicsView, SIGNAL( showSettings() ),
     SLOT( showSettings() ) );
-  m_groupGraphicsView->setBackEnabled( false );
 
   m_personView = new PersonView( m_model );
   viewLayout->addWidget( m_personView );
@@ -217,17 +235,17 @@ void PolkaView::showGroup( const Polka::Identity &group )
 
 void PolkaView::continueShowGroup()
 {
-
   if ( m_history.isEmpty() || m_history.last() != m_group.id() ) {
     m_history.append( m_group.id() );
   }
 
+  m_backButton->setEnabled( m_history.size() > 1 );
+  m_groupNameLabel->setText( "<b>" + m_group.name().value() + "</b>" );
+
   if ( m_settingsWidget->fancyMode() ) {
-    m_groupGraphicsView->setBackEnabled( m_history.size() > 1 );
     m_groupGraphicsView->setGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
-    m_groupView->setBackEnabled( m_history.size() > 1 );
     m_groupView->setGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupView );
   }
