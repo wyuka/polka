@@ -1,7 +1,20 @@
 = Polka
 
 * Prettify the person view, and remove useless buttons
+  * Make picture selector a nice bar with pictures and captions for where the
+    picture came from (and modification date (on hover or something))
+  * Highlight selected picture (glowing frame?), click to change selection
+  * Keep grab picture action
+  
+  * Show selected picture in HTML view on top left
+  
+  * Add icon top right (x) to close person view (absolute positioning)
+  * Add triangle in graphics view to close person view
+  
+  * Add magic (on admin flag) left to (x) close person view (absolute positioni)
 
+  * Make group name span whole width above person view.
+    
 * Find out, why pictures aren't shown
 * Beatuiful picture selector
 * Retrieve gravatar, all known links and local pictures for picture selector
