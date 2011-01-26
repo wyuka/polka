@@ -2,6 +2,10 @@
 
 * Prettify the person view, and remove useless buttons
 
+* Find out, why pictures aren't shown
+* Beatuiful picture selector
+* Retrieve gravatar, all known links and local pictures for picture selector
+
 * Make first startup beautiful.
 
 * Separate commit for deletion of a person.
