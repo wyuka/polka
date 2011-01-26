@@ -251,9 +251,19 @@ void PolkaModel::slotPushed()
 Polka::Identity PolkaModel::insert( Polka::Identity identity,
   const QString &msg )
 {
+  bool added;
+
   if ( identity.id().isEmpty() ) {
     identity.setId( KRandom::randomString( 10 ) );
+    added = true;
+  } else {
+    if ( m_polka.findIdentity( identity.id() ).isValid() ) {
+      added = false;
+    } else {
+      added = true;
+    }
   }
+
   m_polka.insert( identity );
 
   setupGroups();
@@ -268,7 +278,8 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity,
 
   writeData( msg );
 
-  emit identityInserted( identity );
+  if ( added ) emit identityAdded( identity );
+  else emit identityChanged( identity );
 
   return identity;
 }

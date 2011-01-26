@@ -76,7 +76,7 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   pictureSelectorLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
-  connect( m_model, SIGNAL( identityInserted( const Polka::Identity & ) ),
+  connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( showIdentity( const Polka::Identity & ) ) );
 }
 
@@ -97,8 +97,6 @@ void PersonView::showIdentity( const Polka::Identity &identity )
   Polka::HtmlRenderer renderer;
 
   QString html = renderer.personEditor( identity );
-
-  qDebug() << html;
 
   m_webView->setHtml( html );
 }

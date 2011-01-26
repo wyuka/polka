@@ -72,14 +72,22 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
     SLOT( slotMouseMoved( const QPoint & ) ) );
   connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
 
-  connect( m_model, SIGNAL( identityInserted( const Polka::Identity & ) ),
+  connect( m_model, SIGNAL( identityAdded( const Polka::Identity & ) ),
     SLOT( createItems() ) );
   connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
-    SLOT( createItems() ) );
+    SLOT( slotIdentityChanged( const Polka::Identity & ) ) );
   connect( m_model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
     SLOT( createItems() ) );
 
   setMinimumWidth( 50 );
+}
+
+void IdentityGraphicsView::slotIdentityChanged( const Polka::Identity &identity )
+{
+  IdentityItem *i = item( identity );
+  if ( i ) {
+    i->updateItem( identity );
+  }
 }
 
 void IdentityGraphicsView::setBackEnabled( bool enabled )
@@ -108,6 +116,8 @@ void IdentityGraphicsView::setGroup( const Polka::Identity &group )
 
 void IdentityGraphicsView::createItems()
 {
+  qDebug() << "createItems()";
+
   m_compactLayout = false;
 
   m_scene->clear();

@@ -27,15 +27,32 @@
 
 IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   : QObject( model ), m_model( model ), m_identity( identity ),
-    m_checked( false ), m_checkItem( 0 )
+    m_checked( false ), m_checkItem( 0 ), m_itemSize( 110 )
 {
-  int itemSize = 110;
-
-  setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
+  setRect( -m_itemSize/2, -m_itemSize/2, m_itemSize, m_itemSize );
   setBrush( Qt::white );
 
+  QPen pen;
+  pen.setBrush( Qt::NoBrush );
+  setPen( pen );
+
+  setAcceptHoverEvents( true );
+
+  setFlags( ItemIsMovable );
+
+  updateItem( identity );
+}
+
+void IdentityItem::updateItem( const Polka::Identity &identity )
+{
+  m_identity = identity;
+  
+  foreach( QGraphicsItem *child, childItems() ) {
+    delete child;
+  }
+  
   if ( identity.type() == "group" ) {
-    int circleSize = itemSize + 14;
+    int circleSize = m_itemSize + 14;
     QGraphicsEllipseItem *groupCircle = new QGraphicsEllipseItem( this );
     groupCircle->setRect( -circleSize/2, -circleSize/2,
       circleSize, circleSize );
@@ -45,10 +62,6 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
     groupCircle->setPen( pen );
   }
   
-  QPen pen;
-  pen.setBrush( Qt::NoBrush );
-  setPen( pen );
-
   QPixmap pixmap = m_model->picture( identity );
 
   QGraphicsItem *item = new QGraphicsPixmapItem( pixmap, this );  
@@ -67,7 +80,7 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
   textItem->setParentItem( m_nameItem );
 
   m_nameItem->setPos( - textWidth / 2, 30 );
-  m_nameItem->hide();
+  m_nameItem->hide();    
 
   m_fanMenu = new FanMenu( this );
   connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
@@ -84,10 +97,6 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
     m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
   }
   m_fanMenu->setupItems();
-
-  setAcceptHoverEvents( true );
-
-  setFlags( ItemIsMovable );
 }
 
 Polka::Identity IdentityItem::identity() const

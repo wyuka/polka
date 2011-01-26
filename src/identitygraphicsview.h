@@ -103,6 +103,8 @@ class IdentityGraphicsView : public QWidget
 
     void finishMorphFromCompact();
 
+    void slotIdentityChanged( const Polka::Identity & );
+
   private:
     PolkaModel *m_model;
 

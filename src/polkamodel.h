@@ -92,8 +92,7 @@ class PolkaModel : public QObject
   signals:
     void dataWritten();
 
-    // FIXME: What's the difference between inserted and changed?
-    void identityInserted( const Polka::Identity & );
+    void identityAdded( const Polka::Identity & );
     void identityChanged( const Polka::Identity & );
     void identityRemoved( const Polka::Identity & );
 

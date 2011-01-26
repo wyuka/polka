@@ -22,8 +22,6 @@
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
 
-* Keep compact view when editing comment
-
 * Make magic menu only show up, when a hidden option is set.
 
 * Maybe make menu disks grow bigger when menu is shown to prevent accidently

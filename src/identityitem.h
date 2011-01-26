@@ -39,6 +39,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     Polka::Identity identity() const;
 
+    void updateItem( const Polka::Identity & );
+
     void setDefaultPos( const QPointF & );
     QPointF defaultPos() const;
 
@@ -89,6 +91,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     FanMenu::Item *m_checkMenuItem;
 
     QPointF m_movePos;
+
+    int m_itemSize;
 };
 
 #endif
