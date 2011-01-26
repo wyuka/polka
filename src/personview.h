@@ -82,6 +82,8 @@ class PersonView : public QWidget
     void addComment();
     void editComment( const QString &id );
     void removeComment( const QString &id );
+
+    void requestClose();
   
   private:
     PolkaModel *m_model;

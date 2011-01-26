@@ -168,10 +168,18 @@ void PersonView::slotLinkClicked( const QUrl &url )
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
 
+    else if ( action == "close" ) requestClose();
+    else if ( action == "magic" ) debugHtml();
+
     else qDebug() << "unknown action" << action;
   } else {
     new KRun( KUrl( url ), this );
   }
+}
+
+void PersonView::requestClose()
+{
+  emit closeRequested();
 }
 
 void PersonView::addEmail()
