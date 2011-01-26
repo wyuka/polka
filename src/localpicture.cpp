@@ -31,9 +31,6 @@
 LocalPicture::LocalPicture( GitDir *gitDir, const Polka::Identity &identity )
   : m_gitDir( gitDir ), m_identity( identity )
 {
-  QString picPath = KStandardDirs::locate( "appdata", "polka_person.png" );
-  // FIXME: Take default picture from static variable
-  m_defaultPixmap = QPixmap( picPath );
 }
 
 void LocalPicture::setPicture( const Polka::Picture &picture )
@@ -55,7 +52,7 @@ QPixmap LocalPicture::pixmap()
 {
   if ( !m_pixmap.isNull() ) return m_pixmap;
 
-  if ( m_picture.id().isEmpty() ) return m_defaultPixmap;
+  if ( m_picture.id().isEmpty() ) return QPixmap();
 
   if ( fileExists() ) {
     m_pixmap = scalePicture( QPixmap( fullFilePath() ) );
@@ -65,7 +62,7 @@ QPixmap LocalPicture::pixmap()
   connect( ImageLoader::load( m_picture.url() ),
     SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
 
-  return m_defaultPixmap;
+  return QPixmap();
 }
 
 void LocalPicture::setPixmap( const QPixmap &pixmap )

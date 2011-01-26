@@ -39,6 +39,8 @@ PolkaModel::PolkaModel( QObject *parent )
 {
   QString picPath = KStandardDirs::locate( "appdata", "polka_group.png" );
   m_defaultGroupPixmap = QPixmap( picPath );
+  picPath = KStandardDirs::locate( "appdata", "polka_person.png" );
+  m_defaultPersonPixmap = QPixmap( picPath );
 
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
 
@@ -350,8 +352,29 @@ void PolkaModel::removeGroup( const Polka::Identity &group )
 
 QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
 {
+  LocalPicture *local = localPicture( identity );
+  
+  if ( !local ) {
+    if ( identity.type() == "group" ) return m_defaultGroupPixmap;
+    else return m_defaultPersonPixmap;
+  }
+
+  return local->pixmap();
+}
+
+QString PolkaModel::picturePath( const Polka::Identity &identity ) const
+{
+  LocalPicture *local = localPicture( identity );
+  
+  if ( !local ) return QString();
+  
+  return local->fullFilePath();
+}
+
+LocalPicture *PolkaModel::localPicture( const Polka::Identity &identity ) const
+{
   if ( m_localPictures.contains( identity.id() ) ) {
-    return m_localPictures.value( identity.id() )->pixmap();
+    return m_localPictures.value( identity.id() );
   }
 
   LocalPicture *localPicture = new LocalPicture( m_gitDir, identity );
@@ -359,14 +382,14 @@ QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
   if ( pictures.isEmpty() ) {
-    if ( identity.type() == "group" ) return m_defaultGroupPixmap;
+    return 0;
   } else {
     localPicture->setPicture( pictures.first() );
   }
 
   m_localPictures.insert( identity.id(), localPicture );
 
-  return localPicture->pixmap();
+  return localPicture;
 }
 
 void PolkaModel::importPicture( const QPixmap &pixmap,

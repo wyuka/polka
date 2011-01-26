@@ -31,7 +31,8 @@ class POLKA_EXPORT HtmlRenderer
   public:
     HtmlRenderer();
 
-    QString personEditor( const Identity & );
+    QString personEditor( const Identity &,
+      const QString &picturePath = QString() );
     QString personView( const Identity & );
     QString personSummary( const Identity & );
 

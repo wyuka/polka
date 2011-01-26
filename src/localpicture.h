@@ -34,6 +34,8 @@ class LocalPicture : public QObject
 
     QPixmap pixmap();
 
+    QString fullFilePath() const;
+
   public slots:
     void setPixmap( const QPixmap &pixmap );
 
@@ -41,7 +43,6 @@ class LocalPicture : public QObject
     void pixmapChanged( const QPixmap & );
 
   protected:
-    QString fullFilePath() const;
     QString localFilePath() const;
 
     bool fileExists() const;
@@ -55,7 +56,6 @@ class LocalPicture : public QObject
     Polka::Picture m_picture;
 
     QPixmap m_pixmap;
-    QPixmap m_defaultPixmap;
 };
 
 #endif

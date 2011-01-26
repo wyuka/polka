@@ -24,14 +24,19 @@
 #include <KLocale>
 #include <KStandardDirs>
 
+#include <QDebug>
+
 namespace Polka {
 
 HtmlRenderer::HtmlRenderer()
 {
 }
 
-QString HtmlRenderer::personEditor( const Identity &identity )
+QString HtmlRenderer::personEditor( const Identity &identity,
+  const QString &picturePath )
 {
+  qDebug() << "PIC PATH" << picturePath;
+
   HtmlDoc doc;
 
   CssSheet css;
@@ -84,6 +89,7 @@ QString HtmlRenderer::personEditor( const Identity &identity )
 
   doc.setCss( css );
 
+
   HtmlElement &buttons = doc.element("div");
   buttons.c("global-buttons");
   
@@ -94,6 +100,14 @@ QString HtmlRenderer::personEditor( const Identity &identity )
   HtmlElement &closeButton = buttons.element("a");
   closeButton.attribute("href","polka:close");
   closeButton.text("Close");
+
+
+  if ( !picturePath.isEmpty() ) {
+    HtmlElement &pic = doc.element("div");
+    HtmlElement &picImg = pic.element("img");
+    picImg.attribute("src","file:///" + picturePath);
+  }
+
 
   HtmlElement &titleDiv = doc.element("div");
   titleDiv.c("trigger");
