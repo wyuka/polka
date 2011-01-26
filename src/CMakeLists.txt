@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  closeitem.cpp
   roundedrectitem.cpp
   settingswidget.cpp
   magicmenuitem.cpp

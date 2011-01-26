@@ -96,6 +96,8 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( finishShowPerson() ) );
   connect( m_groupGraphicsView, SIGNAL( showSettings() ),
     SLOT( showSettings() ) );
+  connect( m_groupGraphicsView, SIGNAL( closeRequested() ),
+    SLOT( closePersonView() ) );
 
   m_personView = new PersonView( m_model );
   viewLayout->addWidget( m_personView );
@@ -290,7 +292,7 @@ void PolkaView::finishShowPerson()
   m_personView->show();
 //  m_groupGraphicsView->center( m_personView->identity() );
 
-  m_groupWidget->setMaximumWidth( 150 );
+  m_groupWidget->setMaximumWidth( 190 );
 }
 
 void PolkaView::removeIdentity( const Polka::Identity &identity,

@@ -32,6 +32,7 @@ class LabelItem;
 class QAnimationGroup;
 class MainMenuItem;
 class MagicMenuItem;
+class CloseItem;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -60,6 +61,8 @@ class IdentityGraphicsView : public QWidget
     void morphedFromCompact();
 
     void showSettings();
+
+    void closeRequested();
 
   protected:
     LabelItem *createLabelItem( const Polka::ViewLabel &label );
@@ -100,6 +103,7 @@ class IdentityGraphicsView : public QWidget
     void positionAbsoluteItems();
 
     void finishMorphFromCompact();
+    void finishMorphToCompact();
 
     void slotIdentityChanged( const Polka::Identity & );
 
@@ -113,6 +117,7 @@ class IdentityGraphicsView : public QWidget
 
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
+    CloseItem *m_closeItem;
 
     QGraphicsScene *m_scene;
     QGraphicsView *m_view;

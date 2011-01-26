@@ -27,6 +27,7 @@
 #include "trackinggraphicsview.h"
 #include "mainmenuitem.h"
 #include "magicmenuitem.h"
+#include "closeitem.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -203,6 +204,13 @@ void IdentityGraphicsView::createItems()
   connect( m_mainMenu, SIGNAL( addPerson() ), SIGNAL( newPerson() ) );
 
   positionMenuItems();
+
+  
+  m_closeItem = new CloseItem();
+  m_scene->addItem( m_closeItem );
+  connect( m_closeItem, SIGNAL( closeRequested() ),
+    SIGNAL( closeRequested() ) ); 
+  m_closeItem->hide();
 
   qreal centerX = ( minX + maxX ) / 2;
   qreal centerY = ( minY + maxY ) / 2;
@@ -394,6 +402,8 @@ void IdentityGraphicsView::morphToCompact()
     m_morphToAnimation = new QParallelAnimationGroup( this );
     connect( m_morphToAnimation, SIGNAL( finished() ),
       SIGNAL( morphedToCompact() ) );
+    connect( m_morphToAnimation, SIGNAL( finished() ),
+      SLOT( finishMorphToCompact() ) );
   }
   m_morphToAnimation->clear();
 
@@ -422,8 +432,19 @@ void IdentityGraphicsView::morphToCompact()
   m_morphToAnimation->start();
 }
 
+void IdentityGraphicsView::finishMorphToCompact()
+{
+  QPoint middleRight( 110, m_view->viewport()->rect().height() / 2 );
+  QPointF middleRightScene = m_view->mapToScene( middleRight );
+
+  m_closeItem->setPos( middleRightScene );
+  m_closeItem->show();
+}
+
 void IdentityGraphicsView::morphFromCompact()
 {
+  m_closeItem->hide();
+
   if ( !m_morphFromAnimation ) {
     m_morphFromAnimation = new QParallelAnimationGroup( this );
     connect( m_morphFromAnimation, SIGNAL( finished() ),
