@@ -290,7 +290,6 @@ void PolkaView::showPerson( const Polka::Identity &identity )
 void PolkaView::finishShowPerson()
 {
   m_personView->show();
-//  m_groupGraphicsView->center( m_personView->identity() );
 
   m_groupWidget->setMaximumWidth( 190 );
 }
