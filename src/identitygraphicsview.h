@@ -46,8 +46,6 @@ class IdentityGraphicsView : public QWidget
 
     void setCompactLayout( bool enabled );
 
-    void center( const Polka::Identity & );
-
     void setBackEnabled( bool enabled );
 
   signals:

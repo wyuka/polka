@@ -481,15 +481,6 @@ void IdentityGraphicsView::finishMorphFromCompact()
   }  
 }
 
-void IdentityGraphicsView::center( const Polka::Identity &identity )
-{
-  IdentityItem *i = item( identity );
-  if ( i ) {
-    qDebug() << "CENTER";
-    m_view->centerOn( i->pos() );
-  }
-}
-
 IdentityItem *IdentityGraphicsView::item( const Polka::Identity &identity ) const
 {
   foreach( IdentityItem *item, m_items ) {
