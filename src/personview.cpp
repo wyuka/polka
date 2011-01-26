@@ -50,14 +50,6 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
 
   titleLayout->addStretch( 1 );
   
-  QPushButton *button = new QPushButton( i18n("Debug HTML") );
-  connect( button, SIGNAL( clicked() ), SLOT( debugHtml() ) );
-  titleLayout->addWidget( button );
-
-  button = new QPushButton( i18n("Close") );
-  connect( button, SIGNAL( clicked() ), SIGNAL( closeRequested() ) );
-  titleLayout->addWidget( button );
-  
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
   m_webView->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
@@ -72,7 +64,7 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
 
   pictureSelectorLayout->addStretch( 1 );
 
-  button = new QPushButton( i18n("Grab Picture") );
+  QPushButton *button = new QPushButton( i18n("Grab Picture") );
   pictureSelectorLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
