@@ -23,11 +23,13 @@
 
 #include <QtGui>
 
+class PolkaModel;
+
 class PictureSelectorButton : public QWidget
 {
     Q_OBJECT
   public:
-    PictureSelectorButton( QWidget *parent = 0 );
+    PictureSelectorButton( PolkaModel *model, QWidget *parent = 0 );
 
     void setPicture( const Polka::Picture & );
 
@@ -37,6 +39,8 @@ class PictureSelectorButton : public QWidget
     void setPixmap( const QPixmap & );
 
   private:
+    PolkaModel *m_model;
+  
     Polka::Picture m_picture;
   
     QLabel *m_label;

@@ -51,14 +51,11 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   QHBoxLayout *pictureSelectorLayout = new QHBoxLayout;
   topLayout->addLayout( pictureSelectorLayout );
 
-  m_pictureSelector = new PictureSelector;
+  m_pictureSelector = new PictureSelector( m_model );
   pictureSelectorLayout->addWidget( m_pictureSelector );
+  connect( m_pictureSelector, SIGNAL( grabPicture() ), SLOT( grabPicture() ) );
 
   pictureSelectorLayout->addStretch( 1 );
-
-  QPushButton *button = new QPushButton( i18n("Grab Picture") );
-  pictureSelectorLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
   connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( showIdentity( const Polka::Identity & ) ) );

@@ -20,14 +20,25 @@
 #include "pictureselectorbutton.h"
 
 #include "imageloader.h"
+#include "polkamodel.h"
 
-PictureSelectorButton::PictureSelectorButton( QWidget *parent )
-  : QWidget( parent )
+#include <KLocale>
+
+PictureSelectorButton::PictureSelectorButton( PolkaModel *model,
+  QWidget *parent )
+  : QWidget( parent ), m_model( model )
 {
   QBoxLayout *topLayout = new QHBoxLayout( this );
 
   m_label = new QLabel;
   topLayout->addWidget( m_label );
+  m_label->setFrameStyle( QFrame::Box | QFrame::Raised );
+  m_label->setLineWidth( 1 );
+  m_label->setMidLineWidth( 2 );
+  
+  m_label->setFixedSize( 78, 78 );
+  
+  m_label->setText( i18n("Loading...") );
 }
 
 void PictureSelectorButton::setPicture( const Polka::Picture &picture )
