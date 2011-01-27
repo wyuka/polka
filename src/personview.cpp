@@ -42,14 +42,6 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
-  QBoxLayout *titleLayout = new QHBoxLayout;
-  topLayout->addLayout( titleLayout );
-
-  m_titleLabel = new QLabel;
-  titleLayout->addWidget( m_titleLabel );
-
-  titleLayout->addStretch( 1 );
-  
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
   m_webView->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
@@ -108,7 +100,9 @@ Polka::Identity PersonView::identity() const
 
 void PersonView::setImage( const QPixmap &pixmap )
 {
-  m_titleLabel->setPixmap( pixmap );
+  Q_UNUSED( pixmap )
+  
+  // FIXME: Update HTML view
 }
 
 void PersonView::grabPicture()
