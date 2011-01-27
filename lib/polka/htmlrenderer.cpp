@@ -87,10 +87,7 @@ QString HtmlRenderer::personEditor( const Identity &identity,
   
   css.addRule( ".global-buttons a", "padding-left", "10px" );
 
-  css.addRule( "h1", "padding-top", "35px" );
-  css.addRule( "h1", "padding-left", "80px" );
-
-  css.addRule( ".pic", "float", "left" );
+  css.addRule( "h1 img", "padding-right", "10px" );
 
   doc.setCss( css );
 
@@ -110,13 +107,11 @@ QString HtmlRenderer::personEditor( const Identity &identity,
   HtmlElement &titleDiv = doc.element("div");
   titleDiv.c("trigger");
 
+  HtmlElement &h1 = titleDiv.element("h1");
   if ( !picturePath.isEmpty() ) {
-    HtmlElement &picImg = titleDiv.element("img");
-    picImg.c("pic");
+    HtmlElement &picImg = h1.element("img");
     picImg.attribute("src","file:///" + picturePath);
   }
-
-  HtmlElement &h1 = titleDiv.element("h1");
   h1.text( identity.name().value() );
 
   HtmlElement &titleEditSpan = h1.element("span").c("edit-link first");
