@@ -114,9 +114,11 @@ void PersonView::slotRegionGrabbed( const QPixmap &pixmap )
   delete m_regionGrabber;
   m_regionGrabber = 0;
 
-  setImage( pixmap );
+  if ( !pixmap.isNull() ) {
+    setImage( pixmap );
 
-  m_model->importPicture( pixmap, m_identity );
+    m_model->importPicture( pixmap, m_identity );
+  }
 }
 
 void PersonView::slotLinkClicked( const QUrl &url )
