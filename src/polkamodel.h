@@ -129,6 +129,9 @@ class PolkaModel : public QObject
 
     QPixmap m_defaultGroupPixmap;
     QPixmap m_defaultPersonPixmap;
+
+    QString m_defaultGroupPixmapPath;
+    QString m_defaultPersonPixmapPath;
 };
 
 #endif

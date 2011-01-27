@@ -87,6 +87,11 @@ QString HtmlRenderer::personEditor( const Identity &identity,
   
   css.addRule( ".global-buttons a", "padding-left", "10px" );
 
+  css.addRule( "h1", "padding-top", "35px" );
+  css.addRule( "h1", "padding-left", "80px" );
+
+  css.addRule( ".pic", "float", "left" );
+
   doc.setCss( css );
 
 
@@ -102,15 +107,14 @@ QString HtmlRenderer::personEditor( const Identity &identity,
   closeButton.text("Close");
 
 
-  if ( !picturePath.isEmpty() ) {
-    HtmlElement &pic = doc.element("div");
-    HtmlElement &picImg = pic.element("img");
-    picImg.attribute("src","file:///" + picturePath);
-  }
-
-
   HtmlElement &titleDiv = doc.element("div");
   titleDiv.c("trigger");
+
+  if ( !picturePath.isEmpty() ) {
+    HtmlElement &picImg = titleDiv.element("img");
+    picImg.c("pic");
+    picImg.attribute("src","file:///" + picturePath);
+  }
 
   HtmlElement &h1 = titleDiv.element("h1");
   h1.text( identity.name().value() );

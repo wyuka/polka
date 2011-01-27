@@ -37,10 +37,12 @@ PolkaModel::PolkaModel( QObject *parent )
     m_groupItemModel( 0 ),
     m_commitCommand( 0 )
 {
-  QString picPath = KStandardDirs::locate( "appdata", "polka_group.png" );
-  m_defaultGroupPixmap = QPixmap( picPath );
-  picPath = KStandardDirs::locate( "appdata", "polka_person.png" );
-  m_defaultPersonPixmap = QPixmap( picPath );
+  m_defaultGroupPixmapPath = KStandardDirs::locate( "appdata",
+    "polka_group.png" );
+  m_defaultGroupPixmap = QPixmap( m_defaultGroupPixmapPath );
+  m_defaultPersonPixmapPath = KStandardDirs::locate( "appdata",
+    "polka_person.png" );
+  m_defaultPersonPixmap = QPixmap( m_defaultPersonPixmapPath );
 
   m_gitDir = new GitDir( QDir::homePath() + "/.polka" );
 
@@ -366,7 +368,10 @@ QString PolkaModel::picturePath( const Polka::Identity &identity ) const
 {
   LocalPicture *local = localPicture( identity );
   
-  if ( !local ) return QString();
+  if ( !local ) {
+    if ( identity.type() == "group" ) return m_defaultGroupPixmapPath;
+    else return m_defaultPersonPixmapPath;
+  }
   
   return local->fullFilePath();
 }
