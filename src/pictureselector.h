@@ -24,6 +24,7 @@
 #include <QtGui>
 
 class PolkaModel;
+class PictureSelectorButton;
 
 class PictureSelector : public QWidget
 {
@@ -42,6 +43,8 @@ class PictureSelector : public QWidget
     PolkaModel *m_model;
   
     QBoxLayout *m_layout;
+
+    QList<PictureSelectorButton *> m_buttons;
 };
 
 #endif

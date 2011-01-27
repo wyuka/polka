@@ -44,8 +44,8 @@ PictureSelectorButton::PictureSelectorButton( PolkaModel *model,
 void PictureSelectorButton::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
-  connect( ImageLoader::load( m_picture.url() ),
-    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
+//  connect( ImageLoader::load( m_picture.url() ),
+//    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
 }
 
 Polka::Picture PictureSelectorButton::picture() const

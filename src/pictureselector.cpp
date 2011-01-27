@@ -25,22 +25,24 @@
 PictureSelector::PictureSelector( PolkaModel *model, QWidget *parent )
   : QWidget( parent ), m_model( model ), m_layout( 0 )
 {
-}
-
-void PictureSelector::setPictures( const Polka::Picture::List &pictures )
-{
-  delete m_layout;
   m_layout = new QHBoxLayout( this );
-
-  foreach( Polka::Picture picture, pictures ) {
-    PictureSelectorButton *button = new PictureSelectorButton( m_model );
-    m_layout->addWidget( button );
-    
-    button->setPicture( picture );
-  }
 
   QPushButton *addButton = new QPushButton( "+" );
   addButton->setFixedSize( 78, 78 );
   m_layout->addWidget( addButton );
   connect( addButton, SIGNAL( clicked() ), SIGNAL( grabPicture() ) );
+}
+
+void PictureSelector::setPictures( const Polka::Picture::List &pictures )
+{
+  qDeleteAll( m_buttons );
+  m_buttons.clear();
+
+  foreach( Polka::Picture picture, pictures ) {
+    PictureSelectorButton *button = new PictureSelectorButton( m_model );
+    m_buttons.append( button );
+    m_layout->insertWidget( 0, button );
+    
+    button->setPicture( picture );
+  }
 }
