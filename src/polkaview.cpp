@@ -215,6 +215,8 @@ void PolkaView::newPerson()
     Polka::Identity identity = dialog->identity();
 
     m_model->addIdentity( identity, m_group );
+    
+    showGroup( m_group );
   }
   return;
 }
@@ -298,6 +300,7 @@ void PolkaView::removeIdentity( const Polka::Identity &identity,
   const Polka::Identity &group )
 {
   m_model->removeIdentity( identity, group );
+  showGroup( m_group );
 }
 
 void PolkaView::closePersonView()
