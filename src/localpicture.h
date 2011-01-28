@@ -28,16 +28,14 @@ class LocalPicture : public QObject
 {
     Q_OBJECT
   public:
-    LocalPicture( GitDir *, const Polka::Identity & );
-
-    void setPicture( const Polka::Picture & );
+    LocalPicture( GitDir *, const Polka::Picture & );
 
     QPixmap pixmap();
 
     QString fullFilePath() const;
 
   public slots:
-    void setPixmap( const QPixmap &pixmap );
+    void setPixmap( const QPixmap &pixmap, const Polka::Identity &identity );
 
   signals:
     void pixmapChanged( const QPixmap & );
@@ -51,7 +49,6 @@ class LocalPicture : public QObject
 
   private:
     GitDir *m_gitDir;
-    Polka::Identity m_identity;
 
     Polka::Picture m_picture;
 

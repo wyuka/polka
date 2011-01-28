@@ -28,14 +28,9 @@
 #include <QDir>
 #include <QDebug>
 
-LocalPicture::LocalPicture( GitDir *gitDir, const Polka::Identity &identity )
-  : m_gitDir( gitDir ), m_identity( identity )
+LocalPicture::LocalPicture( GitDir *gitDir, const Polka::Picture &picture )
+  : m_gitDir( gitDir ), m_picture( picture )
 {
-}
-
-void LocalPicture::setPicture( const Polka::Picture &picture )
-{
-  m_picture = picture;
 }
 
 QString LocalPicture::fullFilePath() const
@@ -65,7 +60,8 @@ QPixmap LocalPicture::pixmap()
   return QPixmap();
 }
 
-void LocalPicture::setPixmap( const QPixmap &pixmap )
+void LocalPicture::setPixmap( const QPixmap &pixmap,
+  const Polka::Identity &identity )
 {
   m_pixmap = scalePicture( pixmap );
 
@@ -73,7 +69,7 @@ void LocalPicture::setPixmap( const QPixmap &pixmap )
     m_gitDir->createPath( localFilePath() );
     m_pixmap.save( fullFilePath(), "PNG" );
     m_gitDir->addFile( localFilePath(), i18n("Adding picture of %1").
-      arg( m_identity.name().value() ) );
+      arg( identity.name().value() ) );
   }
   
   emit pixmapChanged( m_pixmap );

@@ -352,47 +352,62 @@ void PolkaModel::removeGroup( const Polka::Identity &group )
   emit identityRemoved( group );
 }
 
+QPixmap PolkaModel::picture( const Polka::Picture &picture ) const
+{
+  LocalPicture *local = localPicture( picture );
+  
+  if ( !local ) return m_defaultPersonPixmap;
+
+  return local->pixmap();
+}
+
 QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
 {
-  LocalPicture *local = localPicture( identity );
+  Polka::Picture::List pictures = identity.pictures().pictureList();
   
-  if ( !local ) {
-    if ( identity.type() == "group" ) return m_defaultGroupPixmap;
-    else return m_defaultPersonPixmap;
-  }
+  if ( pictures.isEmpty() ) return defaultPixmap( identity );
+
+  LocalPicture *local = localPicture( pictures.first() );
+  
+  if ( !local ) return defaultPixmap( identity );
 
   return local->pixmap();
 }
 
 QString PolkaModel::picturePath( const Polka::Identity &identity ) const
 {
-  LocalPicture *local = localPicture( identity );
+  Polka::Picture::List pictures = identity.pictures().pictureList();
   
-  if ( !local ) {
-    if ( identity.type() == "group" ) return m_defaultGroupPixmapPath;
-    else return m_defaultPersonPixmapPath;
-  }
+  if ( pictures.isEmpty() ) return defaultPixmapPath( identity );
+
+  LocalPicture *local = localPicture( pictures.first() );
   
+  if ( !local ) return defaultPixmapPath( identity );
+
   return local->fullFilePath();
 }
 
-LocalPicture *PolkaModel::localPicture( const Polka::Identity &identity ) const
+QPixmap PolkaModel::defaultPixmap( const Polka::Identity &identity ) const
 {
-  if ( m_localPictures.contains( identity.id() ) ) {
-    return m_localPictures.value( identity.id() );
+  if ( identity.type() == "group" ) return m_defaultGroupPixmap;
+  else return m_defaultPersonPixmap;
+}
+
+QString PolkaModel::defaultPixmapPath( const Polka::Identity &identity ) const
+{
+  if ( identity.type() == "group" ) return m_defaultGroupPixmapPath;
+  else return m_defaultPersonPixmapPath;
+}
+
+LocalPicture *PolkaModel::localPicture( const Polka::Picture &picture ) const
+{
+  if ( m_localPictures.contains( picture.id() ) ) {
+    return m_localPictures.value( picture.id() );
   }
 
-  LocalPicture *localPicture = new LocalPicture( m_gitDir, identity );
+  LocalPicture *localPicture = new LocalPicture( m_gitDir, picture );
 
-  Polka::Picture::List pictures = identity.pictures().pictureList();
-
-  if ( pictures.isEmpty() ) {
-    return 0;
-  } else {
-    localPicture->setPicture( pictures.first() );
-  }
-
-  m_localPictures.insert( identity.id(), localPicture );
+  m_localPictures.insert( picture.id(), localPicture );
 
   return localPicture;
 }
@@ -408,16 +423,15 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   Polka::Picture picture;
   picture.setId( KRandom::randomString( 10 ) );
 
-  LocalPicture *localPicture = new LocalPicture( m_gitDir, target );
-  localPicture->setPicture( picture );
-  localPicture->setPixmap( pixmap );  
+  LocalPicture *localPicture = new LocalPicture( m_gitDir, picture );
+  localPicture->setPixmap( pixmap, identity );  
   
   pictureList.prepend( picture );
   pictures.setPictureList( pictureList );
   identity.setPictures( pictures );
   m_polka.insert( identity );
 
-  m_localPictures.insert( identity.id(), localPicture );
+  m_localPictures.insert( picture.id(), localPicture );
 
   emit identityChanged( identity );
 }

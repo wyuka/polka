@@ -33,6 +33,7 @@ PictureSelectorButton::PictureSelectorButton( PolkaModel *model,
   m_label = new QLabel;
   topLayout->addWidget( m_label );
   m_label->setFrameStyle( QFrame::Box | QFrame::Raised );
+  m_label->setAlignment( Qt::AlignCenter );
   m_label->setLineWidth( 1 );
   m_label->setMidLineWidth( 2 );
   
@@ -44,6 +45,9 @@ PictureSelectorButton::PictureSelectorButton( PolkaModel *model,
 void PictureSelectorButton::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
+
+  m_label->setPixmap( m_model->picture( picture ) );
+
 //  connect( ImageLoader::load( m_picture.url() ),
 //    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
 }
