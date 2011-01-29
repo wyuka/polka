@@ -34,7 +34,7 @@ class GroupView : public QWidget
 
     PolkaModel *model() const;
 
-    void setGroup( const Polka::Identity & );
+    void showGroup( const Polka::Identity & );
     Polka::Identity group() const;
 
   signals:

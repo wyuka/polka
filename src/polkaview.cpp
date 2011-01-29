@@ -247,10 +247,10 @@ void PolkaView::continueShowGroup()
   m_groupNameLabel->setText( "<b>" + m_group.name().value() + "</b>" );
 
   if ( m_settingsWidget->fancyMode() ) {
-    m_groupGraphicsView->setGroup( m_group );
+    m_groupGraphicsView->showGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
-    m_groupListView->setGroup( m_group );
+    m_groupListView->showGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupListView );
   }
 }

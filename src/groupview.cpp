@@ -31,7 +31,7 @@ PolkaModel *GroupView::model() const
   return m_model;
 }
 
-void GroupView::setGroup( const Polka::Identity &group )
+void GroupView::showGroup( const Polka::Identity &group )
 {
   m_group = group;
 
