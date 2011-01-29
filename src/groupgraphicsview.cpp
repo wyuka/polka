@@ -37,7 +37,7 @@
 #endif
 
 GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model ), m_mainMenu( 0 ), m_magicMenu( 0 ),
+  : GroupView( model, parent ), m_mainMenu( 0 ), m_magicMenu( 0 ),
     m_compactLayout( false ),
     m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ), m_globalMenu( 0 )
 {
@@ -57,11 +57,11 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
     SLOT( slotMouseMoved( const QPoint & ) ) );
   connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
 
-  connect( m_model, SIGNAL( identityAdded( const Polka::Identity & ) ),
+  connect( model, SIGNAL( identityAdded( const Polka::Identity & ) ),
     SLOT( createItems() ) );
-  connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
+  connect( model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( slotIdentityChanged( const Polka::Identity & ) ) );
-  connect( m_model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
+  connect( model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
     SLOT( createItems() ) );
 
   setMinimumWidth( 50 );
@@ -85,10 +85,8 @@ void GroupGraphicsView::setCompactLayout( bool enabled )
   else morphFromCompact();
 }
 
-void GroupGraphicsView::setGroup( const Polka::Identity &group )
+void GroupGraphicsView::doShowGroup()
 {
-  m_group = group;
-
   createItems();
 }
 
@@ -103,7 +101,7 @@ void GroupGraphicsView::createItems()
   m_labelItems.clear();
   m_globalMenu = 0;
 
-  Polka::Identity::List identities = m_model->identitiesOfGroup( m_group );
+  Polka::Identity::List identities = model()->identitiesOfGroup( group() );
 
   int columns = sqrt( identities.size() );
   int spacing = 150;
@@ -118,13 +116,13 @@ void GroupGraphicsView::createItems()
 
   bool firstItem = true;
 
-  Polka::GroupView view = m_model->groupView( m_group );
+  Polka::GroupView view = model()->groupView( group() );
 
   foreach( Polka::Identity identity, identities ) {
     qreal posX = x * spacing + ( y % 2 ) * spacing / 2;
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
-    IdentityItem *item = new IdentityItem( m_model, identity );
+    IdentityItem *item = new IdentityItem( model(), identity );
     m_items.append( item );
 
     connect( item, SIGNAL( showIdentity( const Polka::Identity & ) ),
@@ -239,21 +237,16 @@ void GroupGraphicsView::positionAbsoluteItems()
   positionMenuItems();
 }
 
-Polka::Identity GroupGraphicsView::group() const
-{
-  return m_group;
-}
-
 void GroupGraphicsView::slotRemoveIdentity( const Polka::Identity &identity )
 {
-  emit removeIdentity( identity, m_group );
+  emit removeIdentity( identity, group() );
 }
 
 void GroupGraphicsView::savePosition( const Polka::Identity &identity,
   const QPointF &pos )
 {
   if ( !m_compactLayout ) {
-    m_model->saveViewPosition( m_group, identity, pos );
+    model()->saveViewPosition( group(), identity, pos );
   }
 }
 
@@ -263,14 +256,14 @@ void GroupGraphicsView::saveLabel( const Polka::ViewLabel &label,
   Polka::ViewLabel l = label;
   l.setX( pos.x() );
   l.setY( pos.y() );
-  m_model->saveViewLabel( m_group, l );
+  model()->saveViewLabel( group(), l );
 }
 
 
 void GroupGraphicsView::saveCheck( const Polka::Identity &identity,
   bool checked )
 {
-  m_model->saveViewCheck( m_group, identity, checked );
+  model()->saveViewCheck( group(), identity, checked );
 }
 
 void GroupGraphicsView::addLabel()
@@ -294,7 +287,7 @@ void GroupGraphicsView::addLabel( const QPointF &pos )
     
     createLabelItem( label );
     
-    m_model->saveViewLabel( m_group, label );
+    model()->saveViewLabel( group(), label );
   }
 }
 
@@ -304,7 +297,7 @@ void GroupGraphicsView::removeLabel( LabelItem *item,
   m_labelItems.removeAll( item );
 
   delete item;
-  m_model->removeViewLabel( m_group, label );
+  model()->removeViewLabel( group(), label );
 }
 
 void GroupGraphicsView::renameLabel( LabelItem *item,
@@ -318,13 +311,13 @@ void GroupGraphicsView::renameLabel( LabelItem *item,
     item->setText( name );
   
     label.setText( name );
-    m_model->saveViewLabel( m_group, label );
+    model()->saveViewLabel( group(), label );
   }
 }
 
 LabelItem *GroupGraphicsView::createLabelItem( const Polka::ViewLabel &label )
 {
-  LabelItem *item = new LabelItem( m_model, label );
+  LabelItem *item = new LabelItem( model(), label );
 
   connect( item, SIGNAL( itemMoved( const Polka::ViewLabel &, const QPointF & ) ),
     SLOT( saveLabel( const Polka::ViewLabel &, const QPointF & ) ) );
@@ -345,7 +338,7 @@ LabelItem *GroupGraphicsView::createLabelItem( const Polka::ViewLabel &label )
 
 void GroupGraphicsView::resetLayout()
 {
-  m_model->clearViewPositions( m_group );
+  model()->clearViewPositions( group() );
 
   foreach( IdentityItem *item, m_items ) {
     if ( item->pos() != item->defaultPos() ) {
@@ -367,12 +360,12 @@ void GroupGraphicsView::resetLayout()
 
 void GroupGraphicsView::emitCloneGroup()
 {
-  emit cloneGroup( m_group );
+  emit cloneGroup( group() );
 }
 
 void GroupGraphicsView::emitRemoveGroup()
 {
-  emit removeGroup( m_group );
+  emit removeGroup( group() );
 }
 
 void GroupGraphicsView::morphToCompact()

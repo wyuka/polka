@@ -16,33 +16,29 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef GROUPLISTVIEW_H
-#define GROUPLISTVIEW_H
 
 #include "groupview.h"
 
-#include <QtGui>
+#include "polkamodel.h"
 
-class PolkaItemModel;
-
-class GroupListView : public GroupView
+GroupView::GroupView( PolkaModel *model, QWidget *parent )
+  : QWidget( parent ), m_model( model )
 {
-    Q_OBJECT
-  public:
-    GroupListView( PolkaModel *, QWidget *parent = 0 );
+}
 
-    void setItemModel( PolkaItemModel * );
+PolkaModel *GroupView::model() const
+{
+  return m_model;
+}
 
-  protected:
-    void doShowGroup();
+void GroupView::setGroup( const Polka::Identity &group )
+{
+  m_group = group;
 
-  protected slots:
-    void slotItemClicked( const QModelIndex &index );
+  doShowGroup();
+}
 
-  private:
-    PolkaItemModel *m_itemModel;
-
-    QListView *m_flatView;
-};
-
-#endif
+Polka::Identity GroupView::group() const
+{
+  return m_group;
+}

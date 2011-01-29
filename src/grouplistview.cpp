@@ -25,7 +25,7 @@
 #include <KLocale>
 
 GroupListView::GroupListView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model ), m_itemModel( 0 )
+  : GroupView( model, parent ), m_itemModel( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -44,16 +44,9 @@ GroupListView::GroupListView( PolkaModel *model, QWidget *parent )
   connect( button, SIGNAL( clicked() ), SIGNAL( showSettings() ) );    
 }
 
-void GroupListView::setGroup( const Polka::Identity &group )
+void GroupListView::doShowGroup()
 {
-  m_group = group;
-
-  setItemModel( m_model->itemModel( group.id() ) );
-}
-
-Polka::Identity GroupListView::group() const
-{
-  return m_group;
+  setItemModel( model()->itemModel( group().id() ) );
 }
 
 void GroupListView::setItemModel( PolkaItemModel *itemModel )

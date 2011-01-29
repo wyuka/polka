@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  groupview.cpp
   pictureselectorcontrols.cpp
   roundedrectitem.cpp
   settingswidget.cpp

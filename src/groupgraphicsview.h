@@ -19,13 +19,11 @@
 #ifndef GROUPGRAPHICSVIEW_H
 #define GROUPGRAPHICSVIEW_H
 
-#include "polka/polka.h"
-
 #include "fanmenu.h"
+#include "groupview.h"
 
 #include <QtGui>
 
-class PolkaItemModel;
 class PolkaModel;
 class IdentityItem;
 class LabelItem;
@@ -33,24 +31,16 @@ class QAnimationGroup;
 class MainMenuItem;
 class MagicMenuItem;
 
-class GroupGraphicsView : public QWidget
+class GroupGraphicsView : public GroupView
 {
     Q_OBJECT
   public:
     GroupGraphicsView( PolkaModel *, QWidget *parent = 0 );
 
-    void setGroup( const Polka::Identity & );
-    Polka::Identity group() const;
-
-    void setGroupName( const QString & );
-
     void setCompactLayout( bool enabled );
 
   signals:
-    void goBack();
-    void newPerson();
     void newGroup();
-    void showIdentity( const Polka::Identity & );
     void removeIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
     void cloneGroup( const Polka::Identity &group );
@@ -59,11 +49,11 @@ class GroupGraphicsView : public QWidget
     void morphedToCompact();
     void morphedFromCompact();
 
-    void showSettings();
-
     void closeRequested();
 
   protected:
+    void doShowGroup();
+  
     LabelItem *createLabelItem( const Polka::ViewLabel &label );
 
     void morphToCompact();
@@ -107,10 +97,6 @@ class GroupGraphicsView : public QWidget
     void slotIdentityChanged( const Polka::Identity & );
 
   private:
-    PolkaModel *m_model;
-
-    Polka::Identity m_group;
-
     QList<IdentityItem *> m_items;
     QList<LabelItem *> m_labelItems;
 

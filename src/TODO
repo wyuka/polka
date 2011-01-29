@@ -31,8 +31,6 @@ instead of twitter url, screen grab instead of nothing )
 * Create sub group from checked identities
 * Editing of group names (maybe use special personviewer?)
 
-* Common base class for IdentityGraphicsView and IdentityListView.
-
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
 
