@@ -436,6 +436,19 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   emit identityChanged( identity );
 }
 
+void PolkaModel::removePicture( const Polka::Picture &picture,
+  Polka::Identity &identity )
+{
+  Polka::Pictures pictures = identity.pictures();
+  pictures.remove( picture );
+  
+  identity.setPictures( pictures );
+  
+  m_polka.insert( identity );
+  
+  emit identityChanged( identity );  
+}
+
 void PolkaModel::saveViewLabel( const Polka::Identity &group,
   const Polka::ViewLabel &label )
 {

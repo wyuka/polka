@@ -74,6 +74,8 @@ class PolkaModel : public QObject
 
     void importPicture( const QPixmap &, const Polka::Identity & );
 
+    void removePicture( const Polka::Picture &, Polka::Identity & );
+
     void saveViewLabel( const Polka::Identity &group,
       const Polka::ViewLabel &label );
     void removeViewLabel( const Polka::Identity &group,

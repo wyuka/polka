@@ -61,3 +61,10 @@ void PictureSelectorButton::setPixmap( const QPixmap &pixmap )
 {
   m_label->setPixmap( pixmap );
 }
+
+void PictureSelectorButton::mousePressEvent( QMouseEvent *event )
+{
+  Q_UNUSED( event )
+
+  emit picturePressed( m_picture );
+}

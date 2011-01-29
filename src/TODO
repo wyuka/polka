@@ -8,6 +8,11 @@
 * Make back button close person view, when open.
 * Remove triangle control
 
+* Rename PolkaModel::picture to pixmap ?
+
+* Show descriptive text instead of URL in picture selector controls (twitter
+instead of twitter url, screen grab instead of nothing )
+
 * Prettify the person view, and remove useless buttons
 
 * Make first startup beautiful.

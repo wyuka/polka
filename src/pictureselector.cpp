@@ -44,5 +44,8 @@ void PictureSelector::setPictures( const Polka::Picture::List &pictures )
     m_layout->insertWidget( 0, button );
     
     button->setPicture( picture );
+
+    connect( button, SIGNAL( picturePressed( const Polka::Picture & ) ),
+      SIGNAL( pictureSelected( const Polka::Picture & ) ) );
   }
 }

@@ -28,6 +28,7 @@
 #include "phoneeditor.h"
 #include "linkeditor.h"
 #include "addresseditor.h"
+#include "pictureselectorcontrols.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -48,12 +49,20 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
   connect( m_webView->page(), SIGNAL( linkClicked( const QUrl & ) ),
     SLOT( slotLinkClicked( const QUrl & ) ) );
 
+  m_pictureSelectorControls = new PictureSelectorControls( m_model );
+  topLayout->addWidget( m_pictureSelectorControls );
+  m_pictureSelectorControls->hide();
+
   QHBoxLayout *pictureSelectorLayout = new QHBoxLayout;
   topLayout->addLayout( pictureSelectorLayout );
 
   m_pictureSelector = new PictureSelector( m_model );
   pictureSelectorLayout->addWidget( m_pictureSelector );
   connect( m_pictureSelector, SIGNAL( grabPicture() ), SLOT( grabPicture() ) );
+
+  connect( m_pictureSelector,
+    SIGNAL( pictureSelected( const Polka::Picture & ) ),
+    m_pictureSelectorControls, SLOT( setPicture( const Polka::Picture & ) ) );
 
   pictureSelectorLayout->addStretch( 1 );
 
@@ -67,6 +76,7 @@ void PersonView::showIdentity( const Polka::Identity &identity )
 
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
+  m_pictureSelectorControls->setIdentity( identity );
   m_pictureSelector->setPictures( pictures );
 
   if ( !pictures.isEmpty() ) {

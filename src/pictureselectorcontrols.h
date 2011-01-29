@@ -1,6 +1,8 @@
 /*
     This file is part of KDE.
 
+    Copyright (C) 2011 Cornelius Schumacher <schumacher@kde.org>
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -16,8 +18,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef PICTURESELECTORBUTTON_H
-#define PICTURESELECTORBUTTON_H
+#ifndef PICTURESELECTORCONTROLS_H
+#define PICTURESELECTORCONTROLS_H
 
 #include "polka/polka.h"
 
@@ -25,30 +27,29 @@
 
 class PolkaModel;
 
-class PictureSelectorButton : public QWidget
+class PictureSelectorControls : public QWidget
 {
     Q_OBJECT
   public:
-    PictureSelectorButton( PolkaModel *model, QWidget *parent = 0 );
+    PictureSelectorControls( PolkaModel *model, QWidget *parent = 0 );
+    virtual ~PictureSelectorControls();
 
+    void setIdentity( const Polka::Identity & );
+
+  public slots:
     void setPicture( const Polka::Picture & );
 
-    Polka::Picture picture() const;
-
-    void mousePressEvent( QMouseEvent *event );
-
-  signals:
-    void picturePressed( const Polka::Picture & );
-
   protected slots:
-    void setPixmap( const QPixmap & );
+    void removePicture();
 
   private:
     PolkaModel *m_model;
-  
+
+    Polka::Identity m_identity;
     Polka::Picture m_picture;
-  
-    QLabel *m_label;
+
+    QLabel *m_pictureLabel;
+    QLabel *m_urlLabel;
 };
 
 #endif
