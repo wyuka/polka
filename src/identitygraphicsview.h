@@ -32,7 +32,6 @@ class LabelItem;
 class QAnimationGroup;
 class MainMenuItem;
 class MagicMenuItem;
-class CloseItem;
 
 class IdentityGraphicsView : public QWidget
 {
@@ -117,7 +116,6 @@ class IdentityGraphicsView : public QWidget
 
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
-    CloseItem *m_closeItem;
 
     QGraphicsScene *m_scene;
     QGraphicsView *m_view;

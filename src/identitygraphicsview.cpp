@@ -27,7 +27,6 @@
 #include "trackinggraphicsview.h"
 #include "mainmenuitem.h"
 #include "magicmenuitem.h"
-#include "closeitem.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -206,12 +205,6 @@ void IdentityGraphicsView::createItems()
   positionMenuItems();
 
   
-  m_closeItem = new CloseItem();
-  m_scene->addItem( m_closeItem );
-  connect( m_closeItem, SIGNAL( closeRequested() ),
-    SIGNAL( closeRequested() ) ); 
-  m_closeItem->hide();
-
   qreal centerX = ( minX + maxX ) / 2;
   qreal centerY = ( minY + maxY ) / 2;
 
@@ -434,17 +427,10 @@ void IdentityGraphicsView::morphToCompact()
 
 void IdentityGraphicsView::finishMorphToCompact()
 {
-  QPoint middleRight( 110, m_view->viewport()->rect().height() / 2 );
-  QPointF middleRightScene = m_view->mapToScene( middleRight );
-
-  m_closeItem->setPos( middleRightScene );
-  m_closeItem->show();
 }
 
 void IdentityGraphicsView::morphFromCompact()
 {
-  m_closeItem->hide();
-
   if ( !m_morphFromAnimation ) {
     m_morphFromAnimation = new QParallelAnimationGroup( this );
     connect( m_morphFromAnimation, SIGNAL( finished() ),

@@ -293,7 +293,7 @@ void PolkaView::finishShowPerson()
 {
   m_personView->show();
 
-  m_groupWidget->setMaximumWidth( 190 );
+  m_groupWidget->setMaximumWidth( 170 );
 
   m_backButton->setEnabled( true );
 }
