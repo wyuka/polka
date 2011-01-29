@@ -40,6 +40,7 @@ class PictureSelectorControls : public QWidget
     void setPicture( const Polka::Picture & );
 
   protected slots:
+    void makeDefault();
     void removePicture();
 
   private:

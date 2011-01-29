@@ -48,6 +48,7 @@ PictureSelectorControls::PictureSelectorControls( PolkaModel *model,
   
   QPushButton *button = new QPushButton( i18n("Make default") );
   controlsLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( makeDefault() ) );
   
   button = new QPushButton( i18n("Remove picture") );
   controlsLayout->addWidget( button );
@@ -79,6 +80,11 @@ void PictureSelectorControls::setPicture( const Polka::Picture &picture )
   m_urlLabel->setText( picture.url() );
   
   show();
+}
+
+void PictureSelectorControls::makeDefault()
+{
+  m_model->setDefaultPicture( m_picture, m_identity );
 }
 
 void PictureSelectorControls::removePicture()

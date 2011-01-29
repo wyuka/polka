@@ -76,6 +76,7 @@ void PersonView::showIdentity( const Polka::Identity &identity )
 
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
+  m_pictureSelectorControls->hide();
   m_pictureSelectorControls->setIdentity( identity );
   m_pictureSelector->setPictures( pictures );
 

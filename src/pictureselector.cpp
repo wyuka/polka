@@ -41,7 +41,7 @@ void PictureSelector::setPictures( const Polka::Picture::List &pictures )
   foreach( Polka::Picture picture, pictures ) {
     PictureSelectorButton *button = new PictureSelectorButton( m_model );
     m_buttons.append( button );
-    m_layout->insertWidget( 0, button );
+    m_layout->insertWidget( m_layout->count() - 1, button );
     
     button->setPicture( picture );
 
