@@ -28,7 +28,7 @@
 class QPainter;
 class KUrl;
 class PolkaModel;
-class IdentityListView;
+class GroupListView;
 class IdentityGraphicsView;
 class PersonView;
 class SettingsWidget;
@@ -83,7 +83,7 @@ class PolkaView : public QWidget
     SettingsWidget *m_settingsWidget;
     QWidget *m_groupWidget;
     QStackedLayout *m_listLayout;
-    IdentityListView *m_groupView;
+    GroupListView *m_groupView;
     IdentityGraphicsView *m_groupGraphicsView;
     PersonView *m_personView;
 };

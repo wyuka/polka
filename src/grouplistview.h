@@ -16,8 +16,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef IDENTITYLISTVIEW_H
-#define IDENTITYLISTVIEW_H
+#ifndef GROUPLISTVIEW_H
+#define GROUPLISTVIEW_H
 
 #include "polka/polka.h"
 
@@ -26,11 +26,11 @@
 class PolkaItemModel;
 class PolkaModel;
 
-class IdentityListView : public QWidget
+class GroupListView : public QWidget
 {
     Q_OBJECT
   public:
-    IdentityListView( PolkaModel *, QWidget *parent = 0 );
+    GroupListView( PolkaModel *, QWidget *parent = 0 );
 
     void setGroup( const Polka::Identity & );
     Polka::Identity group() const;

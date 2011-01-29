@@ -22,7 +22,7 @@
 #include "polkaview.h"
 
 #include "polkamodel.h"
-#include "identitylistview.h"
+#include "grouplistview.h"
 #include "identitygraphicsview.h"
 #include "newpersondialog.h"
 #include "newgroupdialog.h"
@@ -69,7 +69,7 @@ PolkaView::PolkaView(QWidget *parent)
   
   m_listLayout = new QStackedLayout( m_groupWidget );
 
-  m_groupView = new IdentityListView( m_model );
+  m_groupView = new GroupListView( m_model );
   m_listLayout->addWidget( m_groupView );
   connect( m_groupView, SIGNAL( goBack() ), SLOT( goBack() ) );
   connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
