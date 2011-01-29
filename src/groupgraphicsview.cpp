@@ -39,7 +39,8 @@
 GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   : GroupView( model, parent ), m_mainMenu( 0 ), m_magicMenu( 0 ),
     m_compactLayout( false ),
-    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ), m_globalMenu( 0 )
+    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ),
+    m_removeItemsAnimation( 0 ), m_createItemsAnimation( 0 ), m_globalMenu( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -87,12 +88,60 @@ void GroupGraphicsView::setCompactLayout( bool enabled )
 
 void GroupGraphicsView::doShowGroup()
 {
-  createItems();
+  m_previousItem = 0;
+
+  if ( m_removeItemsAnimation ) m_removeItemsAnimation->stop();
+  if ( m_createItemsAnimation ) m_createItemsAnimation->stop();
+
+  if ( group().isValid() ) {
+    m_previousItem = item( group() );
+  }
+
+  if ( m_previousItem ) {
+    removeItems();
+  } else {
+    createItems();
+  }
+}
+
+void GroupGraphicsView::removeItems()
+{
+  if ( !m_removeItemsAnimation ) {
+    m_removeItemsAnimation = new QParallelAnimationGroup( this );
+    connect( m_removeItemsAnimation, SIGNAL( finished() ),
+      SLOT( createItems() ) );
+  }
+  m_removeItemsAnimation->clear();
+
+  foreach( IdentityItem *item, m_items ) {
+    if ( item == m_previousItem ) continue;
+
+    QPropertyAnimation *animation = new QPropertyAnimation(item, "opacity", this);
+    m_removeItemsAnimation->insertAnimation( 0, animation );
+    animation->setStartValue( 1 );
+    animation->setEndValue( 0 );
+    animation->setDuration( 300 );
+  }
+
+  m_removeItemsAnimation->start();  
 }
 
 void GroupGraphicsView::createItems()
 {
-  qDebug() << "createItems()";
+  bool doAnimation = false;
+  QPoint previousItemPos;
+
+  if ( m_previousItem ) {
+    doAnimation = true;
+
+    if ( !m_createItemsAnimation ) {
+      m_createItemsAnimation = new QParallelAnimationGroup( this );
+    }
+    m_createItemsAnimation->clear();
+    m_createItemsAnimations.clear();
+
+    previousItemPos = m_view->mapFromScene( m_previousItem->pos() );
+  }
 
   m_compactLayout = false;
 
@@ -150,7 +199,19 @@ void GroupGraphicsView::createItems()
       itemX = posX;
       itemY = posY;
     }
-    item->setPos( itemX, itemY );
+
+    if ( doAnimation ) {
+      QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+      m_createItemsAnimation->insertAnimation( 0, animation );
+      m_createItemsAnimations.append( animation );
+
+      animation->setDuration(500);
+      QPointF target( itemX, itemY );
+      animation->setEndValue( target );
+      animation->setEasingCurve( QEasingCurve::OutCubic );
+    } else {
+      item->setPos( itemX, itemY );
+    }
 
     if ( firstItem ) {
       firstItem = false;
@@ -216,6 +277,14 @@ void GroupGraphicsView::createItems()
   }
 
   m_view->centerOn( centerX, centerY );
+
+  if ( doAnimation ) {
+    foreach( QPropertyAnimation *animation, m_createItemsAnimations ) {
+      animation->setStartValue( m_view->mapToScene( previousItemPos ) );
+    }
+  
+    m_createItemsAnimation->start();
+  }
 }
 
 void GroupGraphicsView::positionMenuItems()

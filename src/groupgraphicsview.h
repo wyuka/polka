@@ -68,6 +68,7 @@ class GroupGraphicsView : public GroupView
   protected slots:
     void resetLayout();
   
+    void removeItems();
     void createItems();
     void slotRemoveIdentity( const Polka::Identity & );
 
@@ -100,6 +101,8 @@ class GroupGraphicsView : public GroupView
     QList<IdentityItem *> m_items;
     QList<LabelItem *> m_labelItems;
 
+    IdentityItem *m_previousItem;
+
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
 
@@ -110,6 +113,10 @@ class GroupGraphicsView : public GroupView
 
     QAnimationGroup *m_morphToAnimation;
     QAnimationGroup *m_morphFromAnimation;
+
+    QAnimationGroup *m_removeItemsAnimation;
+    QAnimationGroup *m_createItemsAnimation;
+    QList<QPropertyAnimation *> m_createItemsAnimations;
 
     FanMenu *m_globalMenu;
     FanMenu::Item *m_addLabelItem;
