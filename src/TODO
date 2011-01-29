@@ -5,10 +5,14 @@
 * Small pictures of people as group picture
 * Group transitions via zooming
 
-* Make back button close person view, when open.
 * Remove triangle control
 
 * Rename PolkaModel::picture to pixmap ?
+
+* Fetch remote pictures
+* Add picture should provide possinbility to add twitter, facebook, etc.
+
+* When cloning groups, show them somewhere
 
 * Show descriptive text instead of URL in picture selector controls (twitter
 instead of twitter url, screen grab instead of nothing )

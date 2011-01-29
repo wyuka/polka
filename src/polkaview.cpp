@@ -294,6 +294,8 @@ void PolkaView::finishShowPerson()
   m_personView->show();
 
   m_groupWidget->setMaximumWidth( 190 );
+
+  m_backButton->setEnabled( true );
 }
 
 void PolkaView::removeIdentity( const Polka::Identity &identity,
@@ -321,6 +323,12 @@ void PolkaView::showSettings()
 
 void PolkaView::goBack()
 {
+  if ( m_personView->isVisible() ) {
+    closePersonView();
+    m_backButton->setEnabled( m_history.size() > 1 );
+    return;
+  }
+
   m_history.takeLast();
   while ( !m_history.isEmpty() ) {
     QString id = m_history.last();
