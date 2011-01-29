@@ -23,7 +23,7 @@
 
 #include "polkamodel.h"
 #include "grouplistview.h"
-#include "identitygraphicsview.h"
+#include "groupgraphicsview.h"
 #include "newpersondialog.h"
 #include "newgroupdialog.h"
 #include "settings.h"
@@ -78,7 +78,7 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_groupView, SIGNAL( showSettings() ),
     SLOT( showSettings() ) );
 
-  m_groupGraphicsView = new IdentityGraphicsView( m_model );
+  m_groupGraphicsView = new GroupGraphicsView( m_model );
   m_listLayout->addWidget( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( goBack() ) );
   connect( m_groupGraphicsView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );

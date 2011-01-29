@@ -14,7 +14,7 @@ set(polka_bin_SRCS
   fanmenu.cpp
   gitremote.cpp
   identityitem.cpp
-  identitygraphicsview.cpp
+  groupgraphicsview.cpp
   newpersondialog.cpp
   grouplistview.cpp
   mainwindow.cpp

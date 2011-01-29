@@ -16,8 +16,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef IDENTITYGRAPHICSVIEW_H
-#define IDENTITYGRAPHICSVIEW_H
+#ifndef GROUPGRAPHICSVIEW_H
+#define GROUPGRAPHICSVIEW_H
 
 #include "polka/polka.h"
 
@@ -33,11 +33,11 @@ class QAnimationGroup;
 class MainMenuItem;
 class MagicMenuItem;
 
-class IdentityGraphicsView : public QWidget
+class GroupGraphicsView : public QWidget
 {
     Q_OBJECT
   public:
-    IdentityGraphicsView( PolkaModel *, QWidget *parent = 0 );
+    GroupGraphicsView( PolkaModel *, QWidget *parent = 0 );
 
     void setGroup( const Polka::Identity & );
     Polka::Identity group() const;
