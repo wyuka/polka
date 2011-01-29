@@ -71,20 +71,12 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_groupListView = new GroupListView( m_model );
   m_listLayout->addWidget( m_groupListView );
-  connect( m_groupListView, SIGNAL( goBack() ), SLOT( goBack() ) );
-  connect( m_groupListView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupListView, SIGNAL( showIdentity( const Polka::Identity & ) ),
-    SLOT( showIdentity( const Polka::Identity & ) ) );
-  connect( m_groupListView, SIGNAL( showSettings() ),
-    SLOT( showSettings() ) );
+  connectGroupView( m_groupListView );
 
   m_groupGraphicsView = new GroupGraphicsView( m_model );
   m_listLayout->addWidget( m_groupGraphicsView );
-  connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( goBack() ) );
+  connectGroupView( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );
-  connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupGraphicsView, SIGNAL( showIdentity( const Polka::Identity & ) ),
-    SLOT( showIdentity( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( removeIdentity( const Polka::Identity &,
     const Polka::Identity & ) ),
     SLOT( removeIdentity( const Polka::Identity &, const Polka::Identity & ) ) );
@@ -94,8 +86,6 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( removeGroup( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( morphedToCompact() ),
     SLOT( finishShowPerson() ) );
-  connect( m_groupGraphicsView, SIGNAL( showSettings() ),
-    SLOT( showSettings() ) );
   connect( m_groupGraphicsView, SIGNAL( closeRequested() ),
     SLOT( closePersonView() ) );
 
@@ -117,6 +107,16 @@ PolkaView::PolkaView(QWidget *parent)
 
 PolkaView::~PolkaView()
 {
+}
+
+void PolkaView::connectGroupView( GroupView *groupView )
+{
+  connect( groupView, SIGNAL( goBack() ), SLOT( goBack() ) );
+  connect( groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
+  connect( groupView, SIGNAL( showIdentity( const Polka::Identity & ) ),
+    SLOT( showIdentity( const Polka::Identity & ) ) );
+  connect( groupView, SIGNAL( showSettings() ),
+    SLOT( showSettings() ) );
 }
 
 void PolkaView::readConfig()

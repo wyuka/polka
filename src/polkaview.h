@@ -32,6 +32,8 @@ class GroupListView;
 class GroupGraphicsView;
 class PersonView;
 class SettingsWidget;
+class GroupView;
+
 class PolkaView : public QWidget
 {
     Q_OBJECT
@@ -65,6 +67,9 @@ class PolkaView : public QWidget
 
   signals:
     void dataWritten();
+  
+  protected:
+    void connectGroupView( GroupView * );
   
   protected slots:
     void finishShowPerson();
