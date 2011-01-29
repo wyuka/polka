@@ -32,7 +32,6 @@ instead of twitter url, screen grab instead of nothing )
 * Editing of group names (maybe use special personviewer?)
 
 * Common base class for IdentityGraphicsView and IdentityListView.
-* Consistent names for PolkaView::m_groupView and PolkaView::m_groupGraphicsView
 
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.

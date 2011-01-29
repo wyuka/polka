@@ -83,7 +83,7 @@ class PolkaView : public QWidget
     SettingsWidget *m_settingsWidget;
     QWidget *m_groupWidget;
     QStackedLayout *m_listLayout;
-    GroupListView *m_groupView;
+    GroupListView *m_groupListView;
     GroupGraphicsView *m_groupGraphicsView;
     PersonView *m_personView;
 };

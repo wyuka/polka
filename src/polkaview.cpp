@@ -69,13 +69,13 @@ PolkaView::PolkaView(QWidget *parent)
   
   m_listLayout = new QStackedLayout( m_groupWidget );
 
-  m_groupView = new GroupListView( m_model );
-  m_listLayout->addWidget( m_groupView );
-  connect( m_groupView, SIGNAL( goBack() ), SLOT( goBack() ) );
-  connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupView, SIGNAL( showIdentity( const Polka::Identity & ) ),
+  m_groupListView = new GroupListView( m_model );
+  m_listLayout->addWidget( m_groupListView );
+  connect( m_groupListView, SIGNAL( goBack() ), SLOT( goBack() ) );
+  connect( m_groupListView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
+  connect( m_groupListView, SIGNAL( showIdentity( const Polka::Identity & ) ),
     SLOT( showIdentity( const Polka::Identity & ) ) );
-  connect( m_groupView, SIGNAL( showSettings() ),
+  connect( m_groupListView, SIGNAL( showSettings() ),
     SLOT( showSettings() ) );
 
   m_groupGraphicsView = new GroupGraphicsView( m_model );
@@ -142,7 +142,7 @@ void PolkaView::readData()
     return;
   }
 
-  m_groupView->setItemModel( m_model->itemModel() );
+  m_groupListView->setItemModel( m_model->itemModel() );
 
   m_history = Settings::history();
 
@@ -250,8 +250,8 @@ void PolkaView::continueShowGroup()
     m_groupGraphicsView->setGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
-    m_groupView->setGroup( m_group );
-    m_listLayout->setCurrentWidget( m_groupView );
+    m_groupListView->setGroup( m_group );
+    m_listLayout->setCurrentWidget( m_groupListView );
   }
 }
 
