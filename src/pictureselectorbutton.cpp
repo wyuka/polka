@@ -20,21 +20,36 @@
 #include "pictureselectorbutton.h"
 
 #include "imageloader.h"
+#include "polkamodel.h"
 
-PictureSelectorButton::PictureSelectorButton( QWidget *parent )
-  : QWidget( parent )
+#include <KLocale>
+
+PictureSelectorButton::PictureSelectorButton( PolkaModel *model,
+  QWidget *parent )
+  : QWidget( parent ), m_model( model )
 {
   QBoxLayout *topLayout = new QHBoxLayout( this );
 
   m_label = new QLabel;
   topLayout->addWidget( m_label );
+  m_label->setFrameStyle( QFrame::Box | QFrame::Raised );
+  m_label->setAlignment( Qt::AlignCenter );
+  m_label->setLineWidth( 1 );
+  m_label->setMidLineWidth( 2 );
+  
+  m_label->setFixedSize( 78, 78 );
+  
+  m_label->setText( i18n("Loading...") );
 }
 
 void PictureSelectorButton::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
-  connect( ImageLoader::load( m_picture.url() ),
-    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
+
+  m_label->setPixmap( m_model->picture( picture ) );
+
+//  connect( ImageLoader::load( m_picture.url() ),
+//    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
 }
 
 Polka::Picture PictureSelectorButton::picture() const
@@ -45,4 +60,11 @@ Polka::Picture PictureSelectorButton::picture() const
 void PictureSelectorButton::setPixmap( const QPixmap &pixmap )
 {
   m_label->setPixmap( pixmap );
+}
+
+void PictureSelectorButton::mousePressEvent( QMouseEvent *event )
+{
+  Q_UNUSED( event )
+
+  emit picturePressed( m_picture );
 }

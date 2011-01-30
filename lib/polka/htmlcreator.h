@@ -100,6 +100,7 @@ class POLKA_EXPORT HtmlElement
 
     HtmlElement::List &childElements();
     QString name() { return m_name; }
+    void setText( const QString &text );
     QString text() { return m_text; }
     QMap<QString,QString> attributes() { return m_attributes; }
 

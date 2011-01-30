@@ -16,35 +16,35 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef HTMLRENDERER_H
-#define HTMLRENDERER_H
 
-#include <polka/polka_export.h>
+#include "groupview.h"
 
-#include "polka.h"
-#include "htmlcreator.h"
+#include "polkamodel.h"
 
-namespace Polka {
-
-class POLKA_EXPORT HtmlRenderer
+GroupView::GroupView( PolkaModel *model, QWidget *parent )
+  : QWidget( parent ), m_model( model )
 {
-  public:
-    HtmlRenderer();
-
-    QString personEditor( const Identity &,
-      const QString &picturePath = QString(), bool enableMagic = false );
-    QString personView( const Identity & );
-    QString personSummary( const Identity & );
-
-    QString timeAgo( const QDateTime & );
-
-  protected:
-    void addEditControls( HtmlElement &, const QString &typeName,
-      const QString &id, const QDateTime &updatedAt,
-      const Comment &comment,
-      bool commentEnabled = true );
-};
-
 }
 
-#endif
+PolkaModel *GroupView::model() const
+{
+  return m_model;
+}
+
+void GroupView::showGroup( const Polka::Identity &group )
+{
+  m_previousGroup = m_group;
+  m_group = group;
+
+  doShowGroup();
+}
+
+Polka::Identity GroupView::group() const
+{
+  return m_group;
+}
+
+Polka::Identity GroupView::previousGroup() const
+{
+  return m_previousGroup;
+}

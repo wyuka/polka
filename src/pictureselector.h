@@ -23,19 +23,28 @@
 
 #include <QtGui>
 
+class PolkaModel;
+class PictureSelectorButton;
+
 class PictureSelector : public QWidget
 {
     Q_OBJECT
   public:
-    PictureSelector( QWidget *parent = 0 );
+    PictureSelector( PolkaModel *model, QWidget *parent = 0 );
 
     void setPictures( const Polka::Picture::List & );
 
   signals:
     void pictureSelected( const Polka::Picture & );
 
+    void grabPicture();
+
   private:
+    PolkaModel *m_model;
+  
     QBoxLayout *m_layout;
+
+    QList<PictureSelectorButton *> m_buttons;
 };
 
 #endif

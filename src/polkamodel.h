@@ -67,9 +67,15 @@ class PolkaModel : public QObject
     PolkaItemModel *groupItemModel();
     PolkaItemModel *itemModel( const QString &id = QString() );
 
+    QPixmap picture( const Polka::Picture & ) const;
+
     QPixmap picture( const Polka::Identity & ) const;
+    QString picturePath( const Polka::Identity & ) const;
 
     void importPicture( const QPixmap &, const Polka::Identity & );
+
+    void removePicture( const Polka::Picture &, Polka::Identity & );
+    void setDefaultPicture( const Polka::Picture &, Polka::Identity & );
 
     void saveViewLabel( const Polka::Identity &group,
       const Polka::ViewLabel &label );
@@ -103,6 +109,13 @@ class PolkaModel : public QObject
   protected:
     void setupGroups();
 
+    LocalPicture *localPicture( const Polka::Picture & ) const;
+
+    QPixmap defaultPixmap( const Polka::Identity &identity ) const;
+    QString defaultPixmapPath( const Polka::Identity &identity ) const;
+
+    void createFirstStartData();
+
   private:
     GitDir *m_gitDir;
     GitRemote *m_gitRemote;
@@ -125,6 +138,10 @@ class PolkaModel : public QObject
     mutable QMap<QString,LocalPicture *> m_localPictures;
 
     QPixmap m_defaultGroupPixmap;
+    QPixmap m_defaultPersonPixmap;
+
+    QString m_defaultGroupPixmapPath;
+    QString m_defaultPersonPixmapPath;
 };
 
 #endif

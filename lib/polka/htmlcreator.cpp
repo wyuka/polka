@@ -165,6 +165,14 @@ HtmlElement &HtmlElement::c( const QString &value )
 
 void HtmlElement::text( const QString &text )
 {
+  HtmlElement textElement;
+  textElement.setText( text );
+  
+  m_childElements.append( textElement );
+}
+
+void HtmlElement::setText( const QString &text )
+{
   m_text = text;
 }
 
@@ -206,18 +214,19 @@ void HtmlDoc::writeElements( QXmlStreamWriter &xml,
   HtmlElement::List &elements )
 {
   foreach( HtmlElement element, elements ) {
-    xml.writeStartElement( element.name() );
-    foreach( QString key, element.attributes().keys() ) {
-      xml.writeAttribute( key, element.attributes().value( key ) );
-    }
     if ( !element.text().isEmpty() ) {
       xml.writeCharacters( element.text() ); 
-    }
+    } else {
+      xml.writeStartElement( element.name() );
+      foreach( QString key, element.attributes().keys() ) {
+        xml.writeAttribute( key, element.attributes().value( key ) );
+      }
     
-    if ( !element.childElements().isEmpty() ) {
-      writeElements( xml, element.childElements() ); 
+      if ( !element.childElements().isEmpty() ) {
+        writeElements( xml, element.childElements() ); 
+      }
+      xml.writeEndElement();
     }
-    xml.writeEndElement();
   }
 }
 

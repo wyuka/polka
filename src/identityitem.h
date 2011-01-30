@@ -33,6 +33,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
     Q_PROPERTY(qreal scale READ scale WRITE setScale)
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
   public:
     IdentityItem( PolkaModel *, const Polka::Identity & );
@@ -48,6 +49,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     QPointF rememberedPos() const;
 
     void checkItem();
+
+    void hidePopups();
 
   signals:
     void showGroup( const Polka::Identity & );

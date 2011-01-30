@@ -25,6 +25,7 @@
 #include <QWebView>
 
 class PictureSelector;
+class PictureSelectorControls;
 class RegionGrabber;
 class PolkaModel;
 class KDirWatch;
@@ -82,6 +83,8 @@ class PersonView : public QWidget
     void addComment();
     void editComment( const QString &id );
     void removeComment( const QString &id );
+
+    void requestClose();
   
   private:
     PolkaModel *m_model;
@@ -90,6 +93,7 @@ class PersonView : public QWidget
     QLabel *m_titleLabel;
     QWebView *m_webView;
     PictureSelector *m_pictureSelector;
+    PictureSelectorControls *m_pictureSelectorControls;
 
     RegionGrabber *m_regionGrabber;
 

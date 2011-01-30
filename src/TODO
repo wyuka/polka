@@ -1,48 +1,41 @@
 = Polka
 
-* Prettify the person view, and remove useless buttons
-  * Make picture selector a nice bar with pictures and captions for where the
-    picture came from (and modification date (on hover or something))
-  * Highlight selected picture (glowing frame?), click to change selection
-  * Keep grab picture action
-  
-  * Show selected picture in HTML view on top left
-  
-  * Add icon top right (x) to close person view (absolute positioning)
-  * Add triangle in graphics view to close person view
-  
-  * Add magic (on admin flag) left to (x) close person view (absolute positioni)
-
-  * Make group name span whole width above person view.
+* Highlight selected picture (glowing frame?), click to change selection
     
-* Find out, why pictures aren't shown
-* Beatuiful picture selector
 * Retrieve gravatar, all known links and local pictures for picture selector
+* Fetch remote pictures
 
 * Make first startup beautiful.
-
-* Separate commit for deletion of a person.
-* Put changes in XML for addition of pictures into correct commit.
 
 * Show history
 * Undo based on git (Rollback from UI)
 
+* Maybe make menu disks grow bigger when menu is shown to prevent accidently
+  hiding the menu again by hitting the space between menu elements.
+
 * Show name labels for identities, which only have the default picture.
+
+
+* Make PolkaView::insert protected and only use add and update?
+
+* Small pictures of people as group picture
+
+* Rename PolkaModel::picture to pixmap ?
+
+* Add picture should provide possibility to add twitter, facebook, etc.
+
+* Show descriptive text instead of URL in picture selector controls (twitter
+instead of twitter url, screen grab instead of nothing )
+
+* Separate commit for deletion of a person.
+* Put changes in XML for addition of pictures into correct commit.
 
 * Explode sub group
 * Create sub group from checked identities
 * Editing of group names (maybe use special personviewer?)
 
-* Common base class for IdentityGraphicsView and IdentityListView.
-* Consistent names for PolkaView::m_groupView and PolkaView::m_groupGraphicsView
-
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
-
-* Make magic menu only show up, when a hidden option is set.
-
-* Maybe make menu disks grow bigger when menu is shown to prevent accidently
-  hiding the menu again by hitting the space between menu elements.
 
 * Show nice text for links.
 

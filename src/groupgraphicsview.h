@@ -16,16 +16,14 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef IDENTITYGRAPHICSVIEW_H
-#define IDENTITYGRAPHICSVIEW_H
-
-#include "polka/polka.h"
+#ifndef GROUPGRAPHICSVIEW_H
+#define GROUPGRAPHICSVIEW_H
 
 #include "fanmenu.h"
+#include "groupview.h"
 
 #include <QtGui>
 
-class PolkaItemModel;
 class PolkaModel;
 class IdentityItem;
 class LabelItem;
@@ -33,26 +31,25 @@ class QAnimationGroup;
 class MainMenuItem;
 class MagicMenuItem;
 
-class IdentityGraphicsView : public QWidget
+struct IdentityItemGroup {
+
+  IdentityItemGroup() : previousGroup( 0 ) {}
+
+  QList<IdentityItem *> items;
+  QPointF center;
+  IdentityItem *previousGroup;
+};
+
+class GroupGraphicsView : public GroupView
 {
     Q_OBJECT
   public:
-    IdentityGraphicsView( PolkaModel *, QWidget *parent = 0 );
-
-    void setGroup( const Polka::Identity & );
-    Polka::Identity group() const;
-
-    void setGroupName( const QString & );
+    GroupGraphicsView( PolkaModel *, QWidget *parent = 0 );
 
     void setCompactLayout( bool enabled );
 
-    void setBackEnabled( bool enabled );
-
   signals:
-    void goBack();
-    void newPerson();
     void newGroup();
-    void showIdentity( const Polka::Identity & );
     void removeIdentity( const Polka::Identity &person,
       const Polka::Identity &group );
     void cloneGroup( const Polka::Identity &group );
@@ -61,9 +58,15 @@ class IdentityGraphicsView : public QWidget
     void morphedToCompact();
     void morphedFromCompact();
 
-    void showSettings();
+    void closeRequested();
 
   protected:
+    void doShowGroup();
+
+    IdentityItemGroup prepareIdentityItems( bool doAnimation );
+    void createMenuItems();
+    void createLabelItems();
+  
     LabelItem *createLabelItem( const Polka::ViewLabel &label );
 
     void morphToCompact();
@@ -78,7 +81,12 @@ class IdentityGraphicsView : public QWidget
   protected slots:
     void resetLayout();
   
-    void createItems();
+    void hideItems();
+    void placeItems();
+    void unplaceItems();
+    void unhideItems();
+    void recreateItems();
+
     void slotRemoveIdentity( const Polka::Identity & );
 
     void addLabel();
@@ -102,22 +110,25 @@ class IdentityGraphicsView : public QWidget
     void positionAbsoluteItems();
 
     void finishMorphFromCompact();
+    void finishMorphToCompact();
 
+    void finishPlaceItems();
+
+    void slotIdentityAdded( const Polka::Identity & );
     void slotIdentityChanged( const Polka::Identity & );
+    void slotIdentityRemoved( const Polka::Identity & );
 
   private:
-    PolkaModel *m_model;
-
-    Polka::Identity m_group;
-
     QList<IdentityItem *> m_items;
     QList<LabelItem *> m_labelItems;
+
+    IdentityItem *m_previousItem;
+
+    IdentityItemGroup m_newItems;
 
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
 
-    QPushButton *m_backButton;
-    QLabel *m_groupNameLabel;  
     QGraphicsScene *m_scene;
     QGraphicsView *m_view;
 
@@ -125,6 +136,12 @@ class IdentityGraphicsView : public QWidget
 
     QAnimationGroup *m_morphToAnimation;
     QAnimationGroup *m_morphFromAnimation;
+
+    QAnimationGroup *m_removeItemsAnimation;
+    QAnimationGroup *m_placeItemsAnimation;
+    QList<QPropertyAnimation *> m_placeItemsAnimations;
+    QAnimationGroup *m_unplaceItemsAnimation;
+    QAnimationGroup *m_unhideItemsAnimation;
 
     FanMenu *m_globalMenu;
     FanMenu::Item *m_addLabelItem;

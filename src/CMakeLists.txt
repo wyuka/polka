@@ -1,4 +1,6 @@
 set(polka_bin_SRCS
+  groupview.cpp
+  pictureselectorcontrols.cpp
   roundedrectitem.cpp
   settingswidget.cpp
   magicmenuitem.cpp
@@ -13,9 +15,9 @@ set(polka_bin_SRCS
   fanmenu.cpp
   gitremote.cpp
   identityitem.cpp
-  identitygraphicsview.cpp
+  groupgraphicsview.cpp
   newpersondialog.cpp
-  identitylistview.cpp
+  grouplistview.cpp
   mainwindow.cpp
   main.cpp
   polkaview.cpp

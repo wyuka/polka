@@ -1,6 +1,8 @@
 /*
     This file is part of KDE.
 
+    Copyright (C) 2011 Cornelius Schumacher <schumacher@kde.org>
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -16,35 +18,39 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef HTMLRENDERER_H
-#define HTMLRENDERER_H
+#ifndef PICTURESELECTORCONTROLS_H
+#define PICTURESELECTORCONTROLS_H
 
-#include <polka/polka_export.h>
+#include "polka/polka.h"
 
-#include "polka.h"
-#include "htmlcreator.h"
+#include <QtGui>
 
-namespace Polka {
+class PolkaModel;
 
-class POLKA_EXPORT HtmlRenderer
+class PictureSelectorControls : public QWidget
 {
+    Q_OBJECT
   public:
-    HtmlRenderer();
+    PictureSelectorControls( PolkaModel *model, QWidget *parent = 0 );
+    virtual ~PictureSelectorControls();
 
-    QString personEditor( const Identity &,
-      const QString &picturePath = QString(), bool enableMagic = false );
-    QString personView( const Identity & );
-    QString personSummary( const Identity & );
+    void setIdentity( const Polka::Identity & );
 
-    QString timeAgo( const QDateTime & );
+  public slots:
+    void setPicture( const Polka::Picture & );
 
-  protected:
-    void addEditControls( HtmlElement &, const QString &typeName,
-      const QString &id, const QDateTime &updatedAt,
-      const Comment &comment,
-      bool commentEnabled = true );
+  protected slots:
+    void makeDefault();
+    void removePicture();
+
+  private:
+    PolkaModel *m_model;
+
+    Polka::Identity m_identity;
+    Polka::Picture m_picture;
+
+    QLabel *m_pictureLabel;
+    QLabel *m_urlLabel;
 };
-
-}
 
 #endif

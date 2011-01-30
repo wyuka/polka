@@ -24,13 +24,16 @@
 #include <KLocale>
 #include <KStandardDirs>
 
+#include <QDebug>
+
 namespace Polka {
 
 HtmlRenderer::HtmlRenderer()
 {
 }
 
-QString HtmlRenderer::personEditor( const Identity &identity )
+QString HtmlRenderer::personEditor( const Identity &identity,
+  const QString &picturePath, bool enableMagic )
 {
   HtmlDoc doc;
 
@@ -75,12 +78,40 @@ QString HtmlRenderer::personEditor( const Identity &identity )
 
   css.addRule( ".comment-icon", "margin-left", "6px" );
 
+  CssRule &buttonRule = css.rule( ".global-buttons" );
+  buttonRule.add( "position", "absolute" );
+  buttonRule.add( "top", "10px" );
+  buttonRule.add( "right", "10px" );
+  
+  css.addRule( ".global-buttons a", "padding-left", "10px" );
+
+  css.addRule( "h1 img", "padding-right", "10px" );
+
   doc.setCss( css );
+
+
+  HtmlElement &buttons = doc.element("div");
+  buttons.c("global-buttons");
+  
+  if ( enableMagic ) {
+    HtmlElement &magicButton = buttons.element("a");
+    magicButton.attribute("href","polka:magic");
+    magicButton.text("Magic");
+  }
+  
+  HtmlElement &closeButton = buttons.element("a");
+  closeButton.attribute("href","polka:close");
+  closeButton.text("Close");
+
 
   HtmlElement &titleDiv = doc.element("div");
   titleDiv.c("trigger");
 
   HtmlElement &h1 = titleDiv.element("h1");
+  if ( !picturePath.isEmpty() ) {
+    HtmlElement &picImg = h1.element("img");
+    picImg.attribute("src","file:///" + picturePath);
+  }
   h1.text( identity.name().value() );
 
   HtmlElement &titleEditSpan = h1.element("span").c("edit-link first");

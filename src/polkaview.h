@@ -28,10 +28,12 @@
 class QPainter;
 class KUrl;
 class PolkaModel;
-class IdentityListView;
-class IdentityGraphicsView;
+class GroupListView;
+class GroupGraphicsView;
 class PersonView;
 class SettingsWidget;
+class GroupView;
+
 class PolkaView : public QWidget
 {
     Q_OBJECT
@@ -66,6 +68,9 @@ class PolkaView : public QWidget
   signals:
     void dataWritten();
   
+  protected:
+    void connectGroupView( GroupView * );
+  
   protected slots:
     void finishShowPerson();
     void closePersonView();
@@ -78,11 +83,13 @@ class PolkaView : public QWidget
 
     QStringList m_history;
 
+    QPushButton *m_backButton;
+    QLabel *m_groupNameLabel;  
     SettingsWidget *m_settingsWidget;
     QWidget *m_groupWidget;
     QStackedLayout *m_listLayout;
-    IdentityListView *m_groupView;
-    IdentityGraphicsView *m_groupGraphicsView;
+    GroupListView *m_groupListView;
+    GroupGraphicsView *m_groupGraphicsView;
     PersonView *m_personView;
 };
 

@@ -20,21 +20,32 @@
 #include "pictureselector.h"
 
 #include "pictureselectorbutton.h"
+#include "polkamodel.h"
 
-PictureSelector::PictureSelector( QWidget *parent )
-  : QWidget( parent ), m_layout( 0 )
+PictureSelector::PictureSelector( PolkaModel *model, QWidget *parent )
+  : QWidget( parent ), m_model( model ), m_layout( 0 )
 {
+  m_layout = new QHBoxLayout( this );
+
+  QPushButton *addButton = new QPushButton( "+" );
+  addButton->setFixedSize( 78, 78 );
+  m_layout->addWidget( addButton );
+  connect( addButton, SIGNAL( clicked() ), SIGNAL( grabPicture() ) );
 }
 
 void PictureSelector::setPictures( const Polka::Picture::List &pictures )
 {
-  delete m_layout;
-  m_layout = new QHBoxLayout( this );
+  qDeleteAll( m_buttons );
+  m_buttons.clear();
 
   foreach( Polka::Picture picture, pictures ) {
-    PictureSelectorButton *button = new PictureSelectorButton;
-    m_layout->addWidget( button );
+    PictureSelectorButton *button = new PictureSelectorButton( m_model );
+    m_buttons.append( button );
+    m_layout->insertWidget( m_layout->count() - 1, button );
     
     button->setPicture( picture );
+
+    connect( button, SIGNAL( picturePressed( const Polka::Picture & ) ),
+      SIGNAL( pictureSelected( const Polka::Picture & ) ) );
   }
 }

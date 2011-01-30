@@ -22,8 +22,8 @@
 #include "polkaview.h"
 
 #include "polkamodel.h"
-#include "identitylistview.h"
-#include "identitygraphicsview.h"
+#include "grouplistview.h"
+#include "groupgraphicsview.h"
 #include "newpersondialog.h"
 #include "newgroupdialog.h"
 #include "settings.h"
@@ -43,6 +43,24 @@ PolkaView::PolkaView(QWidget *parent)
   
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
+  
+  QBoxLayout *buttonLayout = new QHBoxLayout;
+  topLayout->addLayout( buttonLayout );
+
+  // FIXME: Use proper icon
+  m_backButton = new QPushButton( "<" );
+  buttonLayout->addWidget( m_backButton );
+  connect( m_backButton, SIGNAL( clicked() ), SLOT( goBack() ) );
+  m_backButton->setEnabled( false );
+
+  buttonLayout->addStretch( 1 );
+
+  m_groupNameLabel = new QLabel;
+  buttonLayout->addWidget( m_groupNameLabel );
+
+  buttonLayout->addStretch( 1 );
+
+
   QBoxLayout *viewLayout = new QHBoxLayout;
   topLayout->addLayout( viewLayout );
 
@@ -51,21 +69,14 @@ PolkaView::PolkaView(QWidget *parent)
   
   m_listLayout = new QStackedLayout( m_groupWidget );
 
-  m_groupView = new IdentityListView( m_model );
-  m_listLayout->addWidget( m_groupView );
-  connect( m_groupView, SIGNAL( goBack() ), SLOT( goBack() ) );
-  connect( m_groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupView, SIGNAL( showIdentity( const Polka::Identity & ) ),
-    SLOT( showIdentity( const Polka::Identity & ) ) );
-  m_groupView->setBackEnabled( false );
+  m_groupListView = new GroupListView( m_model );
+  m_listLayout->addWidget( m_groupListView );
+  connectGroupView( m_groupListView );
 
-  m_groupGraphicsView = new IdentityGraphicsView( m_model );
+  m_groupGraphicsView = new GroupGraphicsView( m_model );
   m_listLayout->addWidget( m_groupGraphicsView );
-  connect( m_groupGraphicsView, SIGNAL( goBack() ), SLOT( goBack() ) );
+  connectGroupView( m_groupGraphicsView );
   connect( m_groupGraphicsView, SIGNAL( newGroup() ), SLOT( newSubGroup() ) );
-  connect( m_groupGraphicsView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
-  connect( m_groupGraphicsView, SIGNAL( showIdentity( const Polka::Identity & ) ),
-    SLOT( showIdentity( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( removeIdentity( const Polka::Identity &,
     const Polka::Identity & ) ),
     SLOT( removeIdentity( const Polka::Identity &, const Polka::Identity & ) ) );
@@ -75,9 +86,8 @@ PolkaView::PolkaView(QWidget *parent)
     SLOT( removeGroup( const Polka::Identity & ) ) );
   connect( m_groupGraphicsView, SIGNAL( morphedToCompact() ),
     SLOT( finishShowPerson() ) );
-  connect( m_groupGraphicsView, SIGNAL( showSettings() ),
-    SLOT( showSettings() ) );
-  m_groupGraphicsView->setBackEnabled( false );
+  connect( m_groupGraphicsView, SIGNAL( closeRequested() ),
+    SLOT( closePersonView() ) );
 
   m_personView = new PersonView( m_model );
   viewLayout->addWidget( m_personView );
@@ -97,6 +107,16 @@ PolkaView::PolkaView(QWidget *parent)
 
 PolkaView::~PolkaView()
 {
+}
+
+void PolkaView::connectGroupView( GroupView *groupView )
+{
+  connect( groupView, SIGNAL( goBack() ), SLOT( goBack() ) );
+  connect( groupView, SIGNAL( newPerson() ), SLOT( newPerson() ) );
+  connect( groupView, SIGNAL( showIdentity( const Polka::Identity & ) ),
+    SLOT( showIdentity( const Polka::Identity & ) ) );
+  connect( groupView, SIGNAL( showSettings() ),
+    SLOT( showSettings() ) );
 }
 
 void PolkaView::readConfig()
@@ -122,7 +142,7 @@ void PolkaView::readData()
     return;
   }
 
-  m_groupView->setItemModel( m_model->itemModel() );
+  m_groupListView->setItemModel( m_model->itemModel() );
 
   m_history = Settings::history();
 
@@ -166,6 +186,7 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
     &ok );
   if ( ok ) {
     Polka::Identity identity;
+    identity.setType( "group" );
     Polka::Name n;
     n.setValue( name );
     identity.setName( n );
@@ -177,6 +198,8 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
     foreach( Polka::Identity member, members ) {
       m_model->addIdentity( member, new_group );
     }
+
+    m_model->addIdentity( new_group, m_group );
     
     showGroup( new_group );
   }
@@ -185,7 +208,7 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
 void PolkaView::removeGroup( const Polka::Identity &group )
 {
   m_model->removeGroup( group );
-  showRoot();
+  goBack();
 }
 
 void PolkaView::newPerson()
@@ -217,19 +240,19 @@ void PolkaView::showGroup( const Polka::Identity &group )
 
 void PolkaView::continueShowGroup()
 {
-
   if ( m_history.isEmpty() || m_history.last() != m_group.id() ) {
     m_history.append( m_group.id() );
   }
 
+  m_backButton->setEnabled( m_history.size() > 1 );
+  m_groupNameLabel->setText( "<b>" + m_group.name().value() + "</b>" );
+
   if ( m_settingsWidget->fancyMode() ) {
-    m_groupGraphicsView->setBackEnabled( m_history.size() > 1 );
-    m_groupGraphicsView->setGroup( m_group );
+    m_groupGraphicsView->showGroup( m_group );
     m_listLayout->setCurrentWidget( m_groupGraphicsView );
   } else {
-    m_groupView->setBackEnabled( m_history.size() > 1 );
-    m_groupView->setGroup( m_group );
-    m_listLayout->setCurrentWidget( m_groupView );
+    m_groupListView->showGroup( m_group );
+    m_listLayout->setCurrentWidget( m_groupListView );
   }
 }
 
@@ -270,9 +293,10 @@ void PolkaView::showPerson( const Polka::Identity &identity )
 void PolkaView::finishShowPerson()
 {
   m_personView->show();
-//  m_groupGraphicsView->center( m_personView->identity() );
 
-  m_groupWidget->setMaximumWidth( 150 );
+  m_groupWidget->setMaximumWidth( 170 );
+
+  m_backButton->setEnabled( true );
 }
 
 void PolkaView::removeIdentity( const Polka::Identity &identity,
@@ -299,6 +323,12 @@ void PolkaView::showSettings()
 
 void PolkaView::goBack()
 {
+  if ( m_personView->isVisible() ) {
+    closePersonView();
+    m_backButton->setEnabled( m_history.size() > 1 );
+    return;
+  }
+
   m_history.takeLast();
   while ( !m_history.isEmpty() ) {
     QString id = m_history.last();

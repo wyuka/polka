@@ -28,6 +28,8 @@
 #include "phoneeditor.h"
 #include "linkeditor.h"
 #include "addresseditor.h"
+#include "pictureselectorcontrols.h"
+#include "settings.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -42,39 +44,28 @@ PersonView::PersonView( PolkaModel *model, QWidget *parent )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
-  QBoxLayout *titleLayout = new QHBoxLayout;
-  topLayout->addLayout( titleLayout );
-
-  m_titleLabel = new QLabel;
-  titleLayout->addWidget( m_titleLabel );
-
-  titleLayout->addStretch( 1 );
-  
-  QPushButton *button = new QPushButton( i18n("Debug HTML") );
-  connect( button, SIGNAL( clicked() ), SLOT( debugHtml() ) );
-  titleLayout->addWidget( button );
-
-  button = new QPushButton( i18n("Close") );
-  connect( button, SIGNAL( clicked() ), SIGNAL( closeRequested() ) );
-  titleLayout->addWidget( button );
-  
   m_webView = new QWebView;
   topLayout->addWidget( m_webView );
   m_webView->page()->setLinkDelegationPolicy( QWebPage::DelegateAllLinks );
   connect( m_webView->page(), SIGNAL( linkClicked( const QUrl & ) ),
     SLOT( slotLinkClicked( const QUrl & ) ) );
 
+  m_pictureSelectorControls = new PictureSelectorControls( m_model );
+  topLayout->addWidget( m_pictureSelectorControls );
+  m_pictureSelectorControls->hide();
+
   QHBoxLayout *pictureSelectorLayout = new QHBoxLayout;
   topLayout->addLayout( pictureSelectorLayout );
 
-  m_pictureSelector = new PictureSelector;
+  m_pictureSelector = new PictureSelector( m_model );
   pictureSelectorLayout->addWidget( m_pictureSelector );
+  connect( m_pictureSelector, SIGNAL( grabPicture() ), SLOT( grabPicture() ) );
+
+  connect( m_pictureSelector,
+    SIGNAL( pictureSelected( const Polka::Picture & ) ),
+    m_pictureSelectorControls, SLOT( setPicture( const Polka::Picture & ) ) );
 
   pictureSelectorLayout->addStretch( 1 );
-
-  button = new QPushButton( i18n("Grab Picture") );
-  pictureSelectorLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SLOT( grabPicture() ) );
 
   connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( showIdentity( const Polka::Identity & ) ) );
@@ -86,9 +77,11 @@ void PersonView::showIdentity( const Polka::Identity &identity )
 
   Polka::Picture::List pictures = identity.pictures().pictureList();
 
-  if ( !pictures.isEmpty() ) {
-    m_pictureSelector->setPictures( pictures );
+  m_pictureSelectorControls->hide();
+  m_pictureSelectorControls->setIdentity( identity );
+  m_pictureSelector->setPictures( pictures );
 
+  if ( !pictures.isEmpty() ) {
     KUrl u( pictures.first().url() );
     connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
       SLOT( setImage( const QPixmap & ) ) );
@@ -96,7 +89,10 @@ void PersonView::showIdentity( const Polka::Identity &identity )
 
   Polka::HtmlRenderer renderer;
 
-  QString html = renderer.personEditor( identity );
+  QString html = renderer.personEditor( identity,
+    m_model->picturePath( identity ), Settings::enableMagic() );
+
+//  qDebug() << html;
 
   m_webView->setHtml( html );
 }
@@ -113,7 +109,9 @@ Polka::Identity PersonView::identity() const
 
 void PersonView::setImage( const QPixmap &pixmap )
 {
-  m_titleLabel->setPixmap( pixmap );
+  Q_UNUSED( pixmap )
+  
+  // FIXME: Update HTML view
 }
 
 void PersonView::grabPicture()
@@ -128,9 +126,11 @@ void PersonView::slotRegionGrabbed( const QPixmap &pixmap )
   delete m_regionGrabber;
   m_regionGrabber = 0;
 
-  setImage( pixmap );
+  if ( !pixmap.isNull() ) {
+    setImage( pixmap );
 
-  m_model->importPicture( pixmap, m_identity );
+    m_model->importPicture( pixmap, m_identity );
+  }
 }
 
 void PersonView::slotLinkClicked( const QUrl &url )
@@ -168,10 +168,18 @@ void PersonView::slotLinkClicked( const QUrl &url )
     else if ( action == "editComment" ) editComment( path.value( 1 ) );
     else if ( action == "removeComment" ) removeComment( path.value( 1 ) );
 
+    else if ( action == "close" ) requestClose();
+    else if ( action == "magic" ) debugHtml();
+
     else qDebug() << "unknown action" << action;
   } else {
     new KRun( KUrl( url ), this );
   }
+}
+
+void PersonView::requestClose()
+{
+  emit closeRequested();
 }
 
 void PersonView::addEmail()
@@ -501,7 +509,8 @@ void PersonView::debugHtml()
 {
   Polka::HtmlRenderer renderer;
 
-  QString html = renderer.personEditor( m_identity );
+  QString html = renderer.personEditor( m_identity,
+    m_model->picturePath( m_identity ) );
   
   QFile file("polka.html");
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {

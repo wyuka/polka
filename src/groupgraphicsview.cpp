@@ -17,7 +17,7 @@
     USA.
 */
 
-#include "identitygraphicsview.h"
+#include "groupgraphicsview.h"
 
 #include "polkamodel.h"
 #include "polkaitemmodel.h"
@@ -27,6 +27,7 @@
 #include "trackinggraphicsview.h"
 #include "mainmenuitem.h"
 #include "magicmenuitem.h"
+#include "settings.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -36,27 +37,14 @@
 #include <QPropertyAnimation>
 #endif
 
-IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
-  : QWidget( parent ), m_model( model ), m_mainMenu( 0 ), m_magicMenu( 0 ),
+GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
+  : GroupView( model, parent ), m_mainMenu( 0 ), m_magicMenu( 0 ),
     m_compactLayout( false ),
-    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ), m_globalMenu( 0 )
+    m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ),
+    m_removeItemsAnimation( 0 ), m_placeItemsAnimation( 0 ), 
+    m_unplaceItemsAnimation( 0 ), m_unhideItemsAnimation( 0 ), m_globalMenu( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
-
-  QBoxLayout *buttonLayout = new QHBoxLayout;
-  topLayout->addLayout( buttonLayout );
-
-  // FIXME: Use proper icon
-  m_backButton = new QPushButton( "<" );
-  buttonLayout->addWidget( m_backButton );
-  connect( m_backButton, SIGNAL( clicked() ), SIGNAL( goBack() ) );
-
-  buttonLayout->addStretch( 1 );
-
-  m_groupNameLabel = new QLabel;
-  buttonLayout->addWidget( m_groupNameLabel );
-
-  buttonLayout->addStretch( 1 );
 
   m_scene = new QGraphicsScene;
 //  m_scene->setBackgroundBrush( Qt::red );
@@ -72,30 +60,48 @@ IdentityGraphicsView::IdentityGraphicsView( PolkaModel *model, QWidget *parent )
     SLOT( slotMouseMoved( const QPoint & ) ) );
   connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
 
-  connect( m_model, SIGNAL( identityAdded( const Polka::Identity & ) ),
-    SLOT( createItems() ) );
-  connect( m_model, SIGNAL( identityChanged( const Polka::Identity & ) ),
+  connect( model, SIGNAL( identityAdded( const Polka::Identity & ) ),
+    SLOT( slotIdentityAdded( const Polka::Identity & ) ) );
+  connect( model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( slotIdentityChanged( const Polka::Identity & ) ) );
-  connect( m_model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
-    SLOT( createItems() ) );
+  connect( model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
+    SLOT( slotIdentityRemoved( const Polka::Identity & ) ) );
 
   setMinimumWidth( 50 );
 }
 
-void IdentityGraphicsView::slotIdentityChanged( const Polka::Identity &identity )
+void GroupGraphicsView::slotIdentityChanged( const Polka::Identity &identity )
 {
   IdentityItem *i = item( identity );
-  if ( i ) {
+    
+  if ( identity.groups().findGroup( group().id() ).isValid() && i ) {
     i->updateItem( identity );
+  } else {
+    recreateItems();
   }
 }
 
-void IdentityGraphicsView::setBackEnabled( bool enabled )
+void GroupGraphicsView::slotIdentityAdded( const Polka::Identity &identity )
 {
-  m_backButton->setEnabled( enabled );
+  Q_UNUSED( identity )
+
+  recreateItems();
 }
 
-void IdentityGraphicsView::setCompactLayout( bool enabled )
+void GroupGraphicsView::slotIdentityRemoved( const Polka::Identity &identity )
+{
+  Q_UNUSED( identity )
+
+  recreateItems();
+}
+
+void GroupGraphicsView::recreateItems()
+{
+  m_previousItem = 0;
+  placeItems();
+}
+
+void GroupGraphicsView::setCompactLayout( bool enabled )
 {
   if ( enabled == m_compactLayout ) return;
 
@@ -105,27 +111,202 @@ void IdentityGraphicsView::setCompactLayout( bool enabled )
   else morphFromCompact();
 }
 
-void IdentityGraphicsView::setGroup( const Polka::Identity &group )
+void GroupGraphicsView::doShowGroup()
 {
-  m_group = group;
+  m_previousItem = 0;
 
-  setGroupName( group.name().value() );
+  if ( m_removeItemsAnimation ) m_removeItemsAnimation->stop();
+  if ( m_placeItemsAnimation ) m_placeItemsAnimation->stop();
+  if ( m_unplaceItemsAnimation ) m_unplaceItemsAnimation->stop();
+  if ( m_unhideItemsAnimation ) m_unhideItemsAnimation->stop();
 
-  createItems();
+  if ( group().isValid() ) {
+    m_previousItem = item( group() );
+  }
+
+  if ( m_previousItem ) {
+    hideItems();
+  } else {
+    if ( m_items.isEmpty() ) {
+      placeItems();
+    } else {
+      unplaceItems();
+    }
+  }
 }
 
-void IdentityGraphicsView::createItems()
+void GroupGraphicsView::hideItems()
 {
-  qDebug() << "createItems()";
+  if ( !m_removeItemsAnimation ) {
+    m_removeItemsAnimation = new QParallelAnimationGroup( this );
+    connect( m_removeItemsAnimation, SIGNAL( finished() ),
+      SLOT( placeItems() ) );
+  }
+  m_removeItemsAnimation->clear();
 
+  foreach( IdentityItem *item, m_items ) {
+    if ( item == m_previousItem ) continue;
+
+    QPropertyAnimation *animation = new QPropertyAnimation(item, "opacity", this);
+    m_removeItemsAnimation->insertAnimation( 0, animation );
+    animation->setStartValue( 1 );
+    animation->setEndValue( 0 );
+    animation->setDuration( 200 );
+  }
+
+  m_removeItemsAnimation->start();  
+}
+
+void GroupGraphicsView::placeItems()
+{
   m_compactLayout = false;
+
+  bool doAnimation = false;
+  QPoint previousItemPos;
+
+  if ( m_previousItem ) {
+    doAnimation = true;
+
+    if ( !m_placeItemsAnimation ) {
+      m_placeItemsAnimation = new QParallelAnimationGroup( this );
+      connect( m_placeItemsAnimation, SIGNAL( finished() ),
+        SLOT( finishPlaceItems() ) );
+    }
+    m_placeItemsAnimation->clear();
+    m_placeItemsAnimations.clear();
+
+    previousItemPos = m_view->mapFromScene( m_previousItem->pos() );
+  }
 
   m_scene->clear();
   m_items.clear();
   m_labelItems.clear();
   m_globalMenu = 0;
 
-  Polka::Identity::List identities = m_model->identitiesOfGroup( m_group );
+  IdentityItemGroup items = prepareIdentityItems( doAnimation );
+
+  m_items = items.items;
+  foreach( IdentityItem *item, m_items ) {
+    m_scene->addItem( item );
+  }
+
+  createMenuItems();
+  positionMenuItems();
+
+  m_view->centerOn( items.center );
+
+  if ( doAnimation ) {
+    foreach( QPropertyAnimation *animation, m_placeItemsAnimations ) {
+      animation->setStartValue( m_view->mapToScene( previousItemPos ) );
+    }
+  
+    m_placeItemsAnimation->start();
+  } else {
+    createLabelItems();
+  }
+
+  foreach( IdentityItem *item, m_items ) {
+    item->hidePopups();
+  }
+}
+
+void GroupGraphicsView::finishPlaceItems()
+{
+  createLabelItems();
+}
+
+void GroupGraphicsView::unplaceItems()
+{
+  foreach( LabelItem *item, m_labelItems ) {
+    delete item;
+  }
+  m_labelItems.clear();
+
+  m_compactLayout = false;
+
+  if ( !m_unplaceItemsAnimation ) {
+    m_unplaceItemsAnimation = new QParallelAnimationGroup( this );
+    connect( m_unplaceItemsAnimation, SIGNAL( finished() ),
+      SLOT( unhideItems() ) );
+  }
+  m_unplaceItemsAnimation->clear();
+
+  m_newItems = prepareIdentityItems( false );
+
+  if ( !m_newItems.previousGroup ) {
+    recreateItems();
+    return;
+  }
+
+  QPointF target = m_newItems.previousGroup->pos();
+
+  QRect viewportRect = m_view->viewport()->rect();
+  QPoint currentViewportCenter( viewportRect.width() / 2,
+    viewportRect.height() / 2 );
+  QPointF currentCenter = m_view->mapToScene( currentViewportCenter );
+  
+  target.setX( target.x() - m_newItems.center.x() + currentCenter.x() );
+  target.setY( target.y() - m_newItems.center.y() + currentCenter.y() );
+  
+  foreach( IdentityItem *item, m_items ) {
+    QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+    m_unplaceItemsAnimation->insertAnimation( 0, animation );
+
+    animation->setDuration( 300 );
+    animation->setEndValue( target );
+    animation->setEasingCurve( QEasingCurve::OutCubic );    
+  }
+
+  m_unplaceItemsAnimation->start();
+}
+
+void GroupGraphicsView::unhideItems()
+{
+  m_scene->clear();
+  m_items.clear();
+  m_labelItems.clear();
+  m_globalMenu = 0;
+
+  m_items = m_newItems.items;
+  foreach( IdentityItem *item, m_items ) {
+    item->setOpacity( 0 );
+    m_scene->addItem( item );
+  }
+
+  createLabelItems();
+
+  createMenuItems();
+  positionMenuItems();
+
+  m_view->centerOn( m_newItems.center );
+
+  if ( !m_unhideItemsAnimation ) {
+    m_unhideItemsAnimation = new QParallelAnimationGroup( this );
+  }
+  m_unhideItemsAnimation->clear();
+
+  foreach( IdentityItem *item, m_items ) {
+    if ( item == m_newItems.previousGroup ) {
+      item->setOpacity( 1 );
+    } else {
+      QPropertyAnimation *animation = new QPropertyAnimation(item, "opacity", this);
+      m_unhideItemsAnimation->insertAnimation( 0, animation );
+      animation->setStartValue( 0 );
+      animation->setEndValue( 1 );
+      animation->setDuration( 200 );
+    }
+  }
+
+  m_newItems = IdentityItemGroup();
+
+  m_unhideItemsAnimation->start();
+}
+
+IdentityItemGroup GroupGraphicsView::prepareIdentityItems( bool doAnimation )
+{
+  IdentityItemGroup result;
+  
+  Polka::Identity::List identities = model()->identitiesOfGroup( group() );
 
   int columns = sqrt( identities.size() );
   int spacing = 150;
@@ -140,14 +321,14 @@ void IdentityGraphicsView::createItems()
 
   bool firstItem = true;
 
-  Polka::GroupView view = m_model->groupView( m_group );
+  Polka::GroupView view = model()->groupView( group() );
 
   foreach( Polka::Identity identity, identities ) {
     qreal posX = x * spacing + ( y % 2 ) * spacing / 2;
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
-    IdentityItem *item = new IdentityItem( m_model, identity );
-    m_items.append( item );
+    IdentityItem *item = new IdentityItem( model(), identity );
+    result.items.append( item );
 
     connect( item, SIGNAL( showIdentity( const Polka::Identity & ) ),
       SIGNAL( showIdentity( const Polka::Identity & ) ) );
@@ -174,7 +355,19 @@ void IdentityGraphicsView::createItems()
       itemX = posX;
       itemY = posY;
     }
-    item->setPos( itemX, itemY );
+
+    if ( doAnimation ) {
+      QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+      m_placeItemsAnimation->insertAnimation( 0, animation );
+      m_placeItemsAnimations.append( animation );
+
+      animation->setDuration( 300 );
+      QPointF target( itemX, itemY );
+      animation->setEndValue( target );
+      animation->setEasingCurve( QEasingCurve::OutCubic );
+    } else {
+      item->setPos( itemX, itemY );
+    }
 
     if ( firstItem ) {
       firstItem = false;
@@ -195,26 +388,45 @@ void IdentityGraphicsView::createItems()
       item->checkItem();
     }
 
-    m_scene->addItem( item );
-
     x++;
     
     if ( x >= ( columns + ( y + 1 ) % 2 ) ) {
       x = 0;
       y++;
     }
+
+    if ( previousGroup().isValid() &&
+         item->identity().id() == previousGroup().id() ) {
+      result.previousGroup = item;
+    }
   }
   
+  qreal centerX = ( minX + maxX ) / 2;
+  qreal centerY = ( minY + maxY ) / 2;
+
+  result.center = QPointF( centerX, centerY );
+
+  return result;
+}
+
+void GroupGraphicsView::createLabelItems()
+{
+  Polka::GroupView view = model()->groupView( group() );
+
   foreach( Polka::ViewLabel label, view.viewLabelList() ) {
     createLabelItem( label );
   }
+}
 
+void GroupGraphicsView::createMenuItems()
+{
+  if ( Settings::enableMagic() ) {
+    m_magicMenu = new MagicMenuItem();
+    m_scene->addItem( m_magicMenu );
   
-  m_magicMenu = new MagicMenuItem();
-  m_scene->addItem( m_magicMenu );
-  
-  connect( m_magicMenu, SIGNAL( resetLayout() ), SLOT( resetLayout() ) );
-  connect( m_magicMenu, SIGNAL( showSettings() ), SIGNAL( showSettings() ) );
+    connect( m_magicMenu, SIGNAL( resetLayout() ), SLOT( resetLayout() ) );
+    connect( m_magicMenu, SIGNAL( showSettings() ), SIGNAL( showSettings() ) );
+  }
 
   m_mainMenu = new MainMenuItem();
   m_scene->addItem( m_mainMenu );
@@ -223,25 +435,9 @@ void IdentityGraphicsView::createItems()
   connect( m_mainMenu, SIGNAL( removeGroup() ), SLOT( emitRemoveGroup() ) );
   connect( m_mainMenu, SIGNAL( addGroup() ), SIGNAL( newGroup() ) );
   connect( m_mainMenu, SIGNAL( addPerson() ), SIGNAL( newPerson() ) );
-
-  positionMenuItems();
-
-  qreal centerX = ( minX + maxX ) / 2;
-  qreal centerY = ( minY + maxY ) / 2;
-
-  // TODO: Replace by a hidden setting
-  if ( false ) {
-    QGraphicsEllipseItem *centerItem = new QGraphicsEllipseItem( -5, -5, 10, 10 );
-    centerItem->setBrush( Qt::red );
-    centerItem->setZValue( 1000 );
-    m_scene->addItem( centerItem );  
-    centerItem->setPos( centerX, centerY );
-  }
-
-  m_view->centerOn( centerX, centerY );
 }
 
-void IdentityGraphicsView::positionMenuItems()
+void GroupGraphicsView::positionMenuItems()
 {
   QRect viewportRect = m_view->viewport()->rect();
   QPoint upperRight( viewportRect.width(), 0 );
@@ -255,56 +451,46 @@ void IdentityGraphicsView::positionMenuItems()
   }
 }
 
-void IdentityGraphicsView::positionAbsoluteItems()
+void GroupGraphicsView::positionAbsoluteItems()
 {
   positionMenuItems();
 }
 
-Polka::Identity IdentityGraphicsView::group() const
+void GroupGraphicsView::slotRemoveIdentity( const Polka::Identity &identity )
 {
-  return m_group;
+  emit removeIdentity( identity, group() );
 }
 
-void IdentityGraphicsView::setGroupName( const QString &name )
-{
-  m_groupNameLabel->setText( "<b>" + name + "</b>" );
-}
-
-void IdentityGraphicsView::slotRemoveIdentity( const Polka::Identity &identity )
-{
-  emit removeIdentity( identity, m_group );
-}
-
-void IdentityGraphicsView::savePosition( const Polka::Identity &identity,
+void GroupGraphicsView::savePosition( const Polka::Identity &identity,
   const QPointF &pos )
 {
   if ( !m_compactLayout ) {
-    m_model->saveViewPosition( m_group, identity, pos );
+    model()->saveViewPosition( group(), identity, pos );
   }
 }
 
-void IdentityGraphicsView::saveLabel( const Polka::ViewLabel &label,
+void GroupGraphicsView::saveLabel( const Polka::ViewLabel &label,
   const QPointF &pos )
 {
   Polka::ViewLabel l = label;
   l.setX( pos.x() );
   l.setY( pos.y() );
-  m_model->saveViewLabel( m_group, l );
+  model()->saveViewLabel( group(), l );
 }
 
 
-void IdentityGraphicsView::saveCheck( const Polka::Identity &identity,
+void GroupGraphicsView::saveCheck( const Polka::Identity &identity,
   bool checked )
 {
-  m_model->saveViewCheck( m_group, identity, checked );
+  model()->saveViewCheck( group(), identity, checked );
 }
 
-void IdentityGraphicsView::addLabel()
+void GroupGraphicsView::addLabel()
 {
   addLabel( m_view->mapToScene( QPoint( 10, 10 ) ) );
 }
 
-void IdentityGraphicsView::addLabel( const QPointF &pos )
+void GroupGraphicsView::addLabel( const QPointF &pos )
 {
   bool ok;
   QString name = KInputDialog::getText( i18n("Add Label"),
@@ -320,20 +506,20 @@ void IdentityGraphicsView::addLabel( const QPointF &pos )
     
     createLabelItem( label );
     
-    m_model->saveViewLabel( m_group, label );
+    model()->saveViewLabel( group(), label );
   }
 }
 
-void IdentityGraphicsView::removeLabel( LabelItem *item,
+void GroupGraphicsView::removeLabel( LabelItem *item,
   const Polka::ViewLabel &label )
 {
   m_labelItems.removeAll( item );
 
   delete item;
-  m_model->removeViewLabel( m_group, label );
+  model()->removeViewLabel( group(), label );
 }
 
-void IdentityGraphicsView::renameLabel( LabelItem *item,
+void GroupGraphicsView::renameLabel( LabelItem *item,
   Polka::ViewLabel label )
 {
   bool ok;
@@ -344,13 +530,13 @@ void IdentityGraphicsView::renameLabel( LabelItem *item,
     item->setText( name );
   
     label.setText( name );
-    m_model->saveViewLabel( m_group, label );
+    model()->saveViewLabel( group(), label );
   }
 }
 
-LabelItem *IdentityGraphicsView::createLabelItem( const Polka::ViewLabel &label )
+LabelItem *GroupGraphicsView::createLabelItem( const Polka::ViewLabel &label )
 {
-  LabelItem *item = new LabelItem( m_model, label );
+  LabelItem *item = new LabelItem( model(), label );
 
   connect( item, SIGNAL( itemMoved( const Polka::ViewLabel &, const QPointF & ) ),
     SLOT( saveLabel( const Polka::ViewLabel &, const QPointF & ) ) );
@@ -369,9 +555,9 @@ LabelItem *IdentityGraphicsView::createLabelItem( const Polka::ViewLabel &label 
   return item;
 }
 
-void IdentityGraphicsView::resetLayout()
+void GroupGraphicsView::resetLayout()
 {
-  m_model->clearViewPositions( m_group );
+  model()->clearViewPositions( group() );
 
   foreach( IdentityItem *item, m_items ) {
     if ( item->pos() != item->defaultPos() ) {
@@ -391,20 +577,20 @@ void IdentityGraphicsView::resetLayout()
   }
 }
 
-void IdentityGraphicsView::emitCloneGroup()
+void GroupGraphicsView::emitCloneGroup()
 {
-  emit cloneGroup( m_group );
+  emit cloneGroup( group() );
 }
 
-void IdentityGraphicsView::emitRemoveGroup()
+void GroupGraphicsView::emitRemoveGroup()
 {
-  emit removeGroup( m_group );
+  emit removeGroup( group() );
 }
 
-void IdentityGraphicsView::morphToCompact()
+void GroupGraphicsView::morphToCompact()
 {
   m_mainMenu->hide();
-  m_magicMenu->hide();
+  if ( m_magicMenu ) m_magicMenu->hide();
   foreach( LabelItem *item, m_labelItems ) {
     item->hide();
   }
@@ -421,6 +607,8 @@ void IdentityGraphicsView::morphToCompact()
     m_morphToAnimation = new QParallelAnimationGroup( this );
     connect( m_morphToAnimation, SIGNAL( finished() ),
       SIGNAL( morphedToCompact() ) );
+    connect( m_morphToAnimation, SIGNAL( finished() ),
+      SLOT( finishMorphToCompact() ) );
   }
   m_morphToAnimation->clear();
 
@@ -449,7 +637,11 @@ void IdentityGraphicsView::morphToCompact()
   m_morphToAnimation->start();
 }
 
-void IdentityGraphicsView::morphFromCompact()
+void GroupGraphicsView::finishMorphToCompact()
+{
+}
+
+void GroupGraphicsView::morphFromCompact()
 {
   if ( !m_morphFromAnimation ) {
     m_morphFromAnimation = new QParallelAnimationGroup( this );
@@ -481,17 +673,17 @@ void IdentityGraphicsView::morphFromCompact()
   m_morphFromAnimation->start();
 }
 
-void IdentityGraphicsView::finishMorphFromCompact()
+void GroupGraphicsView::finishMorphFromCompact()
 {
   m_mainMenu->show();
-  m_magicMenu->show();
+  if ( m_magicMenu ) m_magicMenu->show();
 
   foreach( LabelItem *item, m_labelItems ) {
     item->show();
   }  
 }
 
-IdentityItem *IdentityGraphicsView::item( const Polka::Identity &identity ) const
+IdentityItem *GroupGraphicsView::item( const Polka::Identity &identity ) const
 {
   foreach( IdentityItem *item, m_items ) {
     if ( item->identity().id() == identity.id() ) return item;
@@ -499,7 +691,7 @@ IdentityItem *IdentityGraphicsView::item( const Polka::Identity &identity ) cons
   return 0;
 }
 
-bool IdentityGraphicsView::eventFilter( QObject *watched, QEvent *event )
+bool GroupGraphicsView::eventFilter( QObject *watched, QEvent *event )
 {
   if ( watched == m_view ) {
     if ( event->type() == QEvent::MouseButtonPress ) {
@@ -527,7 +719,7 @@ bool IdentityGraphicsView::eventFilter( QObject *watched, QEvent *event )
   return QWidget::eventFilter( watched, event );
 }
 
-void IdentityGraphicsView::slotItemSelected( FanMenu::Item *item )
+void GroupGraphicsView::slotItemSelected( FanMenu::Item *item )
 {
   hideGlobalMenu();
 
@@ -536,14 +728,14 @@ void IdentityGraphicsView::slotItemSelected( FanMenu::Item *item )
   }
 }
 
-void IdentityGraphicsView::hideGlobalMenu()
+void GroupGraphicsView::hideGlobalMenu()
 {
   if ( m_globalMenu ) {
     m_globalMenu->hide();
   }
 }
 
-void IdentityGraphicsView::slotMouseMoved( const QPoint &pos )
+void GroupGraphicsView::slotMouseMoved( const QPoint &pos )
 {
   if ( !m_globalMenu || !m_globalMenu->isVisible() ) return;
 
