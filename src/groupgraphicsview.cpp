@@ -168,6 +168,8 @@ void GroupGraphicsView::placeItems()
 
     if ( !m_placeItemsAnimation ) {
       m_placeItemsAnimation = new QParallelAnimationGroup( this );
+      connect( m_placeItemsAnimation, SIGNAL( finished() ),
+        SLOT( finishPlaceItems() ) );
     }
     m_placeItemsAnimation->clear();
     m_placeItemsAnimations.clear();
@@ -187,8 +189,6 @@ void GroupGraphicsView::placeItems()
     m_scene->addItem( item );
   }
 
-  createLabelItems();
-
   createMenuItems();
   positionMenuItems();
 
@@ -200,7 +200,14 @@ void GroupGraphicsView::placeItems()
     }
   
     m_placeItemsAnimation->start();
+  } else {
+    createLabelItems();
   }
+}
+
+void GroupGraphicsView::finishPlaceItems()
+{
+  createLabelItems();
 }
 
 void GroupGraphicsView::unplaceItems()

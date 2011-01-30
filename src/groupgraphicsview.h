@@ -112,6 +112,8 @@ class GroupGraphicsView : public GroupView
     void finishMorphFromCompact();
     void finishMorphToCompact();
 
+    void finishPlaceItems();
+
     void slotIdentityAdded( const Polka::Identity & );
     void slotIdentityChanged( const Polka::Identity & );
     void slotIdentityRemoved( const Polka::Identity & );
