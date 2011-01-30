@@ -33,10 +33,8 @@ HtmlRenderer::HtmlRenderer()
 }
 
 QString HtmlRenderer::personEditor( const Identity &identity,
-  const QString &picturePath )
+  const QString &picturePath, bool enableMagic )
 {
-  qDebug() << "PIC PATH" << picturePath;
-
   HtmlDoc doc;
 
   CssSheet css;
@@ -95,9 +93,11 @@ QString HtmlRenderer::personEditor( const Identity &identity,
   HtmlElement &buttons = doc.element("div");
   buttons.c("global-buttons");
   
-  HtmlElement &magicButton = buttons.element("a");
-  magicButton.attribute("href","polka:magic");
-  magicButton.text("Magic");
+  if ( enableMagic ) {
+    HtmlElement &magicButton = buttons.element("a");
+    magicButton.attribute("href","polka:magic");
+    magicButton.text("Magic");
+  }
   
   HtmlElement &closeButton = buttons.element("a");
   closeButton.attribute("href","polka:close");

@@ -32,4 +32,10 @@
       <default>false</default>
     </entry>
   </group>
+  <group name="Hidden">
+    <entry name="EnableMagic" type="Bool">
+      <label>Enable magic buttons</label>
+      <default>false</default>
+    </entry>
+  </group>
 </kcfg>

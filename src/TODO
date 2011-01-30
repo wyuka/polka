@@ -1,28 +1,31 @@
 = Polka
 
+* Fetch remote pictures
+
+* Make first startup beautiful.
+
+* Show history
+* Undo based on git (Rollback from UI)
+
+* Maybe make menu disks grow bigger when menu is shown to prevent accidently
+  hiding the menu again by hitting the space between menu elements.
+
+* Show name labels for identities, which only have the default picture.
+
+
 * Make PolkaView::insert protected and only use add and update?
 
 * Small pictures of people as group picture
 
 * Rename PolkaModel::picture to pixmap ?
 
-* Fetch remote pictures
-* Add picture should provide possinbility to add twitter, facebook, etc.
+* Add picture should provide possibility to add twitter, facebook, etc.
 
 * Show descriptive text instead of URL in picture selector controls (twitter
 instead of twitter url, screen grab instead of nothing )
 
-* Prettify the person view, and remove useless buttons
-
-* Make first startup beautiful.
-
 * Separate commit for deletion of a person.
 * Put changes in XML for addition of pictures into correct commit.
-
-* Show history
-* Undo based on git (Rollback from UI)
-
-* Show name labels for identities, which only have the default picture.
 
 * Explode sub group
 * Create sub group from checked identities
@@ -30,11 +33,6 @@ instead of twitter url, screen grab instead of nothing )
 
 * More elegant way to handle fan menus, which doesn't require so many member
   variables and code, wich hardcodes the options.
-
-* Make magic menu only show up, when a hidden option is set.
-
-* Maybe make menu disks grow bigger when menu is shown to prevent accidently
-  hiding the menu again by hitting the space between menu elements.
 
 * Show nice text for links.
 

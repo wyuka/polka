@@ -27,6 +27,7 @@
 #include "trackinggraphicsview.h"
 #include "mainmenuitem.h"
 #include "magicmenuitem.h"
+#include "settings.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -419,11 +420,13 @@ void GroupGraphicsView::createLabelItems()
 
 void GroupGraphicsView::createMenuItems()
 {
-  m_magicMenu = new MagicMenuItem();
-  m_scene->addItem( m_magicMenu );
+  if ( Settings::enableMagic() ) {
+    m_magicMenu = new MagicMenuItem();
+    m_scene->addItem( m_magicMenu );
   
-  connect( m_magicMenu, SIGNAL( resetLayout() ), SLOT( resetLayout() ) );
-  connect( m_magicMenu, SIGNAL( showSettings() ), SIGNAL( showSettings() ) );
+    connect( m_magicMenu, SIGNAL( resetLayout() ), SLOT( resetLayout() ) );
+    connect( m_magicMenu, SIGNAL( showSettings() ), SIGNAL( showSettings() ) );
+  }
 
   m_mainMenu = new MainMenuItem();
   m_scene->addItem( m_mainMenu );
@@ -587,7 +590,7 @@ void GroupGraphicsView::emitRemoveGroup()
 void GroupGraphicsView::morphToCompact()
 {
   m_mainMenu->hide();
-  m_magicMenu->hide();
+  if ( m_magicMenu ) m_magicMenu->hide();
   foreach( LabelItem *item, m_labelItems ) {
     item->hide();
   }
@@ -673,7 +676,7 @@ void GroupGraphicsView::morphFromCompact()
 void GroupGraphicsView::finishMorphFromCompact()
 {
   m_mainMenu->show();
-  m_magicMenu->show();
+  if ( m_magicMenu ) m_magicMenu->show();
 
   foreach( LabelItem *item, m_labelItems ) {
     item->show();

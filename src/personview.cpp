@@ -29,6 +29,7 @@
 #include "linkeditor.h"
 #include "addresseditor.h"
 #include "pictureselectorcontrols.h"
+#include "settings.h"
 
 #include <klocale.h>
 #include <KUrl>
@@ -89,7 +90,7 @@ void PersonView::showIdentity( const Polka::Identity &identity )
   Polka::HtmlRenderer renderer;
 
   QString html = renderer.personEditor( identity,
-    m_model->picturePath( identity ) );
+    m_model->picturePath( identity ), Settings::enableMagic() );
 
 //  qDebug() << html;
 
