@@ -33,6 +33,7 @@ PolkaModel *GroupView::model() const
 
 void GroupView::showGroup( const Polka::Identity &group )
 {
+  m_previousGroup = m_group;
   m_group = group;
 
   doShowGroup();
@@ -41,4 +42,9 @@ void GroupView::showGroup( const Polka::Identity &group )
 Polka::Identity GroupView::group() const
 {
   return m_group;
+}
+
+Polka::Identity GroupView::previousGroup() const
+{
+  return m_previousGroup;
 }

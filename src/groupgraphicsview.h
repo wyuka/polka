@@ -32,8 +32,12 @@ class MainMenuItem;
 class MagicMenuItem;
 
 struct IdentityItemGroup {
+
+  IdentityItemGroup() : previousGroup( 0 ) {}
+
   QList<IdentityItem *> items;
   QPointF center;
+  IdentityItem *previousGroup;
 };
 
 class GroupGraphicsView : public GroupView
@@ -79,6 +83,9 @@ class GroupGraphicsView : public GroupView
   
     void hideItems();
     void placeItems();
+    void unplaceItems();
+    void unhideItems();
+
     void slotRemoveIdentity( const Polka::Identity & );
 
     void addLabel();
@@ -112,6 +119,8 @@ class GroupGraphicsView : public GroupView
 
     IdentityItem *m_previousItem;
 
+    IdentityItemGroup m_newItems;
+
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
 
@@ -126,6 +135,8 @@ class GroupGraphicsView : public GroupView
     QAnimationGroup *m_removeItemsAnimation;
     QAnimationGroup *m_placeItemsAnimation;
     QList<QPropertyAnimation *> m_placeItemsAnimations;
+    QAnimationGroup *m_unplaceItemsAnimation;
+    QAnimationGroup *m_unhideItemsAnimation;
 
     FanMenu *m_globalMenu;
     FanMenu::Item *m_addLabelItem;

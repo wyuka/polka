@@ -40,7 +40,8 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   : GroupView( model, parent ), m_mainMenu( 0 ), m_magicMenu( 0 ),
     m_compactLayout( false ),
     m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ),
-    m_removeItemsAnimation( 0 ), m_placeItemsAnimation( 0 ), m_globalMenu( 0 )
+    m_removeItemsAnimation( 0 ), m_placeItemsAnimation( 0 ), 
+    m_unplaceItemsAnimation( 0 ), m_unhideItemsAnimation( 0 ), m_globalMenu( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -92,6 +93,8 @@ void GroupGraphicsView::doShowGroup()
 
   if ( m_removeItemsAnimation ) m_removeItemsAnimation->stop();
   if ( m_placeItemsAnimation ) m_placeItemsAnimation->stop();
+  if ( m_unplaceItemsAnimation ) m_unplaceItemsAnimation->stop();
+  if ( m_unhideItemsAnimation ) m_unhideItemsAnimation->stop();
 
   if ( group().isValid() ) {
     m_previousItem = item( group() );
@@ -100,7 +103,11 @@ void GroupGraphicsView::doShowGroup()
   if ( m_previousItem ) {
     hideItems();
   } else {
-    placeItems();
+    if ( m_items.isEmpty() ) {
+      placeItems();
+    } else {
+      unplaceItems();
+    }
   }
 }
 
@@ -120,7 +127,7 @@ void GroupGraphicsView::hideItems()
     m_removeItemsAnimation->insertAnimation( 0, animation );
     animation->setStartValue( 1 );
     animation->setEndValue( 0 );
-    animation->setDuration( 300 );
+    animation->setDuration( 200 );
   }
 
   m_removeItemsAnimation->start();  
@@ -128,6 +135,8 @@ void GroupGraphicsView::hideItems()
 
 void GroupGraphicsView::placeItems()
 {
+  m_compactLayout = false;
+
   bool doAnimation = false;
   QPoint previousItemPos;
 
@@ -143,14 +152,12 @@ void GroupGraphicsView::placeItems()
     previousItemPos = m_view->mapFromScene( m_previousItem->pos() );
   }
 
-  m_compactLayout = false;
-
   m_scene->clear();
   m_items.clear();
   m_labelItems.clear();
   m_globalMenu = 0;
 
-  IdentityItemGroup items = prepareIdentityItems( doAnimation);
+  IdentityItemGroup items = prepareIdentityItems( doAnimation );
 
   m_items = items.items;
   foreach( IdentityItem *item, m_items ) {
@@ -171,6 +178,83 @@ void GroupGraphicsView::placeItems()
   
     m_placeItemsAnimation->start();
   }
+}
+
+void GroupGraphicsView::unplaceItems()
+{
+  m_compactLayout = false;
+
+  if ( !m_unplaceItemsAnimation ) {
+    m_unplaceItemsAnimation = new QParallelAnimationGroup( this );
+    connect( m_unplaceItemsAnimation, SIGNAL( finished() ),
+      SLOT( unhideItems() ) );
+  }
+  m_unplaceItemsAnimation->clear();
+
+  m_newItems = prepareIdentityItems( false );
+
+  Q_ASSERT( m_newItems.previousGroup );
+
+  QPointF target = m_newItems.previousGroup->pos();
+
+  QRect viewportRect = m_view->viewport()->rect();
+  QPoint currentViewportCenter( viewportRect.width() / 2,
+    viewportRect.height() / 2 );
+  QPointF currentCenter = m_view->mapToScene( currentViewportCenter );
+  
+  target.setX( target.x() - m_newItems.center.x() + currentCenter.x() );
+  target.setY( target.y() - m_newItems.center.y() + currentCenter.y() );
+  
+  foreach( IdentityItem *item, m_items ) {
+    QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
+    m_unplaceItemsAnimation->insertAnimation( 0, animation );
+
+    animation->setDuration( 300 );
+    animation->setEndValue( target );
+    animation->setEasingCurve( QEasingCurve::OutCubic );    
+  }
+
+  m_unplaceItemsAnimation->start();
+}
+
+void GroupGraphicsView::unhideItems()
+{
+  m_scene->clear();
+  m_items.clear();
+  m_labelItems.clear();
+  m_globalMenu = 0;
+
+  m_items = m_newItems.items;
+  foreach( IdentityItem *item, m_items ) {
+    item->setOpacity( 0 );
+    m_scene->addItem( item );
+  }
+
+  createLabelItems();
+
+  createMenuItems();
+  positionMenuItems();
+
+  m_view->centerOn( m_newItems.center );
+
+  if ( !m_unhideItemsAnimation ) {
+    m_unhideItemsAnimation = new QParallelAnimationGroup( this );
+  }
+  m_unhideItemsAnimation->clear();
+
+  foreach( IdentityItem *item, m_items ) {
+    if ( item == m_newItems.previousGroup ) {
+      item->setOpacity( 1 );
+    } else {
+      QPropertyAnimation *animation = new QPropertyAnimation(item, "opacity", this);
+      m_unhideItemsAnimation->insertAnimation( 0, animation );
+      animation->setStartValue( 0 );
+      animation->setEndValue( 1 );
+      animation->setDuration( 200 );
+    }
+  }
+
+  m_unhideItemsAnimation->start();
 }
 
 IdentityItemGroup GroupGraphicsView::prepareIdentityItems( bool doAnimation )
@@ -232,7 +316,7 @@ IdentityItemGroup GroupGraphicsView::prepareIdentityItems( bool doAnimation )
       m_placeItemsAnimation->insertAnimation( 0, animation );
       m_placeItemsAnimations.append( animation );
 
-      animation->setDuration(500);
+      animation->setDuration( 300 );
       QPointF target( itemX, itemY );
       animation->setEndValue( target );
       animation->setEasingCurve( QEasingCurve::OutCubic );
@@ -264,6 +348,11 @@ IdentityItemGroup GroupGraphicsView::prepareIdentityItems( bool doAnimation )
     if ( x >= ( columns + ( y + 1 ) % 2 ) ) {
       x = 0;
       y++;
+    }
+
+    if ( previousGroup().isValid() &&
+         item->identity().id() == previousGroup().id() ) {
+      result.previousGroup = item;
     }
   }
   

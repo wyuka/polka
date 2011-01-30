@@ -5,7 +5,6 @@
 * Make PolkaView::insert protected and only use add and update?
 
 * Small pictures of people as group picture
-* Group transitions via zooming
 
 * Rename PolkaModel::picture to pixmap ?
 

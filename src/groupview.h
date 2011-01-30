@@ -36,6 +36,7 @@ class GroupView : public QWidget
 
     void showGroup( const Polka::Identity & );
     Polka::Identity group() const;
+    Polka::Identity previousGroup() const;
 
   signals:
     void goBack();
@@ -51,6 +52,7 @@ class GroupView : public QWidget
     PolkaModel *m_model;
 
     Polka::Identity m_group;
+    Polka::Identity m_previousGroup;
 };
 
 #endif
