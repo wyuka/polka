@@ -212,6 +212,11 @@ void GroupGraphicsView::finishPlaceItems()
 
 void GroupGraphicsView::unplaceItems()
 {
+  foreach( LabelItem *item, m_labelItems ) {
+    delete item;
+  }
+  m_labelItems.clear();
+
   m_compactLayout = false;
 
   if ( !m_unplaceItemsAnimation ) {
