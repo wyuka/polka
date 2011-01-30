@@ -85,6 +85,7 @@ class GroupGraphicsView : public GroupView
     void placeItems();
     void unplaceItems();
     void unhideItems();
+    void recreateItems();
 
     void slotRemoveIdentity( const Polka::Identity & );
 
@@ -111,7 +112,9 @@ class GroupGraphicsView : public GroupView
     void finishMorphFromCompact();
     void finishMorphToCompact();
 
+    void slotIdentityAdded( const Polka::Identity & );
     void slotIdentityChanged( const Polka::Identity & );
+    void slotIdentityRemoved( const Polka::Identity & );
 
   private:
     QList<IdentityItem *> m_items;

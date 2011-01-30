@@ -60,11 +60,11 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
 
   connect( model, SIGNAL( identityAdded( const Polka::Identity & ) ),
-    SLOT( placeItems() ) );
+    SLOT( slotIdentityAdded( const Polka::Identity & ) ) );
   connect( model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( slotIdentityChanged( const Polka::Identity & ) ) );
   connect( model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
-    SLOT( placeItems() ) );
+    SLOT( slotIdentityRemoved( const Polka::Identity & ) ) );
 
   setMinimumWidth( 50 );
 }
@@ -72,9 +72,32 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
 void GroupGraphicsView::slotIdentityChanged( const Polka::Identity &identity )
 {
   IdentityItem *i = item( identity );
-  if ( i ) {
+    
+  if ( identity.groups().findGroup( group().id() ).isValid() && i ) {
     i->updateItem( identity );
+  } else {
+    recreateItems();
   }
+}
+
+void GroupGraphicsView::slotIdentityAdded( const Polka::Identity &identity )
+{
+  Q_UNUSED( identity )
+
+  recreateItems();
+}
+
+void GroupGraphicsView::slotIdentityRemoved( const Polka::Identity &identity )
+{
+  Q_UNUSED( identity )
+
+  recreateItems();
+}
+
+void GroupGraphicsView::recreateItems()
+{
+  m_previousItem = 0;
+  placeItems();
 }
 
 void GroupGraphicsView::setCompactLayout( bool enabled )
