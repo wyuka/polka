@@ -11,8 +11,6 @@
 * Fetch remote pictures
 * Add picture should provide possinbility to add twitter, facebook, etc.
 
-* When cloning groups, show them somewhere
-
 * Show descriptive text instead of URL in picture selector controls (twitter
 instead of twitter url, screen grab instead of nothing )
 

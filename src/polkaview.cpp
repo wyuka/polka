@@ -186,6 +186,7 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
     &ok );
   if ( ok ) {
     Polka::Identity identity;
+    identity.setType( "group" );
     Polka::Name n;
     n.setValue( name );
     identity.setName( n );
@@ -197,6 +198,8 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
     foreach( Polka::Identity member, members ) {
       m_model->addIdentity( member, new_group );
     }
+
+    m_model->addIdentity( new_group, m_group );
     
     showGroup( new_group );
   }
@@ -205,7 +208,7 @@ void PolkaView::cloneGroup( const Polka::Identity &group )
 void PolkaView::removeGroup( const Polka::Identity &group )
 {
   m_model->removeGroup( group );
-  showRoot();
+  goBack();
 }
 
 void PolkaView::newPerson()

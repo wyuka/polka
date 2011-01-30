@@ -216,7 +216,10 @@ void GroupGraphicsView::unplaceItems()
 
   m_newItems = prepareIdentityItems( false );
 
-  Q_ASSERT( m_newItems.previousGroup );
+  if ( !m_newItems.previousGroup ) {
+    recreateItems();
+    return;
+  }
 
   QPointF target = m_newItems.previousGroup->pos();
 
@@ -276,6 +279,8 @@ void GroupGraphicsView::unhideItems()
       animation->setDuration( 200 );
     }
   }
+
+  m_newItems = IdentityItemGroup();
 
   m_unhideItemsAnimation->start();
 }

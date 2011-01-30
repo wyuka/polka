@@ -273,7 +273,7 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity,
   setupGroups();
 
   if ( identity.type() == "group" ) {
-    m_groupItemModel->updateData();
+    groupItemModel()->updateData();
   }
 
   foreach( Polka::Group group, identity.groups().groupList() ) {
