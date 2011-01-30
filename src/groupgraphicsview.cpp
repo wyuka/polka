@@ -40,7 +40,7 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   : GroupView( model, parent ), m_mainMenu( 0 ), m_magicMenu( 0 ),
     m_compactLayout( false ),
     m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ),
-    m_removeItemsAnimation( 0 ), m_createItemsAnimation( 0 ), m_globalMenu( 0 )
+    m_removeItemsAnimation( 0 ), m_placeItemsAnimation( 0 ), m_globalMenu( 0 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
@@ -59,11 +59,11 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   connect( m_view, SIGNAL( viewportMoved() ), SLOT( positionAbsoluteItems() ) );
 
   connect( model, SIGNAL( identityAdded( const Polka::Identity & ) ),
-    SLOT( createItems() ) );
+    SLOT( placeItems() ) );
   connect( model, SIGNAL( identityChanged( const Polka::Identity & ) ),
     SLOT( slotIdentityChanged( const Polka::Identity & ) ) );
   connect( model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
-    SLOT( createItems() ) );
+    SLOT( placeItems() ) );
 
   setMinimumWidth( 50 );
 }
@@ -91,25 +91,25 @@ void GroupGraphicsView::doShowGroup()
   m_previousItem = 0;
 
   if ( m_removeItemsAnimation ) m_removeItemsAnimation->stop();
-  if ( m_createItemsAnimation ) m_createItemsAnimation->stop();
+  if ( m_placeItemsAnimation ) m_placeItemsAnimation->stop();
 
   if ( group().isValid() ) {
     m_previousItem = item( group() );
   }
 
   if ( m_previousItem ) {
-    removeItems();
+    hideItems();
   } else {
-    createItems();
+    placeItems();
   }
 }
 
-void GroupGraphicsView::removeItems()
+void GroupGraphicsView::hideItems()
 {
   if ( !m_removeItemsAnimation ) {
     m_removeItemsAnimation = new QParallelAnimationGroup( this );
     connect( m_removeItemsAnimation, SIGNAL( finished() ),
-      SLOT( createItems() ) );
+      SLOT( placeItems() ) );
   }
   m_removeItemsAnimation->clear();
 
@@ -126,7 +126,7 @@ void GroupGraphicsView::removeItems()
   m_removeItemsAnimation->start();  
 }
 
-void GroupGraphicsView::createItems()
+void GroupGraphicsView::placeItems()
 {
   bool doAnimation = false;
   QPoint previousItemPos;
@@ -134,11 +134,11 @@ void GroupGraphicsView::createItems()
   if ( m_previousItem ) {
     doAnimation = true;
 
-    if ( !m_createItemsAnimation ) {
-      m_createItemsAnimation = new QParallelAnimationGroup( this );
+    if ( !m_placeItemsAnimation ) {
+      m_placeItemsAnimation = new QParallelAnimationGroup( this );
     }
-    m_createItemsAnimation->clear();
-    m_createItemsAnimations.clear();
+    m_placeItemsAnimation->clear();
+    m_placeItemsAnimations.clear();
 
     previousItemPos = m_view->mapFromScene( m_previousItem->pos() );
   }
@@ -150,6 +150,37 @@ void GroupGraphicsView::createItems()
   m_labelItems.clear();
   m_globalMenu = 0;
 
+  IdentityItemGroup items = createIdentityItems( doAnimation);
+
+  m_items = items.items;
+  foreach( IdentityItem *item, m_items ) {
+    m_scene->addItem( item );
+  }
+  
+  Polka::GroupView view = model()->groupView( group() );
+
+  foreach( Polka::ViewLabel label, view.viewLabelList() ) {
+    createLabelItem( label );
+  }
+
+  createMenuItems();
+  positionMenuItems();
+
+  m_view->centerOn( items.center );
+
+  if ( doAnimation ) {
+    foreach( QPropertyAnimation *animation, m_placeItemsAnimations ) {
+      animation->setStartValue( m_view->mapToScene( previousItemPos ) );
+    }
+  
+    m_placeItemsAnimation->start();
+  }
+}
+
+IdentityItemGroup GroupGraphicsView::createIdentityItems( bool doAnimation )
+{
+  IdentityItemGroup result;
+  
   Polka::Identity::List identities = model()->identitiesOfGroup( group() );
 
   int columns = sqrt( identities.size() );
@@ -172,7 +203,7 @@ void GroupGraphicsView::createItems()
     qreal posY = y * spacing * 0.866; // sin(60 degree)
 
     IdentityItem *item = new IdentityItem( model(), identity );
-    m_items.append( item );
+    result.items.append( item );
 
     connect( item, SIGNAL( showIdentity( const Polka::Identity & ) ),
       SIGNAL( showIdentity( const Polka::Identity & ) ) );
@@ -202,8 +233,8 @@ void GroupGraphicsView::createItems()
 
     if ( doAnimation ) {
       QPropertyAnimation *animation = new QPropertyAnimation(item, "pos", this);
-      m_createItemsAnimation->insertAnimation( 0, animation );
-      m_createItemsAnimations.append( animation );
+      m_placeItemsAnimation->insertAnimation( 0, animation );
+      m_placeItemsAnimations.append( animation );
 
       animation->setDuration(500);
       QPointF target( itemX, itemY );
@@ -232,8 +263,6 @@ void GroupGraphicsView::createItems()
       item->checkItem();
     }
 
-    m_scene->addItem( item );
-
     x++;
     
     if ( x >= ( columns + ( y + 1 ) % 2 ) ) {
@@ -242,11 +271,16 @@ void GroupGraphicsView::createItems()
     }
   }
   
-  foreach( Polka::ViewLabel label, view.viewLabelList() ) {
-    createLabelItem( label );
-  }
+  qreal centerX = ( minX + maxX ) / 2;
+  qreal centerY = ( minY + maxY ) / 2;
 
-  
+  result.center = QPointF( centerX, centerY );
+
+  return result;
+}
+
+void GroupGraphicsView::createMenuItems()
+{
   m_magicMenu = new MagicMenuItem();
   m_scene->addItem( m_magicMenu );
   
@@ -260,31 +294,6 @@ void GroupGraphicsView::createItems()
   connect( m_mainMenu, SIGNAL( removeGroup() ), SLOT( emitRemoveGroup() ) );
   connect( m_mainMenu, SIGNAL( addGroup() ), SIGNAL( newGroup() ) );
   connect( m_mainMenu, SIGNAL( addPerson() ), SIGNAL( newPerson() ) );
-
-  positionMenuItems();
-
-  
-  qreal centerX = ( minX + maxX ) / 2;
-  qreal centerY = ( minY + maxY ) / 2;
-
-  // TODO: Replace by a hidden setting
-  if ( false ) {
-    QGraphicsEllipseItem *centerItem = new QGraphicsEllipseItem( -5, -5, 10, 10 );
-    centerItem->setBrush( Qt::red );
-    centerItem->setZValue( 1000 );
-    m_scene->addItem( centerItem );  
-    centerItem->setPos( centerX, centerY );
-  }
-
-  m_view->centerOn( centerX, centerY );
-
-  if ( doAnimation ) {
-    foreach( QPropertyAnimation *animation, m_createItemsAnimations ) {
-      animation->setStartValue( m_view->mapToScene( previousItemPos ) );
-    }
-  
-    m_createItemsAnimation->start();
-  }
 }
 
 void GroupGraphicsView::positionMenuItems()
