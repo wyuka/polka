@@ -50,6 +50,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     void checkItem();
 
+    void hidePopups();
+
   signals:
     void showGroup( const Polka::Identity & );
   

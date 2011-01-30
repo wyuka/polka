@@ -80,13 +80,11 @@ void IdentityItem::updateItem( const Polka::Identity &identity )
   textItem->setParentItem( m_nameItem );
 
   m_nameItem->setPos( - textWidth / 2, 30 );
-  m_nameItem->hide();    
 
   m_fanMenu = new FanMenu( this );
   connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
     SLOT( slotItemSelected( FanMenu::Item * ) ) );
   m_fanMenu->setZValue( 50 );
-  m_fanMenu->hide();
 
   m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
   m_checkMenuItem = m_fanMenu->addItem( i18n("Check") );
@@ -97,6 +95,8 @@ void IdentityItem::updateItem( const Polka::Identity &identity )
     m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
   }
   m_fanMenu->setupItems();
+
+  hidePopups();
 }
 
 Polka::Identity IdentityItem::identity() const
@@ -124,6 +124,12 @@ QPointF IdentityItem::rememberedPos() const
   return m_rememberedPos;
 }
 
+void IdentityItem::hidePopups()
+{
+  m_nameItem->hide();
+  m_fanMenu->hide();
+}
+
 void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
@@ -137,8 +143,7 @@ void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
 
-  m_nameItem->hide();
-  m_fanMenu->hide();
+  hidePopups();
 }
 
 void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )

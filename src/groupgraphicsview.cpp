@@ -203,6 +203,10 @@ void GroupGraphicsView::placeItems()
   } else {
     createLabelItems();
   }
+
+  foreach( IdentityItem *item, m_items ) {
+    item->hidePopups();
+  }
 }
 
 void GroupGraphicsView::finishPlaceItems()

@@ -1,7 +1,5 @@
 = Polka
 
-* Don't show menu on top-most item, when opening group.
-
 * Make PolkaView::insert protected and only use add and update?
 
 * Small pictures of people as group picture
