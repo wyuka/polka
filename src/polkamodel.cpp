@@ -188,6 +188,10 @@ bool PolkaModel::readData()
   
   setupGroups();
 
+  if ( !QFile::exists( dataFile ) ) {
+    createFirstStartData();
+  }
+
   return true;
 }
 
@@ -547,4 +551,13 @@ void PolkaModel::saveViewCheck( const Polka::Identity &group,
 Polka::GroupView PolkaModel::groupView( const Polka::Identity &group )
 {
   return m_polka.findGroupView( group.id() );
+}
+
+void PolkaModel::createFirstStartData()
+{
+  Polka::Identity me;
+  Polka::Name name = me.name();
+  name.setValue( "Cornelius Schumacher" );
+  me.setName( name );
+  addIdentity( me, rootGroup() );
 }

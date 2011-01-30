@@ -21,6 +21,7 @@
 
 #include "polkamodel.h"
 #include "polkaitemmodel.h"
+#include "settings.h"
 
 #include <KLocale>
 
@@ -34,14 +35,16 @@ GroupListView::GroupListView( PolkaModel *model, QWidget *parent )
   connect( m_flatView, SIGNAL( clicked( const QModelIndex & ) ),
     SLOT( slotItemClicked( const QModelIndex & ) ) );
 
-  QBoxLayout *buttonLayout = new QHBoxLayout;
-  topLayout->addLayout( buttonLayout );
+  if ( Settings::enableMagic() ) {
+    QBoxLayout *buttonLayout = new QHBoxLayout;
+    topLayout->addLayout( buttonLayout );
 
-  buttonLayout->addStretch( 1 );
-  
-  QPushButton *button = new QPushButton( i18n("Magic") );
-  buttonLayout->addWidget( button );
-  connect( button, SIGNAL( clicked() ), SIGNAL( showSettings() ) );    
+    buttonLayout->addStretch( 1 );
+
+    QPushButton *button = new QPushButton( i18n("Magic") );
+    buttonLayout->addWidget( button );
+    connect( button, SIGNAL( clicked() ), SIGNAL( showSettings() ) );    
+  }
 }
 
 void GroupListView::doShowGroup()

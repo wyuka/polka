@@ -5,22 +5,9 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="polkarc"/>
   <group name="Preferences">
-    <entry name="col_background" type="Color">
-	    <label>color of the background</label>
-	    <default>black</default>
-    </entry>
-    <entry name="col_foreground" type="Color">
-	    <label>color of the foreground</label>
-	    <default>yellow</default>
-    </entry>
-    <entry name="val_time" type="Int">
-	    <label>size of a ball</label>
-	    <default>2</default>
-    </entry>
-
     <entry name="RemoteSyncingEnabled" type="Bool">
       <label>Enable syncing with remote data repository</label>
-      <default>true</default>
+      <default>false</default>
     </entry>
   </group>
   <group name="State">
@@ -29,7 +16,7 @@
     </entry>
     <entry name="FancyMode" type="Bool">
       <label>If fancy mode is enabled</label>
-      <default>false</default>
+      <default>true</default>
     </entry>
   </group>
   <group name="Hidden">

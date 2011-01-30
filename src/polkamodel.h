@@ -114,6 +114,8 @@ class PolkaModel : public QObject
     QPixmap defaultPixmap( const Polka::Identity &identity ) const;
     QString defaultPixmapPath( const Polka::Identity &identity ) const;
 
+    void createFirstStartData();
+
   private:
     GitDir *m_gitDir;
     GitRemote *m_gitRemote;
