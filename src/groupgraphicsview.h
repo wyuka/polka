@@ -59,8 +59,9 @@ class GroupGraphicsView : public GroupView
   protected:
     void doShowGroup();
 
-    IdentityItemGroup createIdentityItems( bool doAnimation );
+    IdentityItemGroup prepareIdentityItems( bool doAnimation );
     void createMenuItems();
+    void createLabelItems();
   
     LabelItem *createLabelItem( const Polka::ViewLabel &label );
 

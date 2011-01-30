@@ -150,18 +150,14 @@ void GroupGraphicsView::placeItems()
   m_labelItems.clear();
   m_globalMenu = 0;
 
-  IdentityItemGroup items = createIdentityItems( doAnimation);
+  IdentityItemGroup items = prepareIdentityItems( doAnimation);
 
   m_items = items.items;
   foreach( IdentityItem *item, m_items ) {
     m_scene->addItem( item );
   }
-  
-  Polka::GroupView view = model()->groupView( group() );
 
-  foreach( Polka::ViewLabel label, view.viewLabelList() ) {
-    createLabelItem( label );
-  }
+  createLabelItems();
 
   createMenuItems();
   positionMenuItems();
@@ -177,7 +173,7 @@ void GroupGraphicsView::placeItems()
   }
 }
 
-IdentityItemGroup GroupGraphicsView::createIdentityItems( bool doAnimation )
+IdentityItemGroup GroupGraphicsView::prepareIdentityItems( bool doAnimation )
 {
   IdentityItemGroup result;
   
@@ -277,6 +273,15 @@ IdentityItemGroup GroupGraphicsView::createIdentityItems( bool doAnimation )
   result.center = QPointF( centerX, centerY );
 
   return result;
+}
+
+void GroupGraphicsView::createLabelItems()
+{
+  Polka::GroupView view = model()->groupView( group() );
+
+  foreach( Polka::ViewLabel label, view.viewLabelList() ) {
+    createLabelItem( label );
+  }
 }
 
 void GroupGraphicsView::createMenuItems()
