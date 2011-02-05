@@ -5,8 +5,6 @@
 * Retrieve gravatar, all known links and local pictures for picture selector
 * Fetch remote pictures
 
-* Make first startup beautiful.
-
 * Show history
 * Undo based on git (Rollback from UI)
 
