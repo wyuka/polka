@@ -62,6 +62,7 @@ instead of twitter url, screen grab instead of nothing )
 
 = kxml_compiler
 
+* Initialize integers in model classes.
 * Move to stream reader, check that email addresses containing <jd>
 work.
 * eliminate pictures() from identity().pictures().pictureList()

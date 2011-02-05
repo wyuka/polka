@@ -292,7 +292,7 @@ Polka::Identity PolkaModel::insert( Polka::Identity identity,
   return identity;
 }
 
-void PolkaModel::addIdentity( const Polka::Identity &person,
+Polka::Identity PolkaModel::addIdentity( const Polka::Identity &person,
   const Polka::Identity &group )
 {
   Polka::Identity p = person;
@@ -305,9 +305,11 @@ void PolkaModel::addIdentity( const Polka::Identity &person,
     groups.addGroup( g );
     p.setGroups( groups );
 
-    insert( p, i18n("Add %1 to group %2").arg( person.name().value() )
+    return insert( p, i18n("Add %1 to group %2").arg( person.name().value() )
       .arg( group.name().value() ) );
   }
+  
+  return Polka::Identity();
 }
 
 void PolkaModel::removeIdentity( const Polka::Identity &identity,
@@ -559,5 +561,39 @@ void PolkaModel::createFirstStartData()
   Polka::Name name = me.name();
   name.setValue( "Cornelius Schumacher" );
   me.setName( name );
-  addIdentity( me, rootGroup() );
+  me = addIdentity( me, rootGroup() );
+  
+  Polka::Email email;
+  email.setEmailAddress( "schumacher@kde.org" );
+  Polka::Emails emails;
+  emails.addEmail( email );
+  me.setEmails( emails );
+
+  Polka::Comment comment;
+  comment.setValue( i18n("I'm Cornelius Schumacher, the author of Polka, "
+    "the humane address book for the cloud. "
+    "If you have feedback or questions, or you would like to help, "
+    "please don't hesitate to contact me. Have fun with Polka.") );  
+  Polka::Comments comments;
+  comments.addComment( comment );
+  me.setComments( comments );
+  
+  insert( me, i18n("Welcome to Polka") );
+
+  saveViewPosition( rootGroup(), me, QPointF( 0, 0 ) );
+
+  Polka::ViewLabel welcome;
+  welcome.setText( i18n("Welcome to Polka!\n\n"
+    "The goal of Polka is to provide a humane way\n"
+    "for managing your information about other people,\n"
+    "using natural concepts like groups, pictures,\n"
+    "history, annotations, ubiquitous access.\n\n"
+    "It hooks into the cloud, and aims at providing\n"
+    "a dynamic and elegant user interface.\n\n"
+    "This is an early preview. Feedback is welcome.\n\n"
+    "Have fun with Polka." ) );
+  welcome.setX( 250 );
+  welcome.setY( -30 );
+  
+  saveViewLabel( rootGroup(), welcome );  
 }
