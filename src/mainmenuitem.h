@@ -30,6 +30,8 @@ class MainMenuItem : public QObject, public QGraphicsEllipseItem
   public:
     MainMenuItem();
 
+    void setItemSize( int size );
+
   signals:
     void cloneGroup();
     void removeGroup();
@@ -49,6 +51,8 @@ class MainMenuItem : public QObject, public QGraphicsEllipseItem
     void slotItemSelected( FanMenu::Item * );
 
   private:
+    int m_defaultItemSize;
+  
     FanMenu *m_fanMenu;
 
     FanMenu::Item *m_cloneGroupMenuItem;

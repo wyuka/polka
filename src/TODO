@@ -8,9 +8,6 @@
 * Show history
 * Undo based on git (Rollback from UI)
 
-* Maybe make menu disks grow bigger when menu is shown to prevent accidently
-  hiding the menu again by hitting the space between menu elements.
-
 * Show name labels for identities, which only have the default picture.
 
 

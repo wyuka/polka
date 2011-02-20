@@ -25,10 +25,10 @@
 #include <KLocale>
 
 MainMenuItem::MainMenuItem()
+  : m_defaultItemSize( 55 )
 {
-  int itemSize = 55;
-
-  setRect( -itemSize/2, -itemSize/2, itemSize, itemSize );
+  setItemSize( m_defaultItemSize );
+ 
   setBrush( QColor( 230,229,229 ) );
 
   QPen pen;
@@ -62,9 +62,16 @@ MainMenuItem::MainMenuItem()
   setAcceptHoverEvents( true );
 }
 
+void MainMenuItem::setItemSize( int size )
+{
+  setRect( -size/2, -size/2, size, size );
+}
+
 void MainMenuItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
+
+  setItemSize( m_defaultItemSize + 20 );
 
   m_fanMenu->show();
   emit menuShown();
@@ -73,6 +80,8 @@ void MainMenuItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 void MainMenuItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
+
+  setItemSize( m_defaultItemSize );
 
   m_fanMenu->hide();
 }
