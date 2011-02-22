@@ -1745,6 +1745,64 @@ void Picture::writeElement( QXmlStreamWriter &xml )
 }
 
 
+bool Selected::isValid() const
+{
+  return !mId.isEmpty();
+}
+
+void Selected::setId( const QString &v )
+{
+  mId = v;
+}
+
+QString Selected::id() const
+{
+  return mId;
+}
+
+Selected Selected::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "selected" ) {
+    qCritical() << "Expected 'selected', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Selected();
+  }
+
+  Selected result = Selected();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "id" ) {
+      result.setId( e.text() );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+void Selected::writeElement( QXmlStreamWriter &xml )
+{
+  xml.writeStartElement( "selected" );
+  if ( !id().isEmpty() ) {
+    xml.writeTextElement(  "id", id() );
+  }
+  xml.writeEndElement();
+}
+
+
+void Pictures::setSelected( const Selected &v )
+{
+  mSelected = v;
+}
+
+Selected Pictures::selected() const
+{
+  return mSelected;
+}
+
 void Pictures::addPicture( const Picture &v )
 {
   mPictureList.append( v );
@@ -1812,7 +1870,12 @@ Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
   QDomNode n;
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
-    if ( e.tagName() == "picture" ) {
+    if ( e.tagName() == "selected" ) {
+      bool ok;
+      Selected o = Selected::parseElement( e, &ok );
+      if ( ok ) result.setSelected( o );
+    }
+    else if ( e.tagName() == "picture" ) {
       bool ok;
       Picture o = Picture::parseElement( e, &ok );
       if ( ok ) result.addPicture( o );
@@ -1826,13 +1889,12 @@ Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
 
 void Pictures::writeElement( QXmlStreamWriter &xml )
 {
-  if ( !pictureList().isEmpty() ) {
-    xml.writeStartElement( "pictures" );
-    foreach( Picture e, pictureList() ) {
-      e.writeElement( xml );
-    }
-    xml.writeEndElement();
+  xml.writeStartElement( "pictures" );
+  selected().writeElement( xml );
+  foreach( Picture e, pictureList() ) {
+    e.writeElement( xml );
   }
+  xml.writeEndElement();
 }
 
 
