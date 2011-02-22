@@ -59,7 +59,7 @@ QVariant PolkaItemModel::data(const QModelIndex &index, int role) const
   } else if ( role == Qt::UserRole ) {
     return identity.id();
   } else if ( role == Qt::DecorationRole ) {
-    return m_model->picture( identity );
+    return m_model->pixmap( identity );
   } else {
     return QVariant();
   }

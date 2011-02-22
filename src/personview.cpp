@@ -90,7 +90,7 @@ void PersonView::showIdentity( const Polka::Identity &identity )
   Polka::HtmlRenderer renderer;
 
   QString html = renderer.personEditor( identity,
-    m_model->picturePath( identity ), Settings::enableMagic() );
+    m_model->pixmapPath( identity ), Settings::enableMagic() );
 
 //  qDebug() << html;
 
@@ -510,7 +510,7 @@ void PersonView::debugHtml()
   Polka::HtmlRenderer renderer;
 
   QString html = renderer.personEditor( m_identity,
-    m_model->picturePath( m_identity ) );
+    m_model->pixmapPath( m_identity ) );
   
   QFile file("polka.html");
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {

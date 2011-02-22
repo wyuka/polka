@@ -15,8 +15,6 @@
 
 * Small pictures of people as group picture
 
-* Rename PolkaModel::picture to pixmap ?
-
 * Add picture should provide possibility to add twitter, facebook, etc.
 
 * Show descriptive text instead of URL in picture selector controls (twitter

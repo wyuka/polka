@@ -46,7 +46,7 @@ void PictureSelectorButton::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
 
-  m_label->setPixmap( m_model->picture( picture ) );
+  m_label->setPixmap( m_model->pixmap( picture ) );
 
 //  connect( ImageLoader::load( m_picture.url() ),
 //    SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );

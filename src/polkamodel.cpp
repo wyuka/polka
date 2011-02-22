@@ -358,7 +358,7 @@ void PolkaModel::removeGroup( const Polka::Identity &group )
   emit identityRemoved( group );
 }
 
-QPixmap PolkaModel::picture( const Polka::Picture &picture ) const
+QPixmap PolkaModel::pixmap( const Polka::Picture &picture ) const
 {
   LocalPicture *local = localPicture( picture );
   
@@ -367,7 +367,7 @@ QPixmap PolkaModel::picture( const Polka::Picture &picture ) const
   return local->pixmap();
 }
 
-QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
+QPixmap PolkaModel::pixmap( const Polka::Identity &identity ) const
 {
   Polka::Picture::List pictures = identity.pictures().pictureList();
   
@@ -380,7 +380,7 @@ QPixmap PolkaModel::picture( const Polka::Identity &identity ) const
   return local->pixmap();
 }
 
-QString PolkaModel::picturePath( const Polka::Identity &identity ) const
+QString PolkaModel::pixmapPath( const Polka::Identity &identity ) const
 {
   Polka::Picture::List pictures = identity.pictures().pictureList();
   

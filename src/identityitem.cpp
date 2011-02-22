@@ -62,7 +62,7 @@ void IdentityItem::updateItem( const Polka::Identity &identity )
     groupCircle->setPen( pen );
   }
   
-  QPixmap pixmap = m_model->picture( identity );
+  QPixmap pixmap = m_model->pixmap( identity );
 
   QGraphicsItem *item = new QGraphicsPixmapItem( pixmap, this );  
   item->setPos( -pixmap.width() / 2, -pixmap.height() / 2 );

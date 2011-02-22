@@ -67,10 +67,10 @@ class PolkaModel : public QObject
     PolkaItemModel *groupItemModel();
     PolkaItemModel *itemModel( const QString &id = QString() );
 
-    QPixmap picture( const Polka::Picture & ) const;
+    QPixmap pixmap( const Polka::Picture & ) const;
 
-    QPixmap picture( const Polka::Identity & ) const;
-    QString picturePath( const Polka::Identity & ) const;
+    QPixmap pixmap( const Polka::Identity & ) const;
+    QString pixmapPath( const Polka::Identity & ) const;
 
     void importPicture( const QPixmap &, const Polka::Identity & );
 

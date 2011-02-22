@@ -76,7 +76,7 @@ void PictureSelectorControls::setPicture( const Polka::Picture &picture )
 {
   m_picture = picture;
   
-  m_pictureLabel->setPixmap( m_model->picture( picture ) );
+  m_pictureLabel->setPixmap( m_model->pixmap( picture ) );
   m_urlLabel->setText( picture.url() );
   
   show();
