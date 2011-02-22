@@ -32,7 +32,7 @@ class PictureSelector : public QWidget
   public:
     PictureSelector( PolkaModel *model, QWidget *parent = 0 );
 
-    void setPictures( const Polka::Picture::List & );
+    void setPictures( const Polka::Pictures & );
 
   signals:
     void pictureSelected( const Polka::Picture & );

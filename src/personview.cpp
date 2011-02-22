@@ -75,14 +75,14 @@ void PersonView::showIdentity( const Polka::Identity &identity )
 {
   m_identity = identity;
 
-  Polka::Picture::List pictures = identity.pictures().pictureList();
+  Polka::Pictures pictures = identity.pictures();
 
   m_pictureSelectorControls->hide();
   m_pictureSelectorControls->setIdentity( identity );
   m_pictureSelector->setPictures( pictures );
 
-  if ( !pictures.isEmpty() ) {
-    KUrl u( pictures.first().url() );
+  if ( !pictures.pictureList().isEmpty() ) {
+    KUrl u( pictures.pictureList().first().url() );
     connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
       SLOT( setImage( const QPixmap & ) ) );
   }

@@ -35,6 +35,9 @@ class PictureSelectorButton : public QWidget
 
     Polka::Picture picture() const;
 
+    void setSelected( bool selected );
+
+  protected:
     void mousePressEvent( QMouseEvent *event );
 
   signals:

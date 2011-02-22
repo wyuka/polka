@@ -369,11 +369,17 @@ QPixmap PolkaModel::pixmap( const Polka::Picture &picture ) const
 
 QPixmap PolkaModel::pixmap( const Polka::Identity &identity ) const
 {
-  Polka::Picture::List pictures = identity.pictures().pictureList();
+  Polka::Pictures pictures = identity.pictures();
   
-  if ( pictures.isEmpty() ) return defaultPixmap( identity );
+  if ( pictures.pictureList().isEmpty() ) return defaultPixmap( identity );
 
-  LocalPicture *local = localPicture( pictures.first() );
+  Polka::Picture selectedPicture = pictures.findPicture(
+    pictures.selected() );
+  if ( !selectedPicture.isValid() ) {
+    selectedPicture = pictures.pictureList().first();
+  }
+
+  LocalPicture *local = localPicture( selectedPicture );
   
   if ( !local ) return defaultPixmap( identity );
 
@@ -382,11 +388,17 @@ QPixmap PolkaModel::pixmap( const Polka::Identity &identity ) const
 
 QString PolkaModel::pixmapPath( const Polka::Identity &identity ) const
 {
-  Polka::Picture::List pictures = identity.pictures().pictureList();
+  Polka::Pictures pictures = identity.pictures();
   
-  if ( pictures.isEmpty() ) return defaultPixmapPath( identity );
+  if ( pictures.pictureList().isEmpty() ) return defaultPixmapPath( identity );
 
-  LocalPicture *local = localPicture( pictures.first() );
+  Polka::Picture selectedPicture = pictures.findPicture(
+    pictures.selected() );
+  if ( !selectedPicture.isValid() ) {
+    selectedPicture = pictures.pictureList().first();
+  }
+
+  LocalPicture *local = localPicture( selectedPicture );
   
   if ( !local ) return defaultPixmapPath( identity );
 
@@ -432,7 +444,7 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
   LocalPicture *localPicture = new LocalPicture( m_gitDir, picture );
   localPicture->setPixmap( pixmap, identity );  
   
-  pictureList.prepend( picture );
+  pictureList.append( picture );
   pictures.setPictureList( pictureList );
   identity.setPictures( pictures );
   m_polka.insert( identity );
@@ -445,18 +457,8 @@ void PolkaModel::importPicture( const QPixmap &pixmap,
 void PolkaModel::setDefaultPicture( const Polka::Picture &picture,
   Polka::Identity &identity )
 {
-  Polka::Picture::List oldPictures;
-  Polka::Picture::List newPictures;
-
-  newPictures.append( picture );
-
-  oldPictures = identity.pictures().pictureList();
-  foreach( Polka::Picture p, oldPictures ) {
-    if ( p.id() != picture.id() ) newPictures.append( p );
-  }
-  
   Polka::Pictures pictures = identity.pictures();
-  pictures.setPictureList( newPictures );
+  pictures.setSelected( picture.id() );
   identity.setPictures( pictures );
   m_polka.insert( identity );
   

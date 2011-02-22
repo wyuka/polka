@@ -488,30 +488,14 @@ class POLKA_EXPORT Picture
     Comment mComment;
 };
 
-class POLKA_EXPORT Selected
-{
-  public:
-    bool isValid() const;
-    void setId( const QString &v );
-    QString id() const;
-    /**
-      Parse XML object from DOM element.
-     */
-    static Selected parseElement( const QDomElement &element, bool *ok );
-    void writeElement( QXmlStreamWriter &xml );
-
-  private:
-    QString mId;
-};
-
 class POLKA_EXPORT Pictures
 {
   public:
     enum Flags { None, AutoCreate };
 
   public:
-    void setSelected( const Selected &v );
-    Selected selected() const;
+    void setSelected( const QString &v );
+    QString selected() const;
     void addPicture( const Picture &v );
     void setPictureList( const Picture::List &v );
     Picture::List pictureList() const;
@@ -525,7 +509,7 @@ class POLKA_EXPORT Pictures
     void writeElement( QXmlStreamWriter &xml );
 
   private:
-    Selected mSelected;
+    QString mSelected;
     Picture::List mPictureList;
 };
 

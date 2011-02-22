@@ -1745,60 +1745,12 @@ void Picture::writeElement( QXmlStreamWriter &xml )
 }
 
 
-bool Selected::isValid() const
-{
-  return !mId.isEmpty();
-}
-
-void Selected::setId( const QString &v )
-{
-  mId = v;
-}
-
-QString Selected::id() const
-{
-  return mId;
-}
-
-Selected Selected::parseElement( const QDomElement &element, bool *ok )
-{
-  if ( element.tagName() != "selected" ) {
-    qCritical() << "Expected 'selected', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return Selected();
-  }
-
-  Selected result = Selected();
-
-  QDomNode n;
-  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
-    QDomElement e = n.toElement();
-    if ( e.tagName() == "id" ) {
-      result.setId( e.text() );
-    }
-  }
-
-
-  if ( ok ) *ok = true;
-  return result;
-}
-
-void Selected::writeElement( QXmlStreamWriter &xml )
-{
-  xml.writeStartElement( "selected" );
-  if ( !id().isEmpty() ) {
-    xml.writeTextElement(  "id", id() );
-  }
-  xml.writeEndElement();
-}
-
-
-void Pictures::setSelected( const Selected &v )
+void Pictures::setSelected( const QString &v )
 {
   mSelected = v;
 }
 
-Selected Pictures::selected() const
+QString Pictures::selected() const
 {
   return mSelected;
 }
@@ -1871,9 +1823,7 @@ Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
   for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     QDomElement e = n.toElement();
     if ( e.tagName() == "selected" ) {
-      bool ok;
-      Selected o = Selected::parseElement( e, &ok );
-      if ( ok ) result.setSelected( o );
+      result.setSelected( e.text() );
     }
     else if ( e.tagName() == "picture" ) {
       bool ok;
@@ -1890,7 +1840,9 @@ Pictures Pictures::parseElement( const QDomElement &element, bool *ok )
 void Pictures::writeElement( QXmlStreamWriter &xml )
 {
   xml.writeStartElement( "pictures" );
-  selected().writeElement( xml );
+  if ( !selected().isEmpty() ) {
+    xml.writeTextElement(  "selected", selected() );
+  }
   foreach( Picture e, pictureList() ) {
     e.writeElement( xml );
   }

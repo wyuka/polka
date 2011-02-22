@@ -1,7 +1,5 @@
 = Polka
 
-* Highlight selected picture (glowing frame?), click to change selection
-    
 * Retrieve gravatar, all known links and local pictures for picture selector
 * Fetch remote pictures
 

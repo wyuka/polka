@@ -33,17 +33,20 @@ PictureSelector::PictureSelector( PolkaModel *model, QWidget *parent )
   connect( addButton, SIGNAL( clicked() ), SIGNAL( grabPicture() ) );
 }
 
-void PictureSelector::setPictures( const Polka::Picture::List &pictures )
+void PictureSelector::setPictures( const Polka::Pictures &pictures )
 {
   qDeleteAll( m_buttons );
   m_buttons.clear();
 
-  foreach( Polka::Picture picture, pictures ) {
+  foreach( Polka::Picture picture, pictures.pictureList() ) {
     PictureSelectorButton *button = new PictureSelectorButton( m_model );
     m_buttons.append( button );
     m_layout->insertWidget( m_layout->count() - 1, button );
     
     button->setPicture( picture );
+    if ( pictures.selected() == picture.id() ) {
+      button->setSelected( true );
+    }
 
     connect( button, SIGNAL( picturePressed( const Polka::Picture & ) ),
       SIGNAL( pictureSelected( const Polka::Picture & ) ) );
