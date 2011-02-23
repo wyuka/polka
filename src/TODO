@@ -6,8 +6,6 @@
 * Show history
 * Undo based on git (Rollback from UI)
 
-* Show name labels for identities, which only have the default picture.
-
 
 * Make PolkaView::insert protected and only use add and update?
 

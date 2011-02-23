@@ -73,6 +73,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     QVariant itemChange( GraphicsItemChange change, const QVariant &value );
 
+    bool hasPicture() const;
+
   protected slots:
     void slotItemSelected( FanMenu::Item * );
 

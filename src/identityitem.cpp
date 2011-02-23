@@ -126,7 +126,9 @@ QPointF IdentityItem::rememberedPos() const
 
 void IdentityItem::hidePopups()
 {
-  m_nameItem->hide();
+  if ( hasPicture() ) {
+    m_nameItem->hide();
+  }
   m_fanMenu->hide();
 }
 
@@ -202,4 +204,9 @@ QVariant IdentityItem::itemChange( GraphicsItemChange change,
   const QVariant &value )
 {
   return QGraphicsEllipseItem::itemChange( change, value );
+}
+
+bool IdentityItem::hasPicture() const
+{
+  return !m_identity.pictures().pictureList().isEmpty();
 }
