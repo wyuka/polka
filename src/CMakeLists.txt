@@ -1,4 +1,6 @@
 set(polka_bin_SRCS
+  historyview.cpp
+  overview.cpp
   groupview.cpp
   pictureselectorcontrols.cpp
   roundedrectitem.cpp

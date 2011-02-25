@@ -30,6 +30,8 @@
 #include "gitremote.h"
 #include "personview.h"
 #include "settingswidget.h"
+#include "overview.h"
+#include "historyview.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -60,6 +62,9 @@ PolkaView::PolkaView(QWidget *parent)
 
   buttonLayout->addStretch( 1 );
 
+  QPushButton *button = new QPushButton( i18n("...") );
+  buttonLayout->addWidget( button );
+  connect( button, SIGNAL( clicked() ), SLOT( showOverview() ) );
 
   QBoxLayout *viewLayout = new QHBoxLayout;
   topLayout->addLayout( viewLayout );
@@ -68,6 +73,12 @@ PolkaView::PolkaView(QWidget *parent)
   viewLayout->addWidget( m_groupWidget );
   
   m_listLayout = new QStackedLayout( m_groupWidget );
+
+  m_overview = new Overview;
+  m_listLayout->addWidget( m_overview );
+  connect( m_overview, SIGNAL( showGroupView() ), SLOT( showGroupView() ) );
+  connect( m_overview, SIGNAL( showListView() ), SLOT( showListView() ) );
+  connect( m_overview, SIGNAL( showHistory() ), SLOT( showHistory() ) );
 
   m_groupListView = new GroupListView( m_model );
   m_listLayout->addWidget( m_groupListView );
@@ -93,6 +104,9 @@ PolkaView::PolkaView(QWidget *parent)
   viewLayout->addWidget( m_personView );
   connect( m_personView, SIGNAL( closeRequested() ),
     SLOT( closePersonView() ) );
+
+  m_historyView = new HistoryView();
+  m_listLayout->addWidget( m_historyView );
 
   m_settingsWidget = new SettingsWidget( m_model );
   topLayout->addWidget( m_settingsWidget );
@@ -340,6 +354,32 @@ void PolkaView::goBack()
     m_history.takeLast();
   }
   showRoot();
+}
+
+void PolkaView::showOverview()
+{
+  m_backButton->hide();
+  m_groupNameLabel->setText( QString() );
+  m_listLayout->setCurrentWidget( m_overview );
+}
+
+void PolkaView::showGroupView()
+{
+  m_backButton->show();
+  showView();
+}
+
+void PolkaView::showListView()
+{
+  m_backButton->show();
+  showView();
+}
+
+void PolkaView::showHistory()
+{
+  m_backButton->hide();
+  m_groupNameLabel->setText( i18n("<b>History</b>") );
+  m_listLayout->setCurrentWidget( m_historyView );
 }
 
 #include "polkaview.moc"

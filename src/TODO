@@ -7,6 +7,8 @@
 * Undo based on git (Rollback from UI)
 
 
+* Timer to hide fan menu items only after a short while
+
 * Make PolkaView::insert protected and only use add and update?
 
 * Small pictures of people as group picture

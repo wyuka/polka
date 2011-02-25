@@ -33,6 +33,8 @@ class GroupGraphicsView;
 class PersonView;
 class SettingsWidget;
 class GroupView;
+class Overview;
+class HistoryView;
 
 class PolkaView : public QWidget
 {
@@ -65,6 +67,11 @@ class PolkaView : public QWidget
 
     void showSettings();
 
+    void showOverview();
+    void showGroupView();
+    void showListView();
+    void showHistory();
+
   signals:
     void dataWritten();
   
@@ -91,6 +98,8 @@ class PolkaView : public QWidget
     GroupListView *m_groupListView;
     GroupGraphicsView *m_groupGraphicsView;
     PersonView *m_personView;
+    Overview *m_overview;
+    HistoryView *m_historyView;
 };
 
 #endif
