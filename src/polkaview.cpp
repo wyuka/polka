@@ -105,7 +105,7 @@ PolkaView::PolkaView(QWidget *parent)
   connect( m_personView, SIGNAL( closeRequested() ),
     SLOT( closePersonView() ) );
 
-  m_historyView = new HistoryView();
+  m_historyView = new HistoryView( m_model );
   m_listLayout->addWidget( m_historyView );
 
   m_settingsWidget = new SettingsWidget( m_model );
@@ -380,6 +380,8 @@ void PolkaView::showHistory()
   m_backButton->hide();
   m_groupNameLabel->setText( i18n("<b>History</b>") );
   m_listLayout->setCurrentWidget( m_historyView );
+
+  m_historyView->loadHistory();
 }
 
 #include "polkaview.moc"

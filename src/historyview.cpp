@@ -19,10 +19,17 @@
 
 #include "historyview.h"
 
-HistoryView::HistoryView()
+HistoryView::HistoryView( PolkaModel *model )
+  : m_model( model )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
   m_list = new QListWidget;
   topLayout->addWidget( m_list );
+}
+
+void HistoryView::loadHistory()
+{
+  m_list->clear();
+  m_list->addItem( "Huhu" );
 }

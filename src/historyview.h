@@ -21,12 +21,18 @@
 
 #include <QtGui>
 
+class PolkaModel;
+
 class HistoryView : public QWidget
 {
   public:
-    HistoryView();
+    HistoryView( PolkaModel * );
+
+    void loadHistory();
 
   private:
+    PolkaModel *m_model;
+
     QListWidget *m_list;
 };
 
