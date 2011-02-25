@@ -51,10 +51,13 @@ Overview::Overview()
   text += i18n("Polka - the humane address book for the cloud");
   text += "<br/>";
   text += "<br/>";
-  text += "Copyright 2011 Cornelius Schumacher";
+  text += "Copyright (c) 2011 Cornelius Schumacher";
+  text += "<br/>";
+  text += "This program is distributed under the terms of the ";
+  text += "<a href=\"http://gpl.org\">GPL</a>";
   text += "<br/>";
   text += "<br/>";
-  text += "http://lst.de/polka";
+  text += "<a href=\"http://lst.de/polka\">http://lst.de/polka</a>";
   text += "</qt>";
 
   about->setText( text );
