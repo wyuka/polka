@@ -55,17 +55,21 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     void enableMenus( bool enabled );
 
+    void undoMove();
+
   signals:
     void showGroup( const Polka::Identity & );
   
     void showIdentity( const Polka::Identity & );
     void removeIdentity( const Polka::Identity & );
 
-    void itemMoved( const Polka::Identity &, const QPointF & );
+    void itemMoved( IdentityItem *, const QPointF & );
     
     void itemChecked( const Polka::Identity &, bool );
 
     void menuShown();
+
+    void itemDropped( IdentityItem * );
 
   protected:
     void init();

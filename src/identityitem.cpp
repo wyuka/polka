@@ -44,6 +44,7 @@ void IdentityItem::init()
   m_checked = false;
   m_checkItem = 0;
   m_itemSize = 110;
+  m_menusEnabled = true;
 
   setRect( -m_itemSize/2, -m_itemSize/2, m_itemSize, m_itemSize );
   setBrush( Qt::white );
@@ -183,7 +184,7 @@ void IdentityItem::mousePressEvent( QGraphicsSceneMouseEvent *event )
 void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 {
   if ( pos() != m_movePos ) {
-    emit itemMoved( m_identity, pos() );
+    emit itemMoved( this, pos() );
   }
 
   QGraphicsEllipseItem::mouseReleaseEvent( event );
@@ -234,4 +235,9 @@ QVariant IdentityItem::itemChange( GraphicsItemChange change,
 bool IdentityItem::hasPicture() const
 {
   return !m_identity.pictures().pictureList().isEmpty();
+}
+
+void IdentityItem::undoMove()
+{
+  setPos( m_movePos );
 }

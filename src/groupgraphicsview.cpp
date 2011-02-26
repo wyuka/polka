@@ -336,8 +336,8 @@ IdentityItemGroup GroupGraphicsView::prepareIdentityItems( bool doAnimation )
     connect( item, SIGNAL( removeIdentity( const Polka::Identity & ) ),
       SLOT( slotRemoveIdentity( const Polka::Identity & ) ) );
 
-    connect( item, SIGNAL( itemMoved( const Polka::Identity &, const QPointF & ) ),
-      SLOT( savePosition( const Polka::Identity &, const QPointF & ) ) );
+    connect( item, SIGNAL( itemMoved( IdentityItem *, const QPointF & ) ),
+      SLOT( savePosition( IdentityItem *, const QPointF & ) ) );
     connect( item, SIGNAL( itemChecked( const Polka::Identity &, bool ) ),
       SLOT( saveCheck( const Polka::Identity &, bool ) ) );
 
@@ -473,11 +473,16 @@ void GroupGraphicsView::slotRemoveIdentity( const Polka::Identity &identity )
   emit removeIdentity( identity, group() );
 }
 
-void GroupGraphicsView::savePosition( const Polka::Identity &identity,
+void GroupGraphicsView::savePosition( IdentityItem *item,
   const QPointF &pos )
 {
   if ( !m_compactLayout ) {
-    model()->saveViewPosition( group(), identity, pos );
+    if ( item->collidesWithItem( m_groupAdderItem ) ) {
+      item->undoMove();
+      qDebug() << "ADD TO GROUP";
+    } else {
+      model()->saveViewPosition( group(), item->identity(), pos );
+    }
   }
 }
 

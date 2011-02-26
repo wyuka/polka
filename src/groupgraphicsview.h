@@ -95,7 +95,7 @@ class GroupGraphicsView : public GroupView
     void removeLabel( LabelItem *, const Polka::ViewLabel & );
     void renameLabel( LabelItem *, Polka::ViewLabel );
 
-    void savePosition( const Polka::Identity &, const QPointF & );
+    void savePosition( IdentityItem *, const QPointF & );
     void saveLabel( const Polka::ViewLabel &, const QPointF & );
     void saveCheck( const Polka::Identity &, bool checked );
 
