@@ -79,6 +79,8 @@ class GroupGraphicsView : public GroupView
 
     void positionMenuItems();
 
+    void clearItems();
+
   protected slots:
     void resetLayout();
   

@@ -68,6 +68,9 @@ GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   connect( model, SIGNAL( identityRemoved( const Polka::Identity & ) ),
     SLOT( slotIdentityRemoved( const Polka::Identity & ) ) );
 
+  createMenuItems();
+  positionMenuItems();
+
   setMinimumWidth( 50 );
 }
 
@@ -158,6 +161,22 @@ void GroupGraphicsView::hideItems()
   m_removeItemsAnimation->start();  
 }
 
+void GroupGraphicsView::clearItems()
+{
+  foreach( IdentityItem *item, m_items ) {
+    delete item;
+  }
+  m_items.clear();
+
+  foreach( LabelItem *item, m_labelItems ) {
+    delete item;
+  }
+  m_labelItems.clear();
+
+  if ( m_globalMenu ) delete m_globalMenu;
+  m_globalMenu = 0;
+}
+
 void GroupGraphicsView::placeItems()
 {
   m_compactLayout = false;
@@ -179,10 +198,7 @@ void GroupGraphicsView::placeItems()
     previousItemPos = m_view->mapFromScene( m_previousItem->pos() );
   }
 
-  m_scene->clear();
-  m_items.clear();
-  m_labelItems.clear();
-  m_globalMenu = 0;
+  clearItems();
 
   IdentityItemGroup items = prepareIdentityItems( doAnimation );
 
@@ -190,9 +206,6 @@ void GroupGraphicsView::placeItems()
   foreach( IdentityItem *item, m_items ) {
     m_scene->addItem( item );
   }
-
-  createMenuItems();
-  positionMenuItems();
 
   m_view->centerOn( items.center );
 
@@ -263,10 +276,7 @@ void GroupGraphicsView::unplaceItems()
 
 void GroupGraphicsView::unhideItems()
 {
-  m_scene->clear();
-  m_items.clear();
-  m_labelItems.clear();
-  m_globalMenu = 0;
+  clearItems();
 
   m_items = m_newItems.items;
   foreach( IdentityItem *item, m_items ) {
@@ -275,9 +285,6 @@ void GroupGraphicsView::unhideItems()
   }
 
   createLabelItems();
-
-  createMenuItems();
-  positionMenuItems();
 
   m_view->centerOn( m_newItems.center );
 
@@ -480,7 +487,6 @@ void GroupGraphicsView::savePosition( IdentityItem *item,
     if ( item->collidesWithItem( m_groupAdderItem ) ) {
       item->undoMove();
       model()->addIdentity( item->identity(), m_groupAdderItem->group() );
-      qDebug() << "ADD TO GROUP";
     } else {
       model()->saveViewPosition( group(), item->identity(), pos );
     }
@@ -612,6 +618,7 @@ void GroupGraphicsView::morphToCompact()
   foreach( LabelItem *item, m_labelItems ) {
     item->hide();
   }
+  m_groupAdderItem->hide();
 
   QRectF rect = m_scene->sceneRect();
 
@@ -699,6 +706,8 @@ void GroupGraphicsView::finishMorphFromCompact()
   foreach( LabelItem *item, m_labelItems ) {
     item->show();
   }  
+  
+  m_groupAdderItem->show();
 }
 
 IdentityItem *GroupGraphicsView::item( const Polka::Identity &identity ) const
