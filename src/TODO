@@ -1,9 +1,10 @@
 = Polka
 
+* Group adder item
+
 * Retrieve gravatar, all known links and local pictures for picture selector
 * Fetch remote pictures
 
-* Show history
 * Undo based on git (Rollback from UI)
 
 

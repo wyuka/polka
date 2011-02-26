@@ -30,6 +30,7 @@ class LabelItem;
 class QAnimationGroup;
 class MainMenuItem;
 class MagicMenuItem;
+class GroupAdderItem;
 
 struct IdentityItemGroup {
 
@@ -128,6 +129,7 @@ class GroupGraphicsView : public GroupView
 
     MainMenuItem *m_mainMenu;
     MagicMenuItem *m_magicMenu;
+    GroupAdderItem *m_groupAdderItem;
 
     QGraphicsScene *m_scene;
     QGraphicsView *m_view;

@@ -1,4 +1,6 @@
 set(polka_bin_SRCS
+  buttonitem.cpp
+  groupadderitem.cpp
   historyview.cpp
   overview.cpp
   groupview.cpp

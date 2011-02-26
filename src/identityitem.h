@@ -37,6 +37,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
   public:
     IdentityItem( PolkaModel *, const Polka::Identity & );
+    IdentityItem( QGraphicsItem *, PolkaModel *, const Polka::Identity & );
 
     Polka::Identity identity() const;
 
@@ -52,6 +53,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
 
     void hidePopups();
 
+    void enableMenus( bool enabled );
+
   signals:
     void showGroup( const Polka::Identity & );
   
@@ -65,6 +68,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void menuShown();
 
   protected:
+    void init();
+  
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
 
@@ -81,6 +86,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
   private:
     PolkaModel *m_model;
     Polka::Identity m_identity;
+
+    bool m_menusEnabled;
 
     QPointF m_defaultPos;
     QPointF m_rememberedPos;

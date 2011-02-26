@@ -26,9 +26,25 @@
 #include <KLocale>
 
 IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
-  : QObject( model ), m_model( model ), m_identity( identity ),
-    m_checked( false ), m_checkItem( 0 ), m_itemSize( 110 )
+  : QObject( model ), m_model( model ), m_identity( identity )
 {
+  init();
+}
+
+IdentityItem::IdentityItem( QGraphicsItem *item, PolkaModel *model,
+  const Polka::Identity &identity )
+  : QObject( model ), QGraphicsEllipseItem( item ), m_model( model ),
+    m_identity( identity )
+{
+  init();
+}
+
+void IdentityItem::init()
+{
+  m_checked = false;
+  m_checkItem = 0;
+  m_itemSize = 110;
+
   setRect( -m_itemSize/2, -m_itemSize/2, m_itemSize, m_itemSize );
   setBrush( Qt::white );
 
@@ -40,7 +56,14 @@ IdentityItem::IdentityItem( PolkaModel *model, const Polka::Identity &identity )
 
   setFlags( ItemIsMovable );
 
-  updateItem( identity );
+  updateItem( m_identity );
+}
+
+void IdentityItem::enableMenus( bool enabled )
+{
+  m_menusEnabled = enabled;
+  
+  if ( !m_menusEnabled ) hidePopups();
 }
 
 void IdentityItem::updateItem( const Polka::Identity &identity )
@@ -136,9 +159,11 @@ void IdentityItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
 
-  m_nameItem->show();
-  m_fanMenu->show();
-  emit menuShown();
+  if ( m_menusEnabled ) {
+    m_nameItem->show();
+    m_fanMenu->show();
+    emit menuShown();
+  }
 }
 
 void IdentityItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )

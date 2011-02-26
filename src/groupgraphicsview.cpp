@@ -28,6 +28,7 @@
 #include "mainmenuitem.h"
 #include "magicmenuitem.h"
 #include "settings.h"
+#include "groupadderitem.h"
 
 #include <KLocale>
 #include <KInputDialog>
@@ -39,7 +40,7 @@
 
 GroupGraphicsView::GroupGraphicsView( PolkaModel *model, QWidget *parent )
   : GroupView( model, parent ), m_mainMenu( 0 ), m_magicMenu( 0 ),
-    m_compactLayout( false ),
+    m_groupAdderItem( 0 ), m_compactLayout( false ),
     m_morphToAnimation( 0 ), m_morphFromAnimation( 0 ),
     m_removeItemsAnimation( 0 ), m_placeItemsAnimation( 0 ), 
     m_unplaceItemsAnimation( 0 ), m_unhideItemsAnimation( 0 ), m_globalMenu( 0 )
@@ -435,19 +436,30 @@ void GroupGraphicsView::createMenuItems()
   connect( m_mainMenu, SIGNAL( removeGroup() ), SLOT( emitRemoveGroup() ) );
   connect( m_mainMenu, SIGNAL( addGroup() ), SIGNAL( newGroup() ) );
   connect( m_mainMenu, SIGNAL( addPerson() ), SIGNAL( newPerson() ) );
+
+  m_groupAdderItem = new GroupAdderItem( model() );
+  m_scene->addItem( m_groupAdderItem );
+  m_groupAdderItem->setZValue( -100 );
 }
 
 void GroupGraphicsView::positionMenuItems()
 {
   QRect viewportRect = m_view->viewport()->rect();
+
   QPoint upperRight( viewportRect.width(), 0 );
   QPointF upperRightScene = m_view->mapToScene( upperRight );
+
+  QPoint lowerLeft( 0, viewportRect.height() );
+  QPointF lowerLeftScene = m_view->mapToScene( lowerLeft );
 
   if ( m_mainMenu ) {
     m_mainMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 50 );
   }
   if ( m_magicMenu ) {
     m_magicMenu->setPos( upperRightScene.x() - 50, upperRightScene.y() + 130 );
+  }
+  if ( m_groupAdderItem ) {
+    m_groupAdderItem->setPos( lowerLeftScene );
   }
 }
 

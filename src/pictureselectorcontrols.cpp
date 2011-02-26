@@ -42,7 +42,7 @@ PictureSelectorControls::PictureSelectorControls( PolkaModel *model,
   
   m_urlLabel = new QLabel;
   middleLayout->addWidget( m_urlLabel );
-  
+
   QBoxLayout *controlsLayout = new QHBoxLayout;
   middleLayout->addLayout( controlsLayout );
   
@@ -74,6 +74,9 @@ void PictureSelectorControls::setIdentity( const Polka::Identity &identity )
 
 void PictureSelectorControls::setPicture( const Polka::Picture &picture )
 {
+  qDebug() << "PICTURE" << picture.id();
+  qDebug() << "URL" << picture.url();
+
   m_picture = picture;
   
   m_pictureLabel->setPixmap( m_model->pixmap( picture ) );
