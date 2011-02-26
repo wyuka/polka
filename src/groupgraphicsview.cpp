@@ -479,6 +479,7 @@ void GroupGraphicsView::savePosition( IdentityItem *item,
   if ( !m_compactLayout ) {
     if ( item->collidesWithItem( m_groupAdderItem ) ) {
       item->undoMove();
+      model()->addIdentity( item->identity(), m_groupAdderItem->group() );
       qDebug() << "ADD TO GROUP";
     } else {
       model()->saveViewPosition( group(), item->identity(), pos );

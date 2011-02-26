@@ -35,6 +35,8 @@ class GroupAdderItem : public QObject, public QGraphicsEllipseItem
 
     void setItemSize( int size );
 
+    Polka::Identity group() const;
+
   protected:
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );

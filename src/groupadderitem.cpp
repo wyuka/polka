@@ -92,3 +92,8 @@ void GroupAdderItem::expand()
     m_groupItem->hide();
   }
 }
+
+Polka::Identity GroupAdderItem::group() const
+{
+  return m_groupItem->identity();
+}
