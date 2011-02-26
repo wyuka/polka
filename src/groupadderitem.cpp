@@ -47,6 +47,17 @@ GroupAdderItem::GroupAdderItem( PolkaModel *model )
   m_groupItem->setPos( groupOffset, -groupOffset );
   m_groupItem->hide();
   m_groupItem->enableMenus( false );
+
+  m_upButton = new ButtonItem( this );
+  m_upButton->setPos( 151, -21 );
+  m_upButton->hide();
+  connect( m_upButton, SIGNAL( clicked() ), SLOT( nextGroup() ) );
+  
+  m_downButton = new ButtonItem( this );
+  m_downButton->setPos( 21, -151 );
+  m_downButton->hide();
+  m_downButton->setMinus();
+  connect( m_downButton, SIGNAL( clicked() ), SLOT( previousGroup() ) );
 }
 
 void GroupAdderItem::setItemSize( int size )
@@ -86,10 +97,14 @@ void GroupAdderItem::expand()
     setItemSize( 400 );
     m_expandButton->setMinus();
     m_groupItem->show();
+    m_upButton->show();
+    m_downButton->show();
   } else {
     setItemSize( 100 );
     m_expandButton->setPlus();
     m_groupItem->hide();
+    m_upButton->hide();
+    m_downButton->hide();
   }
 }
 
@@ -101,4 +116,38 @@ void GroupAdderItem::setGroup( const Polka::Identity &group )
 Polka::Identity GroupAdderItem::group() const
 {
   return m_groupItem->identity();
+}
+
+void GroupAdderItem::nextGroup()
+{
+  Polka::Identity::List list = m_model->groups();
+  Polka::Identity::List::ConstIterator it;
+  for( it = list.begin(); it != list.end(); ++it ) {
+    if ( (*it).id() == group().id() ) break;
+  }
+  ++it;
+  if ( it != list.end() ) {
+    setGroup( *it );
+  } else {
+    setGroup( list.first() );
+  }
+}
+
+void GroupAdderItem::previousGroup()
+{
+  Polka::Identity::List list = m_model->groups();
+  Polka::Identity::List::ConstIterator it;
+  for( it = list.begin(); it != list.end(); ++it ) {
+    if ( (*it).id() == group().id() ) break;
+  }
+  if ( it == list.end() ) {
+    setGroup( list.first() );
+  } else {
+    if ( it == list.begin() ) {
+      setGroup( list.last() );
+    } else {
+      --it;
+      setGroup( *it );
+    }
+  }
 }

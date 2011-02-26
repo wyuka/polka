@@ -48,6 +48,9 @@ class GroupAdderItem : public QObject, public QGraphicsEllipseItem
   protected slots:
     void expand();
 
+    void nextGroup();
+    void previousGroup();
+    
   private:
     PolkaModel *m_model;
   
@@ -56,6 +59,9 @@ class GroupAdderItem : public QObject, public QGraphicsEllipseItem
     bool m_expanded;
 
     ButtonItem *m_expandButton;
+
+    ButtonItem *m_upButton;
+    ButtonItem *m_downButton;
 
     IdentityItem *m_groupItem;
 };
