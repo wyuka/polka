@@ -170,6 +170,8 @@ void PolkaView::readData()
   if ( Settings::remoteSyncingEnabled() ) {
     m_model->gitRemote()->pull();
   }
+
+  m_groupGraphicsView->setAdderGroup( m_model->rootGroup() );
 }
 
 void PolkaView::writeData( const QString &msg )

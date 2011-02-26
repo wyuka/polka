@@ -93,6 +93,11 @@ void GroupAdderItem::expand()
   }
 }
 
+void GroupAdderItem::setGroup( const Polka::Identity &group )
+{
+  m_groupItem->updateItem( group );
+}
+
 Polka::Identity GroupAdderItem::group() const
 {
   return m_groupItem->identity();

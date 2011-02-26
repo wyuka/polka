@@ -49,6 +49,8 @@ class GroupGraphicsView : public GroupView
 
     void setCompactLayout( bool enabled );
 
+    void setAdderGroup( const Polka::Identity &group );
+
   signals:
     void newGroup();
     void removeIdentity( const Polka::Identity &person,

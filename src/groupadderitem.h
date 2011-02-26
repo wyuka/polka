@@ -35,6 +35,7 @@ class GroupAdderItem : public QObject, public QGraphicsEllipseItem
 
     void setItemSize( int size );
 
+    void setGroup( const Polka::Identity &group );
     Polka::Identity group() const;
 
   protected:

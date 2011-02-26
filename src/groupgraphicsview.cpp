@@ -770,3 +770,8 @@ void GroupGraphicsView::slotMouseMoved( const QPoint &pos )
     hideGlobalMenu();
   }
 }
+
+void GroupGraphicsView::setAdderGroup( const Polka::Identity &group )
+{
+  m_groupAdderItem->setGroup( group );
+}
