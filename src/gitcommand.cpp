@@ -64,6 +64,11 @@ void GitCommand::addOption( const QString &option, const QString &value )
   addArg( "-" + option + " " + value );
 }
 
+void GitCommand::addLongOption( const QString &option, const QString &value )
+{
+  addArg( "--" + option + "=" + value );
+}
+
 void GitCommand::setArgs( const QStringList &args )
 {
   m_args = args;
@@ -77,4 +82,14 @@ QString GitCommand::command() const
 QStringList GitCommand::args() const
 {
   return m_args;
+}
+
+void GitCommand::setResult( const QStringList &t )
+{
+  m_result = t;
+}
+
+QStringList GitCommand::result() const
+{
+  return m_result;
 }

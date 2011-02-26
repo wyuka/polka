@@ -27,8 +27,8 @@ GitRemote::GitRemote( GitDir *dir )
   : m_gitDir( dir ), m_pullCommand( -1 ), m_pushCommand( -1 ),
     m_sshAdded( false )
 {
-  connect( m_gitDir, SIGNAL( commandExecuted( int ) ),
-    SLOT( slotCommandExecuted( int ) ) );
+  connect( m_gitDir, SIGNAL( commandExecuted( const GitCommand & ) ),
+    SLOT( slotCommandExecuted( const GitCommand & ) ) );
 
   setStatus( i18n("Unsynced") );
 }
@@ -65,13 +65,13 @@ void GitRemote::checkSshAdd()
   m_sshAdded = true;
 }
 
-void GitRemote::slotCommandExecuted( int id )
+void GitRemote::slotCommandExecuted( const GitCommand &cmd )
 {
-  if ( id == m_pullCommand ) {
+  if ( cmd.id() == m_pullCommand ) {
     m_pullCommand = -1;
     setStatus( i18n("Synced") );
     emit pulled();
-  } else if ( id == m_pushCommand ) {
+  } else if ( cmd.id() == m_pushCommand ) {
     m_pushCommand = -1;
     setStatus( i18n("Synced") );
     emit pushed();

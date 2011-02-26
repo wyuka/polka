@@ -50,8 +50,8 @@ PolkaModel::PolkaModel( QObject *parent )
   connect( m_gitRemote, SIGNAL( pulled() ), SLOT( readData() ) );
   connect( m_gitRemote, SIGNAL( pushed() ), SLOT( slotPushed() ) );
 
-  connect( m_gitDir, SIGNAL( commandExecuted( int ) ),
-    SLOT( slotCommandExecuted( int ) ) );
+  connect( m_gitDir, SIGNAL( commandExecuted( const GitCommand & ) ),
+    SLOT( slotCommandExecuted( const GitCommand & ) ) );
 }
 
 PolkaModel::~PolkaModel()
@@ -62,6 +62,11 @@ PolkaModel::~PolkaModel()
 GitRemote *PolkaModel::gitRemote() const
 {
   return m_gitRemote;
+}
+
+GitDir *PolkaModel::gitDir() const
+{
+  return m_gitDir;
 }
 
 Polka::Identity PolkaModel::findIdentity( const QString &id )
@@ -241,9 +246,9 @@ void PolkaModel::writeData( const QString &msg )
   m_commitCommand = m_gitDir->commitData( i18n("Saving pending changes") );
 }
 
-void PolkaModel::slotCommandExecuted( int id )
+void PolkaModel::slotCommandExecuted( const GitCommand &cmd )
 {
-  if ( id == m_commitCommand ) {
+  if ( cmd.id() == m_commitCommand ) {
     m_commitCommand = 0;
     if ( !Settings::remoteSyncingEnabled() ) {
       emit dataWritten();

@@ -19,6 +19,8 @@
 #ifndef GITREMOTE_H
 #define GITREMOTE_H
 
+#include "gitcommand.h"
+
 #include <QtCore>
 
 class GitDir;
@@ -46,7 +48,7 @@ class GitRemote : public QObject
     void checkSshAdd();
 
   protected slots:
-    void slotCommandExecuted( int );
+    void slotCommandExecuted( const GitCommand & );
 
   private:
     GitDir *m_gitDir;

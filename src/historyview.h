@@ -19,21 +19,29 @@
 #ifndef HISTORYVIEW_H
 #define HISTORYVIEW_H
 
+#include "gitcommand.h"
+
 #include <QtGui>
 
 class PolkaModel;
 
 class HistoryView : public QWidget
 {
+    Q_OBJECT
   public:
     HistoryView( PolkaModel * );
 
     void loadHistory();
 
+  protected slots:
+    void slotCommandExecuted( const GitCommand & );
+
   private:
     PolkaModel *m_model;
 
     QListWidget *m_list;
+    
+    int m_logCommand;
 };
 
 #endif

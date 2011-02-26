@@ -54,11 +54,16 @@ void GitDir::slotProcessFinished( int exitCode,
 {
   Q_UNUSED( exitStatus );
 
+  QString output = m_process->readAllStandardOutput();
+
   qDebug() << "EXIT CODE:" << exitCode;
-  qDebug() << "STDOUT:" << m_process->readAllStandardOutput();
+  qDebug() << "STDOUT:" << output;
   qDebug() << "STDERR:" << m_process->readAllStandardError();
 
-  emit commandExecuted( m_queue.first().id() );
+  GitCommand cmd = m_queue.first();
+  cmd.setResult( output.split( "\n" ) );
+
+  emit commandExecuted( cmd );
 
   m_queue.removeFirst();
 
@@ -109,6 +114,13 @@ int GitDir::executeCommit( const QString &arg, const QString &msg )
 QString GitDir::filePath( const QString &fileName )
 {
   return m_dirPath + "/" + fileName;
+}
+
+int GitDir::getLog()
+{
+  GitCommand cmd = GitCommand( "log" );
+  cmd.addLongOption( "pretty", "oneline" );
+  return executeCommand( cmd );
 }
 
 int GitDir::executeCommand( const QString &command )

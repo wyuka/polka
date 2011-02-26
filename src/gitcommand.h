@@ -38,10 +38,14 @@ class GitCommand
     void addArg( const QString & );
     void addOption( const QString &option );
     void addOption( const QString &option, const QString &value );
+    void addLongOption( const QString &option, const QString &value );
     void setArgs( const QStringList & );
 
     QString command() const;
     QStringList args() const;
+
+    void setResult( const QStringList & );
+    QStringList result() const;
 
   private:
     void setId();
@@ -50,6 +54,7 @@ class GitCommand
     QString m_command;
     QStringList m_args;
     int m_id;
+    QStringList m_result;
 
     static int m_nextId;
 };

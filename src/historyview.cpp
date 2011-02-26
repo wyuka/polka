@@ -19,17 +19,40 @@
 
 #include "historyview.h"
 
+#include "polkamodel.h"
+
 HistoryView::HistoryView( PolkaModel *model )
-  : m_model( model )
+  : m_model( model ), m_logCommand( -1 )
 {
   QBoxLayout *topLayout = new QVBoxLayout( this );
 
   m_list = new QListWidget;
   topLayout->addWidget( m_list );
+
+  connect( m_model->gitDir(), SIGNAL( commandExecuted( const GitCommand & ) ),
+    SLOT( slotCommandExecuted( const GitCommand & ) ) );
 }
 
 void HistoryView::loadHistory()
 {
   m_list->clear();
-  m_list->addItem( "Huhu" );
+  m_list->addItem( "Loading..." );
+
+  m_logCommand = m_model->gitDir()->getLog();
+}
+
+void HistoryView::slotCommandExecuted( const GitCommand &cmd )
+{
+  if ( m_logCommand == cmd.id() ) {
+    m_logCommand = -1;
+    m_list->clear();
+    
+    foreach( QString line, cmd.result() ) {
+      int pos = line.indexOf( " " );
+      QString revision = line.left( pos );
+//      qDebug() << revision;
+      QString message = line.mid( pos + 2 );
+      m_list->addItem( message );
+    }
+  }
 }

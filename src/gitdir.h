@@ -49,6 +49,8 @@ class GitDir : public QObject
   
     int commitData( const QString &msg );
 
+    int getLog();
+
     /**
       Returns id of executed command.
     */
@@ -69,7 +71,7 @@ class GitDir : public QObject
     int executeCommand( const GitCommand & );
 
   signals:
-    void commandExecuted( int );
+    void commandExecuted( const GitCommand & );
 
   protected:
     void processQueue();

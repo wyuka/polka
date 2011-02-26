@@ -36,6 +36,7 @@ class PolkaModel : public QObject
     ~PolkaModel();
 
     GitRemote *gitRemote() const;
+    GitDir *gitDir() const;
 
     void writeData( const QString &msg );
 
@@ -103,7 +104,7 @@ class PolkaModel : public QObject
     void identityRemoved( const Polka::Identity & );
 
   protected slots:
-    void slotCommandExecuted( int id );
+    void slotCommandExecuted( const GitCommand & );
     void slotPushed();
 
   protected:
