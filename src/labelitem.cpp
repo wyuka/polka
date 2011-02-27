@@ -32,13 +32,13 @@ LabelItem::LabelItem( PolkaModel *model, const Polka::ViewLabel &label )
   setText( label.text() );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
-    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
 
-  m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
-  m_renameMenuItem = m_fanMenu->addItem( i18n("Rename") );
+  FanMenuItem *menuItem = m_fanMenu->addItem( i18n("Remove") );
+  connect( menuItem, SIGNAL( clicked() ), SLOT( emitRemoveLabel() ) );
+  menuItem = m_fanMenu->addItem( i18n("Rename") );
+  connect( menuItem, SIGNAL( clicked() ), SLOT( emitRenameLabel() ) );
   m_fanMenu->setupItems( 80 );
 
   setAcceptHoverEvents( true );
@@ -89,11 +89,12 @@ void LabelItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   QGraphicsRectItem::mouseReleaseEvent( event );
 }
 
-void LabelItem::slotItemSelected( FanMenuItem *item )
+void LabelItem::emitRemoveLabel()
 {
-  if ( item == m_removeMenuItem ) {
-    emit removeLabel( this, m_label );
-  } else if ( item == m_renameMenuItem ) {
-    emit renameLabel( this, m_label );
-  }
+  emit removeLabel( this, m_label );
+}
+
+void LabelItem::emitRenameLabel()
+{
+  emit renameLabel( this, m_label );
 }

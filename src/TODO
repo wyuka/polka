@@ -1,5 +1,7 @@
 = Polka
 
+* Crash, when removing edited label.
+
 * Retrieve gravatar, all known links and local pictures for picture selector
 * Fetch remote pictures
 
@@ -23,9 +25,6 @@ instead of twitter url, screen grab instead of nothing )
 * Explode sub group
 * Create sub group from checked identities
 * Editing of group names (maybe use special personviewer?)
-
-* More elegant way to handle fan menus, which doesn't require so many member
-  variables and code, wich hardcodes the options.
 
 * Show nice text for links.
 

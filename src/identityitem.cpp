@@ -106,18 +106,18 @@ void IdentityItem::updateItem( const Polka::Identity &identity )
   m_nameItem->setPos( - textWidth / 2, 30 );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
-    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
 
-  m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
+  FanMenuItem *menuItem = m_fanMenu->addItem( i18n("Remove") );
+  connect( menuItem, SIGNAL( clicked() ), SLOT( emitRemoveIdentity() ) );
   m_checkMenuItem = m_fanMenu->addItem( i18n("Check") );
+  connect( m_checkMenuItem, SIGNAL( clicked() ), SLOT( checkItem() ) );
   if ( identity.type() == "group" ) {
-    m_showMenuItem = m_fanMenu->addItem( i18n("Go to") );
-//    m_groupShowMenuItem = m_fanMenu->addItem( i18n("Show") );
+    menuItem = m_fanMenu->addItem( i18n("Go to") );
   } else {
-    m_showMenuItem = m_fanMenu->addItem( i18n("Show") );
+    menuItem = m_fanMenu->addItem( i18n("Show") );
   }
+  connect( menuItem, SIGNAL( clicked() ), SLOT( emitShowIdentity() ) );
   m_fanMenu->setupItems();
 
   hidePopups();
@@ -190,19 +190,20 @@ void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   QGraphicsEllipseItem::mouseReleaseEvent( event );
 }
 
-void IdentityItem::slotItemSelected( FanMenuItem *item )
+void IdentityItem::emitRemoveIdentity()
 {
-  if ( item == m_removeMenuItem ) {
-    emit removeIdentity( m_identity );
-  } else if ( item == m_showMenuItem ) {
-    emit showIdentity( m_identity );
-  } else if ( item == m_checkMenuItem ) {
-    checkItem();
-  }
+  emit removeIdentity( m_identity );
+}
+
+void IdentityItem::emitShowIdentity()
+{
+  emit showIdentity( m_identity );
 }
 
 void IdentityItem::checkItem()
 {
+  qDebug() << "CHECK ITEM";
+  
   if ( !m_checkItem ) {
     QPainterPath path;
     path.lineTo( 10,20 );

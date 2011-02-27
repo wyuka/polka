@@ -58,11 +58,6 @@ FanMenuItem *FanMenu::addItem( const QString &text )
   return item;
 }
 
-void FanMenu::emitItemSelected( FanMenuItem *item )
-{
-  emit itemSelected( item );
-}
-
 bool FanMenu::isCloseTo( const QPointF &point )
 {
   return QLineF( point, pos() ).length() <= radius() + 10;

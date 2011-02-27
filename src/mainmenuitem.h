@@ -47,18 +47,10 @@ class MainMenuItem : public QObject, public QGraphicsEllipseItem
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
 
-  protected slots:
-    void slotItemSelected( FanMenuItem * );
-
   private:
     int m_defaultItemSize;
   
     FanMenu *m_fanMenu;
-
-    FanMenuItem *m_cloneGroupMenuItem;
-    FanMenuItem *m_removeGroupMenuItem;
-    FanMenuItem *m_addGroupMenuItem;
-    FanMenuItem *m_addPersonMenuItem;
 };
 
 #endif

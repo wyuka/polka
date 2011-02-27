@@ -49,13 +49,14 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void rememberPos( const QPointF & );
     QPointF rememberedPos() const;
 
-    void checkItem();
-
     void hidePopups();
 
     void enableMenus( bool enabled );
 
     void undoMove();
+
+  public slots:
+    void checkItem();
 
   signals:
     void showGroup( const Polka::Identity & );
@@ -85,7 +86,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     bool hasPicture() const;
 
   protected slots:
-    void slotItemSelected( FanMenuItem * );
+    void emitRemoveIdentity();
+    void emitShowIdentity();
 
   private:
     PolkaModel *m_model;
@@ -101,9 +103,6 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     QGraphicsPathItem *m_checkItem;
 
     FanMenu *m_fanMenu;
-    FanMenuItem *m_removeMenuItem;
-    FanMenuItem *m_showMenuItem;
-    FanMenuItem *m_groupShowMenuItem;
     FanMenuItem *m_checkMenuItem;
 
     QPointF m_movePos;

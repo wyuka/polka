@@ -726,10 +726,9 @@ bool GroupGraphicsView::eventFilter( QObject *watched, QEvent *event )
 
       if ( !m_globalMenu ) {
         m_globalMenu = new FanMenu( 0 );
-        connect( m_globalMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
-          SLOT( slotItemSelected( FanMenuItem * ) ) );
         m_globalMenu->setZValue( 50 );
-        m_addLabelItem = m_globalMenu->addItem( i18n("Add label") );
+        FanMenuItem *menuItem = m_globalMenu->addItem( i18n("Add label") );
+        connect( menuItem, SIGNAL( clicked() ), SLOT( addLabelClicked() ) );
         m_globalMenu->setupItems();
 
         m_scene->addItem( m_globalMenu );
@@ -746,13 +745,11 @@ bool GroupGraphicsView::eventFilter( QObject *watched, QEvent *event )
   return QWidget::eventFilter( watched, event );
 }
 
-void GroupGraphicsView::slotItemSelected( FanMenuItem *item )
+void GroupGraphicsView::addLabelClicked()
 {
   hideGlobalMenu();
 
-  if ( item == m_addLabelItem ) {
-    addLabel( m_globalMenu->pos() );
-  }
+  addLabel( m_globalMenu->pos() );
 }
 
 void GroupGraphicsView::hideGlobalMenu()

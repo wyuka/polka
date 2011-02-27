@@ -33,6 +33,11 @@ class FanMenuItem : public QObject
     QString text() const;
         
     void setElement( FanMenuElement * );
+
+    void emitClicked();
+
+  signals:
+    void clicked();
         
   private:
     QString m_text;

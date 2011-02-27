@@ -43,8 +43,6 @@ MainMenuItem::MainMenuItem()
   textItem->setPos( - textWidth / 2, - textHeight / 2 );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
-    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
   m_fanMenu->setStartAngle( 170 );
@@ -52,10 +50,14 @@ MainMenuItem::MainMenuItem()
   m_fanMenu->setRadius( 220 );
   m_fanMenu->setSpacing( 5 );
 
-  m_cloneGroupMenuItem = m_fanMenu->addItem( i18n("Clone\ngroup") );
-  m_removeGroupMenuItem = m_fanMenu->addItem( i18n("Remove\ngroup") );
-  m_addGroupMenuItem = m_fanMenu->addItem( i18n("Add\ngroup") );
-  m_addPersonMenuItem = m_fanMenu->addItem( i18n("Add\nperson") );
+  FanMenuItem *menuItem = m_fanMenu->addItem( i18n("Clone\ngroup") );
+  connect( menuItem, SIGNAL( clicked() ), SIGNAL( cloneGroup() ) );
+  menuItem = m_fanMenu->addItem( i18n("Remove\ngroup") );
+  connect( menuItem, SIGNAL( clicked() ), SIGNAL( removeGroup() ) );
+  menuItem = m_fanMenu->addItem( i18n("Add\ngroup") );
+  connect( menuItem, SIGNAL( clicked() ), SIGNAL( addGroup() ) );
+  menuItem = m_fanMenu->addItem( i18n("Add\nperson") );
+  connect( menuItem, SIGNAL( clicked() ), SIGNAL( addPerson() ) );
 
   m_fanMenu->setupItems( 90 );
 
@@ -98,17 +100,4 @@ void MainMenuItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   Q_UNUSED( event )
 
   // Don't call event handler from parent, so mouse release does nothing.
-}
-
-void MainMenuItem::slotItemSelected( FanMenuItem *item )
-{
-  if ( item == m_cloneGroupMenuItem ) {
-    emit cloneGroup();
-  } else if ( item == m_removeGroupMenuItem ) {
-    emit removeGroup();
-  } else if ( item == m_addGroupMenuItem ) {
-    emit addGroup();
-  } else if ( item == m_addPersonMenuItem ) {
-    emit addPerson();
-  }
 }

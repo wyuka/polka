@@ -91,7 +91,7 @@ void FanMenuElement::updateText()
 
 void FanMenuElement::mousePressEvent( QGraphicsSceneMouseEvent * )
 {
-  m_menu->emitItemSelected( m_item );
+  m_item->emitClicked();
 }
 
 void FanMenuElement::hoverEnterEvent( QGraphicsSceneHoverEvent *event )

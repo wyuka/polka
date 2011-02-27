@@ -43,3 +43,8 @@ void FanMenuItem::setElement( FanMenuElement *element )
 {
   m_element = element;
 }
+
+void FanMenuItem::emitClicked()
+{
+  emit clicked();
+}

@@ -43,15 +43,15 @@ MagicMenuItem::MagicMenuItem()
   textItem->setPos( - textWidth / 2, - textHeight / 2 );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
-    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
   m_fanMenu->setStartAngle( 80 );
   m_fanMenu->setEndAngle( 280 );
 
-  m_resetLayoutMenuItem = m_fanMenu->addItem( i18n("Reset\nlayout") );
-  m_settingsMenuItem = m_fanMenu->addItem( i18n("Settings") );
+  FanMenuItem *menuItem = m_fanMenu->addItem( i18n("Reset\nlayout") );
+  connect( menuItem, SIGNAL( clicked() ), SIGNAL( resetLayout() ) );
+  menuItem = m_fanMenu->addItem( i18n("Settings") );
+  connect( menuItem, SIGNAL( clicked() ), SIGNAL( showSettings() ) );
 
   m_fanMenu->setupItems( 80 );
 
@@ -85,13 +85,4 @@ void MagicMenuItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   Q_UNUSED( event )
 
   // Don't call event handler from parent, so mouse release does nothing.
-}
-
-void MagicMenuItem::slotItemSelected( FanMenuItem *item )
-{
-  if ( item == m_resetLayoutMenuItem ) {
-    emit resetLayout();
-  } else if ( item == m_settingsMenuItem ) {
-    emit showSettings();
-  }
 }

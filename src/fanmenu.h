@@ -38,8 +38,6 @@ class FanMenu : public QObject, public QGraphicsLineItem
 
     FanMenuItem *addItem( const QString &text ); 
 
-    void emitItemSelected( FanMenuItem * );
-
     bool isCloseTo( const QPointF & );
 
     void setRadius( qreal );
@@ -49,9 +47,6 @@ class FanMenu : public QObject, public QGraphicsLineItem
     void setEndAngle( int angle );
 
     void setSpacing( int );
-
-  signals:
-    void itemSelected( FanMenuItem * );
 
   private:
     QList<FanMenuItem *> m_items;

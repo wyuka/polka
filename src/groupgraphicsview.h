@@ -106,7 +106,7 @@ class GroupGraphicsView : public GroupView
     void emitCloneGroup();
     void emitRemoveGroup();
 
-    void slotItemSelected( FanMenuItem *item );
+    void addLabelClicked();
 
     void hideGlobalMenu();
 

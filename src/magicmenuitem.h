@@ -43,14 +43,8 @@ class MagicMenuItem : public QObject, public QGraphicsEllipseItem
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
 
-  protected slots:
-    void slotItemSelected( FanMenuItem * );
-
   private:
     FanMenu *m_fanMenu;
-
-    FanMenuItem *m_resetLayoutMenuItem;
-    FanMenuItem *m_settingsMenuItem;
 };
 
 #endif
