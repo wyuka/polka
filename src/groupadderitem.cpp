@@ -52,12 +52,14 @@ GroupAdderItem::GroupAdderItem( PolkaModel *model )
   m_upButton->setPos( 151, -21 );
   m_upButton->hide();
   connect( m_upButton, SIGNAL( clicked() ), SLOT( nextGroup() ) );
+  m_upButton->setNext();
   
   m_downButton = new ButtonItem( this );
   m_downButton->setPos( 21, -151 );
   m_downButton->hide();
   m_downButton->setMinus();
   connect( m_downButton, SIGNAL( clicked() ), SLOT( previousGroup() ) );
+  m_downButton->setPrevious();
 }
 
 void GroupAdderItem::setItemSize( int size )

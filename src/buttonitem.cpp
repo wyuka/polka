@@ -55,6 +55,16 @@ ButtonItem::ButtonItem( QGraphicsItem *parentItem )
   m_minusPolygon.append( QPointF( - outer, + inner ) );
   m_minusPolygon.append( QPointF( - outer, - inner ) );
 
+  int arrow = 10;
+
+  m_arrowPolygon.append( QPointF( - outer, - inner ) );
+  m_arrowPolygon.append( QPointF( outer - arrow, - inner ) );
+  m_arrowPolygon.append( QPointF( outer - arrow, - arrow ) );
+  m_arrowPolygon.append( QPointF( outer, 0 ) );
+  m_arrowPolygon.append( QPointF( outer - arrow, arrow ) );
+  m_arrowPolygon.append( QPointF( outer - arrow, inner ) );
+  m_arrowPolygon.append( QPointF( - outer, inner ) );
+
   setPlus();
 }
 
@@ -66,6 +76,18 @@ void ButtonItem::setPlus()
 void ButtonItem::setMinus()
 {
   m_decoration->setPolygon( m_minusPolygon );
+}
+
+void ButtonItem::setNext()
+{
+  m_decoration->setPolygon( m_arrowPolygon );
+  m_decoration->setRotation( 45 );
+}
+
+void ButtonItem::setPrevious()
+{
+  m_decoration->setPolygon( m_arrowPolygon );
+  m_decoration->setRotation( -135 );
 }
 
 void ButtonItem::setItemSize( int size )

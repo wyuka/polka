@@ -32,6 +32,9 @@ class ButtonItem : public QObject, public QGraphicsEllipseItem
     void setPlus();
     void setMinus();
 
+    void setNext();
+    void setPrevious();
+
   signals:
     void clicked();
 
@@ -49,6 +52,7 @@ class ButtonItem : public QObject, public QGraphicsEllipseItem
     
     QPolygonF m_plusPolygon;
     QPolygonF m_minusPolygon;
+    QPolygonF m_arrowPolygon;
 };
 
 #endif
