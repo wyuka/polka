@@ -106,8 +106,8 @@ void IdentityItem::updateItem( const Polka::Identity &identity )
   m_nameItem->setPos( - textWidth / 2, 30 );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
-    SLOT( slotItemSelected( FanMenu::Item * ) ) );
+  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
+    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
 
   m_removeMenuItem = m_fanMenu->addItem( i18n("Remove") );
@@ -190,7 +190,7 @@ void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   QGraphicsEllipseItem::mouseReleaseEvent( event );
 }
 
-void IdentityItem::slotItemSelected( FanMenu::Item *item )
+void IdentityItem::slotItemSelected( FanMenuItem *item )
 {
   if ( item == m_removeMenuItem ) {
     emit removeIdentity( m_identity );

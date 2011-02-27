@@ -85,7 +85,7 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     bool hasPicture() const;
 
   protected slots:
-    void slotItemSelected( FanMenu::Item * );
+    void slotItemSelected( FanMenuItem * );
 
   private:
     PolkaModel *m_model;
@@ -101,10 +101,10 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     QGraphicsPathItem *m_checkItem;
 
     FanMenu *m_fanMenu;
-    FanMenu::Item *m_removeMenuItem;
-    FanMenu::Item *m_showMenuItem;
-    FanMenu::Item *m_groupShowMenuItem;
-    FanMenu::Item *m_checkMenuItem;
+    FanMenuItem *m_removeMenuItem;
+    FanMenuItem *m_showMenuItem;
+    FanMenuItem *m_groupShowMenuItem;
+    FanMenuItem *m_checkMenuItem;
 
     QPointF m_movePos;
 

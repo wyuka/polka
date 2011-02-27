@@ -19,6 +19,8 @@
 
 #include "fanmenuelement.h"
 
+#include "fanmenuitem.h"
+
 FanMenuElement::FanMenuElement( FanMenu *menu )
   : QGraphicsPathItem( menu ), m_menu( menu ), m_item( 0 )
 {
@@ -27,7 +29,7 @@ FanMenuElement::FanMenuElement( FanMenu *menu )
   setAcceptHoverEvents( true );
 }
 
-void FanMenuElement::setup( FanMenu::Item *menuItem, int startAngle,
+void FanMenuElement::setup( FanMenuItem *menuItem, int startAngle,
   int endAngle, int coverage )
 {
   m_item = menuItem;

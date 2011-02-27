@@ -21,27 +21,14 @@
 
 #include <QtGui>
 
-class IdentityItem;
+#include "fanmenuitem.h"
+
 class FanMenuElement;
 
 class FanMenu : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
   public:
-    class Item {
-      public:
-        Item( const QString &text );
-
-        void setText( const QString &text );        
-        QString text() const;
-        
-        void setElement( FanMenuElement * );
-        
-      private:
-        QString m_text;
-        FanMenuElement *m_element;
-    };
-
     FanMenu( QGraphicsItem *parent );
 
     /**
@@ -49,9 +36,9 @@ class FanMenu : public QObject, public QGraphicsLineItem
     */
     void setupItems( int coverage = 67 );
 
-    Item *addItem( const QString &text ); 
+    FanMenuItem *addItem( const QString &text ); 
 
-    void emitItemSelected( Item * );
+    void emitItemSelected( FanMenuItem * );
 
     bool isCloseTo( const QPointF & );
 
@@ -64,10 +51,10 @@ class FanMenu : public QObject, public QGraphicsLineItem
     void setSpacing( int );
 
   signals:
-    void itemSelected( FanMenu::Item * );
+    void itemSelected( FanMenuItem * );
 
   private:
-    QList<Item *> m_items;
+    QList<FanMenuItem *> m_items;
 
     int m_startAngle;
     int m_endAngle;

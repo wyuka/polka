@@ -16,41 +16,27 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef MAGICMENUITEM_H
-#define MAGICMENUITEM_H
-
-#include "polka/polka.h"
-#include "fanmenu.h"
+#ifndef FANMENUITEM_H
+#define FANMENUITEM_H
 
 #include <QtGui>
 
-class MagicMenuItem : public QObject, public QGraphicsEllipseItem
+class FanMenuElement;
+
+class FanMenuItem : public QObject
 {
     Q_OBJECT
   public:
-    MagicMenuItem();
+    FanMenuItem( const QString &text );
 
-  signals:
-    void resetLayout();
-    void showSettings();
-  
-    void menuShown();
-
-  protected:
-    void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
-    void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
-
-    void mousePressEvent( QGraphicsSceneMouseEvent *event );
-    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
-
-  protected slots:
-    void slotItemSelected( FanMenuItem * );
-
+    void setText( const QString &text );        
+    QString text() const;
+        
+    void setElement( FanMenuElement * );
+        
   private:
-    FanMenu *m_fanMenu;
-
-    FanMenuItem *m_resetLayoutMenuItem;
-    FanMenuItem *m_settingsMenuItem;
+    QString m_text;
+    FanMenuElement *m_element;
 };
 
 #endif

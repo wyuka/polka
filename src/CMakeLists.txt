@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  fanmenuitem.cpp
   buttonitem.cpp
   groupadderitem.cpp
   historyview.cpp

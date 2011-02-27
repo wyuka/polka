@@ -726,8 +726,8 @@ bool GroupGraphicsView::eventFilter( QObject *watched, QEvent *event )
 
       if ( !m_globalMenu ) {
         m_globalMenu = new FanMenu( 0 );
-        connect( m_globalMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
-          SLOT( slotItemSelected( FanMenu::Item * ) ) );
+        connect( m_globalMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
+          SLOT( slotItemSelected( FanMenuItem * ) ) );
         m_globalMenu->setZValue( 50 );
         m_addLabelItem = m_globalMenu->addItem( i18n("Add label") );
         m_globalMenu->setupItems();
@@ -746,7 +746,7 @@ bool GroupGraphicsView::eventFilter( QObject *watched, QEvent *event )
   return QWidget::eventFilter( watched, event );
 }
 
-void GroupGraphicsView::slotItemSelected( FanMenu::Item *item )
+void GroupGraphicsView::slotItemSelected( FanMenuItem *item )
 {
   hideGlobalMenu();
 

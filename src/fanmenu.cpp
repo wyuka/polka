@@ -19,32 +19,7 @@
 
 #include "fanmenu.h"
 
-#include "identityitem.h"
 #include "fanmenuelement.h"
-
-FanMenu::Item::Item( const QString &text )
-  : m_text( text ), m_element( 0 )
-{
-}
-
-void FanMenu::Item::setText( const QString &text )
-{
-  m_text = text;
-  if ( m_element ) {
-    m_element->updateText();
-  }
-}
-
-QString FanMenu::Item::text() const
-{
-  return m_text;
-}
-
-void FanMenu::Item::setElement( FanMenuElement *element )
-{
-  m_element = element;
-}
-
 
 FanMenu::FanMenu( QGraphicsItem *parent )
   : QGraphicsLineItem( parent ), m_startAngle( -5 ), m_endAngle( 185 ),
@@ -76,14 +51,14 @@ void FanMenu::setupItems( int coverage )
   }
 }
 
-FanMenu::Item *FanMenu::addItem( const QString &text )
+FanMenuItem *FanMenu::addItem( const QString &text )
 {
-  Item *item = new Item( text );
+  FanMenuItem *item = new FanMenuItem( text );
   m_items.append( item );
   return item;
 }
 
-void FanMenu::emitItemSelected( Item *item )
+void FanMenu::emitItemSelected( FanMenuItem *item )
 {
   emit itemSelected( item );
 }

@@ -106,7 +106,7 @@ class GroupGraphicsView : public GroupView
     void emitCloneGroup();
     void emitRemoveGroup();
 
-    void slotItemSelected( FanMenu::Item *item );
+    void slotItemSelected( FanMenuItem *item );
 
     void hideGlobalMenu();
 
@@ -150,7 +150,7 @@ class GroupGraphicsView : public GroupView
     QAnimationGroup *m_unhideItemsAnimation;
 
     FanMenu *m_globalMenu;
-    FanMenu::Item *m_addLabelItem;
+    FanMenuItem *m_addLabelItem;
 };
 
 #endif

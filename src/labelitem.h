@@ -53,7 +53,7 @@ class LabelItem : public QObject, public RoundedRectItem
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
 
   protected slots:
-    void slotItemSelected( FanMenu::Item * );
+    void slotItemSelected( FanMenuItem * );
 
   private:
     PolkaModel *m_model;
@@ -62,8 +62,8 @@ class LabelItem : public QObject, public RoundedRectItem
     QGraphicsTextItem *m_textItem;
 
     FanMenu *m_fanMenu;
-    FanMenu::Item *m_removeMenuItem;
-    FanMenu::Item *m_renameMenuItem;
+    FanMenuItem *m_removeMenuItem;
+    FanMenuItem *m_renameMenuItem;
 
     QPointF m_movePos;
 };

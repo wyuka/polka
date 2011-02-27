@@ -48,17 +48,17 @@ class MainMenuItem : public QObject, public QGraphicsEllipseItem
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
 
   protected slots:
-    void slotItemSelected( FanMenu::Item * );
+    void slotItemSelected( FanMenuItem * );
 
   private:
     int m_defaultItemSize;
   
     FanMenu *m_fanMenu;
 
-    FanMenu::Item *m_cloneGroupMenuItem;
-    FanMenu::Item *m_removeGroupMenuItem;
-    FanMenu::Item *m_addGroupMenuItem;
-    FanMenu::Item *m_addPersonMenuItem;
+    FanMenuItem *m_cloneGroupMenuItem;
+    FanMenuItem *m_removeGroupMenuItem;
+    FanMenuItem *m_addGroupMenuItem;
+    FanMenuItem *m_addPersonMenuItem;
 };
 
 #endif

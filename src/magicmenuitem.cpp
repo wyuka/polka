@@ -43,8 +43,8 @@ MagicMenuItem::MagicMenuItem()
   textItem->setPos( - textWidth / 2, - textHeight / 2 );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
-    SLOT( slotItemSelected( FanMenu::Item * ) ) );
+  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
+    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
   m_fanMenu->setStartAngle( 80 );
@@ -87,7 +87,7 @@ void MagicMenuItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   // Don't call event handler from parent, so mouse release does nothing.
 }
 
-void MagicMenuItem::slotItemSelected( FanMenu::Item *item )
+void MagicMenuItem::slotItemSelected( FanMenuItem *item )
 {
   if ( item == m_resetLayoutMenuItem ) {
     emit resetLayout();

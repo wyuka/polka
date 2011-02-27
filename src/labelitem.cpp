@@ -32,8 +32,8 @@ LabelItem::LabelItem( PolkaModel *model, const Polka::ViewLabel &label )
   setText( label.text() );
 
   m_fanMenu = new FanMenu( this );
-  connect( m_fanMenu, SIGNAL( itemSelected( FanMenu::Item * ) ),
-    SLOT( slotItemSelected( FanMenu::Item * ) ) );
+  connect( m_fanMenu, SIGNAL( itemSelected( FanMenuItem * ) ),
+    SLOT( slotItemSelected( FanMenuItem * ) ) );
   m_fanMenu->setZValue( 50 );
   m_fanMenu->hide();
 
@@ -89,7 +89,7 @@ void LabelItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   QGraphicsRectItem::mouseReleaseEvent( event );
 }
 
-void LabelItem::slotItemSelected( FanMenu::Item *item )
+void LabelItem::slotItemSelected( FanMenuItem *item )
 {
   if ( item == m_removeMenuItem ) {
     emit removeLabel( this, m_label );

@@ -26,6 +26,7 @@
 
 class ButtonItem;
 class PolkaModel;
+class IdentityItem;
 
 class GroupAdderItem : public QObject, public QGraphicsEllipseItem
 {
