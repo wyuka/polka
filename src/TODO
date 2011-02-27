@@ -1,7 +1,5 @@
 = Polka
 
-* Group adder item
-
 * Retrieve gravatar, all known links and local pictures for picture selector
 * Fetch remote pictures
 
