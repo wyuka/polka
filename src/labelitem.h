@@ -36,16 +36,19 @@ class LabelItem : public QObject, public RoundedRectItem
   public:
     LabelItem( PolkaModel *, const Polka::ViewLabel & );
 
-    void setText( const QString & );
+    Polka::ViewLabel label() const;
+    void setLabel( const Polka::ViewLabel & );
 
   signals:
     void itemMoved( const Polka::ViewLabel &, const QPointF & );
-    void removeLabel( LabelItem *, const Polka::ViewLabel & );
-    void renameLabel( LabelItem *, const Polka::ViewLabel & );
+    void removeLabel( LabelItem * );
+    void renameLabel( LabelItem * );
 
     void menuShown();
     
   protected:
+    void setText( const QString & );
+  
     void hoverEnterEvent( QGraphicsSceneHoverEvent *event );
     void hoverLeaveEvent( QGraphicsSceneHoverEvent *event );
 

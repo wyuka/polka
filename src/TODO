@@ -1,7 +1,5 @@
 = Polka
 
-* Crash, when removing edited label.
-
 * Retrieve gravatar, all known links and local pictures for picture selector
 * Fetch remote pictures
 

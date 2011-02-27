@@ -46,6 +46,17 @@ LabelItem::LabelItem( PolkaModel *model, const Polka::ViewLabel &label )
   setFlags( ItemIsMovable );
 }
 
+void LabelItem::setLabel( const Polka::ViewLabel &label )
+{
+  m_label = label;
+  setText( label.text() );
+}
+
+Polka::ViewLabel LabelItem::label() const
+{
+  return m_label;
+}
+
 void LabelItem::setText( const QString &text )
 {
   m_textItem->setPlainText( text );
@@ -91,10 +102,10 @@ void LabelItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
 
 void LabelItem::emitRemoveLabel()
 {
-  emit removeLabel( this, m_label );
+  emit removeLabel( this );
 }
 
 void LabelItem::emitRenameLabel()
 {
-  emit renameLabel( this, m_label );
+  emit renameLabel( this );
 }

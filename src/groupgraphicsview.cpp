@@ -534,26 +534,25 @@ void GroupGraphicsView::addLabel( const QPointF &pos )
   }
 }
 
-void GroupGraphicsView::removeLabel( LabelItem *item,
-  const Polka::ViewLabel &label )
+void GroupGraphicsView::removeLabel( LabelItem *item )
 {
   m_labelItems.removeAll( item );
 
   delete item;
-  model()->removeViewLabel( group(), label );
+  model()->removeViewLabel( group(), item->label() );
 }
 
-void GroupGraphicsView::renameLabel( LabelItem *item,
-  Polka::ViewLabel label )
+void GroupGraphicsView::renameLabel( LabelItem *item )
 {
+  Polka::ViewLabel label = item->label();
+
   bool ok;
   QString name = KInputDialog::getText( i18n("Rename Label"),
     i18n("Enter new text of label"), label.text(),
     &ok );
   if ( ok ) {
-    item->setText( name );
-  
     label.setText( name );
+    item->setLabel( label );
     model()->saveViewLabel( group(), label );
   }
 }
@@ -564,10 +563,10 @@ LabelItem *GroupGraphicsView::createLabelItem( const Polka::ViewLabel &label )
 
   connect( item, SIGNAL( itemMoved( const Polka::ViewLabel &, const QPointF & ) ),
     SLOT( saveLabel( const Polka::ViewLabel &, const QPointF & ) ) );
-  connect( item, SIGNAL( removeLabel( LabelItem *, const Polka::ViewLabel & ) ),
-    SLOT( removeLabel( LabelItem *, const Polka::ViewLabel & ) ) );
-  connect( item, SIGNAL( renameLabel( LabelItem *, const Polka::ViewLabel & ) ),
-    SLOT( renameLabel( LabelItem *, const Polka::ViewLabel & ) ) );
+  connect( item, SIGNAL( removeLabel( LabelItem * ) ),
+    SLOT( removeLabel( LabelItem * ) ) );
+  connect( item, SIGNAL( renameLabel( LabelItem * ) ),
+    SLOT( renameLabel( LabelItem * ) ) );
   connect( item, SIGNAL( menuShown() ), SLOT( hideGlobalMenu() ) );
 
   m_scene->addItem( item );

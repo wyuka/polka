@@ -488,12 +488,7 @@ void PolkaModel::saveViewLabel( const Polka::Identity &group,
 {
   Polka::GroupView v = m_polka.findGroupView( group.id(),
     Polka::Polka::AutoCreate );
-  Polka::ViewLabel l = v.findViewLabel( label.id(),
-    Polka::GroupView::AutoCreate );
-  l.setText( label.text() );
-  l.setX( label.x() );
-  l.setY( label.y() );
-  v.insert( l );
+  v.insert( label );
   m_polka.insert( v );
   writeData( i18n("Inserted label %1").arg( label.text() ) );
 }
