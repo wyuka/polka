@@ -124,11 +124,11 @@ void GroupAdderItem::nextGroup()
 {
   Polka::Identity::List list = m_model->groups();
   Polka::Identity::List::ConstIterator it;
-  for( it = list.begin(); it != list.end(); ++it ) {
+  for( it = list.constBegin(); it != list.constEnd(); ++it ) {
     if ( (*it).id() == group().id() ) break;
   }
   ++it;
-  if ( it != list.end() ) {
+  if ( it != list.constEnd() ) {
     setGroup( *it );
   } else {
     setGroup( list.first() );
@@ -139,13 +139,13 @@ void GroupAdderItem::previousGroup()
 {
   Polka::Identity::List list = m_model->groups();
   Polka::Identity::List::ConstIterator it;
-  for( it = list.begin(); it != list.end(); ++it ) {
+  for( it = list.constBegin(); it != list.constEnd(); ++it ) {
     if ( (*it).id() == group().id() ) break;
   }
-  if ( it == list.end() ) {
+  if ( it == list.constEnd() ) {
     setGroup( list.first() );
   } else {
-    if ( it == list.begin() ) {
+    if ( it == list.constBegin() ) {
       setGroup( list.last() );
     } else {
       --it;
