@@ -55,12 +55,12 @@ SOURCES += main_polka.cpp \
     commenteditor.cpp \
     buttonitem.cpp \
     addresseditor.cpp \
-    ../microkde/KDialog.cpp
+    ../microkde/KDialog.cpp \
+    ../microkde/KPushButton.cpp
 
 HEADERS += \
     ../microkde/kdemacros.h \
     polkaview.h \
-    ../microkde/KDialog \
     meego/settings.h \
     ../microkde/KInputDialog \
     ../microkde/KMessageBox \
@@ -103,4 +103,6 @@ HEADERS += \
     fanmenu.h \
     commenteditor.h \
     addresseditor.h \
-    buttonitem.h
+    buttonitem.h \
+    ../microkde/KPushButton \
+    ../microkde/KDialog.h

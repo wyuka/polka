@@ -5,6 +5,8 @@
 
 class KPushButton : public QPushButton
 {
+  public:
+    KPushButton( const QString &label, QWidget *parent );
 };
 
 #endif
