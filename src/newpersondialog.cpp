@@ -22,6 +22,7 @@
 #include <KConfig>
 #include <KMessageBox>
 #include <KPushButton>
+#include <KGlobal>
 
 NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   : KDialog( parent ), m_model( model ), m_proxyModel( 0 ), m_matchList( 0 )

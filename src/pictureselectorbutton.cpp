@@ -19,7 +19,8 @@
 
 #include "pictureselectorbutton.h"
 
-#include "imageloader.h"
+//#include "imageloader.h"
+
 #include "polkamodel.h"
 
 #include <KLocale>

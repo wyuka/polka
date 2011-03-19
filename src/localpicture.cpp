@@ -19,7 +19,9 @@
 
 #include "localpicture.h"
 
+#ifndef MAKE_IT_MEEGO
 #include "imageloader.h"
+#endif
 
 #include <KStandardDirs>
 #include <KLocale>
@@ -53,9 +55,11 @@ QPixmap LocalPicture::pixmap()
     m_pixmap = scalePicture( QPixmap( fullFilePath() ) );
     return m_pixmap;
   }
-  
+
+#ifndef MAKE_IT_MEEGO
   connect( ImageLoader::load( m_picture.url() ),
     SIGNAL( loaded( const QPixmap & ) ), SLOT( setPixmap( const QPixmap & ) ) );
+#endif
 
   return QPixmap();
 }

@@ -385,5 +385,3 @@ void PolkaView::showHistory()
 
   m_historyView->loadHistory();
 }
-
-#include "polkaview.moc"

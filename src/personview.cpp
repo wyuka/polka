@@ -19,7 +19,10 @@
 
 #include "personview.h"
 
+#ifndef MAKE_IT_MEEGO
 #include "imageloader.h"
+#endif
+
 #include "pictureselector.h"
 #include "regiongrabber.h"
 #include "polkamodel.h"
@@ -31,7 +34,7 @@
 #include "pictureselectorcontrols.h"
 #include "settings.h"
 
-#include <klocale.h>
+#include <KLocale>
 #include <KUrl>
 #include <KInputDialog>
 #include <KRandom>
@@ -81,11 +84,13 @@ void PersonView::showIdentity( const Polka::Identity &identity )
   m_pictureSelectorControls->setIdentity( identity );
   m_pictureSelector->setPictures( pictures );
 
+#ifndef MAKE_IT_MEEGO
   if ( !pictures.pictureList().isEmpty() ) {
     KUrl u( pictures.pictureList().first().url() );
     connect( ImageLoader::load(u), SIGNAL( loaded(const QPixmap &) ),
       SLOT( setImage( const QPixmap & ) ) );
   }
+#endif
 
   Polka::HtmlRenderer renderer;
 
@@ -524,11 +529,13 @@ void PersonView::debugHtml()
   file.close();
 
   if ( !m_dirWatch ) {
+#ifndef MAKE_IT_MEEGO
     m_dirWatch = new KDirWatch( this );
     m_dirWatch->addFile( file.fileName() );
     connect( m_dirWatch, SIGNAL( dirty( const QString & ) ),
       SLOT( reloadDebugHtml() ) );  
-  }
+#endif
+}
   
   m_webView->setHtml( html );
   

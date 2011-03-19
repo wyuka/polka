@@ -40,7 +40,7 @@ class PolkaView : public QWidget
 {
     Q_OBJECT
   public:
-    PolkaView(QWidget *parent);
+    PolkaView( QWidget *parent = 0 );
     virtual ~PolkaView();
 
     void readConfig();

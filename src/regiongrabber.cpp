@@ -24,7 +24,7 @@
 #include <QDesktopWidget>
 #include <QToolTip>
 
-#include <klocale.h>
+#include <KLocale>
 #include <KWindowSystem>
 
 RegionGrabber::RegionGrabber( ) :
@@ -368,5 +368,3 @@ QPoint RegionGrabber::limitPointToRect( const QPoint &p, const QRect &r ) const
     q.setY( p.y() < r.y() ? r.y() : p.y() < r.bottom() ? p.y() : r.bottom() );
     return q;
 }
-
-#include "regiongrabber.moc"

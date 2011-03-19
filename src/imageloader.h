@@ -21,8 +21,8 @@
 #ifndef IMAGELOADER_H
 #define IMAGELOADER_H
 
-#include <kurl.h>
-#include <kjob.h>
+#include <KUrl>
+#include <KJob>
 #include <kio/job.h>
 
 #include <QObject>
