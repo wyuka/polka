@@ -1,0 +1,11 @@
+#ifndef MICROKDE_KURL
+#define MICROKDE_KURL
+
+class KUrl : public QUrl
+{
+  public:
+    KUrl( const QString & ) {}
+    KUrl( const QUrl & ) {}
+};
+
+#endif

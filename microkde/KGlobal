@@ -1,0 +1,12 @@
+#ifndef MICROKDE_KGLOBAL
+#define MICROKDE_KGLOBAL
+
+#include "KConfig"
+
+class KGlobal
+{
+  public:
+    static KConfig *config() { return new KConfig(); }
+};
+
+#endif

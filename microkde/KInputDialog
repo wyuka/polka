@@ -1,0 +1,14 @@
+ #ifndef MICROKDE_KINPUTDIALOG
+ #define MICROKDE_KINPUTDIALOG
+ 
+#include <QInputDialog>
+
+ class KInputDialog : public QInputDialog
+ {
+   public:
+     static QString getText( const QString &title, const QString &text,
+       const QString &value, bool *ok );
+ };
+ 
+ #endif
+ 

@@ -1,0 +1,14 @@
+#ifndef MICROKDE_KRUN
+#define MICROKDE_KRUN
+
+#include <KUrl>
+
+class QWidget;
+
+class KRun {
+
+  public:
+    KRun( const KUrl &, QWidget * ) {}
+};
+
+#endif

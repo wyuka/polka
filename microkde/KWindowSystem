@@ -1,0 +1,10 @@
+#ifndef MICROKDE_KWINDOWSYSTEM
+#define MICROKDE_KWINDOWSYSTEM
+
+class KWindowSystem
+{
+  public:
+    static bool compositingActive() { return false; }
+};
+
+#endif

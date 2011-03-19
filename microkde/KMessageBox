@@ -1,0 +1,23 @@
+#ifndef MICROKDE_KMESSAGEBOX
+#define MICROKDE_KMESSAGEBOX
+
+class QWidget;
+
+#include <QString>
+
+class KMessageBox
+{
+  public:
+
+    static void error(QWidget *parent, 
+                    const QString &text, 
+                    const QString &caption = QString::null, bool notify=true);
+
+    static void information(QWidget *parent, 
+                          const QString &text, 
+                          const QString &caption = QString::null,
+                          const QString &dontShowAgainName = QString::null, 
+                          bool notify=true);
+};
+
+#endif

@@ -1,0 +1,19 @@
+#ifndef MICROKDE_KCONFIG
+#define MICROKDE_KCONFIG
+
+class KConfig;
+
+class KConfigGroup
+{
+  public:
+    KConfigGroup() {}
+    KConfigGroup( KConfig *, const QString & ) {}
+};
+
+class KConfig
+{
+  public:
+    KConfigGroup *group( const QString & ) { return new KConfigGroup(); }
+};
+
+#endif

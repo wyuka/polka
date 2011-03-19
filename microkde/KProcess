@@ -1,0 +1,14 @@
+#ifndef MICROKDE_KPROCESS
+#define MICROKDE_KPROCESS
+
+class KProcess
+{
+  public:
+    static void execute( const QString &cmd, const QStringList &args )
+    {
+      Q_UNUSED( cmd )
+      Q_UNUSED( args )
+    }
+};
+
+#endif

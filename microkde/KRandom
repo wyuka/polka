@@ -1,0 +1,11 @@
+#ifndef MICROKDE_KRANDOM
+#define MICROKDE_KRANDOM
+
+#include <QString>
+
+namespace KRandom {
+
+  QString randomString( int length );
+}
+
+#endif

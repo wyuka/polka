@@ -1,0 +1,8 @@
+#ifndef MICROKDE_KLOCALE_H
+#define MICROKDE_KLOCALE_H
+
+#include <QString>
+
+QString i18n(const char *text);
+
+#endif

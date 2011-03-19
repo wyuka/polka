@@ -1,0 +1,10 @@
+#ifndef MICROKDE_KPUSHBUTTON
+#define MICROKDE_KPUSHBUTTON
+
+#include <QPushButton>
+
+class KPushButton : public QPushButton
+{
+};
+
+#endif
