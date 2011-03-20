@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     p.setCentralWidget( proxy );
 
     PolkaView *view = new PolkaView;
+    view->setFixedSize( 862, 368 );
 
     proxy->setWidget( view );
 
