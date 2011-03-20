@@ -5,8 +5,10 @@
 
 * Undo based on git (Rollback from UI)
 
-
 * Timer to hide fan menu items only after a short while
+
+* Search
+* Handle geo location
 
 * Make PolkaView::insert protected and only use add and update?
 
@@ -39,7 +41,8 @@ instead of twitter url, screen grab instead of nothing )
 * Only pull and push, if repo actually has a remote repo configured
 * Prevent saving while save is still in progress (especially with push)
 
-* More than one (remote) repo, to separate for example private and job data
+* More than one (remote) repo, to separate for example private and job data. It
+  could also be interesting to connect to your friends repos in some way.
 
 * Don't show root group in group selector.
 
