@@ -26,7 +26,6 @@ SOURCES += main_polka.cpp \
     ../microkde/KInputDialog.cpp \
     newpersondialog.cpp \
     groupview.cpp \
-    ../microkde/KStandardDirs.cpp \
     gitdir.cpp \
     polkaallitemmodel.cpp \
     polkapersonsitemmodel.cpp \
@@ -56,7 +55,8 @@ SOURCES += main_polka.cpp \
     buttonitem.cpp \
     addresseditor.cpp \
     ../microkde/KDialog.cpp \
-    ../microkde/KPushButton.cpp
+    ../microkde/KPushButton.cpp \
+    ../microkde/KStandardDirs.cpp
 
 HEADERS += \
     ../microkde/kdemacros.h \
@@ -105,4 +105,8 @@ HEADERS += \
     addresseditor.h \
     buttonitem.h \
     ../microkde/KPushButton \
-    ../microkde/KDialog.h
+    ../microkde/KDialog.h \
+    ../microkde/KStandardDirs.h
+
+RESOURCES += \
+    ../polka.qrc

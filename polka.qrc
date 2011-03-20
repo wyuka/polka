@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>pics/polka_person.png</file>
+        <file>pics/comment.png</file>
+        <file>pics/polka_group.png</file>
+    </qresource>
+</RCC>

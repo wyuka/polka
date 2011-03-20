@@ -1,4 +1,4 @@
-#include "KStandardDirs"
+#include "KStandardDirs.h"
 
 #include <QDebug>
 
@@ -6,6 +6,8 @@ QString KStandardDirs::mAppDir = QString::null;
 
 QString KStandardDirs::locate( const char *type, const QString& filename )
 {
+  return ":pics/" + filename;
+
   QString escapedFilename = filename;
   escapedFilename.replace( QRegExp( "/" ), "_" );
 

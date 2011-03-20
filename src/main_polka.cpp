@@ -8,6 +8,8 @@
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(polka);
+
     MApplication a(argc, argv);
 
     MApplicationWindow w;
