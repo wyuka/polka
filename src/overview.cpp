@@ -20,6 +20,7 @@
 #include "overview.h"
 
 #include <KLocale>
+#include <KStandardDirs>
 
 Overview::Overview()
 {
@@ -44,8 +45,18 @@ Overview::Overview()
 
   topLayout->addStretch( 1 );
 
+  QBoxLayout *rightLayout = new QVBoxLayout;
+  topLayout->addLayout( rightLayout );
+
+  QString logoPath = KStandardDirs::locate( "appdata", "polka-logo.png" );
+  QPixmap logoPixmap = QPixmap( logoPath );
+
+  QLabel *logo = new QLabel;
+  logo->setPixmap( logoPixmap );
+  rightLayout->addWidget( logo );
+
   QLabel *about = new QLabel;
-  topLayout->addWidget( about );
+  rightLayout->addWidget( about );
   
   QString text = "<qt>";
   text += i18n("Polka - the humane address book for the cloud");
