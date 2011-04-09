@@ -5,8 +5,6 @@
 
 * Undo based on git (Rollback from UI)
 
-* Timer to hide fan menu items only after a short while
-
 * Search
 * Handle geo location
 

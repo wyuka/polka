@@ -47,10 +47,15 @@ class MainMenuItem : public QObject, public QGraphicsEllipseItem
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
 
+  protected slots:
+    void hideItems();
+
   private:
     int m_defaultItemSize;
   
     FanMenu *m_fanMenu;
+    
+    QTimer m_timer;
 };
 
 #endif

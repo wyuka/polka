@@ -27,6 +27,9 @@
 MainMenuItem::MainMenuItem()
   : m_defaultItemSize( 55 )
 {
+  m_timer.setSingleShot( true );
+  connect( &m_timer, SIGNAL( timeout() ), SLOT( hideItems() ) );
+
   setItemSize( m_defaultItemSize );
  
   setBrush( QColor( 230,229,229 ) );
@@ -73,6 +76,8 @@ void MainMenuItem::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
 
+  m_timer.stop();
+
   setItemSize( m_defaultItemSize + 20 );
 
   m_fanMenu->show();
@@ -83,6 +88,11 @@ void MainMenuItem::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
 {
   Q_UNUSED( event );
 
+  m_timer.start( 300 );
+}
+
+void MainMenuItem::hideItems()
+{
   setItemSize( m_defaultItemSize );
 
   m_fanMenu->hide();
