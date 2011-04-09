@@ -35,6 +35,8 @@ class SettingsWidget;
 class GroupView;
 class Overview;
 class HistoryView;
+class SearchEdit;
+class SearchResultView;
 
 class PolkaView : public QWidget
 {
@@ -83,6 +85,9 @@ class PolkaView : public QWidget
     void closePersonView();
     void continueShowGroup();
 
+    void showSearch( const QString & );
+    void stopSearch();
+
   private:
     PolkaModel *m_model;
 
@@ -91,7 +96,8 @@ class PolkaView : public QWidget
     QStringList m_history;
 
     QPushButton *m_backButton;
-    QLabel *m_groupNameLabel;  
+    QLabel *m_groupNameLabel;
+    SearchEdit *m_searchEdit;
     SettingsWidget *m_settingsWidget;
     QWidget *m_groupWidget;
     QStackedLayout *m_listLayout;
@@ -100,6 +106,7 @@ class PolkaView : public QWidget
     PersonView *m_personView;
     Overview *m_overview;
     HistoryView *m_historyView;
+    SearchResultView *m_searchResultView;
 };
 
 #endif

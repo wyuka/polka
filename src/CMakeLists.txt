@@ -1,4 +1,6 @@
 set(polka_bin_SRCS
+  searchresultview.cpp
+  searchedit.cpp
   fanmenuitem.cpp
   buttonitem.cpp
   groupadderitem.cpp

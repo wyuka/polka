@@ -32,6 +32,8 @@
 #include "settingswidget.h"
 #include "overview.h"
 #include "historyview.h"
+#include "searchedit.h"
+#include "searchresultview.h"
 
 #include <KMessageBox>
 #include <KLocale>
@@ -62,9 +64,17 @@ PolkaView::PolkaView(QWidget *parent)
 
   buttonLayout->addStretch( 1 );
 
+  m_searchEdit = new SearchEdit;
+  buttonLayout->addWidget( m_searchEdit );
+  connect( m_searchEdit, SIGNAL( search( const QString & ) ),
+    SLOT( showSearch( const QString & ) ) );
+  connect( m_searchEdit, SIGNAL( stopSearch() ), SLOT( stopSearch() ) );
+
   QPushButton *button = new QPushButton( i18n("...") );
   buttonLayout->addWidget( button );
   connect( button, SIGNAL( clicked() ), SLOT( showOverview() ) );
+
+  button->setFocus();
 
   QBoxLayout *viewLayout = new QHBoxLayout;
   topLayout->addLayout( viewLayout );
@@ -107,6 +117,9 @@ PolkaView::PolkaView(QWidget *parent)
 
   m_historyView = new HistoryView( m_model );
   m_listLayout->addWidget( m_historyView );
+
+  m_searchResultView = new SearchResultView;
+  m_listLayout->addWidget( m_searchResultView );
 
   m_settingsWidget = new SettingsWidget( m_model );
   topLayout->addWidget( m_settingsWidget );
@@ -345,6 +358,12 @@ void PolkaView::goBack()
     return;
   }
 
+  if ( m_searchResultView->isVisible() ) {
+    m_searchEdit->setEmpty();
+    showGroupView();
+    return;
+  }
+
   m_history.takeLast();
   while ( !m_history.isEmpty() ) {
     QString id = m_history.last();
@@ -384,4 +403,18 @@ void PolkaView::showHistory()
   m_listLayout->setCurrentWidget( m_historyView );
 
   m_historyView->loadHistory();
+}
+
+void PolkaView::showSearch( const QString &text )
+{
+  m_groupNameLabel->setText( i18n("<b>Search Results</b>") );
+  m_backButton->setEnabled( true );
+
+  m_listLayout->setCurrentWidget( m_searchResultView );
+  m_searchResultView->search( text );
+}
+
+void PolkaView::stopSearch()
+{
+  showGroupView();
 }
