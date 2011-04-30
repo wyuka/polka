@@ -1,4 +1,5 @@
 set(polka_bin_SRCS
+  matchlist.cpp
   searchresultview.cpp
   searchedit.cpp
   fanmenuitem.cpp

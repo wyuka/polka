@@ -118,7 +118,7 @@ PolkaView::PolkaView(QWidget *parent)
   m_historyView = new HistoryView( m_model );
   m_listLayout->addWidget( m_historyView );
 
-  m_searchResultView = new SearchResultView;
+  m_searchResultView = new SearchResultView( m_model );
   m_listLayout->addWidget( m_searchResultView );
 
   m_settingsWidget = new SettingsWidget( m_model );

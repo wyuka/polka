@@ -19,6 +19,8 @@
 
 #include "newpersondialog.h"
 
+#include "matchlist.h"
+
 #include <KConfig>
 #include <KMessageBox>
 #include <KPushButton>
@@ -43,22 +45,12 @@ NewPersonDialog::NewPersonDialog( PolkaModel *model, QWidget *parent )
   connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
     SLOT( checkOkButton() ) );
 
-  if ( !m_model->persons().isEmpty() ) {
-    m_matchList = new QListView;
-    
-    m_proxyModel = new QSortFilterProxyModel(this);
-    m_proxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
-
-    topLayout->addWidget( m_matchList );
-    connect( m_matchList, SIGNAL( activated( const QModelIndex & ) ),
-      SLOT( accept() ) );
-
-    m_proxyModel->setSourceModel( m_model->personsItemModel() );
-    m_matchList->setModel( m_proxyModel );
-
-    connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
-      m_proxyModel, SLOT( setFilterWildcard( const QString & ) ) );
-  }
+  m_matchList = new MatchList( m_model );
+  topLayout->addWidget( m_matchList );
+  
+  connect( m_matchList, SIGNAL( activated() ), SLOT( accept() ) );
+  connect( m_nameInput, SIGNAL( textChanged( const QString & ) ),
+    m_matchList, SLOT( filter( const QString & ) ) );
 
   setMainWidget( topWidget );
 
@@ -77,21 +69,14 @@ NewPersonDialog::~NewPersonDialog()
 
 Polka::Identity NewPersonDialog::identity()
 {
-  if ( !m_matchList || m_matchList->selectionModel()->selectedIndexes().isEmpty() ) {
+  if ( !m_matchList || !m_matchList->identity().isValid() ) {
     Polka::Identity identity;
     Polka::Name name;
     name.setValue( m_nameInput->text() );
     identity.setName( name );
     return identity;
   } else {
-    QModelIndexList selectedIndexes =
-      m_matchList->selectionModel()->selectedIndexes();
-
-    if ( selectedIndexes.count() > 1 ) {
-      KMessageBox::information( 0, "More than one person selected" );
-    }
-    return m_model->findIdentity( m_proxyModel->data( selectedIndexes.first(),
-      Qt::UserRole ).toString() );
+    return m_matchList->identity();
   }
 }
 

@@ -26,6 +26,8 @@
 
 #include <QtGui>
 
+class MatchList;
+
 class NewPersonDialog : public KDialog
 {
     Q_OBJECT
@@ -43,7 +45,7 @@ class NewPersonDialog : public KDialog
     QSortFilterProxyModel *m_proxyModel;
   
     QLineEdit *m_nameInput;
-    QListView *m_matchList;
+    MatchList *m_matchList;
 };
 
 #endif

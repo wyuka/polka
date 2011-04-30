@@ -16,27 +16,35 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
     USA.
 */
-#ifndef SEARCHRESULTVIEW_H
-#define SEARCHRESULTVIEW_H
+#ifndef MATCHLIST_H
+#define MATCHLIST_H
+
+#include "polka/polka.h"
+#include "polkamodel.h"
+
+#include <KDialog>
 
 #include <QtGui>
 
-class MatchList;
-class PolkaModel;
-
-class SearchResultView : public QWidget
+class MatchList : public QWidget
 {
     Q_OBJECT
   public:
-    SearchResultView( PolkaModel * );
+    MatchList( PolkaModel *, QWidget *parent = 0 );
+    ~MatchList();
+
+    Polka::Identity identity();
 
   public slots:
-    void search( const QString & );
+    void filter( const QString &string );
+
+  signals:
+    void activated();
 
   private:
     PolkaModel *m_model;
-    
-    MatchList *m_matchList;
+    QSortFilterProxyModel *m_proxyModel;
+    QListView *m_matchList;
 };
 
 #endif

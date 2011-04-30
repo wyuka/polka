@@ -19,23 +19,24 @@
 
 #include "searchresultview.h"
 
+#include "matchlist.h"
+
 #include <KLocale>
 
-SearchResultView::SearchResultView()
+SearchResultView::SearchResultView( PolkaModel *model )
+  : m_model( model )
 {
   QBoxLayout *topLayout = new QHBoxLayout( this );
 
   topLayout->addStretch( 1 );
 
-  topLayout->addWidget( new QLabel( i18n("Search for: ") ) );
-
-  m_label = new QLabel;
-  topLayout->addWidget( m_label );
+  m_matchList = new MatchList( m_model );
+  topLayout->addWidget( m_matchList );
   
   topLayout->addStretch( 1 );
 }
 
 void SearchResultView::search( const QString &text )
 {
-  m_label->setText( text );
+  m_matchList->filter( text );
 }
