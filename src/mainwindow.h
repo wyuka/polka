@@ -23,8 +23,6 @@
 
 #include <kxmlguiwindow.h>
 
-#include "ui_prefs_base.h"
-
 class PolkaView;
 
 class MainWindow : public KXmlGuiWindow
@@ -44,7 +42,6 @@ class MainWindow : public KXmlGuiWindow
     void setupActions();
 
   private:
-    Ui::prefs_base ui_prefs_base ;
     PolkaView *m_view;
 
     bool m_closing;
