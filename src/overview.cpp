@@ -68,7 +68,7 @@ Overview::Overview()
   text += "<a href=\"http://gpl.org\">GPL</a>";
   text += "<br/>";
   text += "<br/>";
-  text += "<a href=\"http://lst.de/polka\">http://lst.de/polka</a>";
+  text += "<a href=\"http://www.lst.de/~cs/polka\">http://www.lst.de/~cs/polka</a>";
   text += "</qt>";
 
   about->setText( text );
