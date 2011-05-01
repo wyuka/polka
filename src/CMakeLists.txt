@@ -44,8 +44,6 @@ set(polka_bin_SRCS
   trackinggraphicsview.cpp
 )
 
-kde4_add_ui_files(polka_bin_SRCS polkaview_base.ui prefs_base.ui)
-
 kde4_add_kcfg_files(polka_bin_SRCS settings.kcfgc )
 
 kde4_add_executable(polka_bin ${polka_bin_SRCS})
