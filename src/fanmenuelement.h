@@ -35,6 +35,7 @@ class FanMenuElement : public QGraphicsPathItem
   protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * );
     void hoverEnterEvent( QGraphicsSceneHoverEvent * );
+    void hoverLeaveEvent( QGraphicsSceneHoverEvent * );
 
   private:
     FanMenu *m_menu;

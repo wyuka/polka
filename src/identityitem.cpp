@@ -190,6 +190,15 @@ void IdentityItem::mouseReleaseEvent( QGraphicsSceneMouseEvent *event )
   QGraphicsEllipseItem::mouseReleaseEvent( event );
 }
 
+
+void IdentityItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    emitShowIdentity();
+
+    QGraphicsItem::mouseDoubleClickEvent(event);
+}
+
+
 void IdentityItem::emitRemoveIdentity()
 {
   emit removeIdentity( m_identity );

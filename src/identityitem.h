@@ -81,6 +81,8 @@ class IdentityItem : public QObject, public QGraphicsEllipseItem
     void mousePressEvent( QGraphicsSceneMouseEvent *event );
     void mouseReleaseEvent( QGraphicsSceneMouseEvent *event );
 
+    void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event );
+
     QVariant itemChange( GraphicsItemChange change, const QVariant &value );
 
     bool hasPicture() const;

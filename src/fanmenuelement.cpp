@@ -96,5 +96,13 @@ void FanMenuElement::mousePressEvent( QGraphicsSceneMouseEvent * )
 
 void FanMenuElement::hoverEnterEvent( QGraphicsSceneHoverEvent *event )
 {
+  setBrush( QColor( 230,230,230 ) );
   QGraphicsPathItem::hoverEnterEvent( event );
+}
+
+
+void FanMenuElement::hoverLeaveEvent( QGraphicsSceneHoverEvent *event )
+{
+    setBrush( QColor( 200,200,200 ) );
+    QGraphicsPathItem::hoverLeaveEvent( event );
 }
