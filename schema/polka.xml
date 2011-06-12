@@ -23,6 +23,17 @@
         <email_address>hw@example.org</email_address>
       </email>
     </emails>
+    <details>
+      <detail id="x345" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        <detail_name>nick</detail_name>
+        <detail_value>wyuka</detail_value>
+    </detail>
+      <detail id="x3345" created_at="20090901T120034Z" updated_at="20090901T120034Z">
+        <detail_name>Employer</detail_name>
+        <detail_value>Google Summer of Code</detail_value>
+        <comment id="x1" created_at="20090901T120034Z" updated_at="20090901T120023Z">Don't use it anymore.</comment>
+    </detail>
+    </details>
     <pictures>
       <selected>z77z4ufhjf</selected>
       <picture  picture_type="local" created_at="20090901T120034Z" updated_at="20090901T120023Z">

@@ -174,6 +174,22 @@ QString HtmlRenderer::personEditor( const Identity &identity,
       link.comment() );
   }
 
+  if ( !identity.details().detailList().isEmpty() ) {
+    HtmlElement &detailsDiv = doc.element("div");
+
+    foreach( Detail detail, identity.details().detailList() ) {
+      HtmlElement &detailDiv = detailsDiv.element("div").c("trigger");
+
+      HtmlElement &nameP = detailDiv.element("h3");
+      nameP.text(detail.detailName());
+      addEditControls( nameP, "Detail", detail.id(), detail.updatedAt(),
+        detail.comment() );
+      HtmlElement &valueP = detailDiv.element("p");
+      valueP.text(detail.detailValue());
+
+    }
+  }
+
   if ( !identity.comments().commentList().isEmpty() ) {
     HtmlElement &commentsDiv = doc.element("div");
     commentsDiv.element("h2").text(i18n("Comments"));
@@ -206,6 +222,10 @@ QString HtmlRenderer::personEditor( const Identity &identity,
   HtmlElement &addLink = editBar.element("span").element("a");
   addLink.attribute("href","polka:addLink");
   addLink.text("Add link");
+
+  HtmlElement &addDetail = editBar.element("span").element("a");
+  addDetail.attribute("href","polka:addDetail");
+  addDetail.text("Add detail");
 
   HtmlElement &addComment = editBar.element("span").element("a");
   addComment.attribute("href","polka:addComment");
@@ -262,6 +282,18 @@ QString HtmlRenderer::personView( const Identity &identity )
     a.text(link.url());
   }
 
+  if ( !identity.details().detailList().isEmpty() ) {
+    HtmlElement &detailsDiv = doc.element("div");
+
+    foreach( Detail detail, identity.details().detailList() ) {
+      HtmlElement &detailDiv = detailsDiv.element( "div" ).c("trigger");
+
+      HtmlElement &nameP = detailDiv.element("h3");
+      nameP.text(detail.detailName());
+      HtmlElement &valueP = detailDiv.element("p");
+      valueP.text(detail.detailValue());
+    }
+  }
   if ( !identity.comments().commentList().isEmpty() ) {
     HtmlElement &commentsDiv = doc.element("div");
     commentsDiv.element("h2").text(i18n("Comments"));

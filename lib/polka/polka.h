@@ -513,6 +513,63 @@ class POLKA_EXPORT Pictures
     Picture::List mPictureList;
 };
 
+class POLKA_EXPORT Detail
+{
+public:
+    typedef QList<Detail> List;
+
+public:
+    Detail();
+    bool isValid() const;
+    void setId( const QString &v );
+    QString id() const;
+    void setCreatedAt( const QDateTime &v );
+    QDateTime createdAt() const;
+    void setUpdatedAt( const QDateTime &v );
+    QDateTime updatedAt() const;
+    void setDetailName( const QString &v );
+    QString detailName() const;
+    void setDetailValue( const QString &v );
+    QString detailValue() const;
+    void setComment( const Comment &v );
+    Comment comment() const;
+    /**
+      Parse XML object from DOM element.
+     */
+    static Detail parseElement( const QDomElement &element, bool *ok );
+    void writeElement( QXmlStreamWriter &xml );
+
+private:
+    QString mId;
+    QDateTime mCreatedAt;
+    QDateTime mUpdatedAt;
+    QString mDetailName;
+    QString mDetailValue;
+    Comment mComment;
+};
+
+class POLKA_EXPORT Details
+{
+  public:
+    enum Flags { None, AutoCreate };
+
+  public:
+    void addDetail( const Detail &v );
+    void setDetailList( const Detail::List &v );
+    Detail::List detailList() const;
+    Detail findDetail( const QString &id, Flags flags = None );
+    bool insert( const Detail &v );
+    bool remove( const Detail &v );
+    /**
+      Parse XML object from DOM element.
+     */
+    static Details parseElement( const QDomElement &element, bool *ok );
+    void writeElement( QXmlStreamWriter &xml );
+
+  private:
+    Detail::List mDetailList;
+};
+
 class POLKA_EXPORT Email
 {
   public:
@@ -671,6 +728,8 @@ class POLKA_EXPORT Identity
     Birthday birthday() const;
     void setEmails( const Emails &v );
     Emails emails() const;
+    void setDetails( const Details &v );
+    Details details() const;
     void setPictures( const Pictures &v );
     Pictures pictures() const;
     void setPhones( const Phones &v );
@@ -698,6 +757,7 @@ class POLKA_EXPORT Identity
     Name mName;
     Birthday mBirthday;
     Emails mEmails;
+    Details mDetails;
     Pictures mPictures;
     Phones mPhones;
     Addresses mAddresses;

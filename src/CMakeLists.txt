@@ -19,6 +19,7 @@ set(polka_bin_SRCS
   linkeditor.cpp
   phoneeditor.cpp
   commenteditor.cpp
+  detaileditor.cpp
   fanmenuelement.cpp
   fanmenu.cpp
   gitremote.cpp

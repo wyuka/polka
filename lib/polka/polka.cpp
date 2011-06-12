@@ -1850,6 +1850,230 @@ void Pictures::writeElement( QXmlStreamWriter &xml )
 }
 
 
+Detail::Detail()
+{
+    QDateTime now = QDateTime::currentDateTime();
+    setCreatedAt( now );
+    setUpdatedAt( now );
+}
+
+bool Detail::isValid() const
+{
+    return !mId.isEmpty();
+}
+
+void Detail::setId(const QString& v)
+{
+    mId = v;
+    setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+QString Detail::id() const
+{
+    return mId;
+}
+
+void Detail::setCreatedAt(const QDateTime& v)
+{
+    mCreatedAt = v;
+}
+
+QDateTime Detail::createdAt() const
+{
+    return mCreatedAt;
+}
+
+void Detail::setUpdatedAt(const QDateTime& v)
+{
+    mUpdatedAt = v;
+}
+
+QDateTime Detail::updatedAt() const
+{
+    return mUpdatedAt;
+}
+
+void Detail::setDetailName(const QString& v)
+{
+    mDetailName = v;
+    setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+QString Detail::detailName() const
+{
+    return mDetailName;
+}
+
+void Detail::setDetailValue(const QString& v)
+{
+    mDetailValue = v;
+    setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+QString Detail::detailValue() const
+{
+    return mDetailValue;
+}
+
+void Detail::setComment(const Comment& v)
+{
+    mComment = v;
+    setUpdatedAt( QDateTime::currentDateTime() );
+}
+
+Comment Detail::comment() const
+{
+    return mComment;
+}
+
+Detail Detail::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "detail" ) {
+    qCritical() << "Expected 'detail', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Detail();
+  }
+
+  Detail result = Detail();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "detail_name" ) {
+      result.setDetailName( e.text() );
+    }
+    else if ( e.tagName() == "detail_value" ) {
+        result.setDetailValue( e.text() );
+    }
+    else if ( e.tagName() == "comment" ) {
+      bool ok;
+      Comment o = Comment::parseElement( e, &ok );
+      if ( ok ) result.setComment( o );
+    }
+  }
+
+  result.setId( element.attribute( "id" ) );
+  result.setCreatedAt( QDateTime::fromString( element.attribute( "created_at" ), "yyyyMMddThhmmssZ" ) );
+  result.setUpdatedAt( QDateTime::fromString( element.attribute( "updated_at" ), "yyyyMMddThhmmssZ" ) );
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+void Detail::writeElement( QXmlStreamWriter &xml )
+{
+  xml.writeStartElement( "detail" );
+    if ( !id().isEmpty() ) {
+      xml.writeAttribute( "id", id() );
+    }
+    if ( !createdAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "created_at", createdAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+    if ( !updatedAt().toString( "yyyyMMddThhmmssZ" ).isEmpty() ) {
+      xml.writeAttribute( "updated_at", updatedAt().toString( "yyyyMMddThhmmssZ" ) );
+    }
+  if ( !detailName().isEmpty() ) {
+    xml.writeTextElement(  "detail_name", detailName() );
+  }
+  if ( !detailValue().isEmpty() ) {
+    xml.writeTextElement(  "detail_value", detailValue() );
+  }
+  comment().writeElement( xml );
+  xml.writeEndElement();
+}
+
+
+void Details::addDetail( const Detail &v )
+{
+  mDetailList.append( v );
+}
+
+void Details::setDetailList( const Detail::List &v )
+{
+  mDetailList = v;
+}
+
+Detail::List Details::detailList() const
+{
+  return mDetailList;
+}
+
+Detail Details::findDetail( const QString &id, Flags flags )
+{
+  foreach( Detail v, mDetailList ) {
+    if ( v.id() == id ) return v;
+  }
+  Detail v;
+  if ( flags == AutoCreate ) {
+    v.setId( id );
+  }
+  return v;
+}
+
+bool Details::insert( const Detail &v )
+{
+  int i = 0;
+  for( ; i < mDetailList.size(); ++i ) {
+    if ( mDetailList[i].id() == v.id() ) {
+      mDetailList[i] = v;
+      return true;
+    }
+  }
+  if ( i == mDetailList.size() ) {
+    addDetail( v );
+  }
+  return true;
+}
+
+bool Details::remove( const Detail &v )
+{
+  Detail::List::Iterator it;
+  for( it = mDetailList.begin(); it != mDetailList.end(); ++it ) {
+    if ( (*it).id() == v.id() ) break;
+  }
+  if ( it != mDetailList.end() ) {
+    mDetailList.erase( it );
+  }
+  return true;
+}
+
+Details Details::parseElement( const QDomElement &element, bool *ok )
+{
+  if ( element.tagName() != "details" ) {
+    qCritical() << "Expected 'details', got '" << element.tagName() << "'.";
+    if ( ok ) *ok = false;
+    return Details();
+  }
+
+  Details result = Details();
+
+  QDomNode n;
+  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
+    QDomElement e = n.toElement();
+    if ( e.tagName() == "detail" ) {
+      bool ok;
+      Detail o = Detail::parseElement( e, &ok );
+      if ( ok ) result.addDetail( o );
+    }
+  }
+
+
+  if ( ok ) *ok = true;
+  return result;
+}
+
+void Details::writeElement( QXmlStreamWriter &xml )
+{
+  if ( !detailList().isEmpty() ) {
+    xml.writeStartElement( "details" );
+    foreach( Detail e, detailList() ) {
+      e.writeElement( xml );
+    }
+    xml.writeEndElement();
+  }
+}
+
+
 Email::Email()
 {
   QDateTime now = QDateTime::currentDateTime();
@@ -2405,6 +2629,16 @@ Emails Identity::emails() const
   return mEmails;
 }
 
+void Identity::setDetails(const Details &v)
+{
+    mDetails = v;
+}
+
+Details Identity::details() const
+{
+    return mDetails;
+}
+
 void Identity::setPictures( const Pictures &v )
 {
   mPictures = v;
@@ -2511,6 +2745,11 @@ Identity Identity::parseElement( const QDomElement &element, bool *ok )
       Emails o = Emails::parseElement( e, &ok );
       if ( ok ) result.setEmails( o );
     }
+    else if ( e.tagName() == "details" ) {
+      bool ok;
+      Details o = Details::parseElement( e, &ok );
+      if ( ok ) result.setDetails( o );
+    }
     else if ( e.tagName() == "pictures" ) {
       bool ok;
       Pictures o = Pictures::parseElement( e, &ok );
@@ -2567,6 +2806,7 @@ void Identity::writeElement( QXmlStreamWriter &xml )
   name().writeElement( xml );
   birthday().writeElement( xml );
   emails().writeElement( xml );
+  details().writeElement( xml );
   pictures().writeElement( xml );
   phones().writeElement( xml );
   addresses().writeElement( xml );

@@ -31,6 +31,7 @@
 #include "phoneeditor.h"
 #include "linkeditor.h"
 #include "addresseditor.h"
+#include "detaileditor.h"
 #include "pictureselectorcontrols.h"
 #include "settings.h"
 
@@ -154,6 +155,11 @@ void PersonView::slotLinkClicked( const QUrl &url )
     else if ( action == "removeEmail" ) removeEmail( path.value( 1 ) );
     else if ( action == "commentEmail" ) commentEmail( path.value( 1 ) );
 
+    else if ( action == "addDetail" ) addDetail();
+    else if ( action == "editDetail" ) editDetail( path.value( 1 ) );
+    else if ( action == "removeDetail" ) removeDetail( path.value( 1 ) );
+    else if ( action == "commentDetail" ) commentDetail( path.value( 1 ) );
+
     else if ( action == "addPhone" ) addPhone();
     else if ( action == "editPhone" ) editPhone( path.value( 1 ) );
     else if ( action == "removePhone" ) removePhone( path.value( 1 ) );
@@ -254,6 +260,72 @@ void PersonView::removeEmail( const QString &id )
   
   m_model->insert( m_identity, i18n("Remove email address %1 from %2")
     .arg( e.emailAddress() ).arg( m_identity.name().value() ) );
+}
+
+void PersonView::addDetail()
+{
+  DetailEditor *editor = new DetailEditor( this );
+  if ( editor->exec() == DetailEditor::Accepted ) {
+    Polka::Detail d;
+    d.setId( KRandom::randomString( 10 ) );
+    d.setDetailName( editor->detailName() );
+    d.setDetailValue( editor->detailValue() );
+    Polka::Details ds = m_identity.details();
+    ds.addDetail( d );
+    m_identity.setDetails( ds );
+
+    m_model->insert( m_identity, i18n("Add detail %1 to %2")
+      .arg( d.detailName() ).arg( m_identity.name().value() ) );
+  }
+}
+
+void PersonView::editDetail( const QString &id )
+{
+  Polka::Detail d = m_identity.details().findDetail( id );
+  DetailEditor *editor = new DetailEditor( this );
+  editor->setDetailName( d.detailName() );
+  editor->setDetailValue( d.detailValue() );
+  if ( editor->exec() == AddressEditor::Accepted ) {
+    Polka::Details ds = m_identity.details();
+    d.setDetailName( editor->detailName() );
+    d.setDetailValue( editor->detailValue() );
+    ds.insert( d );
+    m_identity.setDetails( ds );
+    
+    m_model->insert( m_identity, i18n("Edit detail %1 of %2")
+      .arg( d.detailName() ).arg( m_identity.name().value() ) );
+  }
+}
+
+void PersonView::commentDetail( const QString &id )
+{
+  Polka::Detail d = m_identity.details().findDetail( id );
+
+  Polka::Comment comment = d.comment();
+
+  CommentEditor *editor = new CommentEditor( this );
+  editor->setComment( comment.value() );
+  if ( editor->exec() == CommentEditor::Accepted ) {
+    Polka::Details ds = m_identity.details();
+    comment.setValue( editor->comment() );
+    d.setComment( comment );
+    ds.insert( d );
+    m_identity.setDetails( ds );
+
+    m_model->insert( m_identity, i18n("Edit comment of detail %1")
+      .arg( d.detailName() ) );
+  }
+}
+
+void PersonView::removeDetail( const QString &id )
+{
+  Polka::Details ds = m_identity.details();
+  Polka::Detail d = ds.findDetail( id );
+  ds.remove( d );
+  m_identity.setDetails( ds );
+  
+  m_model->insert( m_identity, i18n("Remove detail %1 from %2")
+     .arg( d.detailName() ).arg( m_identity.name().value() ) );
 }
 
 void PersonView::addAddress()

@@ -571,6 +571,13 @@ void PolkaModel::createFirstStartData()
   emails.addEmail( email );
   me.setEmails( emails );
 
+  Polka::Detail nickDetail;
+  nickDetail.setDetailName( "IRC nick" );
+  nickDetail.setDetailValue( "cornelius" );
+  Polka::Details details;
+  details.addDetail( nickDetail );
+  me.setDetails( details );
+
   Polka::Comment comment;
   comment.setValue( i18n("I'm Cornelius Schumacher, the author of Polka, "
     "the humane address book for the cloud. "
